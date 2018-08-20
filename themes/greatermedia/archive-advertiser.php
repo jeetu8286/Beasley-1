@@ -10,70 +10,51 @@
 
 get_header(); ?>
 
-	<div class="container">
+<div class="container">
+	<section class="content">
+		<h2 class="sponsors__heading">Advertisers</h2>
 
-		<section class="content">
+		<div class="sponsors"><?php
 
-			<h2 class="sponsors__heading"><?php _e( 'Advertisers', 'greatermedia' ); ?></h2>
+			$advertiser_args = array(
+				'post_type'         => GMR_ADVERTISER_CPT,
+				'orderby'           => 'menu_order date',
+				'order'             => 'ASC',
+				'posts_per_page'    => 30
+			);
 
-			<div class="sponsors">
+			$advertiser_query = new WP_Query( $advertiser_args );
+			$i = 1;
 
-				<?php
+			?><div class="sponsors__row"><?php
+				if ( $advertiser_query->have_posts() ) :
+					while ( $advertiser_query->have_posts() ) :
+						$advertiser_query->the_post();
 
-				$advertiser_args = array(
-					'post_type'         => GMR_ADVERTISER_CPT,
-					'orderby'           => 'menu_order date',
-					'order'             => 'ASC',
-					'posts_per_page'    => 30
-				);
+						get_template_part( 'partials/loop', 'advertiser' );
 
-				$advertiser_query = new WP_Query( $advertiser_args );
-				$i = 1;
+						if ( $i % 2 == 0 ) :
+							?></div><div class="sponsors__row"><?php
+						endif;
 
-				echo '<div class="sponsors__row">';
-				if ( $advertiser_query->have_posts() ) : while ( $advertiser_query->have_posts() ) : $advertiser_query->the_post();
-
-					?>
-
-					<?php get_template_part( 'partials/loop', 'advertiser' );
-
-					if ( $i % 2 == 0 ) {
-						echo '</div><div class="sponsors__row">';
-					}
-
-					$i++;
-
-					?>
-
-				<?php endwhile; ?>
-
-				<?php else : ?>
-
-					<article id="post-not-found" class="hentry cf">
-
+						$i++;
+					endwhile;
+				else :
+					?><article id="post-not-found" class="hentry cf">
 						<header class="article-header">
-
-							<h1><?php _e( 'Oops, Post Not Found!', 'greatermedia' ); ?></h1>
-
+							<h1>Oops, Post Not Found!</h1>
 						</header>
 
 						<section class="entry-content">
-
-							<p><?php _e( 'Uh Oh. Something is missing. Try double checking things.', 'greatermedia' ); ?></p>
-
+							<p>Uh Oh. Something is missing. Try double checking things.</p>
 						</section>
+					</article><?php
+				endif;
+			?></div>
+		</div>
+	</section>
 
-					</article>
-
-				<?php endif; ?>
-				</div>
-
-			</div>
-
-		</section>
-
-		<?php get_sidebar(); ?>
-
-	</div>
+	<?php get_sidebar(); ?>
+</div>
 
 <?php get_footer(); ?>

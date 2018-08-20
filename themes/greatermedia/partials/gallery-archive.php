@@ -7,7 +7,7 @@ if ( $featured ) :
 
 	?><div class="gallery__featured">
 		<div class="gallery__featured--primary gallery__grid-album">
-			<?php get_template_part( 'partials/gallery-featured', 'primary' ); ?>
+			<?php get_template_part( 'partials/gallery-featured-primary' ); ?>
 		</div>
 	</div>
 

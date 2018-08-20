@@ -3,24 +3,28 @@
  * Top 3 Category Partial -- Primary Featured Item
  */
 
-?>
-<article id="post-<?php the_ID(); ?>" class="top-three__feature--primary" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+?><article id="post-<?php the_ID(); ?>" class="top-three__feature--primary" role="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<a href="<?php the_permalink(); ?>">
 		<div class="top-three__feature">
-			<div class='top-three__thumbnail'>
+			<div class="top-three__thumbnail">
 				<?php if ( has_post_thumbnail() ) : ?>
-					<div class='thumbnail' style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary', null, true ); ?>)'></div>
+					<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 708, 389 ); ?>)"></div>
 				<?php else: ?>
-					<div class='thumbnail thumbnail-placeholder' style=''></div>
+					<div class="thumbnail thumbnail-placeholder"></div>
 				<?php endif; ?>
 			</div>
-			<?php if ( has_post_format( 'video' ) ) { ?>
+
+			<?php if ( has_post_format( 'video' ) ) : ?>
 				<div class="top-three__play"></div>
-			<?php } ?>
+			<?php endif; ?>
+
 			<div class="top-three__desc">
-				<div class='inner-wrap'>
+				<div class="inner-wrap">
 					<h3><?php the_title(); ?></h3>
-					<time class="top-three__date" datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'M j, Y' ); ?></time>
+
+					<time class="top-three__date" datetime="<?php the_time( 'c' ); ?>">
+						<?php the_time( 'M j, Y' ); ?>
+					</time>
 				</div>
 			</div>
 		</div>

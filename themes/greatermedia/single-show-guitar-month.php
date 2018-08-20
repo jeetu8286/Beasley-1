@@ -17,40 +17,44 @@
 							<div class="show__feature">
 								<div class='show-feature__thumbnail'>
 									<?php if ( has_post_thumbnail() ) : ?>
-										<div class='thumbnail'
-										     style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary', null, true ); ?>)'></div>
+										<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 708, 389 ); ?>)"></div>
 									<?php else: ?>
-										<div class='thumbnail thumbnail-placeholder' style=''></div>
+										<div class="thumbnail thumbnail-placeholder"></div>
 									<?php endif; ?>
 								</div>
+
 								<div class="show__feature--desc">
-									<div class='inner-wrap'>
+									<div class="inner-wrap">
 										<h3 class="show__feature--title"><?php the_title(); ?></h3>
-										<time class="show__feature--date"
-										      datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'M j, Y' ); ?></time>
+
+										<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>">
+											<?php the_time( 'M j, Y' ); ?>
+										</time>
 									</div>
 								</div>
 							</div>
 						</a>
 					</div>
+
 					<?php if ( $featured_query->have_posts() ): ?>
 						<div class="show__feature--secondary">
 							<?php while ( $featured_query->have_posts() ): $featured_query->the_post(); ?>
 								<a href="<?php the_permalink(); ?>">
 									<div class="show__feature">
-										<div class='show-feature__thumbnail'>
+										<div class="show-feature__thumbnail">
 											<?php if ( has_post_thumbnail() ) : ?>
-												<div class='thumbnail'
-												     style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-show-featured-primary', null, true ); ?>)'></div>
+												<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 708, 389 ); ?>)"></div>
 											<?php else: ?>
-												<div class='thumbnail thumbnail-placeholder' style=''></div>
+												<div class="thumbnail thumbnail-placeholder"></div>
 											<?php endif; ?>
 										</div>
 										<div class="show__feature--desc">
-											<div class='inner-wrap'>
+											<div class="inner-wrap">
 												<h3 class="show__feature--title"><?php the_title(); ?></h3>
-												<time class="show__feature--date"
-												      datetime="<?php the_time( 'c' ); ?>"><?php the_time( 'M j, Y' ); ?></time>
+
+												<time class="show__feature--date" datetime="<?php the_time( 'c' ); ?>">
+													<?php the_time( 'M j, Y' ); ?>
+												</time>
 											</div>
 										</div>
 									</div>
@@ -62,12 +66,9 @@
 				<?php wp_reset_query(); ?>
 			<?php endif; ?>
 
-
 			<?php get_template_part( 'partials/show-highlights-guitar-month' ); ?>
 
-
 			<div class="row">
-
 				<aside class="inner-right-col">
 					<?php
 					$live_links_query = \GreaterMedia\Shows\get_show_live_links_query();
@@ -102,9 +103,7 @@
 					<h2 class="section-header">Stories</h2>
 					<?php get_template_part( 'partials/loop', 'show' ); ?>
 				</section>
-
 			</div>
-
 		</section>
 
 		<?php get_sidebar(); ?>

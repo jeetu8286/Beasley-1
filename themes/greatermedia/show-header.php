@@ -1,24 +1,34 @@
 <?php
-	$src = get_bloginfo('template_directory').'/images/featured-bg.png';
-	if ( has_post_thumbnail($post->ID) ) {
-		$featured = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
-		$src = $featured[0];
+
+$show_id = get_queried_object_id();
+
+$featured_class = '';
+$featured_image = get_bloginfo( 'template_directory' ) . '/images/featured-bg.png';
+if ( has_post_thumbnail( $show_id ) ) {
+	$featured = beasley_get_image_url( get_post_thumbnail_id( $show_id ), 610, 382, true, true );
+	if ( $featured ) {
+		$thumbnail_class = 'has-thumbnail';
+		$featured_image = $featured;
 	}
-?>
+}
 
-<div class="show__header<?php if( has_post_thumbnail() ) echo ' has-thumbnail'; ?>"
+$logo_image = '';
+$logo_id = get_post_meta( $post->ID, 'logo_image', true );
+if ( $logo_id ) {
+	$logo = beasley_get_image_url( $logo_id, 100, 100 );
+	if ( $logo ) {
+		$logo_image = $logo;
+	}
+}
 
-	<?php if( has_post_thumbnail() ) { ?>
-	style="background-image: url(<?php echo $src; ?>);"
-	<?php } ?>
->
+?><div class="show__header <?php echo sanitize_html_class( $featured_class ); ?>" style="background-position: center; background-image: url(<?php echo esc_url( $featured_image ); ?>);">
 	<div class="show__header-content">
 		<div class="show__cast">
-			<?php if ( get_post_meta( $post->ID, 'logo_image', true ) ) {
-		        $src = get_post_meta( $post->ID, 'logo_image', true );
-		        echo wp_get_attachment_image( $src, 'thumbnail' );
-			} ?>
+			<?php if ( $logo_image ) : ?>
+				<img src="<?php echo esc_url( $logo_image ); ?>">
+			<?php endif; ?>
 		</div>
+
 		<nav class="show__nav">
 			<h1 class="show__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 			<?php

@@ -42,7 +42,6 @@ require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
 require_once __DIR__ . '/includes/image-attributes/loader.php';
-require_once __DIR__ . '/includes/class-thumbnail-column.php';
 require_once __DIR__ . '/includes/category-options.php';
 require_once __DIR__ . '/includes/class-favicon.php';
 require_once __DIR__ . '/includes/iframe-embed.php';
@@ -71,38 +70,11 @@ remove_action( 'do_pings', 'do_all_pings' );
  * @since 0.1.0
  */
 function greatermedia_setup() {
-	/**
-	 * Makes Greater Media available for translation.
-	 *
-	 * Translations can be added to the /lang directory.
-	 * If you're building a theme based on Greater Media, use a find and replace
-	 * to change 'greatermedia' to the name of your theme in all template files.
-	 */
-	load_theme_textdomain( 'greatermedia', get_template_directory() . '/languages' );
-
 	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
-	add_image_size( 'gm-article-thumbnail',     		1400,   9999,   false   );
-	add_image_size( 'gm-entry-thumbnail-1-1' ,          500,    500,    true    );
-	add_image_size( 'gm-entry-thumbnail-4-3' ,          500,    375,    true    );
-	add_image_size( 'gmr-gallery',              		800,    534,    true    ); // large images for the gallery
-	add_image_size( 'gmr-gallery-thumbnail',    		100,    100             ); // thumbnails for the gallery
-    add_image_size( 'beasley-gallery-slide', 9999, 600, false ); // content-gallery-slideshow - set max height to 600 and scale the rest of the image
-	add_image_size( 'gmr-featured-primary',     		1600,   572,    true    ); // image for primary featured post on front page
-	add_image_size( 'gmr-featured-secondary',   		336,    224,    true    ); // thumbnails for secondary featured posts on front page
-	add_image_size( 'gmr-show-featured-primary',   		708,    389,    true    ); // thumbnails for secondary featured posts on front page
-	add_image_size( 'gmr-show-featured-secondary',   	322,    141,    true    ); // thumbnails for secondary featured posts on front page
-	add_image_size( 'gm-related-post',   				300,    200,    true    );
-	add_image_size( 'gmr-advertiser',                   400,    9999,   false   );
-
-	/* Images for the Gallery Grid ---- DO NOT DELETE ---- */
-	add_image_size( 'gmr-gallery-grid-featured',        1200,   800,    true    );
-	add_image_size( 'gmr-gallery-grid-secondary',       560,    300,    true    );
-	add_image_size( 'gmr-gallery-grid-thumb',           500,    368,    true    ); // thumbnail for gallery grid areas
-	add_image_size( 'gmr-album-thumbnail',              1876,   576,    true    ); // thumbnail for albums
-
-	//new custom image size for JacApps mobile app rotator panels.
-	add_image_size( 'gmr-homepage-featured-feed', 640, 400, true );
+	add_image_size( 'gm-article-thumbnail',   1400, 9999, false );
+	add_image_size( 'gm-entry-thumbnail-1-1', 500,  500,  true  );
+	add_image_size( 'gm-entry-thumbnail-4-3', 500,  375,  true  );
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -445,30 +417,6 @@ function get_post_with_keyword( $query_arg ) {
 }
 
 /**
- * Get the URL of a post's thumbnail.
- *
- * @param string|array $size Thumbnail size.
- * @param int $post_id Post ID. Defaults to current post.
- * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
- * @return string Thumbnail URL on success, otherwise NULL.
- */
-function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
-	$thumbnail_id = get_post_thumbnail_id( $post_id );
-	if ( $thumbnail_id && ( $url = gm_get_thumbnail_url( $thumbnail_id, $size ) ) ) {
-		return $url;
-	}
-
-	if ( $use_fallback ) {
-		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
-		if ( $thumbnail_id ) {
-			return gm_get_thumbnail_url( $thumbnail_id, $size );
-		}
-	}
-
-	return null;
-}
-
-/**
  * Output the escaped URL of a post's thumbnail.
  *
  * @param string|array $size Thumbnail size.
@@ -476,22 +424,19 @@ function gm_get_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_f
  * @param bool $use_fallback Determines whether to use fallback image if thumbnmail doesn't exist.
  */
 function gm_post_thumbnail_url( $size = 'thumbnail', $post_id = null, $use_fallback = false ) {
-	echo esc_url( gm_get_post_thumbnail_url( $size, $post_id, $use_fallback ) );
-}
+	$url = false;
 
-/**
- * Get the URL of an attachment thumbnail.
- *
- * @param id $attachment_id
- * @return null|string URL if found, null otherwise.
- */
-function gm_get_thumbnail_url( $attachment_id, $size ) {
-	$src = wp_get_attachment_image_src( $attachment_id, $size );
-	if ( $src ) {
-		return $src[0];
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	if ( ! $thumbnail_id && $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
 	}
 
-	return null;
+	if ( $thumbnail_id ) {
+		$url = wp_get_attachment_image_url( $thumbnail_id, $size );
+		if ( $url ) {
+			echo esc_url( $url );
+		}
+	}
 }
 
 /**
@@ -1204,14 +1149,14 @@ add_action( 'rss2_item', 'greatermedia_add_mrss_node_to_rss' );
 
 function greatermedia_add_mrss_node_to_rss() {
 	global $post;
+
 	if ( has_post_thumbnail( $post->ID ) ):
-		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'gmr-gallery-grid-featured' );
+		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'original' );
 		if ( ! empty( $thumbnail[0] ) ) { ?>
 			<media:thumbnail url="<?php echo esc_attr( $thumbnail[0] ); ?>"  width="<?php echo esc_attr( $thumbnail[1] ); ?>"  height="<?php echo esc_attr( $thumbnail[2] ); ?>" /><?php
 		}
 	endif;
 }
-
 
 add_action( 'rss2_ns', 'greatermedia_add_mrss_ns_to_rss' );
 /**
@@ -1420,3 +1365,42 @@ function beasley_opengraph_image_size() {
 	return 'large';
 }
 add_filter( 'wpseo_opengraph_image_size', 'beasley_opengraph_image_size' );
+
+function beasley_get_image_url( $image, $width, $height, $mode = 'crop', $max = false ) {
+	$image_id = is_a( $image, '\WP_Post' ) ? $image->ID : $image;
+	$data = wp_get_attachment_image_src( $image_id, 'original' );
+	if ( ! $data ) {
+		return false;
+	}
+
+	$prefix = $max ? 'max' : '';
+	$aspect = ! empty( $data[2] ) ? $data[1] / $data[2] : 1;
+
+	$args = array(
+		"{$prefix}width"  => $width,
+		"{$prefix}height" => $height,
+		'anchor' => $aspect < 1 ? 'topleft' : 'middlecenter',
+	);
+
+	if ( $mode ) {
+		$args['mode'] = $mode;
+	}
+
+	return add_query_arg( $args, $data[0] );
+}
+
+function beasley_post_thumbnail_url( $post_id, $use_fallback, $width, $height, $mode = 'crop', $max = false ) {
+	$url = false;
+
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	if ( ! $thumbnail_id && $use_fallback ) {
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+	}
+
+	if ( $thumbnail_id ) {
+		$url = beasley_get_image_url( $thumbnail_id, $width, $height, $mode, $max );
+		if ( $url ) {
+			echo esc_url( $url );
+		}
+	}
+}

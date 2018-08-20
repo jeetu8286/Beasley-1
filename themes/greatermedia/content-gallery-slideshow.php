@@ -53,21 +53,8 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				?><div><div class="swiper-slide meta-spacer"></div></div><?php
 			endif;
 
-			$image_data = wp_get_attachment_image_src( $image->ID, 'original' );
-			if ( empty( $image_data ) ) :
-				continue;
-			endif;
-
-			$aspect = ! empty( $image_data[2] ) ? $image_data[1] / $image_data[2] : 1;
-			$thumbnail_args = array(
-				'width'  => 75,
-				'height' => 75,
-				'mode'   => 'crop',
-				'anchor' => $aspect < 1 ? 'topleft' : 'middlecenter',
-			);
-
 			?><div>
-				<div class="swiper-slide" style="background-image:url(<?php echo esc_url( add_query_arg( $thumbnail_args, $image_data[0] ) ); ?>)"></div>
+				<div class="swiper-slide" style="background-image:url(<?php echo esc_url( beasley_get_image_url( $image, 75, 75 ) ); ?>)"></div>
 			</div><?php
 		endforeach;
 
@@ -132,7 +119,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 								<article class="gallery__grid--column">
 									<a href="<?php the_permalink( $gallery ); ?>">
 										<div class="gallery__grid--thumbnail">
-											<div class="thumbnail" style="background-image: url('<?php echo esc_attr( wp_get_attachment_image_url( get_post_thumbnail_id( $gallery ), 'gmr-gallery-grid-secondary' ) ); ?>')"></div>
+											<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( $gallery, true, 345, 228 ); ?>)"></div>
 										</div>
 										<div class="gallery__grid--meta">
 											<h3 class="gallery__grid--title">
