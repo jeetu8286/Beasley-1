@@ -23,6 +23,10 @@
 		display: block;
 		min-height: 0;
 		padding: 10px 20px;
+
+		@include bp(medium) {
+			padding: 0 20px;
+		}
 	}
 
 	.backbutton {
@@ -37,7 +41,10 @@
 		white-space: nowrap;
 
 		@include bp(medium) {
-			display: none;
+			float: none;
+			margin-bottom: -10px;
+			margin-left: 0;
+			padding: 5px 0 0 0;
 		}
 
 		a {
