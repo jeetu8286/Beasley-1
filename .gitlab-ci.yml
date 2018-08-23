@@ -4,11 +4,11 @@ stages:
   - test
   - deploy
 
-# Define paths that should be cached between jobs. Good use cases are things like node_modules and .composer-cache
+# Define paths that should be cached between jobs. Good use cases are things like node_modules_cache and .composer-cache
 cache:
   paths:
     - .composer-cache # Composer
-    - themes/node_modules
+    - node_modules_cache
 
 #test:
 #  stage: test
