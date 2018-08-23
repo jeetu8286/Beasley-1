@@ -4,12 +4,11 @@ stages:
   - test
   - deploy
 
-# Define paths that should be cached between jobs. Good use cases are things like node_modules and bower_components
+# Define paths that should be cached between jobs. Good use cases are things like node_modules and .composer-cache
 cache:
   paths:
-    - themes/node_modules
-    - plugins/greatermedia-content-syndication/vendor
     - .composer-cache # Composer
+    - themes/node_modules
 
 #test:
 #  stage: test
