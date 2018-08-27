@@ -98,23 +98,6 @@ add_filter( 'restricted_site_access_remote_ip', function( $remote_ip ) {
  */
 add_filter( 'tribe_meta_chunker_post_types', '__return_empty_array', 15 );
 
-/**
- * Since media is from S3, the default domain won't be replaced automatically, unless we overwrite it
- */
-add_filter( 'dynamic_cdn_site_domain', function ( $domain ) {
-	if ( defined( 'DYNAMIC_CDN_SITE_DOMAIN' ) ) {
-		return DYNAMIC_CDN_SITE_DOMAIN;
-	}
-
-	return 'files.greatermedia.com.s3.amazonaws.com';
-} );
-
-add_filter( 'dynamic_cdn_extensions', function ( $extensions ) {
-	$extensions = array_merge( $extensions, array( 'mp3', 'ogg', 'wma', 'm4a', 'wav' ) );
-
-	return $extensions;
-} );
-
 // Filters the post types that will be indexed by ElasticPress.
 add_filter( 'ep_indexable_post_types', function() {
 	// Index all post types that are not excluded from search
