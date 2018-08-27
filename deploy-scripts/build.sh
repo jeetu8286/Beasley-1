@@ -6,9 +6,6 @@ set -x
 # Catch Errors
 set -euo pipefail
 
-# Set a local cache path for composer, so we can cache between builds and make things faster
-composer config cache-files-dir .composer-cache
-
 composer install --no-dev -o
 
 pushd plugins/greatermedia-content-syndication || exit 1

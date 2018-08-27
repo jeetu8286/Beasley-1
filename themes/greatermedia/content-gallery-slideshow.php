@@ -43,7 +43,12 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 } );
 
 ?><h1 class="slideshow-title">
-	<div class="container"><?php the_title(); ?></div>
+	<span class="container">
+		<span class="backbutton">
+			<a href="<?php echo esc_url( get_post_type_archive_link( 'gmr_gallery' ) ); ?>">View All Galleries</a>
+		</span>
+		<?php the_title(); ?>
+	</span>
 </h1>
 
 <div class="gallery">
