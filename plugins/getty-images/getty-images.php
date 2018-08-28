@@ -104,7 +104,7 @@ class Getty_Images {
 	function action_init() {
 		wp_oembed_add_provider( 'http://gty.im/*', 'http://embed.gettyimages.com/oembed' );
 	}
-	
+
 	/**
 	 * Filter embed fetch url
 	 * @param  string $provider    oembed provider url
@@ -121,7 +121,7 @@ class Getty_Images {
 		}
 		return $provider;
 	}
-	
+
 	/**
 	 * Filter embed shortcode html
 	 * @param  string $html    html generated from embed shortcode
@@ -248,7 +248,7 @@ class Getty_Images {
 		} else {
 			wp_register_script( 'getty-omniture-scode', apply_filters( 'getty_images_s_code_js_url', plugins_url( '/js/vendor/s_code_org.js', __FILE__ ) ), array(), $this->__plugin_get_version(), true );
 		}
-		
+
 
 		wp_enqueue_script( 'getty-images-models', plugins_url( '/js/getty-models-3-0.js', __FILE__ ), array( 'jquery-cookie', 'getty-omniture-scode' ), $this->__plugin_get_version(), true );
 		wp_enqueue_script( 'getty-images', plugins_url( '/js/getty-images-3-0.js', __FILE__ ), array( 'getty-images-views', 'getty-images-models' ), $this->__plugin_get_version(), true );
@@ -269,7 +269,7 @@ class Getty_Images {
 			// Register Google Analytics
 			wp_enqueue_script( 'google-analytics', plugins_url( '/js/vendor/google-analytics.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
 			wp_localize_script( 'google-analytics', 'google_analytics_data',
-					array( 
+					array(
 						'ID' => $googleAnalyticsId
 					)
 				);
@@ -277,7 +277,7 @@ class Getty_Images {
 			//Register Google Tag Manager
 			wp_enqueue_script( 'google-tag-manager-head', plugins_url( '/js/vendor/google-tag-manager-head.js', __FILE__ ), array(), $this->__plugin_get_version(), true );
 			wp_localize_script( 'google-tag-manager-head', 'google_tag_manager_data',
-					array( 
+					array(
 						'ID' => $googleTagManagerId
 					)
 				);
@@ -574,15 +574,6 @@ class Getty_Images {
 			$this->ajax_error( __( "Failed to download image", 'getty-images' ) );
 		}
 
-		// Getty Images delivery URLs have the pattern:
-		//
-		// http://delivery.gettyimages.com/../<filename>.<ext>?TONSOFAUTHORIZATIONDATA
-		//
-		// Check that the URL component is correct:
-		if( strpos( $url, 'https://delivery.gettyimages.com/' ) !== 0 ) {
-			$this->ajax_error( "Invalid URL" );
-		}
-
 		// Figure out filename to use. by using the basename of the first image extension
 		// matched component
 		preg_match( '/[^?]+\.(jpe?g|jpe|gif|png)\b/i', $url, $matches );
@@ -711,7 +702,7 @@ class Getty_Images {
 		$response = array();
 		$response['facets'] = $data;
 
-		$this->ajax_success( __( "Succesfully loaded facets", 'getty-images' ), $response ); 
+		$this->ajax_success( __( "Succesfully loaded facets", 'getty-images' ), $response );
 	}
 
 	/**
