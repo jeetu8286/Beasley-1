@@ -74,8 +74,8 @@ function omny_api_request( $url, $args = array() ) {
 
 	$args['headers']['Authorization'] = 'OmnyToken ' . get_option( 'omny_token' );
 
+	// @see: https://api.omnystudio.com/api-docs/index
 	$response = wp_remote_request( "https://api.omnystudio.com/v0/{$url}", $args );
-
 	if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
 		return new \WP_Error();
 	}
@@ -121,7 +121,7 @@ function omny_run_import_episodes() {
 
 		$is_wp_cli && \WP_CLI::log( sprintf( 'Processing %s (%s) podcast...', $podcast->post_title, $podcast->ID ) );
 
-		$clips = omny_api_request( "programs/{$program_id}/clips?pageSize=10" );
+		$clips = omny_api_request( "programs/{$program_id}/clips?pageSize=100" );
 		if ( is_wp_error( $clips ) ) {
 			continue;
 		}
