@@ -84,11 +84,6 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 				endif;
 
 				$aspect = ! empty( $image_data[2] ) ? $image_data[1] / $image_data[2] : 1;
-				$image_args = array(
-					'maxwidth'  => ceil( $aspect * 600 ),
-					'maxheight' => 600,
-				);
-
 				$attribution = get_post_meta( $image->ID, 'gmr_image_attribution', true );
 
 				?><div class="swiper-slide"
@@ -101,7 +96,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 					 <?php echo $image->post_name == $current_image_slug ? 'data-initial="true"' : ''; ?>
 					 >
 					<img class="swiper-image"
-						 src="<?php echo esc_url( add_query_arg( $image_args, $image_data[0] ) ); ?>"
+						 src="<?php echo esc_url( beasley_get_image_url( $image, ceil( $aspect * 600 ), 600, 'max', true ) ); ?>"
 						 alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 						 width="<?php echo esc_attr( $aspect * 600 ); ?>"
 						 height="600"
