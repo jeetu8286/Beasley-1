@@ -38,7 +38,8 @@
 
 .widget--live-player__title {
 	display: none;
-	@include bp(medium) {
+
+	@include bp(large) {
 		display: block;
 		margin: 0 0 1em;
 		font-size: ms(0);
@@ -47,7 +48,6 @@
 	}
 
 	.news-site & {
-
 		@include bp(medium) {
 			margin-bottom: 0;
 			line-height: 1;
@@ -102,7 +102,6 @@
 		margin-top: 2.125em;
 
 		&:hover {
-
 			div:before {
 				color: $primary-link-hover;
 				border-color: $primary-link-hover;
