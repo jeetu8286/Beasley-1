@@ -1,11 +1,9 @@
 .widget_triton_song_history {
-
 	// don't show on mobile
 	display: none;
 
 	// show on desktop
-	@include bp('medium') {
-
+	@include bp(large) {
 		display: block;
 		margin-bottom: 2em;
 
@@ -31,9 +29,7 @@
 		.td-song-history__song__infos {
 			text-transform: uppercase;
 		}
-
 	}
-
 }
 
 article > .triton-song-history {
