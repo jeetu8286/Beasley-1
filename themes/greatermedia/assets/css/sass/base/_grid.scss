@@ -64,10 +64,11 @@ img {
 .main > .container {
 	background-color: $primary-bg;
 	position: relative;
+	display: flex;
 
 	@include bp(medium) {
 		//margin-top: 40px;
-		padding: 20px 340px 20px 20px;
+		padding: 20px;
 	}
 }
 
@@ -81,15 +82,12 @@ img {
 
 .main > .container > .sidebar {
 	background-color: $primary-bg;
-	float: left;
 	width: 100%;
+	min-width: 300px;
 
 	@include bp(medium) {
-		float: none;
-		position: absolute;
-		right: 20px;
-		top: 20px;
 		width: 300px;
+		margin-right: $gutter * 2;
 	}
 
 	.player {
@@ -156,15 +154,12 @@ img {
 	}
 
 	.news-site & {
-
 		@include bp(medium) {
 			padding: $base-line-height 1.5em;
 		}
 	}
 
-
 	.home.news-site & {
-
 		@include bp(medium) {
 			padding: $base-line-height 1.5em;
 		}
