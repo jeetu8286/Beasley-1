@@ -75,6 +75,7 @@ function greatermedia_setup() {
 	add_image_size( 'gm-article-thumbnail',   1400, 9999, false );
 	add_image_size( 'gm-entry-thumbnail-1-1', 500,  500,  true  );
 	add_image_size( 'gm-entry-thumbnail-4-3', 500,  375,  true  );
+	add_image_size( 'gmr-gallery',            800,  534,  true  );
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -1294,7 +1295,7 @@ function beasley_get_image_url( $image, $width, $height, $mode = 'crop', $max = 
 
 	$use_imageflow = get_option( 'beasley_use_imageflow', 'no' );
 	if ( ! filter_var( $use_imageflow, FILTER_VALIDATE_BOOLEAN ) ) {
-		return wp_get_attachment_image_url( $image_id, 'gm-article-thumbnail' );
+		return wp_get_attachment_image_url( $image_id, 'gmr-gallery' );
 	}
 
 	$data = wp_get_attachment_image_src( $image_id, 'original' );
