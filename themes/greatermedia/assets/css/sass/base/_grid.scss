@@ -43,7 +43,7 @@ img {
 	@include outer-container(100%);
 	padding-right: 0;
 
-	@include bp(medium) {
+	@include bp(large) {
 		@include outer-container(970px);
 		padding-right: 340px;
 		min-height: 800px;
@@ -64,16 +64,10 @@ img {
 .main > .container {
 	background-color: $primary-bg;
 	position: relative;
-	display: flex;
-	flex-direction: column;
-
-	@include bp(medium) {
-		//margin-top: 40px;
-		padding: 20px;
-	}
 
 	@include bp(large) {
-		flex-direction: row;
+		//margin-top: 40px;
+		padding: 20px 340px 20px 20px;
 	}
 }
 
@@ -87,12 +81,15 @@ img {
 
 .main > .container > .sidebar {
 	background-color: $primary-bg;
+	float: left;
 	width: 100%;
-	min-width: 300px;
 
 	@include bp(large) {
+		float: none;
+		position: absolute;
+		right: 20px;
+		top: 20px;
 		width: 300px;
-		margin-right: $gutter * 2;
 	}
 
 	.player {
