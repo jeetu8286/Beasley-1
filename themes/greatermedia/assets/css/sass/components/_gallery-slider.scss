@@ -20,8 +20,41 @@
 		font-size: ms(7);
 	}
 	.container {
+		display: block;
 		min-height: 0;
-		padding: 0 20px;
+		padding: 10px 20px;
+
+		@include bp(medium) {
+			padding: 0 20px;
+		}
+	}
+
+	.backbutton {
+		display: block;
+		float: right;
+		font-size: 12px;
+		font-weight: normal;
+		margin-left: 20px;
+		padding: 4px 0;
+		position: relative;
+		text-transform: none;
+		white-space: nowrap;
+
+		@include bp(medium) {
+			float: none;
+			margin-bottom: -10px;
+			margin-left: 0;
+			padding: 5px 0 0 0;
+		}
+
+		a {
+			color: $secondary-text;
+			opacity: 0.8;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
 	}
 }
 
@@ -514,12 +547,15 @@
 		top: 50%;
 		padding: 0;
 		border: 0;
-		background-color: transparent;
+		background-color: $btn-bg;
 		height: 100px;
 		margin-top: -50px;
-		width: 20px;
+		width: 30px;
 		color: #fff;
+		font-size: 20px;
+
 		@include bp(medium) {
+			background-color: transparent;
 			top: 300px;
 			height: 150px;
 			margin-top: -75px;

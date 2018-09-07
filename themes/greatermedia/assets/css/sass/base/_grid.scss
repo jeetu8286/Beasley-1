@@ -43,7 +43,7 @@ img {
 	@include outer-container(100%);
 	padding-right: 0;
 
-	@include bp(medium) {
+	@include bp(large) {
 		@include outer-container(970px);
 		padding-right: 340px;
 		min-height: 800px;
@@ -65,7 +65,7 @@ img {
 	background-color: $primary-bg;
 	position: relative;
 
-	@include bp(medium) {
+	@include bp(large) {
 		//margin-top: 40px;
 		padding: 20px 340px 20px 20px;
 	}
@@ -84,7 +84,7 @@ img {
 	float: left;
 	width: 100%;
 
-	@include bp(medium) {
+	@include bp(large) {
 		float: none;
 		position: absolute;
 		right: 20px;
@@ -134,6 +134,11 @@ img {
 	.social__link {
 		margin: 0 5px;
 	}
+
+	.gmr-ad iframe {
+		display: block;
+		margin: 0 auto;
+	}
 }
 
 .content, %content {
@@ -156,18 +161,27 @@ img {
 	}
 
 	.news-site & {
-
 		@include bp(medium) {
 			padding: $base-line-height 1.5em;
 		}
 	}
 
-
 	.home.news-site & {
-
 		@include bp(medium) {
 			padding: $base-line-height 1.5em;
 		}
+	}
+}
+
+.jacapps {
+	.main > .container {
+		@include bp(large) {
+			padding-right: 20px;
+		}
+	}
+
+	.main > .container > .sidebar {
+		display: none;
 	}
 }
 
