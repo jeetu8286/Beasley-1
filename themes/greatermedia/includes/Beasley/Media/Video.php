@@ -285,6 +285,8 @@ class Video extends \Beasley\Module {
 	/**
 	 * Adds videojs settigns to the global js settings.
 	 *
+	 * @see https://support.google.com/admanager/answer/1068325?hl=en
+	 *
 	 * @access public
 	 * @param array $config
 	 * @return array
