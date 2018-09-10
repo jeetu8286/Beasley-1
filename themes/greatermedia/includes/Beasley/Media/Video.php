@@ -32,7 +32,7 @@ class Video extends \Beasley\Module {
 		add_action( 'wp_ajax_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
 		add_action( 'wp_ajax_nopriv_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
 
-		add_filter( 'beasley_js_platform_config', $this( 'update_js_config' ) );
+		add_filter( 'beasley_js_platform_config', $this( 'update_js_config' ), 20 );
 	}
 
 	/**
@@ -282,9 +282,31 @@ class Video extends \Beasley\Module {
 		exit;
 	}
 
+	/**
+	 * Adds videojs settigns to the global js settings.
+	 *
+	 * @access public
+	 * @param array $config
+	 * @return array
+	 */
 	public function update_js_config( $config ) {
+		$tagUrl = trim( get_option( 'livestream_ad_tag_url' ) );
+		if ( filter_var( $tagUrl, FILTER_VALIDATE_URL ) ) {
+			$cust_params = array();
+			foreach ( greatermedia_get_global_targeting() as $targeting ) {
+				if ( is_array( $targeting ) && count( $targeting ) == 2 ) {
+					$cust_params[] = sprintf( '%s=%s', $targeting[0], urlencode( $targeting[1] ) );
+				}
+			}
+
+			$cust_params = implode( '&', $cust_params );
+			$cust_params = urlencode( $cust_params );
+
+			$tagUrl = add_query_arg( 'cust_params', $cust_params, $tagUrl );
+		}
+
 		$config['videojs'] = array(
-			'adTagUrl' => trim( get_option( 'livestream_ad_tag_url' ) ),
+			'adTagUrl' => $tagUrl,
 		);
 
 		return $config;
