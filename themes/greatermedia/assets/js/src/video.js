@@ -8,17 +8,21 @@
 
 	var __ready = function() {
 		$( '.livestream-oembed .video-js[data-src]' ).each( function() {
+			var $this = $( this );
+			var $parent = $this.parents( '.livestream-oembed' );
+
 			var id = this.id;
 			var player = videojs( this );
 
 			player.src( {
-				src: $( this ).data( 'src' ),
+				src: $this.data( 'src' ),
 				type: 'application/x-mpegURL',
 				withCredentials: true
 			} );
 
-			if ( config.adTagUrl ) {
-				player.ima( { id: id, adTagUrl: config.adTagUrl } );
+			var adTagUrl = $parent.data( 'adTag' );
+			if ( adTagUrl ) {
+				player.ima( { id: id, adTagUrl: adTagUrl } );
 
 				var wrapper = document.getElementById( id );
 				if ( wrapper ) {
@@ -37,4 +41,4 @@
 
 	$document.ready( __ready );
 	$document.bind( 'pjax:end', _.debounce( __ready, 300 ) );
-} )( jQuery, platformConfig.videojs || {} );
+} )( jQuery );

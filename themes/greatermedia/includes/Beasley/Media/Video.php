@@ -31,8 +31,6 @@ class Video extends \Beasley\Module {
 
 		add_action( 'wp_ajax_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
 		add_action( 'wp_ajax_nopriv_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
-
-		add_filter( 'beasley_js_platform_config', $this( 'update_js_config' ), 20 );
 	}
 
 	/**
@@ -228,10 +226,11 @@ class Video extends \Beasley\Module {
 		$proxy = admin_url( '/admin-ajax.php?action=livestream_m3u8_proxy&url=' . urlencode( $srouce ) );
 
 		return sprintf(
-			'<div class="livestream livestream-oembed">' .
+			'<div class="livestream livestream-oembed" data-ad-tag="%s">' .
 				'<video id="%s" class="video-js vjs-default-skin" controls preload="auto" poster="%s" data-src="%s"></video>' .
 			'</div>',
-			$this->_get_embed_id(),
+			esc_attr( $this->get_ad_tag_url( $event_id, $video_id ) ),
+			esc_attr( $this->_get_embed_id() ),
 			! empty( $json['thumbnailUrl'] ) ? esc_attr( $json['thumbnailUrl'] ) : '',
 			esc_url_raw( $proxy )
 		);
@@ -283,18 +282,28 @@ class Video extends \Beasley\Module {
 	}
 
 	/**
-	 * Adds videojs settigns to the global js settings.
+	 * Returns adTagUrl for a video.
 	 *
 	 * @see https://support.google.com/admanager/answer/1068325?hl=en
 	 *
 	 * @access public
-	 * @param array $config
-	 * @return array
+	 * @param string $event_id
+	 * @param string $video_id
+	 * @return string
 	 */
-	public function update_js_config( $config ) {
+	public function get_ad_tag_url( $event_id, $video_id ) {
 		$tagUrl = trim( get_option( 'livestream_ad_tag_url' ) );
 		if ( filter_var( $tagUrl, FILTER_VALIDATE_URL ) ) {
 			$cust_params = array();
+
+			if ( ! empty( $event_id ) ) {
+				$cust_params[] = 'livestreameventid=' . urlencode( $event_id );
+			}
+
+			if ( ! empty( $video_id ) ) {
+				$cust_params[] = 'livestreamvideoid=' . urlencode( $video_id );
+			}
+
 			foreach ( greatermedia_get_global_targeting() as $targeting ) {
 				if ( is_array( $targeting ) && count( $targeting ) == 2 ) {
 					$cust_params[] = sprintf( '%s=%s', $targeting[0], urlencode( $targeting[1] ) );
@@ -304,14 +313,10 @@ class Video extends \Beasley\Module {
 			$cust_params = implode( '&', $cust_params );
 			$cust_params = urlencode( $cust_params );
 
-			$tagUrl = add_query_arg( 'cust_params', $cust_params, $tagUrl );
+			return add_query_arg( 'cust_params', $cust_params, $tagUrl );
 		}
 
-		$config['videojs'] = array(
-			'adTagUrl' => $tagUrl,
-		);
-
-		return $config;
+		return '';
 	}
 
 }
