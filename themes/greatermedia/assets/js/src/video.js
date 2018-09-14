@@ -13,12 +13,14 @@
 
 			var id = this.id;
 			var player = videojs( this );
-
-			player.src( {
+			var videoArgs = {
 				src: $this.data( 'src' ),
 				type: 'application/x-mpegURL',
 				withCredentials: true
-			} );
+			};
+
+			player.src( videoArgs );
+			player.hlsQualitySelector();
 
 			var adTagUrl = $parent.data( 'adTag' );
 			if ( adTagUrl ) {
