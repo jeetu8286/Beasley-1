@@ -69,7 +69,6 @@ function get_contests_query() {
 	$ids = explode( ',', get_option( 'gmr-homepage-contests' ) );
 	$post_types = array(
 		GMR_CONTEST_CPT,
-		GMR_SURVEY_CPT
 	);
 
 	$args = array(

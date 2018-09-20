@@ -11,10 +11,8 @@ add_action( 'admin_enqueue_scripts', 'gmr_contests_admin_enqueue_scripts' );
 // filter hooks
 add_filter( 'map_meta_cap', 'gmr_contests_map_meta_cap', 10, 4 );
 add_filter( 'ajax_query_attachments_args', 'gmr_contests_adjuste_attachments_query' );
-add_filter( 'wp_link_query_args', 'gmr_contests_exclude_ugc_from_editor_links_query' );
 add_filter( 'gmr-homepage-curation-post-types', 'gmr_contest_register_curration_post_type' );
 add_filter( 'gmr-show-curation-post-types', 'gmr_contest_register_curration_post_type' );
-add_filter( 'post_thumbnail_html', 'gmr_contests_post_thumbnail_html', 10, 4 );
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
 add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
 add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_contests_extend_live_link_suggestion_post_types' );
@@ -28,7 +26,7 @@ add_filter( 'pre_get_posts', 'gmr_filter_expired_contests' );
  */
 function gmr_contests_admin_enqueue_scripts() {
 	global $typenow;
-	if ( in_array( $typenow, array( GMR_SURVEY_CPT, GMR_CONTEST_CPT ) ) ) {
+	if ( $typenow == GMR_CONTEST_CPT ) {
 		wp_enqueue_style( 'greatermedia-contests-admin', trailingslashit( GREATER_MEDIA_CONTESTS_URL ) . 'css/greatermedia-contests-admin.css', null, GREATER_MEDIA_CONTESTS_VERSION );
 	}
 }
@@ -44,26 +42,6 @@ function gmr_contests_admin_enqueue_scripts() {
 function gmr_contest_register_curration_post_type( $types ) {
 	$types[] = GMR_CONTEST_CPT;
 	return $types;
-}
-
-/**
- * Removes UGC from editor links query.
- *
- * @filter wp_link_query_args
- * @param array $args The array of query args.
- * @return array Adjusted array of query args.
- */
-function gmr_contests_exclude_ugc_from_editor_links_query( $args ) {
-	if ( ! empty( $args['post_type'] ) ) {
-		$post_type = $args['post_type'];
-		if ( is_string( $post_type ) ) {
-			$post_type = array_map( 'trim', explode( ',', $post_type ) );
-		}
-
-		unset( $post_type[ array_search( GMR_SUBMISSIONS_CPT, $post_type ) ] );
-		$args['post_type'] = $post_type;
-	}
-	return $args;
 }
 
 /**
@@ -210,7 +188,7 @@ function gmr_contests_register_post_type() {
 		'menu_icon'           => 'dashicons-forms',
 		'can_export'          => true,
 		'has_archive'         => 'contests',
-		'rewrite'             => array( 'slug' => 'contests', 'ep_mask' => EP_GMR_CONTEST ),
+		'rewrite'             => array( 'slug' => 'contests' ),
 		'capability_type'     => array( 'contest', 'contests' ),
 		'map_meta_cap'        => true,
 		'show_in_rest'        => true
@@ -307,30 +285,6 @@ function gmr_contests_handle_submitted_files( array $submitted_files, GreaterMed
 
 	add_post_meta( $ugc->post->ID, 'contest_entry_id', $entry->post->ID );
 	update_post_meta( $entry->post->ID, 'submission_id', $ugc->post->ID );
-}
-
-/**
- * Substitutes original thumbnail on a special thumbnail for contest submissions.
- *
- * @filter post_thumbnail_html 10 4
- * @param string $html Original thumbnail html.
- * @param int $post_id The contest submission id.
- * @param int $post_thumbnail_id The thumbnail id.
- * @param string $size The size of thumbnail.
- * @return string The html of a thumbnail.
- */
-function gmr_contests_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size ) {
-	$post = get_post( $post_id );
-	if ( GMR_SUBMISSIONS_CPT != $post->post_type ) {
-		return $html;
-	}
-
-	$image = wp_get_attachment_image_src( $post_thumbnail_id, $size );
-	if ( empty( $image ) ) {
-		return $html;
-	}
-
-	return sprintf( '<div class="contest__submission--thumbnail" style="background-image:url(%s)"></div>', $image[0] );
 }
 
 /**
