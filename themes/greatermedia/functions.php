@@ -30,6 +30,7 @@ define( 'GREATERMEDIA_VERSION', $version );
 
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
+add_theme_support( 'secondstreet' );
 add_theme_support( 'html5', array( 'search-form' ) );
 
 include_once __DIR__ . '/vendor/autoload.php';

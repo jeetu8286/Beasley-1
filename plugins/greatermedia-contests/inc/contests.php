@@ -2,7 +2,6 @@
 
 // action hooks
 add_action( 'init', 'gmr_contests_register_post_type' );
-add_action( 'wp_enqueue_scripts', 'gmr_contests_enqueue_front_scripts', 100 );
 add_action( 'manage_' . GMR_CONTEST_CPT . '_posts_custom_column', 'gmr_contests_render_contest_column', 10, 2 );
 add_action( 'before_delete_post', 'gmr_contests_prevent_hard_delete' );
 add_action( 'wp_trash_post', 'gmr_contests_prevent_hard_delete' );
@@ -20,20 +19,6 @@ add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter
 add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
 add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_contests_extend_live_link_suggestion_post_types' );
 add_filter( 'pre_get_posts', 'gmr_filter_expired_contests' );
-
-/**
- * Enqueues contests related scripts.
- *
- * @action wp_enqueue_scripts 100
- */
-function gmr_contests_enqueue_front_scripts() {
-	// @NOTE: we have to always load frontend script, because we would have troubles when pjax is enabled
-	$base_path = trailingslashit( GREATER_MEDIA_CONTESTS_URL );
-	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-
-	wp_enqueue_script( 'greatermedia-contests', "{$base_path}js/contests{$postfix}.js", array( 'jquery' ), GREATER_MEDIA_CONTESTS_VERSION, true );
-	wp_rocketloader_script( 'greatermedia-contests' );
-}
 
 /**
  * Enqueues admin styles.
