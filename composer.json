@@ -42,6 +42,11 @@
 		"wpackagist-plugin/rewrite-rules-inspector": "*",
 		"wpackagist-plugin/user-switching": "*"
 	},
+	"autoload": {
+		"psr-0": {
+			"Bbgi": "mu-plugins/classes"
+		}
+	},
 	"extra": {
 		"installer-paths": {
 			"mu-plugins/{$name}": [
