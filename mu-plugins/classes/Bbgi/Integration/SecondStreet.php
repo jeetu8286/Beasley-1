@@ -11,11 +11,31 @@ class SecondStreet extends \Bbgi\Module {
 	 */
 	public function register() {
 		// add action hooks
-		add_action( 'admin_head', 'gmr_setup_secondstreet_tinymce' );
+		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
 
 		// add shortcodes
 		add_shortcode( 'ss_promo', $this( 'render_shortcode' ) );
 		add_shortcode( 'ss-promo', $this( 'render_shortcode' ) );
+	}
+
+	/**
+	 * Registers Google Analytics and Tag Manager settings.
+	 *
+	 * @access public
+	 * @action beasley-register-settings
+	 * @param string $group
+	 * @param string $page
+	 */
+	public function register_settings( $group, $page ) {
+		$section_id = 'beasley_secondstreet_settings';
+
+		add_settings_section( $section_id, 'SecondStreet Default Values', '__return_false', $page );
+
+		add_settings_field( 'secondstreet_op_id', '<code>op_id</code> attribute', 'beasley_input_field', $page, $section_id, 'name=secondstreet_op_id' );
+		add_settings_field( 'secondstreet_op_guid', '<code>op_guid</code> attribute', 'beasley_input_field', $page, $section_id, 'name=secondstreet_op_guid' );
+
+		register_setting( $group, 'secondstreet_op_id', 'sanitize_text_field' );
+		register_setting( $group, 'secondstreet_op_guid', 'sanitize_text_field' );
 	}
 
 	/**
