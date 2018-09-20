@@ -23,10 +23,8 @@ define( 'GMR_SURVEY_RESPONSE_CPT', 'survey_response' );
 define( 'EP_GMR_CONTEST', EP_PAGES << 1 );
 define( 'EP_GMR_SURVEY', EP_PAGES << 2 );
 
-include 'inc/functions.php';
 include 'inc/contests.php';
 include 'inc/surveys.php';
-include 'inc/secondstreet.php';
 
 if ( is_admin() || ( defined( 'DOING_ASYNC' ) && DOING_ASYNC ) ) {
 	include 'inc/metaboxes.php';
