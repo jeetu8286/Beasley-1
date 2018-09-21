@@ -17,5 +17,13 @@
 		if (!user) {
 			auth.signInAnonymously();
 		}
+
+		if (window.SecondStreetThirdPartyAuth) {
+			if (user) {
+				callLoginHandlers();
+			} else {
+				callLogoutHandlers();
+			}
+		}
 	});
 })(jQuery, window.platformConfig.firebase);
