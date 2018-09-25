@@ -30,8 +30,8 @@ class SecondStreet extends \Bbgi\Module {
 		$section_id = 'beasley_secondstreet_settings';
 
 		add_settings_section( $section_id, 'SecondStreet', '__return_false', $page );
-		add_settings_field( 'secondstreet_op_id', '<code>op_id</code> attribute', 'beasley_input_field', $page, $section_id, 'name=secondstreet_op_id' );
-		register_setting( $group, 'secondstreet_op_id', 'sanitize_text_field' );
+		add_settings_field( 'secondstreet_station_id', 'Station ID', 'beasley_input_field', $page, $section_id, 'name=secondstreet_station_id' );
+		register_setting( $group, 'secondstreet_station_id', 'sanitize_text_field' );
 	}
 
 	/**
@@ -41,26 +41,28 @@ class SecondStreet extends \Bbgi\Module {
 	 * @param array $attributes Array of shortcode arguments.
 	 * @return string Shortcode markup.
 	 */
-	public function render_shortcode( $attributes ) {
-		$op_id = isset( $attributes['op_id'] ) ? $attributes['op_id'] : '';
-		$op_guid = ! empty( $attributes['op_guid'] ) ? $attributes['op_guid'] : '';
+	public function render_shortcode( $atts ) {
+		$attributes = shortcode_atts( array(
+			'stationid' => '',
+			'op_id'     => '',
+			'op_guid'   => '',
+			'routing'   => ''
+		), $atts, 'ss-promo' );
 
-		$site_op_id = get_option( 'secondstreet_op_id', '' );
-		if ( ! empty( $site_op_id ) ) {
-			if ( empty( $op_id ) ) {
-				$op_id = $site_op_id;
-			}
+		if ( empty( $attributes['op_id'] ) || empty( $attributes['op_guid'] ) ) {
+			return '';
+		}
 
-			if ( ! empty( $attributes[ 'op_' . $site_op_id ] ) ) {
-				$op_guid = $attributes[ 'op_' . $site_op_id ];
-			}
+		$station_id = get_option( 'secondstreet_station_id' );
+		if ( ! empty( $attributes['stationid'] ) && $station_id != $attributes['stationid'] ) {
+			return '';
 		}
 
 		return sprintf(
 			'<div src="https://embed-%s.secondstreetapp.com/Scripts/dist/embed.js" data-ss-embed="promotion" data-opguid="%s" data-routing="%s"></div>',
-			esc_attr( $op_id ),
-			esc_attr( $op_guid ),
-			! empty( $attributes['routing'] ) ? esc_attr( $attributes['routing'] ) : 'hash'
+			esc_attr( $attributes['op_id'] ),
+			esc_attr( $attributes['op_guid'] ),
+			esc_attr( $attributes['routing'] )
 		);
 	}
 
