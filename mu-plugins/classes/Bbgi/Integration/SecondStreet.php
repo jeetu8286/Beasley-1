@@ -53,8 +53,7 @@ class SecondStreet extends \Bbgi\Module {
 			return '';
 		}
 
-		$station_id = get_option( 'secondstreet_station_id' );
-		if ( ! empty( $attributes['stationid'] ) && $station_id != $attributes['stationid'] ) {
+		if ( ! empty( $attributes['stationid'] ) && get_option( 'secondstreet_station_id' ) != $attributes['stationid'] ) {
 			return '';
 		}
 
