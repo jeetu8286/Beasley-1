@@ -155,5 +155,5 @@
 		};
 	};
 
-	window.SecondStreetThirdPartyAuth = new SecondStreetAuth();
+//	window.SecondStreetThirdPartyAuth = new SecondStreetAuth();
 })(window);

@@ -18,11 +18,12 @@
 			auth.signInAnonymously();
 		}
 
-		if (window.SecondStreetThirdPartyAuth) {
+		var ssAuth = window.SecondStreetThirdPartyAuth || false;
+		if (ssAuth) {
 			if (user) {
-				callLoginHandlers();
+				ssAuth.triggerLoginHandlers();
 			} else {
-				callLogoutHandlers();
+				ssAuth.triggerLogoutHandlers();
 			}
 		}
 	});
