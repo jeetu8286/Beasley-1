@@ -348,7 +348,7 @@ class GreaterMediaNavWalker extends Walker_Nav_Menu {
 				<li>
 					<a href="<?php the_permalink(); ?>">
 					<div class="entry2__thumbnail format-<?php echo get_post_format(); ?>"
-					     style="background-image: url(<?php gm_post_thumbnail_url( 'gm-entry-thumbnail-4-3' ); ?>);">
+					     style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 500, 375 ); ?>);">
 					</div>
 					<p><?php the_title(); ?></p>
 					</a>

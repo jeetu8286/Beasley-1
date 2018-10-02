@@ -74,9 +74,6 @@ function greatermedia_setup() {
 	// Add theme support for post thumbnails
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'gm-article-thumbnail',   1400, 9999, false );
-	add_image_size( 'gm-entry-thumbnail-1-1', 500,  500,  true  );
-	add_image_size( 'gm-entry-thumbnail-4-3', 500,  375,  true  );
-	add_image_size( 'gmr-gallery',            800,  534,  true  );
 
 	// Update this as appropriate content types are created and we want this functionality
 	add_post_type_support( 'post', 'timed-content' );
@@ -172,24 +169,10 @@ function greatermedia_scripts_styles() {
 
 	// YARPP styles are not being used, so let's get rid of them!
 	wp_dequeue_style( 'yarppWidgetCss' );
-
-	/**
-	 * this is a fix to resolve conflicts with styles and javascript for The Events Calendar plugin that will not
-	 * load once pjax has been activated. We are checking to see if the `Tribe_Template_Factory` class exists and if
-	 * the function `asset_package` exists within `Tribe_Template_Factory`. If the class and function exists, we then
-	 * call the javascript and css necessary on the front end.
-	 *
-	 * @see `wp_content/plugins/the-events-calendar/lib/the-events-calendar.class.php` lines 2235 - 2244
-	 */
-	if ( class_exists( 'Tribe__Events__Template_Factory' ) && method_exists( 'Tribe__Events__Template_Factory', 'asset_package' ) ) {
-		Tribe__Events__Template_Factory::asset_package( 'jquery-resize' );
-		Tribe__Events__Template_Factory::asset_package( 'smoothness' );
-		Tribe__Events__Template_Factory::asset_package( 'calendar-script' );
-		Tribe__Events__Template_Factory::asset_package( 'events-css' );
-	}
 }
 
-add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles');
+add_action( 'wp_enqueue_scripts', 'greatermedia_scripts_styles' );
+add_filter( 'tribe_events_assets_should_enqueue_frontend', '__return_true' );
 
 /**
  * Unload YARPP stylesheets.
@@ -1271,11 +1254,6 @@ add_filter( 'wpseo_opengraph_image_size', 'beasley_opengraph_image_size' );
 
 function beasley_get_image_url( $image, $width, $height, $mode = 'crop', $max = false ) {
 	$image_id = is_a( $image, '\WP_Post' ) ? $image->ID : $image;
-
-	$use_imageflow = get_option( 'beasley_use_imageflow', 'no' );
-	if ( ! filter_var( $use_imageflow, FILTER_VALIDATE_BOOLEAN ) ) {
-		return wp_get_attachment_image_url( $image_id, 'gmr-gallery' );
-	}
 
 	$data = wp_get_attachment_image_src( $image_id, 'original' );
 	if ( ! $data ) {

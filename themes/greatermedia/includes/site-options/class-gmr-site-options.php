@@ -103,7 +103,6 @@ class GreaterMediaSiteOptions {
 		add_settings_section( 'beasley_social_networks', 'Social Networks', '__return_false', $this->_settings_page_hook );
 
 		add_settings_field( 'gmr_livelinks_title', 'Live Links Sidebar Title', 'beasley_input_field', $this->_settings_page_hook, 'beasley_site_settings', 'name=gmr_livelinks_title' );
-		add_settings_field( 'beasley_use_imageflow', 'Use Imageflow', 'beasley_input_field', $this->_settings_page_hook, 'beasley_site_settings', 'name=beasley_use_imageflow' );
 
 		add_settings_field( 'gmr_facebook_url', 'Facebook', 'beasley_input_field', $this->_settings_page_hook, 'beasley_social_networks', 'name=gmr_facebook_url' );
 		add_settings_field( 'gmr_twitter_name', 'Twitter', 'beasley_input_field', $this->_settings_page_hook, 'beasley_social_networks', array( 'name' => 'gmr_twitter_name', 'desc' => 'Please enter username minus the @' ) );
@@ -120,7 +119,6 @@ class GreaterMediaSiteOptions {
 		register_setting( self::option_group, 'gmr_newssite', 'esc_attr' );
 		register_setting( self::option_group, 'gmr_livelinks_more_redirect', 'esc_attr' );
 		register_setting( self::option_group, 'gmr_liveplayer_disabled', 'esc_attr' );
-		register_setting( self::option_group, 'beasley_use_imageflow', 'sanitize_text_field' );
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
