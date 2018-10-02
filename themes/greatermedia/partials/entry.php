@@ -10,7 +10,7 @@ endif;
 	if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) :
 		?><section class="entry2__thumbnail">
 			<a href="<?php the_permalink(); ?>">
-				<div class="entry2__thumbnail__image" style='background-image: url(<?php beasley_post_thumbnail_url( null, true, 160, has_post_format( 'audio' ) ? 160 : 120 ); ?>)'></div>
+				<div class="entry2__thumbnail__image" style='background-image: url(<?php beasley_post_thumbnail_url( null, true, 400, has_post_format( 'audio' ) ? 400 : 300 ); ?>)'></div>
 				<?php if ( empty ( $layout ) ) : ?>
 					<div class="entry2__thumbnail__icon"></div>
 				<?php endif; ?>
