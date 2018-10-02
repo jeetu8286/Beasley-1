@@ -30,6 +30,7 @@ define( 'GREATERMEDIA_VERSION', $version );
 
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
+add_theme_support( 'secondstreet' );
 add_theme_support( 'html5', array( 'search-form' ) );
 
 include_once __DIR__ . '/vendor/autoload.php';
@@ -974,46 +975,24 @@ function greatermedia_archive_title() {
 	echo '</h2>';
 }
 
-/**
- * Adds a class to the body if a checkbox for News/Sports sites, has been checked in the site settings
- *
- * @action body_class
- * @access public
- *
- * @param $classes
- *
- * @return array
- */
-function greatermedia_newssite_class( $classes ) {
-
+function beasley_body_class( $classes ) {
 	if ( is_news_site() ) {
 		$classes[] = 'news-site';
 	}
 
-	return $classes;
-}
-add_filter( 'body_class', 'greatermedia_newssite_class' );
-
-/**
- * Adds a class to the body if a checkbox, that disables the live player, has been checked in the site settings
- *
- * @action body_class
- * @access public
- *
- * @param $classes
- *
- * @return array
- */
-function greatermedia_liveplayer_disabled( $classes ) {
 	$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled' );
-
 	if ( $liveplayer_disabled == 1 ) {
 		$classes[] = 'liveplayer-disabled';
 	}
 
+	if ( greatermedia_is_jacapps() ) {
+		$classes[] = 'jacapps';
+	}
+
 	return $classes;
 }
-add_filter( 'body_class', 'greatermedia_liveplayer_disabled' );
+
+add_filter( 'body_class', 'beasley_body_class' );
 
 /**
  * Extends the homepage featured curation limit

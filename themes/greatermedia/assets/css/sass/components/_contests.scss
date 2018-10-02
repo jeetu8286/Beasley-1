@@ -326,7 +326,7 @@
 		border: none;
 		outline: none;
 		background-color: $form-bg;
-		background-image: url($asset-root + '../images/select-arrow.png');
+		background-image: url($asset-root + "../images/select-arrow.png");
 		background-repeat: no-repeat;
 		background-position: 90% center;
 		background-size: auto 10px;
@@ -809,8 +809,7 @@ div.widget-recent-contests {
 	display: none;
 
 	// show on desktop
-	@include bp('medium') {
-
+	@include bp(large) {
 		display: block;
 		margin-bottom: 2em;
 
@@ -827,8 +826,8 @@ div.widget-recent-contests {
 
 			.widget-recent-contests__meta {
 				float: left;
-		    padding-left: 5px;
-		    padding-top: 5px;
+				padding-left: 5px;
+				padding-top: 5px;
 				font-size: 14px;
 				font-weight: bold;
 				line-height: 21px;

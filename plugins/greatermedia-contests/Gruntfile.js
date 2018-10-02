@@ -12,19 +12,9 @@ module.exports = function (grunt) {
 						' * Licensed GPLv2+\n' +
 						' */\n'
 			},
-			frontend_contest: {
-				src: [
-					'js/src/secondstreet.js'
-				],
-				dest: 'js/contests.js'
-			},
 			backend_contest: {
 				src: ['js/src/contests-admin.js'],
 				dest: 'js/contests-admin.js'
-			},
-			backend_mce: {
-				src: ['js/src/contests-mce.js'],
-				dest: 'js/contests-mce.js'
 			}
 		},
 		jshint: {
@@ -54,8 +44,6 @@ module.exports = function (grunt) {
 		uglify: {
 			all: {
 				files: {
-					'js/contests.min.js': ['js/contests.js'],
-					'js/contests-mce.min.js': ['js/contests-mce.js'],
 					'js/contests-admin.min.js': ['js/contests-admin.js']
 				},
 				options: {
@@ -78,8 +66,6 @@ module.exports = function (grunt) {
 					style: 'compressed'
 				},
 				files: {
-					'css/greatermedia-ugc-moderation.css': 'css/src/greatermedia-ugc-moderation.scss',
-					'css/greatermedia-contests.css': 'css/src/greatermedia-contests.scss',
 					'css/greatermedia-contests-admin.css': 'css/src/greatermedia-contests-admin.scss'
 				}
 			}

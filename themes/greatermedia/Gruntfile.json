@@ -10,8 +10,8 @@
 				"greatermedia/assets/js/vendor/jquery.fitvids.js",
 				"greatermedia/assets/js/vendor/headroom.min.js",
 				"greatermedia/assets/js/vendor/slick.min.js",
-				"greatermedia/assets/js/src/_matchHeights.js",
 				"greatermedia/assets/js/src/mobile-sub-menus.js",
+				"greatermedia/assets/js/src/secondstreet.js",
 				"greatermedia/assets/js/src/show-schedule.js",
 				"greatermedia/assets/js/src/social_share.js",
 				"greatermedia/assets/js/src/pjax.js",
@@ -22,7 +22,6 @@
 				"greatermedia/assets/js/src/gallery-slider.js",
 				"greatermedia/assets/js/src/search.js",
 				"greatermedia/assets/js/src/fixed-header-player.js",
-				"greatermedia/assets/js/src/content-sidebar-heights.js",
 				"greatermedia/assets/js/src/firebase.js"
 			],
 			"greatermedia/assets/js/admin.js": [

@@ -10,10 +10,11 @@
 
 define( 'ACF_LITE', true );
 
+include WP_CONTENT_DIR . '/vendor/autoload.php';
+
 include __DIR__ . '/term-data-store/term-data-store.php';
 include __DIR__ . '/visual-shortcode/visual-shortcode.php';
 include __DIR__ . '/dependencies/dependencies.php';
-include __DIR__ . '/post-finder/post-finder.php';
 //include __DIR__ . '/force-frontend-http/force-frontend-http.php';
 include __DIR__ . '/capabilities/capabilities.php';
 include __DIR__ . '/edit-flow-notification-block/edit-flow-notification-block.php';
@@ -30,6 +31,18 @@ include __DIR__ . '/async-thumbnail-regeneration/async-thumbnail-regeneration.ph
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	include __DIR__ . '/cli/cli.php';
 }
+
+add_action( 'wp_loaded', function() {
+	$modules = array();
+
+	if ( current_theme_supports( 'secondstreet' ) ) {
+		$modules[] = new \Bbgi\Integration\SecondStreet();
+	}
+
+	foreach ( $modules as $module ) {
+		$module->register();
+	}
+} );
 
 // Allows overriding options with constants
 add_filter( 'configure_smtp__options', function( $options ) {
