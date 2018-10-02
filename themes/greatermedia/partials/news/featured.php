@@ -14,8 +14,7 @@ if ( $hp_featured_query->have_posts() ) : ?>
 			<?php if ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
 				<div class="featured__article">
 					<a href="<?php the_permalink(); ?>" class="featured__article--link">
-						<div class="featured__article--image" style='background-image: url(<?php gm_post_thumbnail_url( 'gm-article-thumbnail', null, true ); ?>);'>
-						</div>
+						<div class="featured__article--image" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 400, 250 ); ?>);"></div>
 						<div class="featured__article--content">
 							<div class="featured__article--heading">
 								<?php the_title(); ?>
@@ -41,8 +40,7 @@ if ( $hp_featured_query->have_posts() ) : ?>
 				$count++; ?>
 				<div class="featured__article">
 					<a href="<?php the_permalink(); ?>" class="featured__article--link">
-						<div class="featured__article--image" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ); ?>);'>
-						</div>
+						<div class="featured__article--image" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 198, 110 ); ?>);"></div>
 						<div class="featured__article--content">
 							<div class="featured__article--heading">
 								<?php the_title(); ?>
@@ -67,7 +65,7 @@ if ( $hp_featured_query->have_posts() ) : ?>
 			?>
 					<div class="featured__content--block">
 						<a href="<?php the_permalink(); ?>" class="featured__content--link">
-							<div class="featured__content--image" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ); ?>);'></div>
+							<div class="featured__content--image" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 198, 110 ); ?>);"></div>
 							<div class="featured__content--meta">
 								<h2 class="featured__content--title"><?php the_title(); ?></h2>
 							</div>
@@ -85,5 +83,4 @@ if ( $hp_featured_query->have_posts() ) : ?>
 </div>
 <?php
 
-else :
 endif;
