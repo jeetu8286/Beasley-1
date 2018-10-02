@@ -21,11 +21,11 @@ class WP_Widget_Recent_Contests extends WP_Widget {
 	 */
 	public function __construct() {
 		$widget_ops = array(
-			'classname' => 'widget-recent-contests',
-			'description' => __( 'Your site&#8217;s most recent Contests.' ),
+			'classname'                   => 'widget-recent-contests',
+			'description'                 => 'Your site&#8217;s most recent Contests.',
 			'customize_selective_refresh' => true,
 		);
-		parent::__construct( 'recent-contests', __( 'Recent Contests' ), $widget_ops );
+		parent::__construct( 'recent-contests', 'Recent Contests', $widget_ops );
 		$this->alt_option_name = 'widget_recent_contests';
 	}
 
@@ -44,14 +44,14 @@ class WP_Widget_Recent_Contests extends WP_Widget {
 			$args['widget_id'] = $this->id;
 		}
 
-		$title = ( ! empty( $instance['title'] ) ) ? $instance['title'] : __( 'Recent Posts' );
-
-		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
+		$title = ! empty( $instance['title'] ) ? $instance['title'] : 'Recent Contests';
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
 		$number = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 5;
-		if ( ! $number )
+		if ( ! $number ) {
 			$number = 5;
+		}
+
 		$show_date = isset( $instance['show_date'] ) ? $instance['show_date'] : false;
 
 		/**
@@ -63,7 +63,7 @@ class WP_Widget_Recent_Contests extends WP_Widget {
 		 *
 		 * @param array $args An array of arguments used to retrieve the recent posts.
 		 */
-		$now               = time();
+		$now = time();
 		$query_meta_params = array(
 			'relation' => 'AND',
 			array(
@@ -104,40 +104,52 @@ class WP_Widget_Recent_Contests extends WP_Widget {
 		);
 
 		$r = new WP_Query( apply_filters( 'widget_posts_args', array(
-			'post_type'						=> 'contest',
+			'post_type'           => 'contest',
 			'posts_per_page'      => $number,
 			'no_found_rows'       => true,
 			'post_status'         => 'publish',
 			'ignore_sticky_posts' => true,
-			'meta_query'					=> $query_meta_params
+			'meta_query'          => $query_meta_params
 		) ) );
 
-		if ($r->have_posts()) :
-		?>
-		<?php echo $args['before_widget']; ?>
-		<?php if ( $title ) {
-			echo $args['before_title'] . $title . $args['after_title'];
-		} ?>
-		<ul>
-		<?php while ( $r->have_posts() ) : $r->the_post(); ?>
-			<li>
-				<a href="<?php the_permalink(); ?>">
-					<div class="widget-recent-contests__meta">
-						<img src="<?php gm_post_thumbnail_url( 'gm-entry-thumbnail-1-1', null, true ); ?>" />
-						<span><?php get_the_title() ? the_title() : the_ID(); ?></span>
-					</div>
-				</a>
-			</li>
-		<?php endwhile; ?>
-		</ul>
-		<div class="more-contests">
-			<a class="more-contests-btn" href="/contests">More Contests</a>
-		</div>
-		<?php echo $args['after_widget']; ?>
-		<?php
-		// Reset the global $the_post as this query will have stomped on it
-		wp_reset_postdata();
+		if ( $r->have_posts() ) :
+			echo $args['before_widget'];
 
+			if ( $title ) :
+				echo $args['before_title'] . $title . $args['after_title'];
+			endif;
+
+			?><ul><?php
+				while ( $r->have_posts() ) :
+					$r->the_post();
+
+					$post_id = get_the_ID();
+					$thumb_id = get_post_thumbnail_id( $post_id );
+
+					?><li>
+						<a href="<?php the_permalink(); ?>">
+							<div class="widget-recent-contests__meta">
+								<?php if ( $thumb_id ) : ?>
+									<img src="<?php echo esc_attr( beasley_get_image_url( $thumb_id, 45, 45 ) ); ?>" alt="<?php the_title_attribute(); ?>" />
+								<?php endif; ?>
+
+								<span><?php the_title(); ?></span>
+							</div>
+						</a>
+					</li><?php
+				endwhile;
+			?></ul>
+
+			<div class="more-contests">
+				<a class="more-contests-btn" href="<?php echo esc_url( get_post_type_archive_link( 'contest' ) ); ?>">
+					More Contests
+				</a>
+			</div><?php
+
+			echo $args['after_widget'];
+
+			// Reset the global $the_post as this query will have stomped on it
+			wp_reset_postdata();
 		endif;
 	}
 
