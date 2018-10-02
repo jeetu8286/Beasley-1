@@ -1272,11 +1272,6 @@ add_filter( 'wpseo_opengraph_image_size', 'beasley_opengraph_image_size' );
 function beasley_get_image_url( $image, $width, $height, $mode = 'crop', $max = false ) {
 	$image_id = is_a( $image, '\WP_Post' ) ? $image->ID : $image;
 
-	$use_imageflow = get_option( 'beasley_use_imageflow', 'no' );
-	if ( ! filter_var( $use_imageflow, FILTER_VALIDATE_BOOLEAN ) ) {
-		return wp_get_attachment_image_url( $image_id, 'gmr-gallery' );
-	}
-
 	$data = wp_get_attachment_image_src( $image_id, 'original' );
 	if ( ! $data ) {
 		return false;
