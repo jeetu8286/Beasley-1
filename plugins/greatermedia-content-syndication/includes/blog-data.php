@@ -357,7 +357,7 @@ class BlogData {
 		// get all postst matching filters
 		$wp_custom_query = new WP_Query( $args );
 
-		self::log( "SQL Query: " . $wp_custom_query->request );
+		self::log( "SQL Query: " . preg_replace( '#\s+#', ' ', $wp_custom_query->request ) );
 
 		// get all metas
 		foreach ( $wp_custom_query->posts as $single_result ) {
@@ -432,7 +432,7 @@ class BlogData {
 	/**
 	 * Import posts from content site and all related media
 	 *
-	 * @param object $post WP_POST object
+	 * @param \WP_Post $post
 	 * @param array  $metas
 	 * @param array  $defaults
 	 * @param string $featured
@@ -452,6 +452,9 @@ class BlogData {
 		$post_type = sanitize_text_field( $post->post_type );
 		$post_status = sanitize_text_field( $defaults['status'] );
 
+		// create unique meta value for imported post
+		$post_hash = md5( trim( $post->post_title ) . $post->post_modified );
+
 		// prepare arguments for wp_insert_post
 		$args = array(
 			'post_title'        => $post_title,
@@ -461,7 +464,14 @@ class BlogData {
 			'post_name'         => $post_name,
 			'post_status'       => ! empty( $post_status ) ? $post_status : $post->post_status,
 			'post_date'         => $post->post_date,
+			'post_date_gmt'     => $post->post_date_gmt,
 			'post_modified'     => $post->post_modified,
+			'post_modified_gmt' => $post->post_modified_gmt,
+			'meta_input'        => array(
+				'syndication_import'   => $post_hash,
+				'syndication_old_name' => $post_name,
+				'syndication_old_data' => serialize( array( 'id' => intval( $post->ID ), 'blog_id' => self::$content_site_id ) ),
+			),
 		);
 
 		if ( 'publish' == $post_status ) {
@@ -469,10 +479,30 @@ class BlogData {
 			$args['post_modified_gmt'] = current_time( 'mysql', 1 );
 		}
 
-		// create unique meta value for imported post
-		$post_hash = trim( $post->post_title ) . $post->post_modified;
-		$post_hash = md5( $post_hash );
+		if ( ! empty( $metas ) ) {
+			$exclude = array(
+				'_edit_lock',
+				'_edit_last',
+				'_pingme',
+				'_encloseme',
+				'syndication-detached',
+			);
 
+			foreach ( $metas as $meta_key => $meta_value ) {
+				if ( ! in_array( $meta_key, $exclude ) ) {
+					$args['meta_input'][ $meta_key ] = $meta_value[0];
+				}
+			}
+		}
+
+		if ( ! is_null( $featured ) ) {
+			$featured_id = self::ImportMedia( null, $featured[1], $featured[0] );
+			if ( ! is_wp_error( $featured_id ) ) {
+				$args['meta_input']['_thumbnail_id'] = $featured_id;
+			} else {
+				self::log( 'Error during import media: %s', $featured_id->get_error_message() );
+			}
+		}
 
 		// query to check whether post already exist
 		$meta_query_args = array(
@@ -482,20 +512,18 @@ class BlogData {
 			'post_type'   => $post_type
 		);
 
-		$existing = get_posts( $meta_query_args );
-
 		$updated = 0;
 		$post_id = 0;
 
 		// check whether post with that name exist
+		$existing = get_posts( $meta_query_args );
 		if ( ! empty( $existing ) ) {
 			$existing_post = current( $existing );
 			$post_id = intval( $existing_post->ID );
 
 			// update existing post only if it hasn't been updated manually
 			$detached = get_post_meta( $post_id, 'syndication-detached', true );
-
-			$detached = apply_filters( 'beasley_syndication_post_is_detached', $detached === 'true' );
+			$detached = apply_filters( 'beasley_syndication_post_is_detached', filter_var( $detached, FILTER_VALIDATE_BOOLEAN ) );
 			if ( $detached !== true ) {
 				$hash_value = get_post_meta( $post_id, 'syndication_import', true );
 				if ( $hash_value != $post_hash || $force_update ) {
@@ -504,14 +532,6 @@ class BlogData {
 					unset( $args['post_status'] );
 
 					wp_update_post( $args );
-					if ( ! empty( $metas ) ) {
-						foreach ( $metas as $meta_key => $meta_value ) {
-							if ( $meta_key === 'syndication-detached' ) {
-								continue;
-							}
-							update_post_meta( $post_id, $meta_key, $meta_value[0] );
-						}
-					}
 					$updated = 2;
 
 					self::log( 'Post %s already exists in the destination site, so it has been updated...', $post_id );
@@ -523,14 +543,6 @@ class BlogData {
 			}
 		} else {
 			$post_id = wp_insert_post( $args );
-			if ( is_numeric( $post_id ) && ! empty( $metas ) ) {
-				foreach ( $metas as $meta_key => $meta_value ) {
-					if ( $meta_key === 'syndication-detached' ) {
-						continue;
-					}
-					update_post_meta( $post_id, $meta_key, $meta_value[0] );
-				}
-			}
 			$updated = 1;
 
 			self::log( 'New post (%s) has been created in the destination site.', $post_id );
@@ -541,13 +553,6 @@ class BlogData {
 		 * Import featured and attached images
 		 */
 		if ( $updated > 0 ) {
-			update_post_meta( $post_id, 'syndication_import', $post_hash );
-			update_post_meta( $post_id, 'syndication_old_name', $post_name );
-			update_post_meta( $post_id, 'syndication_old_data', serialize( array(
-				'id' => intval( $post->ID ),
-				'blog_id' => self::$content_site_id
-			) ) );
-
 			if ( ! empty( $term_tax ) ) {
 				foreach ( $term_tax as $taxonomy => $terms ) {
 					if ( ! empty( $terms[0] ) && taxonomy_exists( $taxonomy ) ) {
@@ -578,10 +583,6 @@ class BlogData {
 			$uncategorized = get_term_by( 'name', 'Uncategorized', 'category' );
 			if ( $uncategorized ) {
 				wp_remove_object_terms( $post_id, $uncategorized->term_id, 'category' );
-			}
-
-			if ( ! is_null( $featured ) ) {
-				self::ImportMedia( $post_id, esc_url_raw( $featured[1] ), true, $featured[0] );
 			}
 
 			if ( ! is_null( $attachments ) ) {
@@ -674,7 +675,9 @@ class BlogData {
 						wp_set_post_terms( $post_id, $default_terms, $taxonomy, true );
 					} else {
 						$term_obj = get_term_by( 'id', absint( $default_terms[0] ), $taxonomy );
-						wp_set_post_terms( $post_id, $term_obj->name, $taxonomy, true );
+						if ( is_a( $term_obj, '\WP_Term' ) ) {
+							wp_set_post_terms( $post_id, $term_obj->name, $taxonomy, true );
+						}
 					}
 				}
 			}
@@ -735,29 +738,29 @@ class BlogData {
 	 *
 	 * @param int    $post_id  - Post ID of the post to assign featured image if $featured is true
 	 * @param string $filename - URL of the image to upload
-	 * @param bool   $featured - Imported image should be featured or not
+	 * @param int    $original_id - Original ID of attachment
 	 *
 	 * @return int|object
 	 */
-	public static function ImportMedia( $post_id, $filename, $featured = false, $old_id = 0 ) {
-		require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
-		require_once( ABSPATH . 'wp-admin' . '/includes/file.php' );
-		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
+	public static function ImportMedia( $post_id, $filename, $original_id = 0 ) {
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
 
 		$id = 0;
-		$old_id = intval( $old_id );
+		$original_id = intval( $original_id );
 		$tmp = download_url( $filename );
 
-		if( $old_id == 0 && $featured == true ) {
+		if ( empty( $original_id ) ) {
 			$meta_query_args = array(
 				'meta_key'   => 'syndication_attachment_old_url',
-				'meta_value' => esc_url_raw( $filename ),
+				'meta_value' => $filename,
 				'post_type'  => 'attachment',
 			);
 		} else {
 			$meta_query_args = array(
 				'meta_key'   => 'syndication_attachment_old_id',
-				'meta_value' => $old_id,
+				'meta_value' => $original_id,
 				'post_type'  => 'attachment',
 			);
 		}
@@ -787,37 +790,29 @@ class BlogData {
 				} else {
 					// Try to migrate the post attachment to S3 if it failed for whatever reason
 					self::MigrateAttachmentToS3( $id );
-
 					@unlink( $file_array['tmp_name'] );
-					if( $featured == true && $post_id != 0 ) {
-						set_post_thumbnail( $post_id, $id );
-					}
 				}
 			} else {
 				@unlink( $tmp );
 			}
 
 			if ( ! is_wp_error( $id ) ) {
-				update_post_meta( $id, 'syndication_attachment_old_id', $old_id );
+				update_post_meta( $id, 'syndication_attachment_old_id', $original_id );
 				update_post_meta( $id, 'syndication_attachment_old_url', esc_url_raw( $filename ) );
 
-				self::updateImageCaption( $id, $old_id );
+				self::updateImageCaption( $id, $original_id );
 			}
 		} else {
 			$id = $existing[0]->ID;
 
 			// Try to migrate the post attachment to S3 if it failed for whatever reason
 			self::MigrateAttachmentToS3( $id );
-			if ( $featured == true && $post_id != 0 ) {
-				set_post_thumbnail( $post_id, $id );
-			}
-
-			self::updateImageCaption( $id, $old_id );
+			self::updateImageCaption( $id, $original_id );
 		}
 
-		if ( ! empty( $old_id ) ) {
+		if ( ! empty( $original_id ) ) {
 			switch_to_blog( self::$content_site_id );
-			$attribution = get_post_meta( $old_id, 'gmr_image_attribution', true );
+			$attribution = get_post_meta( $original_id, 'gmr_image_attribution', true );
 			restore_current_blog();
 
 			if ( ! empty( $attribution ) ) {
@@ -840,7 +835,7 @@ class BlogData {
 		$imported = array();
 		foreach ( $attachments as $attachment ) {
 			$filename = esc_url_raw( $attachment->guid );
-			$id = self::ImportMedia( $post_id, $filename, false, $attachment->ID );
+			$id = self::ImportMedia( $post_id, $filename, $attachment->ID );
 			if ( is_numeric( $id ) ) {
 				$imported[] = $id;
 			}
@@ -883,7 +878,7 @@ class BlogData {
 							self::updateImageCaption( $existing[0]->ID, $old_ids[ $index ] );
 						}
 					} elseif ( ! empty( $old_ids[ $index ] ) ) {
-						$new_id = self::ImportMedia( $post_id, $image_src, false, $old_ids[ $index ] );
+						$new_id = self::ImportMedia( $post_id, $image_src, $old_ids[ $index ] );
 						if ( $new_id && ! is_wp_error( $new_id ) ) {
 							$new_gallery_ids .= $new_id . ",";
 						}
