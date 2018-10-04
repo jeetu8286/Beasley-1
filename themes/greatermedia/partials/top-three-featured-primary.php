@@ -8,7 +8,7 @@
 		<div class="top-three__feature">
 			<div class="top-three__thumbnail">
 				<?php if ( has_post_thumbnail() ) : ?>
-					<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 708, 389 ); ?>)"></div>
+					<div class="thumbnail" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 708, 389 ); ?>)"></div>
 				<?php else: ?>
 					<div class="thumbnail thumbnail-placeholder"></div>
 				<?php endif; ?>

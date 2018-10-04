@@ -23,7 +23,7 @@
 				$count++; ?>
 				<div class="highlights__community--item">
 					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
-						<div class="highlights__community--thumb" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 180, 180 ); ?>)"></div>
+						<div class="highlights__community--thumb" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 180, 180 ); ?>)"></div>
 
 						<h3 class="highlights__community--title">
 							<?php the_title(); ?>

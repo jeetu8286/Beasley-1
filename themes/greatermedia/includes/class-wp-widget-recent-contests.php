@@ -130,7 +130,7 @@ class WP_Widget_Recent_Contests extends WP_Widget {
 						<a href="<?php the_permalink(); ?>">
 							<div class="widget-recent-contests__meta">
 								<?php if ( $thumb_id ) : ?>
-									<img src="<?php echo esc_attr( beasley_get_image_url( $thumb_id, 45, 45 ) ); ?>" alt="<?php the_title_attribute(); ?>" />
+									<img src="<?php echo esc_attr( bbgi_get_image_url( $thumb_id, 45, 45 ) ); ?>" alt="<?php the_title_attribute(); ?>" />
 								<?php endif; ?>
 
 								<span><?php the_title(); ?></span>

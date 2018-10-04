@@ -8,7 +8,7 @@ $advertiser_link = get_post_meta( get_the_ID(), 'advertiser_link', true );
 			<?php the_title(); ?>
 		</div>
 		<div class="sponsor__logo">
-			<img src="<?php echo esc_url( beasley_get_image_url(get_post_thumbnail_id(), 400, 270 ) ); ?>">
+			<img src="<?php echo esc_url( bbgi_get_image_url(get_post_thumbnail_id(), 400, 270 ) ); ?>">
 		</div>
 		<div class="sponsor_description">
 			<div class="sponsor_description-text"><?php the_content(); ?></div>

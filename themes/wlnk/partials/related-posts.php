@@ -14,7 +14,7 @@ endif;
 			?><a href="<?php the_permalink() ?>" rel="bookmark" class="related-post">
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'related-post__item cf' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 					<div class="related-post__img">
-						<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 250, 167 ); ?>)"></div>
+						<div class="thumbnail" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 250, 167 ); ?>)"></div>
 					</div>
 
 					<div class="related-post__meta">

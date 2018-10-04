@@ -7,7 +7,7 @@
 
 			if ( has_post_thumbnail() ) :
 				?><div class="entry__thumbnail">
-					<img src="<?php echo esc_url( beasley_get_image_url( get_post_thumbnail_id(), 930, 576 ) ) ?>">
+					<img src="<?php echo esc_url( bbgi_get_image_url( get_post_thumbnail_id(), 930, 576 ) ) ?>">
 					<?php image_attribution(); ?>
 				</div><?php
 			endif;

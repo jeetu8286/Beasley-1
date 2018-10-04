@@ -1,7 +1,7 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'entry2' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<section class="entry2__thumbnail">
 		<a href="<?php the_permalink(); ?>">
-			<div class="entry2__thumbnail__image" style="background-image: url('<?php beasley_post_thumbnail_url( null, true, 400, 300 ); ?>')"></div>
+			<div class="entry2__thumbnail__image" style="background-image: url('<?php bbgi_post_thumbnail_url( null, true, 400, 300 ); ?>')"></div>
 		</a>
 	</section>
 

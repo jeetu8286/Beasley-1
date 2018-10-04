@@ -107,7 +107,7 @@ class GreaterMediaMobileNavWalker extends Walker_Nav_Menu {
 				<li class="menu__featured-post--mobile">
 					<a href="<?php the_permalink(); ?>">
 						<div class="entry2__thumbnail format-<?php echo get_post_format(); ?>"
-						     style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 500, 375 ); ?>);">
+						     style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 500, 375 ); ?>);">
 						</div>
 						<p><?php the_title(); ?></p>
 					</a>
