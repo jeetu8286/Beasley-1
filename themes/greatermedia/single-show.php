@@ -15,7 +15,7 @@
 						<div class="show__feature">
 							<div class="show-feature__thumbnail">
 								<?php if ( has_post_thumbnail() ) : ?>
-									<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 385, 255 ); ?>)"></div>
+									<div class="thumbnail" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 385, 255 ); ?>)"></div>
 								<?php else: ?>
 									<div class="thumbnail thumbnail-placeholder"></div>
 								<?php endif; ?>
@@ -41,7 +41,7 @@
 								<div class="show__feature">
 									<div class='show-feature__thumbnail'>
 										<?php if ( has_post_thumbnail() ) : ?>
-											<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 185, 125 ); ?>)"></div>
+											<div class="thumbnail" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 185, 125 ); ?>)"></div>
 										<?php else: ?>
 											<div class="thumbnail thumbnail-placeholder"></div>
 										<?php endif; ?>

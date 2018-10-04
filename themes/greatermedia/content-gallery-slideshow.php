@@ -59,7 +59,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 			endif;
 
 			?><div>
-				<div class="swiper-slide" style="background-image:url(<?php echo esc_url( beasley_get_image_url( $image, 75, 75 ) ); ?>)"></div>
+				<div class="swiper-slide" style="background-image:url(<?php echo esc_url( bbgi_get_image_url( $image, 75, 75 ) ); ?>)"></div>
 			</div><?php
 		endforeach;
 
@@ -96,7 +96,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 					 <?php echo $image->post_name == $current_image_slug ? 'data-initial="true"' : ''; ?>
 					 >
 					<img class="swiper-image"
-						 src="<?php echo esc_url( beasley_get_image_url( $image, ceil( $aspect * 600 ), 600, 'max', true ) ); ?>"
+						 src="<?php echo esc_url( bbgi_get_image_url( $image, ceil( $aspect * 600 ), 600, 'max', true ) ); ?>"
 						 alt="<?php echo esc_attr( get_the_excerpt( $image ) ); ?>"
 						 width="<?php echo esc_attr( $aspect * 600 ); ?>"
 						 height="600"
@@ -119,7 +119,7 @@ add_filter( 'beasley-share-url', function() use ( $images, $current_gallery ) {
 								<article class="gallery__grid--column">
 									<a href="<?php the_permalink( $gallery ); ?>">
 										<div class="gallery__grid--thumbnail">
-											<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( $gallery, true, 345, 228 ); ?>)"></div>
+											<div class="thumbnail" style="background-image: url(<?php bbgi_post_thumbnail_url( $gallery, true, 345, 228 ); ?>)"></div>
 										</div>
 										<div class="gallery__grid--meta">
 											<h3 class="gallery__grid--title">

@@ -5,7 +5,7 @@ $show_id = get_queried_object_id();
 $featured_class = '';
 $featured_image = get_bloginfo( 'template_directory' ) . '/images/featured-bg.png';
 if ( has_post_thumbnail( $show_id ) ) {
-	$featured = beasley_get_image_url( get_post_thumbnail_id( $show_id ), 610, 382, true, true );
+	$featured = bbgi_get_image_url( get_post_thumbnail_id( $show_id ), 610, 382, true, true );
 	if ( $featured ) {
 		$thumbnail_class = 'has-thumbnail';
 		$featured_image = $featured;
@@ -15,7 +15,7 @@ if ( has_post_thumbnail( $show_id ) ) {
 $logo_image = '';
 $logo_id = get_post_meta( $post->ID, 'logo_image', true );
 if ( $logo_id ) {
-	$logo = beasley_get_image_url( $logo_id, 100, 100 );
+	$logo = bbgi_get_image_url( $logo_id, 100, 100 );
 	if ( $logo ) {
 		$logo_image = $logo;
 	}

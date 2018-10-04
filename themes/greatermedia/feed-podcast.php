@@ -169,7 +169,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 		$image = false;
 		$thumbnail_id = get_post_thumbnail_id( $episode_id );
 		if ( ! empty( $thumbnail_id ) ) {
-			$image = beasley_get_image_url( $thumbnail_id, 500, 375 );
+			$image = bbgi_get_image_url( $thumbnail_id, 500, 375 );
 		}
 
 		// Enclosure (audio file)

@@ -4,7 +4,7 @@
 			<?php if ( 'gmr_album' == get_post_type() ) : ?>
 				<div class="gallery__grid--album"></div>
 			<?php endif; ?>
-			<div class="thumbnail" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 832, 549 ); ?>)"></div>
+			<div class="thumbnail" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 832, 549 ); ?>)"></div>
 		</div>
 	</a>
 

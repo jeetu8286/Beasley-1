@@ -6,7 +6,7 @@ $advertiser_link = get_post_meta( get_the_ID(), 'advertiser_link', true );
 	<?php if ( has_post_thumbnail() ) : ?>
 		<div class="sponsor__logo">
 			<a href="<?php echo filter_var( $advertiser_link, FILTER_VALIDATE_URL ) ? esc_url( $advertiser_link ) : '#'; ?>">
-				<img src="<?php echo esc_url( beasley_get_image_url(get_post_thumbnail_id(), 400, 270 ) ); ?>">
+				<img src="<?php echo esc_url( bbgi_get_image_url(get_post_thumbnail_id(), 400, 270 ) ); ?>">
 			</a>
 		</div>
 	<?php else : ?>

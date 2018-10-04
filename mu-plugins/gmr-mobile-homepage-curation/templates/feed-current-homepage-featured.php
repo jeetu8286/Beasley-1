@@ -6,7 +6,7 @@ $current = 1; ?>
 	<?php while ( have_posts() ) : the_post(); ?>
 		<panel>
 			<number><?php echo esc_html( $current ++ ); ?></number>
-			<image><?php beasley_post_thumbnail_url( null, true, 640, 400 ); ?></image>
+			<image><?php bbgi_post_thumbnail_url( null, true, 640, 400 ); ?></image>
 			<url><?php the_permalink_rss() ?></url>
 			<redirect>n</redirect>
 		</panel>

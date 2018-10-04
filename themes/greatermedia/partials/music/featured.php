@@ -10,7 +10,7 @@ $hp_featured_query = \GreaterMedia\HomepageCuration\get_featured_query();
 if ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
 	<div class="featured__article">
 		<a href="<?php the_permalink(); ?>">
-			<div class="featured__article--image" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 608, 307 ); ?>)">
+			<div class="featured__article--image" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 608, 307 ); ?>)">
 				<?php image_attribution(); ?>
 			</div>
 			<div class="featured__article--content">
@@ -28,7 +28,7 @@ if ( $hp_featured_query->have_posts() ) : ?>
 		<?php while ( $hp_featured_query->have_posts() ) : $hp_featured_query->the_post(); ?>
 			<div class="featured__content--block">
 				<a href="<?php the_permalink(); ?>">
-					<div class="featured__content--image" style="background-image: url(<?php beasley_post_thumbnail_url( null, true, 194, 126 ); ?>);"></div>
+					<div class="featured__content--image" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 194, 126 ); ?>);"></div>
 					<div class="featured__content--meta">
 						<h2 class="featured__content--title"><?php the_title(); ?></h2>
 						<div class="featured__content--link">

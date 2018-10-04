@@ -13,7 +13,7 @@ if ( has_post_thumbnail() && ! \Greater_Media\Fallback_Thumbnails\post_has_galle
 
 	?><div class="article__thumbnail">
 
-		<img src="<?php echo esc_url( beasley_get_image_url( get_post_thumbnail_id(), $width, $height ) ); ?>" alt="">
+		<img src="<?php echo esc_url( bbgi_get_image_url( get_post_thumbnail_id(), $width, $height ) ); ?>" alt="">
 		<?php image_attribution(); ?>
 	</div><?php
 endif;

@@ -43,7 +43,10 @@
 	"autoload": {
 		"psr-0": {
 			"Bbgi": "mu-plugins/classes"
-		}
+		},
+		"files": [
+			"mu-plugins/functions/imageflow.php"
+		]
 	},
 	"extra": {
 		"installer-paths": {

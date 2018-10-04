@@ -12,7 +12,7 @@
 	<?php if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) : ?>
 		<section class="entry2__thumbnail">
 			<a href="<?php the_permalink(); ?>">
-				<div class="entry2__thumbnail__image" style='background-image: url(<?php beasley_post_thumbnail_url( null, true, 400, has_post_format( 'audio' ) ? 400 : 300 ); ?>)'></div>
+				<div class="entry2__thumbnail__image" style='background-image: url(<?php bbgi_post_thumbnail_url( null, true, 400, has_post_format( 'audio' ) ? 400 : 300 ); ?>)'></div>
 				<div class="entry2__thumbnail__icon"></div>
 			</a>
 
