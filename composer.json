@@ -45,7 +45,8 @@
 			"Bbgi": "mu-plugins/classes"
 		},
 		"files": [
-			"mu-plugins/functions/imageflow.php"
+			"mu-plugins/functions/imageflow.php",
+			"mu-plugins/functions/post.php"
 		]
 	},
 	"extra": {
