@@ -10,7 +10,7 @@ class Seo extends \Bbgi\Module {
 	 * @access public
 	 */
 	public function register() {
-		add_filter( 'wpseo_opengraph_image_size', $this( 'update_og_image_size' ) );
+		// add_filter( 'wpseo_opengraph_image_size', $this( 'update_og_image_size' ) ); // deactivated for now
 		add_filter( 'wpseo_twitter_image', $this( 'update_twitter_image' ) );
 	}
 
