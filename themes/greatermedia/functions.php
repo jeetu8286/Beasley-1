@@ -1246,8 +1246,3 @@ function beasley_suppress_empty_search( $where, \WP_Query $query ) {
 	return $where;
 }
 add_filter( 'posts_where', 'beasley_suppress_empty_search', 10, 2 );
-
-function beasley_opengraph_image_size() {
-	return 'large';
-}
-add_filter( 'wpseo_opengraph_image_size', 'beasley_opengraph_image_size' );
