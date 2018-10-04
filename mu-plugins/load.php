@@ -32,7 +32,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 }
 
 add_action( 'wp_loaded', function() {
-	$modules = array();
+	$modules = array(
+		new \Bbgi\Seo(),
+	);
 
 	if ( current_theme_supports( 'secondstreet' ) ) {
 		$modules[] = new \Bbgi\Integration\SecondStreet();

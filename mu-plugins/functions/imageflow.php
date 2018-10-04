@@ -8,14 +8,22 @@ function bbgi_get_image_url( $image, $width, $height, $mode = 'crop', $max = fal
 		return false;
 	}
 
-	$prefix = $max ? 'max' : '';
-	$aspect = ! empty( $data[2] ) ? $data[1] / $data[2] : 1;
+	$args = array();
 
-	$args = array(
-		"{$prefix}width"  => $width,
-		"{$prefix}height" => $height,
-		'anchor' => $aspect < 1 ? 'topleft' : 'middlecenter',
-	);
+	if ( ( is_array( $max ) && ! empty( $max['width'] ) ) || filter_var( $max, FILTER_VALIDATE_BOOLEAN )  ) {
+		$args['maxwidth'] = $width;
+	} else {
+		$args['width'] = $width;
+	}
+
+	if ( ( is_array( $max ) && ! empty( $max['height'] ) ) || filter_var( $max, FILTER_VALIDATE_BOOLEAN ) ) {
+		$args['maxheight'] = $height;
+	} else {
+		$args['height'] = $height;
+	}
+
+	$aspect = ! empty( $data[2] ) ? $data[1] / $data[2] : 1;
+	$args['anchor'] = $aspect < 1 ? 'topleft' : 'middlecenter';
 
 	if ( $mode ) {
 		$args['mode'] = $mode;
@@ -24,18 +32,25 @@ function bbgi_get_image_url( $image, $width, $height, $mode = 'crop', $max = fal
 	return add_query_arg( $args, $data[0] );
 }
 
-function bbgi_post_thumbnail_url( $post_id, $use_fallback, $width, $height, $mode = 'crop', $max = false ) {
-	$url = false;
-
-	$thumbnail_id = get_post_thumbnail_id( $post_id );
+function bbgi_get_post_thumbnail_url( $post, $use_fallback, $width, $height, $mode = 'crop', $max = false ) {
+	$thumbnail_id = get_post_thumbnail_id( $post );
 	if ( ! $thumbnail_id && $use_fallback ) {
-		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post_id );
+		$thumbnail_id = greatermedia_get_fallback_thumbnail_id( $post );
 	}
 
 	if ( $thumbnail_id ) {
 		$url = bbgi_get_image_url( $thumbnail_id, $width, $height, $mode, $max );
 		if ( $url ) {
-			echo esc_url( $url );
+			return $url;
 		}
+	}
+
+	return false;
+}
+
+function bbgi_post_thumbnail_url( $post, $use_fallback, $width, $height, $mode = 'crop', $max = false ) {
+	$url = bbgi_get_post_thumbnail_url( $post, $use_fallback, $width, $height, $mode, $max );
+	if ( $url ) {
+		echo esc_url( $url );
 	}
 }
