@@ -165,7 +165,7 @@ class GreaterMediaGallery {
 			'<div class="gallery__embed"><a href="%s/view/%s/"><div><img src="%s"></div>',
 			esc_attr( untrailingslashit( get_permalink( $post ) ) ),
 			esc_attr( get_post_field( 'post_name', $sponsored_image ? $sponsored_image : $image ) ),
-			bbgi_get_image_url( $image, 512, 342 )
+			bbgi_get_image_url( $image, 512, 342, 'crop', true )
 		);
 
 		$content .= '<div class="gallery__embed--thumbnails">';
