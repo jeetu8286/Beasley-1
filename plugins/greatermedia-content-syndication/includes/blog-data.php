@@ -553,6 +553,8 @@ class BlogData {
 		 * Import featured and attached images
 		 */
 		if ( $updated > 0 ) {
+			add_post_meta( $post_id, 'syndication_id', self::$syndication_id );
+
 			if ( ! empty( $term_tax ) ) {
 				foreach ( $term_tax as $taxonomy => $terms ) {
 					if ( ! empty( $terms[0] ) && taxonomy_exists( $taxonomy ) ) {
