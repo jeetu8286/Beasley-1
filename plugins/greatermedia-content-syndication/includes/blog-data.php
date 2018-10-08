@@ -495,11 +495,10 @@ class BlogData {
 			}
 		}
 
+		$featured_id = false;
 		if ( ! is_null( $featured ) ) {
 			$featured_id = self::ImportMedia( null, $featured[1], $featured[0] );
-			if ( ! is_wp_error( $featured_id ) ) {
-				$args['meta_input']['_thumbnail_id'] = $featured_id;
-			} else {
+			if ( is_wp_error( $featured_id ) ) {
 				self::log( 'Error during import media: %s', $featured_id->get_error_message() );
 			}
 		}
@@ -554,6 +553,10 @@ class BlogData {
 		 */
 		if ( $updated > 0 ) {
 			add_post_meta( $post_id, 'syndication_id', self::$syndication_id );
+
+			if ( ! is_wp_error( $featured_id ) && is_int( $featured_id ) ) {
+				set_post_thumbnail( $post_id, $featured_id );
+			}
 
 			if ( ! empty( $term_tax ) ) {
 				foreach ( $term_tax as $taxonomy => $terms ) {
