@@ -56,6 +56,11 @@ class Syndication_Detach_Post {
 				</div>
 				<?php
 			}
+
+			// debugging info:
+			echo '<!-- ';
+			var_export( get_post_meta( $post->ID, 'syndication_id' ) );
+			echo ' -->';
 		}
 	}
 
