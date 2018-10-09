@@ -500,7 +500,7 @@ class BlogData {
 			$featured_id = self::ImportMedia( null, $featured[1], $featured[0] );
 			if ( is_wp_error( $featured_id ) ) {
 				self::log(
-					'Error during import media for %s: "%s" (%s)',
+					"Error during import media for %s: \"%s\"\n(%s)",
 					$post_title,
 					$featured_id->get_error_message(),
 					json_encode( $featured )
@@ -694,7 +694,6 @@ class BlogData {
 		}
 	}
 
-
 	/**
 	 * Borrowed from S3 Uploads plugin cli command for migrating attachements
 	 *
@@ -740,7 +739,6 @@ class BlogData {
 
 	}
 
-
 	/**
 	 * Helper function to import images
 	 * Reused code from
@@ -782,8 +780,10 @@ class BlogData {
 
 			// make sure we have a match.  This won't be set for PDFs and .docs
 			if ( $matches && isset( $matches[0] ) ) {
+				$file_array = array();
 				$file_array['name'] = basename( $matches[0] );
 				$file_array['tmp_name'] = $tmp;
+				$file_array['size'] = filesize( $tmp );
 
 				// If error storing temporarily, unlink
 				if ( is_wp_error( $tmp ) ) {
