@@ -500,9 +500,16 @@ class BlogData {
 			$featured_id = self::ImportMedia( null, $featured[1], $featured[0] );
 			if ( is_wp_error( $featured_id ) ) {
 				self::log(
-					"Error during import media for %s: \"%s\"\n(%s)",
+					"Error during import media for %s: \"%s\" (%s)",
 					$post_title,
 					$featured_id->get_error_message(),
+					json_encode( $featured )
+				);
+			} else {
+				self::log(
+					"Imported media for %s: %s (%s)",
+					$post_title,
+					$featured_id,
 					json_encode( $featured )
 				);
 			}
