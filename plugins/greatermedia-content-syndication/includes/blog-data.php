@@ -557,7 +557,7 @@ class BlogData {
 		 * Import featured and attached images
 		 */
 		if ( $updated > 0 ) {
-			add_post_meta( $post_id, 'syndication_id', self::$syndication_id );
+			update_post_meta( $post_id, 'syndication_post_id', self::$syndication_id );
 
 			if ( ! is_wp_error( $featured_id ) && is_int( $featured_id ) ) {
 				set_post_thumbnail( $post_id, $featured_id );
