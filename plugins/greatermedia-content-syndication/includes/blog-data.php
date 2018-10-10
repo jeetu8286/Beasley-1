@@ -762,10 +762,13 @@ class BlogData {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 
+		$tmp = download_url( $filename );
+		if ( is_wp_error( $tmp ) ) {
+			return $tmp;
+		}
+
 		$id = 0;
 		$original_id = intval( $original_id );
-		$tmp = download_url( $filename );
-
 		if ( empty( $original_id ) ) {
 			$meta_query_args = array(
 				'meta_key'   => 'syndication_attachment_old_url',
