@@ -14,7 +14,7 @@ if ( $hp_featured_query->have_posts() ) :
 			<div class="feature-post-slide" style="display:none">
 				<a href="<?php the_permalink(); ?>">
 					<div class="slide-content">
-						<div class="featured__article--image" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 610, 308, 'crop', true ); ?>)">
+						<div class="featured__article--image" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 610, 308, 'crop', array( 'width' => false, 'height' => true ) ); ?>)">
 						</div>
 						<div class="featured__article--content">
 							<div class="featured__article--heading">
