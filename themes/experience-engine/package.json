@@ -1,0 +1,36 @@
+{
+	"name": "experience-engine",
+	"scripts": {
+		"webpack": "webpack --progress app=./assets/scripts/app.js",
+		"build": "npm run webpack -- --config-name=dev-config",
+		"watch": "npm run webpack -- --config-name=watch-config",
+		"bundle": "npm run webpack -- --config-name=prod-config"
+	},
+	"dependencies": {
+		"@10up/eslint-config": "^1.0.6",
+		"@babel/core": "^7.1.2",
+		"@babel/preset-env": "^7.1.0",
+		"@babel/preset-react": "^7.0.0",
+		"babel-eslint": "^10.0.1",
+		"babel-loader": "^8.0.4",
+		"eslint": "^5.7.0",
+		"eslint-loader": "^2.1.1",
+		"react": "^16.5.2",
+		"react-dom": "^16.5.2",
+		"webpack": "^4.20.2",
+		"webpack-cli": "^3.1.2"
+	},
+	"eslintConfig": {
+		"extends": "@10up/eslint-config"
+	},
+	"browserslist": [
+		"Chrome > 55",
+		"Safari > 9",
+		"Explorer 11",
+		"Edge >= 15",
+		"Firefox >= 51",
+		"Android > 55",
+		"iOS > 9",
+		"Samsung >= 5"
+	]
+}

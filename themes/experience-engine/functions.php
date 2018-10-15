@@ -15,3 +15,10 @@ function ee_register_nav_menus() {
 }
 
 add_action( 'init', 'ee_register_nav_menus' );
+
+function ee_enqueue_front_scripts() {
+	$base = untrailingslashit( get_template_directory_uri() );
+	wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", null, null, true );
+}
+
+add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts' );
