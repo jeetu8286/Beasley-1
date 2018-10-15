@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const coreConfig = {
 	output: {
@@ -31,8 +32,19 @@ const coreConfig = {
 					},
 				},
 			},
+			{
+				test: /\.css$/,
+				use: [
+					{ loader: MiniCssExtractPlugin.loader },
+					{ loader: 'css-loader' },
+					{ loader: 'postcss-loader' },
+				],
+			},
 		],
 	},
+	plugins: [
+		new MiniCssExtractPlugin(),
+	],
 	optimization: {
 		noEmitOnErrors: true,
 	},
