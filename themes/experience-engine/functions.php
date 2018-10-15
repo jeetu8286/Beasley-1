@@ -4,6 +4,7 @@ function ee_setup_theme() {
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'post-formats', array( 'gallery', 'link', 'image', 'video', 'audio' ) );
 	add_theme_support( 'html5', array( 'search-form' ) );
+	add_theme_support( 'custom-logo' );
 }
 
 add_action( 'after_setup_theme', 'ee_setup_theme' );
