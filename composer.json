@@ -45,6 +45,7 @@
 			"Bbgi": "mu-plugins/classes"
 		},
 		"files": [
+			"mu-plugins/functions/term-data-store.php",
 			"mu-plugins/functions/imageflow.php",
 			"mu-plugins/functions/post.php"
 		]
