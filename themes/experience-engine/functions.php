@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/includes/experience-engine.php';
+
 function ee_setup_theme() {
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'post-formats', array( 'gallery', 'link', 'image', 'video', 'audio' ) );
