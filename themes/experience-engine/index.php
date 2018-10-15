@@ -1,4 +1,4 @@
-<?php get_header() ?>
+<?php get_header(); ?>
 
 <div>
 	<?php while ( have_posts() ) : ?>
@@ -12,4 +12,4 @@
 	</div>
 </div>
 
-<?php get_footer() ?>
+<?php get_footer(); ?>

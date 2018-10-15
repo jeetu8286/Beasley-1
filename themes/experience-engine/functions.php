@@ -12,6 +12,7 @@ add_action( 'after_setup_theme', 'ee_setup_theme' );
 function ee_register_nav_menus() {
 	register_nav_menus( array(
 		'primary-nav' => 'Primary Navigation',
+		'about-nav'   => 'About Navigation',
 	) );
 }
 
