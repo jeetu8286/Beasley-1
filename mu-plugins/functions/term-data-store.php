@@ -171,45 +171,47 @@ function balancing_relationship() {
  * @return \Closure The callback
  */
 function get_save_post_hook( $post_type, $taxonomy ) {
-
-	static $existing_closures;
-	if ( ! isset( $existing_closures ) ) {
-		$existing_closures = array();
-	}
+	static $existing_closures = array();
 
 	$md5 = md5( $post_type . '|' . $taxonomy );
-	if ( isset( $existing_closures[$md5] ) ) {
-		return $existing_closures[$md5];
+	if ( isset( $existing_closures[ $md5 ] ) ) {
+		return $existing_closures[ $md5 ];
 	}
 
 	$closure = function ( $post_id, $post ) use ( $post_type, $taxonomy ) {
 		if ( apply_filters( 'tds_balancing_from_post', balancing_relationship(), $post_type, $taxonomy, $post ) ) {
 			return;
 		}
-		if ( empty( $post ) || $post_type !== $post->post_type || ( 'publish' !== $post->post_status ) || get_the_terms( $post_id, $taxonomy ) ) {
+
+		if ( empty( $post ) || $post_type !== $post->post_type || 'publish' !== $post->post_status ) {
 			return;
 		}
+
 		balancing_relationship( true );
 		$term = get_term_by( 'slug', $post->post_name, $taxonomy, ARRAY_A );
-		if( !$term )
-		{
+		if ( ! $term ) {
 			$term = wp_insert_term( $post->post_title, $taxonomy, array( 'slug' => $post->post_name ) );
-			if( is_wp_error( $term ) ) {
-				throw new \Exception( 'Error creating a term: ' . implode( ', ', $term->get_error_messages() ) . ' Slug: ' . $post->post_name . ' / Title: ' . $post->post_title );
+		} else if ( $term['name'] != $post->post_title || $term['slug'] != $post->post_name ) {
+			wp_update_term( $term['term_id'], $taxonomy, array(
+				'name' => $post->post_title,
+				'slug' => $post->post_name,
+			) );
+		}
+
+		if ( ! is_wp_error( $term ) ) {
+			if ( is_object( $term ) ) {
+				$term = (array) $term;
 			}
+
+			wp_set_object_terms( $post->ID, (int) $term['term_id'], $taxonomy );
 		}
 
-		if( is_object( $term ) ) {
-			$term = (array) $term;
-		}
-
-		wp_set_object_terms( $post->ID, (int) $term['term_id'], $taxonomy );
 		balancing_relationship( false );
 	};
 
-	$existing_closures[$md5] = $closure;
-	return $closure;
+	$existing_closures[ $md5 ] = $closure;
 
+	return $closure;
 }
 
 /**
