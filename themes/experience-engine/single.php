@@ -3,9 +3,7 @@
 <?php the_post(); ?>
 
 <div>
-	<div>
-		<?php the_post_thumbnail( 'medium' ); ?>
-	</div>
+	<?php get_template_part( 'partials/featured-media' ); ?>
 	<h1><?php the_title(); ?></h1>
 
 	<div>

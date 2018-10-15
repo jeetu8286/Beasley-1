@@ -1,11 +1,9 @@
 <?php get_header() ?>
 
 <div>
-	<?php while ( have_posts() ) : the_post(); ?>
-		<div>
-			<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'thumbnail' ); ?></a>
-			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-		</div>
+	<?php while ( have_posts() ) : ?>
+		<?php the_post(); ?>
+		<?php get_template_part( 'partials/tile', get_post_type() ); ?>
 	<?php endwhile; ?>
 
 	<div>
