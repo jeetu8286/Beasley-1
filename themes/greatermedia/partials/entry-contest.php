@@ -1,10 +1,10 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'entry2' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<section class="entry2__thumbnail">
 		<a href="<?php the_permalink(); ?>">
-			<div class="entry2__thumbnail__image" style="background-image: url('<?php gm_post_thumbnail_url( 'gm-entry-thumbnail-4-3', null, true ); ?>')"></div>
+			<div class="entry2__thumbnail__image" style="background-image: url('<?php bbgi_post_thumbnail_url( null, true, 400, 300 ); ?>')"></div>
 			<div class="entry2__thumbnail__overlay"></div>
 			<div class="entry2__thumbnail__icon"></div>
-		
+
 			<div class="entry2__thumbnail--contest-type">
 				<?php echo esc_html( gmr_contest_get_type_label() ); ?>
 			</div>
@@ -24,7 +24,7 @@
 
 	<section class="entry2__meta">
 		<h2 class="entry2__title" itemprop="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-				
+
 		<div class="entry2__event--details">
 			<?php echo strip_tags( get_post_meta( get_the_ID(), 'prizes-desc', true ) ); ?>
 		</div>

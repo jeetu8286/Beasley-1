@@ -10,10 +10,6 @@
 		"oomphinc/composer-installers-extender": "^1.1",
 		"wpackagist-plugin/advanced-custom-fields": "*",
 		"wpackagist-plugin/fb-instant-articles": "*",
-		"wpackagist-plugin/debug-bar": "*",
-		"wpackagist-plugin/debug-bar-cron": "*",
-		"wpackagist-plugin/debug-bar-extender": "*",
-		"wpackagist-plugin/debug-bar-remote-requests": "*",
 		"wpackagist-plugin/duplicate-post": "*",
 		"wpackagist-plugin/edit-flow": "*",
 		"wpackagist-plugin/elasticpress": "*",
@@ -32,20 +28,26 @@
 		"wpackagist-plugin/simple-local-avatars": "*",
 		"wpackagist-plugin/wp-fail2ban": "*",
 		"wpackagist-plugin/disable-real-mime-check": "*",
-		"wpackagist-plugin/my-eyes-are-up-here":"*",
-		"wpackagist-plugin/query-monitor": "*",
-		"wpackagist-plugin/regenerate-thumbnails":"*",
 		"10up/wp-minions": "*",
 		"10up/post-finder": "*"
 	},
 	"require-dev": {
+		"wpackagist-plugin/query-monitor": "*",
+		"wpackagist-plugin/debug-bar": "*",
+		"wpackagist-plugin/debug-bar-cron": "*",
+		"wpackagist-plugin/debug-bar-extender": "*",
+		"wpackagist-plugin/debug-bar-remote-requests": "*",
 		"wpackagist-plugin/rewrite-rules-inspector": "*",
 		"wpackagist-plugin/user-switching": "*"
 	},
 	"autoload": {
 		"psr-0": {
 			"Bbgi": "mu-plugins/classes"
-		}
+		},
+		"files": [
+			"mu-plugins/functions/imageflow.php",
+			"mu-plugins/functions/post.php"
+		]
 	},
 	"extra": {
 		"installer-paths": {

@@ -1,25 +1,8 @@
-<?php
-/**
- * Entry partial
- *
- * This is a work-in-progress and will eventually be broken into multiple
- * partials for the individual formats and post types. But for now this one
- * covers them all.
- */
-?>
-
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'entry2' ); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
-	<?php
-	if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) :
-		if ( has_post_format( 'audio' ) ) {
-			$thumbnail_size = 'gm-entry-thumbnail-1-1';
-		} else {
-			$thumbnail_size = 'gm-entry-thumbnail-4-3';
-		}
-	?>
+	<?php if ( has_post_thumbnail() || 'tribe_events' == $post->post_type ) : ?>
 		<section class="entry2__thumbnail">
 			<a href="<?php the_permalink(); ?>">
-				<div class="entry2__thumbnail__image" style='background-image: url(<?php gm_post_thumbnail_url( $thumbnail_size ); ?>)'></div>
+				<div class="entry2__thumbnail__image" style='background-image: url(<?php bbgi_post_thumbnail_url( null, true, 400, has_post_format( 'audio' ) ? 400 : 300 ); ?>)'></div>
 				<div class="entry2__thumbnail__icon"></div>
 			</a>
 		</section>
