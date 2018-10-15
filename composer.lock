@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b82ef94200a9074e0cb371ae10951696",
+    "content-hash": "edb3228f2ab998567e530f2141e06e2e",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -265,16 +265,16 @@
         },
         {
             "name": "php-amqplib/php-amqplib",
-            "version": "v2.7.2",
+            "version": "v2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-amqplib/php-amqplib.git",
-                "reference": "dfd3694a86f1a7394d3693485259d4074a6ec79b"
+                "reference": "a8ba54bd35b973fc6861e4c2e105f71e9e95f43f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/dfd3694a86f1a7394d3693485259d4074a6ec79b",
-                "reference": "dfd3694a86f1a7394d3693485259d4074a6ec79b",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/a8ba54bd35b973fc6861e4c2e105f71e9e95f43f",
+                "reference": "a8ba54bd35b973fc6861e4c2e105f71e9e95f43f",
                 "shasum": ""
             },
             "require": {
@@ -332,7 +332,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2018-02-11T19:28:00+00:00"
+            "time": "2018-04-30T03:54:54+00:00"
         },
         {
             "name": "wpackagist-plugin/advanced-custom-fields",
@@ -596,15 +596,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.6.24",
+            "version": "4.6.24.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.6.24"
+                "reference": "tags/4.6.24.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.6.24.zip",
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.6.24.1.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -656,15 +656,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "8.3",
+            "version": "8.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/8.3"
+                "reference": "tags/8.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.8.3.zip",
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.8.4.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -815,6 +815,26 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/debug-bar-remote-requests/"
+        },
+        {
+            "name": "wpackagist-plugin/fakerpress",
+            "version": "0.4.11",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/fakerpress/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/fakerpress.zip?timestamp=1521872725",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/fakerpress/"
         },
         {
             "name": "wpackagist-plugin/query-monitor",
