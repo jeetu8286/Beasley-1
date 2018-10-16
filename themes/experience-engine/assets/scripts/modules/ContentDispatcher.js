@@ -8,25 +8,22 @@ class ContentDispatcher extends Component {
 		super( props );
 
 		const self = this;
-		const container = document.getElementById( 'content' );
+		const content = document.getElementById( 'content' );
 
-		let html = false;
-		if ( container ) {
-			html = container.innerHTML;
-			container.innerHTML = '';
+		self.state = this.fragmentToState( content );
+
+		// clean up content block for now, it will be poplated in the render function
+		while ( content.firstChild ) {
+			content.removeChild( content.firstChild );
 		}
 
-		self.state = {
-			content: html,
-		};
-
 		self.onClick = self.handleClick.bind( self );
-		self.onPopState = self.handlePopState.bind( self );
+		self.onPageChange = self.handlePageChange.bind( self );
 	}
 
 	componentDidMount() {
 		window.addEventListener( 'click', this.onClick );
-		window.addEventListener( 'popstate', this.onPopState );
+		window.addEventListener( 'popstate', this.onPageChange );
 
 		// replace current state with proper markup
 		const { history, location } = window;
@@ -35,7 +32,7 @@ class ContentDispatcher extends Component {
 
 	componentWillUnmount() {
 		window.removeEventListener( 'click', this.onClick );
-		window.removeEventListener( 'popstate', this.onPopState );
+		window.removeEventListener( 'popstate', this.onPageChange );
 	}
 
 	handleClick( e ) {
@@ -71,7 +68,7 @@ class ContentDispatcher extends Component {
 		// fetch next page
 		fetch( link )
 			.then( response => response.text().then( data => {
-				const pageDocument = this.handlePageLoad( data );
+				const pageDocument = this.handlePageChange( data );
 
 				const { history } = window;
 				history.pushState( data, pageDocument.title, response.url );
@@ -82,26 +79,33 @@ class ContentDispatcher extends Component {
 			.catch( error => console.error( error ) ); // eslint-disable-line no-console
 	}
 
-	handlePopState( e ) {
-		this.handlePageLoad( e.state );
-	}
-
-	handlePageLoad( data ) {
+	handlePageChange( data ) {
 		// parse HTML markup and grab content
 		const parser = new DOMParser();
-		const pageDocument = parser.parseFromString( data, 'text/html' );
+		const markup = 'string' === typeof data ? data : data.state;
+		const pageDocument = parser.parseFromString( markup, 'text/html' );
 		const content = pageDocument.querySelector( '#content' );
 		if ( !content ) {
 			return;
 		}
 
 		// update content state
-		this.setState( { content: content.innerHTML } );
+		this.setState( this.fragmentToState( content ) );
 
 		// scroll to the top of the page
 		window.scrollTo( 0, 0 );
 
 		return pageDocument;
+	}
+
+	fragmentToState( element ) {
+		const state = {};
+		const embeds = [];
+
+		state.embeds = embeds;
+		state.content = element.innerHTML;
+
+		return state;
 	}
 
 	render() {
