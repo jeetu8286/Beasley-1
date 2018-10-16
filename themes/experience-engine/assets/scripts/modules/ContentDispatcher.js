@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import NProgress from 'nprogress';
+
+import SecondStreet from '../components/SecondStreet';
 
 class ContentDispatcher extends Component {
 
@@ -10,7 +12,8 @@ class ContentDispatcher extends Component {
 		const self = this;
 		const content = document.getElementById( 'content' );
 
-		self.state = this.fragmentToState( content );
+		self.embedsIndex = 0;
+		self.state = this.populateStateFromContent( content );
 
 		// clean up content block for now, it will be poplated in the render function
 		while ( content.firstChild ) {
@@ -90,7 +93,7 @@ class ContentDispatcher extends Component {
 		}
 
 		// update content state
-		this.setState( this.fragmentToState( content ) );
+		this.setState( this.populateStateFromContent( content ) );
 
 		// scroll to the top of the page
 		window.scrollTo( 0, 0 );
@@ -98,22 +101,60 @@ class ContentDispatcher extends Component {
 		return pageDocument;
 	}
 
-	fragmentToState( element ) {
+	generatePlaceholder() {
+		const element = document.createElement( 'div' );
+		element.setAttribute( 'id', `container-${++this.embedsIndex}` );
+		return element;
+	}
+
+	populateStateFromContent( container ) {
 		const state = {};
 		const embeds = [];
 
+		container.querySelectorAll( '.secondstreet-embed' ).forEach( ( element ) => {
+			const placeholder = this.generatePlaceholder();
+
+			embeds.push( {
+				type: 'secondstreet',
+				params: {
+					placeholder: placeholder.getAttribute( 'id' ),
+					script: element.getAttribute( 'src' ),
+					embed: element.getAttribute( 'data-ss-embed' ),
+					opguid: element.getAttribute( 'data-opguid' ),
+					routing: element.getAttribute( 'data-routing' ),
+				},
+			} );
+
+			element.parentNode.replaceChild( placeholder, element );
+		} );
+
 		state.embeds = embeds;
-		state.content = element.innerHTML;
+		state.content = container.innerHTML;
 
 		return state;
 	}
 
 	render() {
-		const { content } = this.state;
+		const { content, embeds } = this.state;
 
-		return ReactDOM.createPortal(
+		const portal = ReactDOM.createPortal(
 			<div dangerouslySetInnerHTML={{ __html: content }} />,
 			document.getElementById( 'content' )
+		);
+
+		const embedComponents = embeds.map( ( embed ) => {
+			if ( 'secondstreet' === embed.type ) {
+				return <SecondStreet key={embed.params.placeholder} {...embed.params} />;
+			}
+
+			return false;
+		} );
+
+		return (
+			<Fragment>
+				{portal}
+				{embedComponents}
+			</Fragment>
 		);
 	}
 
