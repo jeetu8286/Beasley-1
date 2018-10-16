@@ -5,8 +5,8 @@ import LivePlayer from './modules/LivePlayer';
 
 import '../styles/main.css';
 
-const root = document.createElement('div');
-document.body.appendChild(root);
+const root = document.createElement( 'div' );
+document.body.appendChild( root );
 
 const app = (
 	<Fragment>
@@ -14,4 +14,4 @@ const app = (
 	</Fragment>
 );
 
-ReactDOM.render(app, root);
+ReactDOM.render( app, root );
