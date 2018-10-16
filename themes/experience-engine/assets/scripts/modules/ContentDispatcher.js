@@ -57,7 +57,7 @@ class ContentDispatcher extends Component {
 		const linkOrigin = link.substring( 0, origin.length );
 
 		// return if different origin or a relative link that doesn't start from forward slash
-		if ( origin !== linkOrigin && !link.match( /^\/\w+/ ) ) {
+		if ( ( origin !== linkOrigin && !link.match( /^\/\w+/ ) ) || -1 < link.indexOf( '/wp-admin/' ) ) {
 			return;
 		}
 
