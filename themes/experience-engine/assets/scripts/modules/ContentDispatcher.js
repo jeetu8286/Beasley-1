@@ -21,15 +21,21 @@ class ContentDispatcher extends Component {
 		};
 
 		self.onClick = self.handleClick.bind( self );
-		self.onPageLoad = self.handlePageLoad.bind( self );
+		self.onPopState = self.handlePopState.bind( self );
 	}
 
 	componentDidMount() {
 		window.addEventListener( 'click', this.onClick );
+		window.addEventListener( 'popstate', this.onPopState );
+
+		// replace current state with proper markup
+		const { history, location } = window;
+		history.replaceState( document.documentElement.outerHTML, document.title, location.href );
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener( 'click', this.onClick );
+		window.removeEventListener( 'popstate', this.onPopState );
 	}
 
 	handleClick( e ) {
@@ -64,37 +70,47 @@ class ContentDispatcher extends Component {
 
 		// fetch next page
 		fetch( link )
-			.then( this.onPageLoad )
+			.then( response => response.text().then( data => {
+				const pageDocument = this.handlePageLoad( data );
+
+				const { history } = window;
+				history.pushState( data, pageDocument.title, response.url );
+				document.title = pageDocument.title;
+
+				NProgress.done();
+			} ) )
 			.catch( error => console.error( error ) ); // eslint-disable-line no-console
 	}
 
-	handlePageLoad( response ) {
-		return response.text().then( ( data ) => {
-			const parser = new DOMParser();
-			const pageDocument = parser.parseFromString( data, 'text/html' );
-			const content = pageDocument.querySelector( '#content' );
-			if ( !content ) {
-				return;
-			}
+	handlePopState( e ) {
+		this.handlePageLoad( e.state );
+	}
 
-			this.setState( { content: content.innerHTML } );
+	handlePageLoad( data ) {
+		// parse HTML markup and grab content
+		const parser = new DOMParser();
+		const pageDocument = parser.parseFromString( data, 'text/html' );
+		const content = pageDocument.querySelector( '#content' );
+		if ( !content ) {
+			return;
+		}
 
-			const { history } = window;
-			history.pushState( { data }, pageDocument.title, response.url );
-			document.title = pageDocument.title;
+		// update content state
+		this.setState( { content: content.innerHTML } );
 
-			NProgress.done();
-		} );
+		// scroll to the top of the page
+		window.scrollTo( 0, 0 );
+
+		return pageDocument;
 	}
 
 	render() {
 		const { content } = this.state;
-		const container = document.getElementById( 'content' );
-		if ( !content ) {
-			return <div />;
-		}
 
-		return ReactDOM.createPortal( <div dangerouslySetInnerHTML={{ __html: content }} />, container );
+		return ReactDOM.createPortal(
+			<div dangerouslySetInnerHTML={{ __html: content }} />,
+			document.getElementById( 'content' )
+		);
 	}
 
 }
