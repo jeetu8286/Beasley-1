@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
+import delayed from '../library/delayed-component';
+
 const SecondStreet = ( { placeholder, script, embed, opguid, routing } ) => ReactDOM.createPortal(
 	<script src={script} data-ss-embed={embed} data-opguid={opguid} data-routing={routing} />,
 	document.getElementById( placeholder )
@@ -22,4 +24,4 @@ SecondStreet.defaultProps = {
 	routing: '',
 };
 
-export default SecondStreet;
+export default delayed( SecondStreet, 50 );
