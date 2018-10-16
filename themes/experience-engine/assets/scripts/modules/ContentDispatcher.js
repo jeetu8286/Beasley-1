@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import NProgress from 'nprogress';
 
 class ContentDispatcher extends Component {
 
@@ -17,7 +18,6 @@ class ContentDispatcher extends Component {
 
 		self.state = {
 			content: html,
-			loading: false,
 		};
 
 		self.onClick = self.handleClick.bind( self );
@@ -60,7 +60,7 @@ class ContentDispatcher extends Component {
 		e.stopPropagation();
 
 		// set loading state
-		this.setState( { loading: true } );
+		NProgress.start();
 
 		// fetch next page
 		fetch( link )
@@ -77,10 +77,9 @@ class ContentDispatcher extends Component {
 			return;
 		}
 
-		this.setState( {
-			content: content.innerHTML,
-			loading: false,
-		} );
+		this.setState( { content: content.innerHTML } );
+
+		NProgress.done();
 	}
 
 	render() {

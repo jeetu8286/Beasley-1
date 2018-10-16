@@ -1,0 +1,9 @@
+@import 'nprogress/nprogress.css';
+
+body.admin-bar #nprogress .bar {
+	top: 32px;
+}
+
+body.admin-bar #nprogress .spinner {
+	top: 47px;
+}
