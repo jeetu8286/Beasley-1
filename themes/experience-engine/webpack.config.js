@@ -15,7 +15,6 @@ const coreConfig = {
 				use: {
 					loader: 'eslint-loader',
 					options: {
-						cache: true,
 						failOnWarning: false,
 						failOnError: true,
 					},

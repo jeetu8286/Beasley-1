@@ -6,7 +6,6 @@
 		"bundle": "webpack --progress app=./assets/scripts/app.js --config-name=prod-config"
 	},
 	"dependencies": {
-		"@10up/eslint-config": "^1.0.6",
 		"@babel/core": "^7.1.2",
 		"@babel/preset-env": "^7.1.0",
 		"@babel/preset-react": "^7.0.0",
@@ -14,7 +13,11 @@
 		"babel-loader": "^8.0.4",
 		"css-loader": "^1.0.0",
 		"eslint": "^5.7.0",
+		"eslint-config-airbnb": "^17.1.0",
 		"eslint-loader": "^2.1.1",
+		"eslint-plugin-import": "^2.14.0",
+		"eslint-plugin-jsx-a11y": "^6.1.2",
+		"eslint-plugin-react": "^7.11.1",
 		"mini-css-extract-plugin": "^0.4.4",
 		"postcss-import": "^12.0.0",
 		"postcss-loader": "^3.0.0",
@@ -25,7 +28,21 @@
 		"webpack-cli": "^3.1.2"
 	},
 	"eslintConfig": {
-		"extends": "@10up/eslint-config"
+		"extends": "airbnb",
+		"env": {
+			"browser": true
+		},
+		"rules": {
+			"no-tabs": 0,
+			"max-len": 0,
+			"padded-blocks": [2, { "classes": "always" }],
+			"no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+			"indent": [ 2, "tab", { "SwitchCase": 1 }],
+			"react/jsx-indent": [2, "tab"],
+			"react/jsx-filename-extension": 0,
+			"jsx-a11y/label-has-for": 0,
+			"jsx-a11y/label-has-associated-control": 0
+		}
 	},
 	"browserslist": [
 		"Chrome > 55",
