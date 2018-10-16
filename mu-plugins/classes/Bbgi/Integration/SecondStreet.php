@@ -58,7 +58,7 @@ class SecondStreet extends \Bbgi\Module {
 		}
 
 		return sprintf(
-			'<div src="https://embed-%s.secondstreetapp.com/Scripts/dist/embed.js" data-ss-embed="promotion" data-opguid="%s" data-routing="%s"></div>',
+			'<div class="secondstreet-embed" src="https://embed-%s.secondstreetapp.com/Scripts/dist/embed.js" data-ss-embed="promotion" data-opguid="%s" data-routing="%s"></div>',
 			esc_attr( $attributes['op_id'] ),
 			esc_attr( $attributes['op_guid'] ),
 			esc_attr( $attributes['routing'] )
