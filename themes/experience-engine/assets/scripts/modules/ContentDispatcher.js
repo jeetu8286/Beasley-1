@@ -64,22 +64,27 @@ class ContentDispatcher extends Component {
 
 		// fetch next page
 		fetch( link )
-			.then( response => response.text() )
 			.then( this.onPageLoad )
 			.catch( error => console.error( error ) ); // eslint-disable-line no-console
 	}
 
-	handlePageLoad( data ) {
-		const parser = new DOMParser();
-		const doc = parser.parseFromString( data, 'text/html' );
-		const content = doc.querySelector( '#content' );
-		if ( !content ) {
-			return;
-		}
+	handlePageLoad( response ) {
+		return response.text().then( ( data ) => {
+			const parser = new DOMParser();
+			const pageDocument = parser.parseFromString( data, 'text/html' );
+			const content = pageDocument.querySelector( '#content' );
+			if ( !content ) {
+				return;
+			}
 
-		this.setState( { content: content.innerHTML } );
+			this.setState( { content: content.innerHTML } );
 
-		NProgress.done();
+			const { history } = window;
+			history.pushState( { data }, pageDocument.title, response.url );
+			document.title = pageDocument.title;
+
+			NProgress.done();
+		} );
 	}
 
 	render() {
