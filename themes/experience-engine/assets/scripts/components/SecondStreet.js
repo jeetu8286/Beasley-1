@@ -1,13 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import delayed from '../library/delayed-component';
 
-const SecondStreet = ( { placeholder, script, embed, opguid, routing } ) => ReactDOM.createPortal(
-	<script src={script} data-ss-embed={embed} data-opguid={opguid} data-routing={routing} />,
-	document.getElementById( placeholder )
-);
+class SecondStreet extends PureComponent {
+
+	componentDidMount() {
+		const { placeholder, script, embed, opguid, routing } = this.props;
+
+		const container = document.getElementById( placeholder );
+		if ( !container ) {
+			return;
+		}
+
+		const element = document.createElement( 'script' );
+
+		element.setAttribute( 'async', true );
+		element.setAttribute( 'src', script );
+		element.setAttribute( 'data-ss-embed', embed );
+		element.setAttribute( 'data-opguid', opguid );
+		element.setAttribute( 'data-routing', routing );
+
+		container.appendChild( element );
+	}
+
+	render() {
+		return false;
+	}
+
+}
 
 SecondStreet.propTypes = {
 	placeholder: PropTypes.string.isRequired,
