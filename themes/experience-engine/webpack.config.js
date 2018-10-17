@@ -1,11 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const coreConfig = {
 	output: {
-//		filename: '[name].js',
-//		chunkFilename: '[name].js',
 		path: path.resolve(__dirname, 'bundle'),
 	},
 	module: {
@@ -85,4 +85,17 @@ const production = () => {
 	return config;
 };
 
-module.exports = [development(), watch(), production()];
+const analyze = () => {
+	const config = Object.assign({}, coreConfig, {
+		name: 'analyze-config',
+		mode: 'production',
+	});
+
+	config.plugins.push(
+		new BundleAnalyzerPlugin()
+	);
+
+	return config;
+};
+
+module.exports = [development(), watch(), production(), analyze()];
