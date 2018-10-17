@@ -57,9 +57,19 @@ class UserNav extends Component {
 	}
 
 	renderSignedInState() {
+		const { currentUser } = firebase.auth();
+
 		return (
 			<div>
-				<button type="button" onClick={this.onSignOut}>Logout</button>
+				<div>
+					<img src={currentUser.photoURL} width="30" height="30" alt={currentUser.displayName} />
+				</div>
+				<div>
+					<span>{currentUser.displayName}</span>
+				</div>
+				<div>
+					<button type="button" onClick={this.onSignOut}>Logout</button>
+				</div>
 			</div>
 		);
 	}
