@@ -12,6 +12,7 @@ function ee_setup_theme() {
 	add_theme_support( 'html5', array( 'search-form' ) );
 
 	add_theme_support( 'secondstreet' );
+	add_theme_support( 'firebase' );
 }
 
 add_action( 'after_setup_theme', 'ee_setup_theme' );
@@ -28,8 +29,15 @@ add_action( 'init', 'ee_register_nav_menus' );
 
 function ee_enqueue_front_scripts() {
 	$base = untrailingslashit( get_template_directory_uri() );
+
 	wp_enqueue_style( 'ee-app', "{$base}/bundle/app.css", null, null );
-	wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", null, null, true );
+
+	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null, true );
+	wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'firebase' ), null, true );
+
+	wp_localize_script( 'ee-app', 'bbgiconfig', array(
+		'firebase' => apply_filters( 'firebase_settings', array() ),
+	) );
 }
 
 add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts' );

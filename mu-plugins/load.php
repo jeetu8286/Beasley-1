@@ -39,6 +39,10 @@ add_action( 'wp_loaded', function() {
 		$modules[] = new \Bbgi\Integration\SecondStreet();
 	}
 
+	if ( current_theme_supports( 'firebase' ) ) {
+		$modules[] = new \Bbgi\Integration\Firebase();
+	}
+
 	foreach ( $modules as $module ) {
 		$module->register();
 	}
