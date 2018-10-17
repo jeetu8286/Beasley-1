@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import firebase from 'firebase/app';
+
+import 'firebase/auth';
 
 import { showSignInModal, showSignUpModal } from '../redux/actions/modal';
 
@@ -24,7 +27,7 @@ class UserNav extends Component {
 	}
 
 	componentDidMount() {
-		const { firebase, bbgiconfig } = window;
+		const { bbgiconfig } = window;
 		firebase.initializeApp( bbgiconfig.firebase );
 
 		const auth = firebase.auth();
@@ -44,7 +47,6 @@ class UserNav extends Component {
 	}
 
 	handleSignOut() {
-		const { firebase } = window;
 		firebase.auth().signOut();
 	}
 
@@ -55,9 +57,19 @@ class UserNav extends Component {
 	}
 
 	renderSignedInState() {
+		const { currentUser } = firebase.auth();
+
 		return (
 			<div>
-				<button type="button" onClick={this.onSignOut}>Logout</button>
+				<div>
+					<img src={currentUser.photoURL} width="30" height="30" alt={currentUser.displayName} />
+				</div>
+				<div>
+					<span>{currentUser.displayName}</span>
+				</div>
+				<div>
+					<button type="button" onClick={this.onSignOut}>Logout</button>
+				</div>
 			</div>
 		);
 	}

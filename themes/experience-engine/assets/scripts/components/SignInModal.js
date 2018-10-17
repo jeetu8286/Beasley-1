@@ -1,12 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
+
+import Header from './modal/Header';
+import OAuthButtons from './authentication/OAuthButtons';
 
 class SignInModal extends PureComponent {
 
 	render() {
 		return (
-			<div>
-				Sign In
-			</div>
+			<Fragment>
+				<Header>Sign In</Header>
+				<OAuthButtons />
+			</Fragment>
 		);
 	}
 
