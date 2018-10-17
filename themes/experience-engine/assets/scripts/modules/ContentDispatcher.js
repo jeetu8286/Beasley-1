@@ -29,8 +29,9 @@ class ContentDispatcher extends Component {
 		window.addEventListener( 'popstate', this.onPageChange );
 
 		// replace current state with proper markup
-		const { history, location } = window;
-		history.replaceState( document.documentElement.outerHTML, document.title, location.href );
+		const { history, location, pageXOffset, pageYOffset } = window;
+		const state = { data: document.documentElement.outerHTML, pageXOffset, pageYOffset };
+		history.replaceState( state, document.title, location.href );
 	}
 
 	componentWillUnmount() {
@@ -71,10 +72,18 @@ class ContentDispatcher extends Component {
 		// fetch next page
 		fetch( link )
 			.then( response => response.text().then( data => {
-				const pageDocument = this.handlePageChange( data );
+				const { history, pageXOffset, pageYOffset } = window;
+				const state = { data, pageXOffset, pageYOffset };
 
-				const { history } = window;
-				history.pushState( data, pageDocument.title, response.url );
+				const pageDocument = this.handlePageChange( {
+					state: {
+						data,
+						pageXOffset: 0,
+						pageYOffset: 0,
+					},
+				} );
+
+				history.pushState( state, pageDocument.title, response.url );
 				document.title = pageDocument.title;
 
 				NProgress.done();
@@ -82,11 +91,12 @@ class ContentDispatcher extends Component {
 			.catch( error => console.error( error ) ); // eslint-disable-line no-console
 	}
 
-	handlePageChange( data ) {
+	handlePageChange( event ) {
 		// parse HTML markup and grab content
 		const parser = new DOMParser();
-		const markup = 'string' === typeof data ? data : data.state;
-		const pageDocument = parser.parseFromString( markup, 'text/html' );
+		const { data, pageXOffset, pageYOffset } = event.state;
+		console.log( event.state );
+		const pageDocument = parser.parseFromString( data, 'text/html' );
 		const content = pageDocument.querySelector( '#content' );
 		if ( !content ) {
 			return;
@@ -96,7 +106,9 @@ class ContentDispatcher extends Component {
 		this.setState( this.populateStateFromContent( content ) );
 
 		// scroll to the top of the page
-		window.scrollTo( 0, 0 );
+		setTimeout( () => {
+			window.scrollTo( pageXOffset, pageYOffset );
+		}, 100 );
 
 		return pageDocument;
 	}
