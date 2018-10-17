@@ -21,3 +21,9 @@
 	right: 20px;
 	top: 20px;
 }
+
+.modal-header {
+	margin-bottom: 10px;
+	font-size: 2em;
+	font-weight: bold;
+}
