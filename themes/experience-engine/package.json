@@ -26,6 +26,8 @@
 		"prop-types": "^15.6.2",
 		"react": "^16.5.2",
 		"react-dom": "^16.5.2",
+		"react-redux": "^5.0.7",
+		"redux": "^4.0.1",
 		"webpack": "^4.20.2",
 		"webpack-cli": "^3.1.2"
 	},
@@ -38,13 +40,21 @@
 			"plugin:jsx-a11y/recommended"
 		],
 		"env": {
-			"browser": true
+			"browser": true,
+			"node": true
 		},
 		"plugins": [
 			"import",
 			"react",
 			"jsx-a11y"
-		]
+		],
+		"rules": {
+			"indent": [
+				"error",
+				"tab",
+				{ "SwitchCase": 1 }
+			]
+		}
 	},
 	"browserslist": [
 		"Chrome > 55",

@@ -31,6 +31,7 @@ define( 'GREATERMEDIA_VERSION', $version );
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
 add_theme_support( 'secondstreet' );
+add_theme_support( 'firebase' );
 add_theme_support( 'html5', array( 'search-form' ) );
 
 include_once __DIR__ . '/vendor/autoload.php';
@@ -51,7 +52,6 @@ require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
 require_once __DIR__ . '/includes/class-gm-tinymce.php';
 require_once __DIR__ . '/includes/dfp.php';
 require_once __DIR__ . '/includes/shortcodes.php';
-require_once __DIR__ . '/includes/class-firebase.php';
 require_once __DIR__ . '/includes/class-wp-widget-triton-song-history.php';
 require_once __DIR__ . '/includes/class-wp-widget-recent-contests.php';
 require_once __DIR__ . '/includes/futuri.php';
@@ -144,13 +144,7 @@ function greatermedia_scripts_styles() {
 
 	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
 	wp_localize_script( 'greatermedia', 'platformConfig', array(
-		'firebase' => array(
-			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),
-			'authDomain'        => get_option( 'beasley_firebase_authDomain' ),
-			'databaseURL'       => get_option( 'beasley_firebase_databaseURL' ),
-			'storageBucket'     => get_option( 'beasley_firebase_storageBucket' ),
-			'messagingSenderId' => get_option( 'beasley_firebase_messagingSenderId' ),
-		),
+		'firebase' => apply_filters( 'firebase_settings', array() ),
 	) );
 
 	/**
