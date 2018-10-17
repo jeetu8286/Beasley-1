@@ -1,0 +1,23 @@
+.modal {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	background-color: rgba(0, 0, 0, .65);
+}
+
+.modal-content {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	background-color: rgb(255, 255, 255);
+	padding: 20px;
+}
+
+.modal-close {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+}

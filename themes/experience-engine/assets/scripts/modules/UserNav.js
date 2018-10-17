@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { showSignInModal, showSignUpModal } from '../redux/actions/modal';
 
 class UserNav extends Component {
 
@@ -14,6 +18,9 @@ class UserNav extends Component {
 		};
 
 		self.onAuthStateChanged = self.handleAuthStateChanged.bind( self );
+		self.onSignIn = self.handleSignIn.bind( self );
+		self.onSignUp = self.handleSignUp.bind( self );
+		self.onSignOut = self.handleSignOut.bind( self );
 	}
 
 	componentDidMount() {
@@ -28,6 +35,19 @@ class UserNav extends Component {
 		this.setState( { loading: false, user } );
 	}
 
+	handleSignIn() {
+		this.props.dispatch( showSignInModal() );
+	}
+
+	handleSignUp() {
+		this.props.dispatch( showSignUpModal() );
+	}
+
+	handleSignOut() {
+		const { firebase } = window;
+		firebase.auth().signOut();
+	}
+
 	renderLoadingState() {
 		return (
 			<div>Loading...</div>
@@ -36,15 +56,19 @@ class UserNav extends Component {
 
 	renderSignedInState() {
 		return (
-			<div>user...</div>
+			<div>
+				<button type="button" onClick={this.onSignOut}>Logout</button>
+			</div>
 		);
 	}
 
 	renderSignedOutState() {
+		const self = this;
+
 		return (
 			<div>
-				<button type="button">Login</button>
-				<button type="button">Register</button>
+				<button type="button" onClick={self.onSignIn}>Login</button>
+				<button type="button" onClick={self.onSignUp}>Register</button>
 			</div>
 		);
 	}
@@ -68,4 +92,8 @@ class UserNav extends Component {
 
 }
 
-export default UserNav;
+UserNav.propTypes = {
+	dispatch: PropTypes.func.isRequired,
+};
+
+export default connect()( UserNav );

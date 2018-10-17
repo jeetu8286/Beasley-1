@@ -95,7 +95,6 @@ class ContentDispatcher extends Component {
 		// parse HTML markup and grab content
 		const parser = new DOMParser();
 		const { data, pageXOffset, pageYOffset } = event.state;
-		console.log( event.state );
 		const pageDocument = parser.parseFromString( data, 'text/html' );
 		const content = pageDocument.querySelector( '#content' );
 		if ( !content ) {

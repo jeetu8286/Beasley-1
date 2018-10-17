@@ -19,4 +19,4 @@ export default function() {
 	};
 
 	return createStore( rootReducer, defaultState, composeEnhancers( applyMiddleware( ...middleware ) ) );
-};
+}
