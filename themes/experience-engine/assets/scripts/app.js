@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import ContentDispatcher from './modules/ContentDispatcher';
 import LivePlayer from './modules/LivePlayer';
+import User from './modules/User';
 
 import '../styles/main.css';
 
@@ -13,6 +14,7 @@ const app = (
 	<Fragment>
 		<ContentDispatcher />
 		<LivePlayer />
+		<User />
 	</Fragment>
 );
 
