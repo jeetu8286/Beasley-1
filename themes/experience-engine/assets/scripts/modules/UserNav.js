@@ -35,8 +35,6 @@ class UserNav extends Component {
 	}
 
 	renderSignedInState() {
-		const { user } = this.state;
-
 		return (
 			<div>user...</div>
 		);
@@ -70,4 +68,4 @@ class UserNav extends Component {
 
 }
 
-export default User;
+export default UserNav;
