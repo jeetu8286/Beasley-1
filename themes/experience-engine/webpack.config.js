@@ -4,6 +4,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const coreConfig = {
 	output: {
+//		filename: '[name].js',
+//		chunkFilename: '[name].js',
 		path: path.resolve(__dirname, 'bundle'),
 	},
 	module: {
@@ -46,6 +48,10 @@ const coreConfig = {
 	],
 	optimization: {
 		noEmitOnErrors: true,
+		splitChunks: {
+			chunks: 'all',
+			automaticNameDelimiter: '-',
+		},
 	},
 };
 

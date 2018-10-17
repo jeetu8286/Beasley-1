@@ -32,7 +32,9 @@ function ee_enqueue_front_scripts() {
 
 	wp_enqueue_style( 'ee-app', "{$base}/bundle/app.css", null, null );
 
-	wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", null, null, true );
+	wp_register_script( 'ee-app-vendors', "{$base}/bundle/vendors-app.js", null, null, true );
+	wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'ee-app-vendors' ), null, true );
+
 	wp_localize_script( 'ee-app', 'bbgiconfig', array(
 		'firebase' => apply_filters( 'firebase_settings', array() ),
 	) );
