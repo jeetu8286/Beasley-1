@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import firebase from 'firebase/app';
+import md5 from 'md5';
 
 import 'firebase/auth';
 
@@ -58,14 +59,23 @@ class UserNav extends Component {
 
 	renderSignedInState() {
 		const { currentUser } = firebase.auth();
+		if ( !currentUser ) {
+			return false;
+		}
+
+		const displayName = currentUser.displayName || currentUser.email;
+		let photo = currentUser.photoURL;
+		if ( !photo || !photo.length ) {
+			photo = `//www.gravatar.com/avatar/${md5( currentUser.email )}.jpg?s=100`;
+		}
 
 		return (
 			<div>
 				<div>
-					<img src={currentUser.photoURL} width="30" height="30" alt={currentUser.displayName} />
+					<img src={photo} width="30" height="30" alt={displayName} />
 				</div>
 				<div>
-					<span>{currentUser.displayName}</span>
+					<span>{displayName}</span>
 				</div>
 				<div>
 					<button type="button" onClick={this.onSignOut}>Sign Out</button>

@@ -26,7 +26,7 @@ const ModalDispatcher = ( { modal, payload, close } ) => {
 	}
 
 	return (
-		<div className="modal">
+		<div className={`modal ${( modal || '' ).toLowerCase()}`}>
 			<div className="modal-content">
 				<button type="button" className="modal-close" onClick={close}>X</button>
 				{component}

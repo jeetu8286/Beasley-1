@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 
 import { showRestoreModal } from '../redux/actions/modal';
 
@@ -20,7 +20,7 @@ class SignInModal extends PureComponent {
 		self.state = {
 			email: '',
 			password: '',
-			error: '',
+			message: '',
 		};
 
 		self.onFieldChange = self.handleFieldChange.bind( self );
@@ -42,7 +42,7 @@ class SignInModal extends PureComponent {
 
 		auth.signInWithEmailAndPassword( email, password )
 			.then( self.props.close )
-			.catch( error => self.setState( { error: error.message } ) );
+			.catch( error => self.setState( { message: error.message } ) );
 	}
 
 	handleRestoreClick() {
@@ -51,13 +51,13 @@ class SignInModal extends PureComponent {
 
 	render() {
 		const self = this;
-		const { email, password, error } = self.state;
+		const { email, password, message } = self.state;
 
 		return (
 			<Fragment>
 				<Header>Sign In</Header>
 
-				<Alert message={error} />
+				<Alert message={message} />
 
 				<form onSubmit={self.onFormSubmit}>
 					<div>
