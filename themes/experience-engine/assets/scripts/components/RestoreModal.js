@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 
 import Header from './modal/Header';
 import Alert from './modal/Alert';
