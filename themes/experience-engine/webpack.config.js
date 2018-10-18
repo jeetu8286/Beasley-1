@@ -1,8 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const coreConfig = {
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+const coreConfig = () => ({
 	output: {
 		path: path.resolve(__dirname, 'bundle'),
 	},
@@ -46,11 +48,15 @@ const coreConfig = {
 	],
 	optimization: {
 		noEmitOnErrors: true,
+		splitChunks: {
+			chunks: 'all',
+			automaticNameDelimiter: '-',
+		},
 	},
-};
+});
 
 const development = () => {
-	const config = Object.assign({}, coreConfig, {
+	const config = Object.assign(coreConfig(), {
 		name: 'dev-config',
 		mode: 'development',
 		devtool: 'eval',
@@ -60,7 +66,7 @@ const development = () => {
 };
 
 const watch = () => {
-	const config = Object.assign({}, coreConfig, {
+	const config = Object.assign(coreConfig(), {
 		name: 'watch-config',
 		mode: 'development',
 		devtool: 'eval',
@@ -71,7 +77,7 @@ const watch = () => {
 };
 
 const production = () => {
-	const config = Object.assign({}, coreConfig, {
+	const config = Object.assign(coreConfig(), {
 		name: 'prod-config',
 		mode: 'production',
 	});
@@ -79,4 +85,16 @@ const production = () => {
 	return config;
 };
 
-module.exports = [development(), watch(), production()];
+const analyze = () => {
+	const config = Object.assign(coreConfig(), {
+		name: 'analyze-config',
+		mode: 'production',
+	});
+
+	const analyzer = new BundleAnalyzerPlugin();
+	config.plugins.push(analyzer);
+
+	return config;
+};
+
+module.exports = [development(), watch(), production(), analyze()];

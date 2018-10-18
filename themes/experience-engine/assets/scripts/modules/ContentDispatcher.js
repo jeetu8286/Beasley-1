@@ -53,7 +53,9 @@ class ContentDispatcher extends Component {
 			return;
 		}
 
-		const { origin } = window.location;
+		const { location, history, pageXOffset, pageYOffset } = window;
+		const { origin } = location;
+
 		const link = linkNode.getAttribute( 'href' );
 		const linkOrigin = link.substring( 0, origin.length );
 
@@ -72,19 +74,25 @@ class ContentDispatcher extends Component {
 		// fetch next page
 		fetch( link )
 			.then( response => response.text().then( data => {
-				const { history, pageXOffset, pageYOffset } = window;
-				const state = { data, pageXOffset, pageYOffset };
-
-				const pageDocument = this.handlePageChange( {
+				const payload = {
 					state: {
 						data,
 						pageXOffset: 0,
 						pageYOffset: 0,
 					},
-				} );
+				};
 
-				history.pushState( state, pageDocument.title, response.url );
-				document.title = pageDocument.title;
+				const pageDocument = this.handlePageChange( payload );
+				if ( pageDocument ) {
+					const state = Object.assign( {}, history.state );
+					state.pageXOffset = pageXOffset;
+					state.pageYOffset = pageYOffset;
+
+					history.replaceState( state, document.title, location.href );
+					history.pushState( payload.state, pageDocument.title, response.url );
+
+					document.title = pageDocument.title;
+				}
 
 				NProgress.done();
 			} ) )
@@ -92,13 +100,17 @@ class ContentDispatcher extends Component {
 	}
 
 	handlePageChange( event ) {
+		if ( !event || !event.state ) {
+			return false;
+		}
+
 		// parse HTML markup and grab content
 		const parser = new DOMParser();
 		const { data, pageXOffset, pageYOffset } = event.state;
 		const pageDocument = parser.parseFromString( data, 'text/html' );
 		const content = pageDocument.querySelector( '#content' );
 		if ( !content ) {
-			return;
+			return false;
 		}
 
 		// update content state
