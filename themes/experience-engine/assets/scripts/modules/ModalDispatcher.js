@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL } from '../redux/actions/modal';
 
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
 
-const ModalDispatcher = ( { modal, payload, dispatch } ) => {
+const ModalDispatcher = ( { modal, payload, close } ) => {
 	let component = false;
 	switch ( modal ) {
 		case SIGNIN_MODAL:
-			component = <SignInModal {...payload} />;
+			component = <SignInModal close={close} {...payload} />;
 			break;
 		case SIGNUP_MODAL:
-			component = <SignUpModal {...payload} />;
+			component = <SignUpModal close={close} {...payload} />;
 			break;
 		default:
 			return false;
@@ -23,7 +24,7 @@ const ModalDispatcher = ( { modal, payload, dispatch } ) => {
 	return (
 		<div className="modal">
 			<div className="modal-content">
-				<button type="button" className="modal-close" onClick={() => dispatch( hideModal() )}>X</button>
+				<button type="button" className="modal-close" onClick={close}>X</button>
 				{component}
 			</div>
 		</div>
@@ -33,7 +34,7 @@ const ModalDispatcher = ( { modal, payload, dispatch } ) => {
 ModalDispatcher.propTypes = {
 	modal: PropTypes.string,
 	payload: PropTypes.shape( {} ),
-	dispatch: PropTypes.func.isRequired,
+	close: PropTypes.func.isRequired,
 };
 
 ModalDispatcher.defaultProps = {
@@ -43,4 +44,6 @@ ModalDispatcher.defaultProps = {
 
 const mapStateToProps = ( { modal } ) => ( { ...modal } );
 
-export default connect( mapStateToProps )( ModalDispatcher );
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( { close: hideModal }, dispatch );
+
+export default connect( mapStateToProps, mapDispatchToProps )( ModalDispatcher );

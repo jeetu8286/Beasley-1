@@ -56,6 +56,14 @@
 				{
 					"SwitchCase": 1
 				}
+			],
+			"jsx-a11y/label-has-for": [
+				"error",
+				{
+					"required": {
+						"every": ["id"]
+					}
+				}
 			]
 		}
 	},
