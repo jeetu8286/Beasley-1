@@ -68,7 +68,7 @@ class UserNav extends Component {
 					<span>{currentUser.displayName}</span>
 				</div>
 				<div>
-					<button type="button" onClick={this.onSignOut}>Logout</button>
+					<button type="button" onClick={this.onSignOut}>Sign Out</button>
 				</div>
 			</div>
 		);
@@ -79,8 +79,8 @@ class UserNav extends Component {
 
 		return (
 			<div>
-				<button type="button" onClick={self.onSignIn}>Login</button>
-				<button type="button" onClick={self.onSignUp}>Register</button>
+				<button type="button" onClick={self.onSignIn}>Sign In</button>
+				<button type="button" onClick={self.onSignUp}>Sign Up</button>
 			</div>
 		);
 	}
