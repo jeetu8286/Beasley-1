@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL } from '../redux/actions/modal';
+import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL, RESTORE_MODAL } from '../redux/actions/modal';
 
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
+import RestoreModal from '../components/RestoreModal';
 
 const ModalDispatcher = ( { modal, payload, close } ) => {
 	let component = false;
@@ -16,6 +17,9 @@ const ModalDispatcher = ( { modal, payload, close } ) => {
 			break;
 		case SIGNUP_MODAL:
 			component = <SignUpModal close={close} {...payload} />;
+			break;
+		case RESTORE_MODAL:
+			component = <RestoreModal close={close} {...payload} />;
 			break;
 		default:
 			return false;

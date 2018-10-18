@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Alert = ( { message } ) => {
+const Alert = ( { message, type } ) => {
 	if ( !message || !message.length ) {
 		return false;
 	}
 
 	return (
-		<div>
+		<div className={`modal-alert ${type}`}>
 			<b>{message}</b>
 		</div>
 	);
@@ -15,10 +15,12 @@ const Alert = ( { message } ) => {
 
 Alert.propTypes = {
 	message: PropTypes.string,
+	type: PropTypes.string,
 };
 
 Alert.defaultProps = {
 	message: '',
+	type: 'error',
 };
 
 export default Alert;

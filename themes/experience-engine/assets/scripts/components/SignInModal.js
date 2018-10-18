@@ -1,6 +1,10 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import firebase from 'firebase';
+
+import { showRestoreModal } from '../redux/actions/modal';
 
 import Header from './modal/Header';
 import Alert from './modal/Alert';
@@ -21,6 +25,7 @@ class SignInModal extends PureComponent {
 
 		self.onFieldChange = self.handleFieldChange.bind( self );
 		self.onFormSubmit = self.handleFormSubmit.bind( self );
+		self.onRestoreClick = self.handleRestoreClick.bind( self );
 	}
 
 	handleFieldChange( e ) {
@@ -36,8 +41,12 @@ class SignInModal extends PureComponent {
 		e.preventDefault();
 
 		auth.signInWithEmailAndPassword( email, password )
-			.then( self.close )
+			.then( self.props.close )
 			.catch( error => self.setState( { error: error.message } ) );
+	}
+
+	handleRestoreClick() {
+		this.props.restore();
 	}
 
 	render() {
@@ -61,6 +70,7 @@ class SignInModal extends PureComponent {
 					</div>
 					<div>
 						<button type="submit">Sign In</button>
+						<button type="button" onClick={self.onRestoreClick}>Forgot Password</button>
 					</div>
 				</form>
 
@@ -72,7 +82,10 @@ class SignInModal extends PureComponent {
 }
 
 SignInModal.propTypes = {
+	restore: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
 };
 
-export default SignInModal;
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( { restore: showRestoreModal }, dispatch );
+
+export default connect( null, mapDispatchToProps )( SignInModal );
