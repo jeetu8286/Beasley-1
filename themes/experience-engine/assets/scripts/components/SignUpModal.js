@@ -47,16 +47,9 @@ class SignUpModal extends PureComponent {
 		e.preventDefault();
 
 		auth.createUserWithEmailAndPassword( emailAddress, password )
-			.then( ( response ) => {
-				const { user } = response;
-				return user.updateProfile( userData ).then( () => user.reload() );
-			} )
-			.then( () => {
-				self.props.close();
-			} )
-			.catch( ( error ) => {
-				self.setState( { error: error.message } ) ;
-			} );
+			.then( response => response.user.updateProfile( userData ) )
+			.then( () => self.props.close() )
+			.catch( error => self.setState( { error: error.message } ) );
 	}
 
 	render() {
