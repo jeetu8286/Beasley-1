@@ -164,7 +164,7 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 
 		$post_id = wp_insert_post( $args, true );
 		if ( ! is_wp_error( $post_id ) ) {
-			omny_import_clip_image( $clip['ImageUrl'], $post_id );
+			// omny_import_clip_image( $clip['ImageUrl'], $post_id );
 			$is_wp_cli && \WP_CLI::success( sprintf( 'Imported %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
 		}
 	}
