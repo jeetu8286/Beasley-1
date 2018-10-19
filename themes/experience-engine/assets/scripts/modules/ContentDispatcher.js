@@ -108,12 +108,9 @@ class ContentDispatcher extends Component {
 		const parser = new DOMParser();
 		const { data, pageXOffset, pageYOffset } = event.state;
 		const pageDocument = parser.parseFromString( data, 'text/html' );
-		const content = pageDocument.querySelector( '#content' );
-		if ( !content ) {
-			return false;
-		}
 
 		// update content state
+		const content = pageDocument.querySelector( '#content' );
 		this.setState( this.populateStateFromContent( content ) );
 
 		// scroll to the top of the page
@@ -131,28 +128,34 @@ class ContentDispatcher extends Component {
 	}
 
 	populateStateFromContent( container ) {
-		const state = {};
-		const embeds = [];
+		const state = {
+			embeds: [],
+			content: '',
+		};
 
-		container.querySelectorAll( '.secondstreet-embed' ).forEach( ( element ) => {
-			const placeholder = this.generatePlaceholder();
+		if ( container ) {
+			const embeds = [];
 
-			embeds.push( {
-				type: 'secondstreet',
-				params: {
-					placeholder: placeholder.getAttribute( 'id' ),
-					script: element.getAttribute( 'src' ),
-					embed: element.getAttribute( 'data-ss-embed' ),
-					opguid: element.getAttribute( 'data-opguid' ),
-					routing: element.getAttribute( 'data-routing' ),
-				},
+			container.querySelectorAll( '.secondstreet-embed' ).forEach( ( element ) => {
+				const placeholder = this.generatePlaceholder();
+
+				embeds.push( {
+					type: 'secondstreet',
+					params: {
+						placeholder: placeholder.getAttribute( 'id' ),
+						script: element.getAttribute( 'src' ),
+						embed: element.getAttribute( 'data-ss-embed' ),
+						opguid: element.getAttribute( 'data-opguid' ),
+						routing: element.getAttribute( 'data-routing' ),
+					},
+				} );
+
+				element.parentNode.replaceChild( placeholder, element );
 			} );
 
-			element.parentNode.replaceChild( placeholder, element );
-		} );
-
-		state.embeds = embeds;
-		state.content = container.innerHTML;
+			state.embeds = embeds;
+			state.content = container.innerHTML;
+		}
 
 		return state;
 	}
