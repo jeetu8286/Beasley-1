@@ -1,0 +1,28 @@
+#live-player {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background-color: #efefef;
+	border-top: 1px solid #ddd;
+	padding: 20px;
+}
+
+#live-player .player .play-btn,
+#live-player .player .pause-btn,
+#live-player .player .resume-btn,
+#live-player .player .loading-btn {
+	display: none;
+}
+
+#live-player .player.LIVE_PAUSE .resume-btn,
+#live-player .player.LIVE_PLAYING .pause-btn,
+#live-player .player.LIVE_STOP .play-btn,
+#live-player .player.LIVE_FAILED .play-btn,
+#live-player .player.LIVE_BUFFERING .loading-btn,
+#live-player .player.LIVE_CONNECTING .loading-btn,
+#live-player .player.LIVE_RECONNECTING .loading-btn,
+#live-player .player.STREAM_GEO_BLOCKED .play-btn,
+#live-player .player.STATION_NOT_FOUND .play-btn {
+	display: block;
+}
