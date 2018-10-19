@@ -142,7 +142,7 @@ function greatermedia_scripts_styles() {
 
 	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
 
-	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'gmlp-js', 'gmr-gallery', 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
 	wp_localize_script( 'greatermedia', 'platformConfig', array(
 		'firebase' => apply_filters( 'firebase_settings', array() ),
 	) );
@@ -160,6 +160,7 @@ function greatermedia_scripts_styles() {
 
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
+	wp_enqueue_style( 'gmr-gallery' );
 
 	// YARPP styles are not being used, so let's get rid of them!
 	wp_dequeue_style( 'yarppWidgetCss' );

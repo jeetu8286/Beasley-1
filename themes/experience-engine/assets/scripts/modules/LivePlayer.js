@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
+
+import Player from '../components/Player';
 
 const LivePlayer = () => {
 	const container = document.getElementById( 'live-player' );
@@ -7,7 +9,13 @@ const LivePlayer = () => {
 		return false;
 	}
 
-	return ReactDOM.createPortal( <div />, container );
+	const children = (
+		<Fragment>
+			<Player />
+		</Fragment>
+	);
+
+	return ReactDOM.createPortal( children, container );
 };
 
 export default LivePlayer;
