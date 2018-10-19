@@ -26,3 +26,16 @@
 #live-player .player.STATION_NOT_FOUND .play-btn {
 	display: block;
 }
+
+.cue-point-title {
+
+}
+
+.cue-point-artist {
+
+}
+
+.cue-point-title + .cue-point-artist:before {
+	content: '-';
+	margin: 0 10px;
+}

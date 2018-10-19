@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 
 const STATUSES = {
 	LIVE_PAUSE: 'Paused',
@@ -12,7 +12,7 @@ const STATUSES = {
 	STATION_NOT_FOUND: 'Station not found',
 };
 
-class Player extends PureComponent {
+class Player extends Component {
 
 	static _errorCatcher( prefix ) {
 		return ( e ) => {
@@ -37,7 +37,20 @@ class Player extends PureComponent {
 			station: Object.keys( streams || {} )[0] || '',
 			status: 'LIVE_STOP',
 			volume: 100,
+			cuePoint: false,
 		};
+
+		self.onPlayClick = self.handlePlayClick.bind( self );
+		self.onPauseClick = self.handlePauseClick.bind( self );
+		self.onResumeClick = self.handleResumeClick.bind( self );
+		self.onVolumeChange = self.handleVolumeChange.bind( self );
+		self.onStreamStart = self.handleStreamStart.bind( self );
+		self.onStreamStatus = self.handleStreamStatus.bind( self );
+		self.onTrackCuePoint = self.handleTrackCuePoint.bind( self );
+	}
+
+	componentDidMount() {
+		const self = this;
 
 		// @see: https://userguides.tritondigital.com/spc/tdplay2/
 		self.player = new window.TDSdk( {
@@ -68,13 +81,6 @@ class Player extends PureComponent {
 			configurationError: Player._errorCatcher( 'Configuration Error' ),
 			moduleError: Player._errorCatcher( 'Module Error' ),
 		} );
-
-		self.onPlayClick = self.handlePlayClick.bind( self );
-		self.onPauseClick = self.handlePauseClick.bind( self );
-		self.onResumeClick = self.handleResumeClick.bind( self );
-		self.onVolumeChange = self.handleVolumeChange.bind( self );
-		self.onStreamStart = self.handleStreamStart.bind( self );
-		self.onStreamStatus = self.handleStreamStatus.bind( self );
 	}
 
 	handlePlayerReady() {
@@ -83,6 +89,12 @@ class Player extends PureComponent {
 
 		player.addEventListener( 'stream-start', self.onStreamStart );
 		player.addEventListener( 'stream-status', self.onStreamStatus );
+
+		player.addEventListener( 'track-cue-point', self.onTrackCuePoint );
+		player.addEventListener( 'speech-cue-point', self.onTrackCuePoint );
+		player.addEventListener( 'custom-cue-point', self.onTrackCuePoint );
+		player.addEventListener( 'ad-break-cue-point', self.onTrackCuePoint );
+		player.addEventListener( 'ad-break-cue-point-complete', self.onTrackCuePoint );
 	}
 
 	handlePlayClick() {
@@ -131,16 +143,51 @@ class Player extends PureComponent {
 		this.setState( { status: data.code } );
 	}
 
+	handleTrackCuePoint( e ) {
+		const { data } = e;
+		const { cuePoint } = data || {};
+
+		this.setState( { cuePoint } );
+	}
+
+	getCuePointInfo() {
+		const { cuePoint } = this.state;
+		if ( !cuePoint ) {
+			return false;
+		}
+
+		let info = [];
+		const { artistName, cueTitle, type } = cuePoint;
+		if ( 'ad' === type ) {
+			return 'Ad Break';
+		}
+
+		if ( cueTitle && cueTitle.length ) {
+			info.push( <span key="cue-title" className="cue-point-title">{cueTitle}</span> );
+		}
+
+		if ( artistName && artistName.length ) {
+			info.push( <span key="cue-artist" className="cue-point-artist">{artistName}</span> );
+		}
+
+		return info.length ? info : false;
+	}
+
 	render() {
 		const self = this;
 		const { volume, station, status } = self.state;
 
-		const info = 'LIVE_PLAYING' === status
-			? '{song} - {artist}'
-			: STATUSES[status] || '';
+		let info = STATUSES[status] || '';
+		if ( 'LIVE_PLAYING' === status ) {
+			const cuePoint = this.getCuePointInfo();
+			if ( cuePoint ) {
+				info = cuePoint;
+			}
+		}
 
 		return (
 			<div className={`player ${status}`}>
+				<div id="td_container" />
 				<div id="audio-ad-inplayer" />
 
 				<button type="button" className="play-btn" onClick={self.onPlayClick}>Play</button>
