@@ -1,6 +1,7 @@
 body {
 	color: var(--global-theme-font-primary);
 	font-family: var(--global-font-family-primary);
+	font-weight: 300;
 }
 
 body,
@@ -10,6 +11,7 @@ select,
 textarea {
 	line-height: 1.4;
 }
+
 
 h1,
 h2,
@@ -21,8 +23,21 @@ h6 {
 	line-height: 1.1;
 }
 
+h1 {
+	font-weight: 700;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+}
+
 a {
 	color: var(--brand-primary);
+	font-weight: 500;
 	text-decoration: none;
 
 	&:hover,
