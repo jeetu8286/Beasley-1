@@ -50,9 +50,20 @@ const coreConfig = (options = {}) => ({
 								const { postcss } = options;
 								const { plugins } = postcss || {};
 
+								const importOptions = {
+									root: loader.resourcePath,
+								};
+
+								// https://github.com/csstools/postcss-preset-env#usage
+								const envOptions = {
+									features: {
+										'nesting-rules': true,
+									},
+								};
+
 								return [
-									require('postcss-import')({ root: loader.resourcePath }),
-									require('postcss-preset-env')(),
+									require('postcss-import')(importOptions),
+									require('postcss-preset-env')(envOptions),
 									...(plugins || []),
 								];
 							},
