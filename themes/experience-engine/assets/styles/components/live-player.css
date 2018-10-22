@@ -1,4 +1,6 @@
 #live-player {
+	display: flex;
+	justify-content: space-between;
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -6,6 +8,10 @@
 	background-color: #efefef;
 	border-top: 1px solid #ddd;
 	padding: 20px;
+}
+
+.player {
+	min-width: 60%;
 }
 
 #live-player .player .play-btn,
@@ -38,4 +44,9 @@
 .cue-point-title + .cue-point-artist:before {
 	content: '-';
 	margin: 0 10px;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-around;
 }

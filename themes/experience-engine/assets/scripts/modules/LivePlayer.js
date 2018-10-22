@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 
-import Player from '../components/Player';
+import Player from '../components/player/Player';
+import Stations from '../components/player/Stations';
 
 const LivePlayer = () => {
 	const container = document.getElementById( 'live-player' );
@@ -12,6 +13,7 @@ const LivePlayer = () => {
 	const children = (
 		<Fragment>
 			<Player />
+			<Stations />
 		</Fragment>
 	);
 

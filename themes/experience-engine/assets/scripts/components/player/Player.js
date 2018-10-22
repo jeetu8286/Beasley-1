@@ -190,19 +190,23 @@ class Player extends Component {
 				<div id="td_container" />
 				<div id="audio-ad-inplayer" />
 
-				<button type="button" className="play-btn" onClick={self.onPlayClick}>Play</button>
-				<button type="button" className="pause-btn" onClick={self.onPauseClick}>Pause</button>
-				<button type="button" className="resume-btn" onClick={self.onResumeClick}>Resume</button>
-				<button type="button" className="loading-btn">Loading</button>
+				<div className="controls">
+					<div>
+						<button type="button" className="play-btn" onClick={self.onPlayClick}>Play</button>
+						<button type="button" className="pause-btn" onClick={self.onPauseClick}>Pause</button>
+						<button type="button" className="resume-btn" onClick={self.onResumeClick}>Resume</button>
+						<button type="button" className="loading-btn">Loading</button>
+					</div>
 
-				<div>
-					<b>{station}</b>
-					<div>{info}</div>
-				</div>
+					<div>
+						<b>{station}</b>
+						<div>{info}</div>
+					</div>
 
-				<div>
-					<label htmlFor="audio-volume">Volume:</label>
-					<input type="range" id="audio-volume" min="0" max="100" step="1" value={volume} onChange={self.onVolumeChange} />
+					<div>
+						<label htmlFor="audio-volume">Volume:</label>
+						<input type="range" id="audio-volume" min="0" max="100" step="1" value={volume} onChange={self.onVolumeChange} />
+					</div>
 				</div>
 			</div>
 		);
