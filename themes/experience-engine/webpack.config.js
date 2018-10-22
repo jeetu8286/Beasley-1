@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const coreConfig = () => ({
+const coreConfig = (options = {}) => ({
 	output: {
 		path: path.resolve(__dirname, 'bundle'),
 	},
@@ -36,9 +36,28 @@ const coreConfig = () => ({
 			{
 				test: /\.css$/,
 				use: [
-					{ loader: MiniCssExtractPlugin.loader },
-					{ loader: 'css-loader' },
-					{ loader: 'postcss-loader' },
+					{
+						loader: MiniCssExtractPlugin.loader,
+					},
+					{
+						loader: 'css-loader',
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							ident: 'postcss',
+							plugins(loader) {
+								const { postcss } = options;
+								const { plugins } = postcss || {};
+
+								return [
+									require('postcss-import')({ root: loader.resourcePath }),
+									require('postcss-preset-env')(),
+									...(plugins || []),
+								];
+							},
+						},
+					},
 				],
 			},
 		],
@@ -77,7 +96,15 @@ const watch = () => {
 };
 
 const production = () => {
-	const config = Object.assign(coreConfig(), {
+	const options = {
+		postcss: {
+			plugins: [
+				require('cssnano')(),
+			],
+		},
+	};
+
+	const config = Object.assign(coreConfig(options), {
 		name: 'prod-config',
 		mode: 'production',
 	});
