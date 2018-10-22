@@ -5,9 +5,9 @@ import { bindActionCreators } from 'redux';
 
 import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL, RESTORE_MODAL } from '../redux/actions/modal';
 
-import SignInModal from '../components/SignInModal';
-import SignUpModal from '../components/SignUpModal';
-import RestoreModal from '../components/RestoreModal';
+import SignInModal from '../components/modals/SignIn';
+import SignUpModal from '../components/modals/SignUp';
+import RestoreModal from '../components/modals/RestorePassword';
 
 const ModalDispatcher = ( { modal, payload, close } ) => {
 	let component = false;

@@ -1,10 +1,10 @@
 import React, { PureComponent, Fragment } from 'react';
 import firebase from 'firebase/app';
 
-import Header from './modal/Header';
-import Alert from './modal/Alert';
+import Header from './elements/Header';
+import Alert from './elements/Alert';
 
-class RestoreModal extends PureComponent {
+class RestorePassword extends PureComponent {
 
 	constructor( props ) {
 		super( props );
@@ -73,4 +73,4 @@ class RestoreModal extends PureComponent {
 
 }
 
-export default RestoreModal;
+export default RestorePassword;

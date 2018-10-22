@@ -1,7 +1,7 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import delayed from '../library/delayed-component';
+import delayed from '../../library/delayed-component';
 
 class SecondStreet extends PureComponent {
 
