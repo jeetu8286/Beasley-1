@@ -2,11 +2,11 @@ import React, { PureComponent, Fragment } from 'react';
 import firebase from 'firebase/app';
 import md5 from 'md5';
 
-import Header from './modal/Header';
-import Alert from './modal/Alert';
+import Header from './elements/Header';
+import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
 
-class SignUpModal extends PureComponent {
+class SignUp extends PureComponent {
 
 	constructor( props ) {
 		super( props );
@@ -110,4 +110,4 @@ class SignUpModal extends PureComponent {
 
 }
 
-export default SignUpModal;
+export default SignUp;

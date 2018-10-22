@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import NProgress from 'nprogress';
 
-import SecondStreet from '../components/SecondStreet';
+import SecondStreet from '../components/embeds/SecondStreet';
 
 class ContentDispatcher extends Component {
 
