@@ -1,5 +1,6 @@
 import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 
+import playerReducer, { DEFAULT_STATE as PLAYER_DEFAULT_STATE } from './reducers/player';
 import modalReducer, { DEFAULT_STATE as MODAL_DEFAULT_STATE } from './reducers/modal';
 
 export default function() {
@@ -11,10 +12,12 @@ export default function() {
 	}
 
 	const rootReducer = combineReducers( {
+		player: playerReducer,
 		modal: modalReducer,
 	} );
 
 	const defaultState = {
+		player: PLAYER_DEFAULT_STATE,
 		modal: MODAL_DEFAULT_STATE,
 	};
 

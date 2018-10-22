@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import NProgress from 'nprogress';
 
-import SecondStreet from '../components/embeds/SecondStreet';
+import AudioEmbed from '../components/embeds/Audio';
+import SecondStreetEmbed from '../components/embeds/SecondStreet';
 
 class ContentDispatcher extends Component {
 
@@ -123,11 +124,12 @@ class ContentDispatcher extends Component {
 
 	generatePlaceholder() {
 		const element = document.createElement( 'div' );
-		element.setAttribute( 'id', `container-${++this.embedsIndex}` );
+		element.setAttribute( 'id', `__cd-${++this.embedsIndex}` );
 		return element;
 	}
 
 	populateStateFromContent( container ) {
+		const self = this;
 		const state = {
 			embeds: [],
 			content: '',
@@ -135,29 +137,60 @@ class ContentDispatcher extends Component {
 
 		if ( container ) {
 			const embeds = [];
-
-			container.querySelectorAll( '.secondstreet-embed' ).forEach( ( element ) => {
-				const placeholder = this.generatePlaceholder();
-
-				embeds.push( {
-					type: 'secondstreet',
-					params: {
-						placeholder: placeholder.getAttribute( 'id' ),
-						script: element.getAttribute( 'src' ),
-						embed: element.getAttribute( 'data-ss-embed' ),
-						opguid: element.getAttribute( 'data-opguid' ),
-						routing: element.getAttribute( 'data-routing' ),
-					},
-				} );
-
-				element.parentNode.replaceChild( placeholder, element );
-			} );
+			self.replaceSecondStreetEmbeds( container, embeds );
+			self.replaceAudioEmbeds( container, embeds );
 
 			state.embeds = embeds;
 			state.content = container.innerHTML;
 		}
 
 		return state;
+	}
+
+	replaceSecondStreetEmbeds( container, embeds ) {
+		const elements = container.querySelectorAll( '.secondstreet-embed' );
+		for ( let i = 0, len = elements.length; i < len; i++ ) {
+			const element = elements[i];
+			const placeholder = this.generatePlaceholder();
+
+			embeds.push( {
+				type: 'secondstreet',
+				params: {
+					placeholder: placeholder.getAttribute( 'id' ),
+					script: element.getAttribute( 'src' ),
+					embed: element.getAttribute( 'data-ss-embed' ),
+					opguid: element.getAttribute( 'data-opguid' ),
+					routing: element.getAttribute( 'data-routing' ),
+				},
+			} );
+
+			element.parentNode.replaceChild( placeholder, element );
+		}
+	}
+
+	replaceAudioEmbeds( container, embeds ) {
+		const elements = container.querySelectorAll( '.wp-audio-shortcode' );
+		for ( let i = 0, len = elements.length; i < len; i++ ) {
+			const element = elements[i];
+			const placeholder = this.generatePlaceholder();
+
+			const sources = {};
+			const tags = element.getElementsByTagName( 'source' );
+			for ( let i  = 0, len = tags.length; i < len; i++ ) {
+				sources[tags[i].getAttribute( 'src' )] = tags[i].getAttribute( 'type' );
+			}
+
+			embeds.push( {
+				type: 'audio',
+				params: {
+					placeholder: placeholder.getAttribute( 'id' ),
+					src: element.getAttribute( 'src' ) || '',
+					sources,
+				}
+			} );
+
+			element.parentNode.replaceChild( placeholder, element );
+		}
 	}
 
 	render() {
@@ -170,7 +203,9 @@ class ContentDispatcher extends Component {
 
 		const embedComponents = embeds.map( ( embed ) => {
 			if ( 'secondstreet' === embed.type ) {
-				return <SecondStreet key={embed.params.placeholder} {...embed.params} />;
+				return <SecondStreetEmbed key={embed.params.placeholder} {...embed.params} />;
+			} else if ( 'audio' === embed.type ) {
+				return <AudioEmbed key={embed.params.placeholder} {...embed.params} />;
 			}
 
 			return false;
