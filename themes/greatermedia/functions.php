@@ -32,6 +32,7 @@ add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
 add_theme_support( 'secondstreet' );
 add_theme_support( 'firebase' );
+add_theme_support( 'legacy-live-player' );
 add_theme_support( 'html5', array( 'search-form' ) );
 
 include_once __DIR__ . '/vendor/autoload.php';
@@ -142,7 +143,7 @@ function greatermedia_scripts_styles() {
 
 	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
 
-	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'gmedia_keywords-autocomplete-script', 'gmlp-js', 'gmr-gallery', 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
 	wp_localize_script( 'greatermedia', 'platformConfig', array(
 		'firebase' => apply_filters( 'firebase_settings', array() ),
 	) );
@@ -150,13 +151,12 @@ function greatermedia_scripts_styles() {
 	/**
 	 * Insert the global Simpli.fi retargeting script tag.
 	 */
-	wp_enqueue_script(
-		'simpli-fi-global-retargeting',
-		'https://tag.simpli.fi/sifitag/273421f0-841f-0135-dc80-06659b33d47c',
-		array(),
-		null,
-		true
-	);
+	wp_enqueue_script( 'simpli-fi-global-retargeting', '//tag.simpli.fi/sifitag/273421f0-841f-0135-dc80-06659b33d47c', array(), null, true );
+
+	wp_enqueue_script( 'liveplayer' );
+	wp_enqueue_script( 'gmlp-js' );
+	wp_enqueue_script( 'gmr-gallery' );
+	wp_enqueue_script( 'gmedia_keywords-autocomplete-script' );
 
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
