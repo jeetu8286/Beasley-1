@@ -44,8 +44,8 @@ function omny_init() {
 }
 
 function omny_enqueue_scripts() {
-	wp_enqueue_script( 'playerjs', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
-	wp_enqueue_script( 'omny', plugins_url( '/player.js', __FILE__ ), array( 'jquery', 'playerjs' ), OMNY_STUDIO_VERSION, true );
+	wp_register_script( 'playerjs', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
+	wp_register_script( 'omny', plugins_url( '/player.js', __FILE__ ), array( 'jquery', 'playerjs' ), OMNY_STUDIO_VERSION, true );
 }
 
 function omny_register_oembed( $providers ) {
@@ -316,7 +316,7 @@ add_action( 'admin_init', 'omny_register_scheduled_events' );
 add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
 add_action( 'omny_start_import_episodes', 'omny_start_import_episodes' );
 add_action( 'omny_run_import_episodes', 'omny_run_import_episodes' );
-add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts', 1 );
 
 add_filter( 'oembed_providers', 'omny_register_oembed', 100 );
 add_filter( 'beasley-episode-audio-url', 'omny_get_episode_audio_url', 10, 2 );
