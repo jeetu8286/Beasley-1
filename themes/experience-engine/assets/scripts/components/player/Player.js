@@ -84,9 +84,22 @@ class Player extends Component {
 
 	componentDidUpdate( prevProps ) {
 		const self = this;
-		if ( prevProps.station !== self.props.station ) {
+		const { station, audio } = self.props;
+
+		if ( prevProps.station !== station ) {
+			if ( self.audioPlayer ) {
+				self.audioPlayer.pause();
+				self.audioPlayer = null;
+			}
+
 			self.player.stop();
 			self.handlePlayClick();
+		} else if ( prevProps.audio !== audio && audio && audio.length ) {
+			self.player.stop();
+
+			self.audioPlayer = new Audio( audio );
+			self.audioPlayer.play();
+			console.log( self.audioPlayer.audioTracks );
 		}
 	}
 
@@ -223,9 +236,13 @@ class Player extends Component {
 }
 
 Player.propTypes = {
+	audio: PropTypes.string.isRequired,
 	station: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ( { player } ) => ( { station: player.station } );
+const mapStateToProps = ( { player } ) => ( {
+	station: player.station,
+	audio: player.audio,
+} );
 
 export default connect( mapStateToProps )( Player );
