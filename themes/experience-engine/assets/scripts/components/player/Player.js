@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const STATUSES = {
 	LIVE_PAUSE: 'Paused',
@@ -30,11 +32,8 @@ class Player extends Component {
 		super( props );
 
 		const self = this;
-		const { bbgiconfig } = window;
-		const { streams } = bbgiconfig.livePlayer || {};
 
 		self.state = {
-			station: Object.keys( streams || {} )[0] || '',
 			status: 'LIVE_STOP',
 			volume: 100,
 			cuePoint: false,
@@ -83,6 +82,14 @@ class Player extends Component {
 		} );
 	}
 
+	componentDidUpdate( prevProps ) {
+		const self = this;
+		if ( prevProps.station !== self.props.station ) {
+			self.player.stop();
+			self.handlePlayClick();
+		}
+	}
+
 	handlePlayerReady() {
 		const self = this;
 		const { player } = self;
@@ -99,8 +106,8 @@ class Player extends Component {
 
 	handlePlayClick() {
 		const self = this;
-		const { player, state } = self;
-		const { station } = state;
+		const { player, props } = self;
+		const { station } = props;
 
 		player.play( { station } );
 	}
@@ -175,7 +182,8 @@ class Player extends Component {
 
 	render() {
 		const self = this;
-		const { volume, station, status } = self.state;
+		const { volume, status } = self.state;
+		const { station } = self.props;
 
 		let info = STATUSES[status] || '';
 		if ( 'LIVE_PLAYING' === status ) {
@@ -214,4 +222,10 @@ class Player extends Component {
 
 }
 
-export default Player;
+Player.propTypes = {
+	station: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = ( { player } ) => ( { station: player.station } );
+
+export default connect( mapStateToProps )( Player );
