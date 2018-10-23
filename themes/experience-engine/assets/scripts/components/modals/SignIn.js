@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import firebase from 'firebase/app';
 
-import { showRestoreModal } from '../redux/actions/modal';
+import { showRestoreModal } from '../../redux/actions/modal';
 
-import Header from './modal/Header';
-import Alert from './modal/Alert';
+import Header from './elements/Header';
+import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
 
-class SignInModal extends PureComponent {
+class SignIn extends PureComponent {
 
 	constructor( props ) {
 		super( props );
@@ -81,11 +81,11 @@ class SignInModal extends PureComponent {
 
 }
 
-SignInModal.propTypes = {
+SignIn.propTypes = {
 	restore: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( { restore: showRestoreModal }, dispatch );
 
-export default connect( null, mapDispatchToProps )( SignInModal );
+export default connect( null, mapDispatchToProps )( SignIn );

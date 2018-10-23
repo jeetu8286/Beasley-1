@@ -130,5 +130,3 @@ class GMLP_Player {
 	}
 
 }
-
-GMLP_Player::init();

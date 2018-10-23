@@ -159,7 +159,7 @@ class Player extends Component {
 		let info = [];
 		const { artistName, cueTitle, type } = cuePoint;
 		if ( 'ad' === type ) {
-			return 'Ad Break';
+			return false;
 		}
 
 		if ( cueTitle && cueTitle.length ) {
