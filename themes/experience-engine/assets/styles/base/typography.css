@@ -23,6 +23,7 @@ h5,
 h6 {
 	font-family: var(--global-font-family-primary);
 	line-height: 1.1;
+	margin-top: 0;
 }
 
 h2,
