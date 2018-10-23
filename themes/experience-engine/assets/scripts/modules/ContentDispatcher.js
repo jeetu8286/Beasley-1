@@ -5,6 +5,12 @@ import NProgress from 'nprogress';
 import AudioEmbed from '../components/embeds/Audio';
 import SecondStreetEmbed from '../components/embeds/SecondStreet';
 
+const specialPages = [
+	'/wp-admin/',
+	'/wp-signup.php',
+	'/wp-login.php',
+];
+
 class ContentDispatcher extends Component {
 
 	constructor( props ) {
@@ -61,7 +67,12 @@ class ContentDispatcher extends Component {
 		const linkOrigin = link.substring( 0, origin.length );
 
 		// return if different origin or a relative link that doesn't start from forward slash
-		if ( ( origin !== linkOrigin && !link.match( /^\/\w+/ ) ) || -1 < link.indexOf( '/wp-admin/' ) ) {
+		if ( ( origin !== linkOrigin && !link.match( /^\/\w+/ ) ) ) {
+			return;
+		}
+
+		// return if it is an admin link or a link to a special page
+		if ( specialPages.find( url => -1 < link.indexOf( url ) ) ) {
 			return;
 		}
 
