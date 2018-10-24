@@ -56,7 +56,7 @@ const Info = ( { station, status, cuePoint } ) => {
 Info.propTypes = {
 	station: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
-	cuePoint: PropTypes.shape( {} ).isRequired,
+	cuePoint: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ).isRequired,
 };
 
 const mapStateToProps = ( { player } ) => ( {

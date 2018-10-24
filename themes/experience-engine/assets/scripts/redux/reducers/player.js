@@ -1,16 +1,29 @@
 import * as actions from '../actions/player';
+import { getStorage } from '../../library/local-storage';
 
+const localStorage = getStorage( 'liveplayer' );
 const { bbgiconfig } = window;
 const { streams } = bbgiconfig.livePlayer || {};
 
 let tdplayer = null;
 let mp3player = null;
 
+const parseVolume = ( value ) => {
+	let volume = parseInt( value, 10 );
+	if ( Number.isNaN( volume ) || 100 < volume ) {
+		volume = 100;
+	} else if ( 0 > volume ) {
+		volume = 0;
+	}
+
+	return volume;
+};
+
 export const DEFAULT_STATE = {
 	status: 'LIVE_STOP',
 	audio: '',
-	station: Object.keys( streams || {} )[0] || '', // first station by default
-	volume: 100,
+	station: localStorage.getItem( 'station' ) || Object.keys( streams || {} )[0] || '', // first station by default
+	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
 	cuePoint: false,
 };
 
@@ -30,17 +43,22 @@ const reducer = ( state = {}, action = {} ) => {
 
 			return Object.assign( {}, state, { audio: action.audio } );
 
-		case actions.ACTION_PLAY_STATION:
+		case actions.ACTION_PLAY_STATION: {
+			const { station } = action;
+
 			if ( mp3player ) {
 				mp3player.pause();
 			}
 
 			if ( tdplayer ) {
 				tdplayer.stop();
-				tdplayer.play( { station: action.station } );
+				tdplayer.play( { station } );
 			}
 
-			return Object.assign( {}, state, { station: action.station } );
+			localStorage.setItem( 'station', station );
+
+			return Object.assign( {}, state, { station } );
+		}
 
 		case actions.ACTION_PAUSE:
 			if ( mp3player ) {
@@ -62,12 +80,8 @@ const reducer = ( state = {}, action = {} ) => {
 			return Object.assign( {}, state, { status: action.status } );
 
 		case actions.ACTION_SET_VOLUME: {
-			let volume = parseInt( action.volume, 10 );
-			if ( Number.isNaN( volume ) || 100 < volume ) {
-				volume = 100;
-			} else if ( 0 > volume ) {
-				volume = 0;
-			}
+			const volume = parseVolume( action.volume );
+			localStorage.setItem( 'volume', volume );
 
 			if ( mp3player ) {
 				mp3player.volume = volume;
