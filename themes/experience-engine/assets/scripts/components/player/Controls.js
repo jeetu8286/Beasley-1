@@ -1,21 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { playStation, pause, resume } from '../../redux/actions/player';
-
-const Controls = ( props ) => (
-	<div className={props.status}>
-		<button type="button" className="play-btn" onClick={() => props.playStation( props.station )}>
+const Controls = ( { status, play, pause, resume } ) => (
+	<div className={status}>
+		<button type="button" className="play-btn" onClick={play}>
 			Play
 		</button>
 
-		<button type="button" className="pause-btn" onClick={() => props.pause()}>
+		<button type="button" className="pause-btn" onClick={pause}>
 			Pause
 		</button>
 
-		<button type="button" className="resume-btn" onClick={() => props.resume()}>
+		<button type="button" className="resume-btn" onClick={resume}>
 			Resume
 		</button>
 
@@ -26,22 +22,16 @@ const Controls = ( props ) => (
 );
 
 Controls.propTypes = {
-	station: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
-	playStation: PropTypes.func.isRequired,
-	pause: PropTypes.func.isRequired,
-	resume: PropTypes.func.isRequired,
+	play: PropTypes.func,
+	pause: PropTypes.func,
+	resume: PropTypes.func,
 };
 
-const mapStateToProps = ( { player } ) => ( {
-	station: player.station,
-	status: player.status,
-} );
+Controls.defaultProps = {
+	play: () => {},
+	pause: () => {},
+	resume: () => {},
+};
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
-	playStation,
-	pause,
-	resume,
-}, dispatch );
-
-export default connect( mapStateToProps, mapDispatchToProps )( Controls );
+export default Controls;

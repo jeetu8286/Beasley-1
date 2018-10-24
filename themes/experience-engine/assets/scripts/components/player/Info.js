@@ -2,16 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const STATUSES = {
-	LIVE_PAUSE: 'Paused',
-	LIVE_PLAYING: 'On Air',
-	LIVE_STOP: 'Disconnected',
-	LIVE_FAILED: 'Stream unavailable',
-	LIVE_BUFFERING: 'Buffering...',
-	LIVE_CONNECTING: 'Live stream connection in progress...',
-	LIVE_RECONNECTING: 'Reconnecting live stream...',
-	STREAM_GEO_BLOCKED: 'Sorry, this content is not available in your area',
-	STATION_NOT_FOUND: 'Station not found',
+import { STATUSES } from '../../redux/actions/player';
+
+const STATUS_LABELS = {
+	[STATUSES.LIVE_PAUSE]: 'Paused',
+	[STATUSES.LIVE_PLAYING]: 'On Air',
+	[STATUSES.LIVE_STOP]: 'Disconnected',
+	[STATUSES.LIVE_FAILED]: 'Stream unavailable',
+	[STATUSES.LIVE_BUFFERING]: 'Buffering...',
+	[STATUSES.LIVE_CONNECTING]: 'Live stream connection in progress...',
+	[STATUSES.LIVE_RECONNECTING]: 'Reconnecting live stream...',
+	[STATUSES.STREAM_GEO_BLOCKED]: 'Sorry, this content is not available in your area',
+	[STATUSES.STATION_NOT_FOUND]: 'Station not found',
 };
 
 const getCuePointInfo = ( cuePoint ) => {
@@ -37,7 +39,7 @@ const getCuePointInfo = ( cuePoint ) => {
 };
 
 const Info = ( { station, status, cuePoint } ) => {
-	let info = STATUSES[status] || '';
+	let info = STATUS_LABELS[status] || '';
 	if ( 'LIVE_PLAYING' === status ) {
 		const pointInfo = getCuePointInfo( cuePoint );
 		if ( pointInfo ) {

@@ -20,7 +20,7 @@ const parseVolume = ( value ) => {
 };
 
 export const DEFAULT_STATE = {
-	status: 'LIVE_STOP',
+	status: actions.STATUSES.LIVE_STOP,
 	audio: '',
 	station: localStorage.getItem( 'station' ) || Object.keys( streams || {} )[0] || '', // first station by default
 	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
@@ -31,6 +31,7 @@ const reducer = ( state = {}, action = {} ) => {
 	switch ( action.type ) {
 		case actions.ACTION_INIT_TDPLAYER:
 			tdplayer = action.player;
+			tdplayer.setVolume( state.volume / 100 );
 			break;
 
 		case actions.ACTION_PLAY_AUDIO:
@@ -38,16 +39,25 @@ const reducer = ( state = {}, action = {} ) => {
 				tdplayer.stop();
 			}
 
-			mp3player = new Audio( action.audio );
+			if ( mp3player ) {
+				mp3player.pause();
+			}
+
+			mp3player = action.player;
+			mp3player.volume = state.volume / 100;
 			mp3player.play();
 
-			return Object.assign( {}, state, { audio: action.audio } );
+			return Object.assign( {}, state, {
+				audio: action.audio,
+				station: '',
+			} );
 
 		case actions.ACTION_PLAY_STATION: {
 			const { station } = action;
 
 			if ( mp3player ) {
 				mp3player.pause();
+				mp3player = null;
 			}
 
 			if ( tdplayer ) {
@@ -57,7 +67,10 @@ const reducer = ( state = {}, action = {} ) => {
 
 			localStorage.setItem( 'station', station );
 
-			return Object.assign( {}, state, { station } );
+			return Object.assign( {}, state, {
+				audio: '',
+				station,
+			} );
 		}
 
 		case actions.ACTION_PAUSE:
@@ -83,10 +96,11 @@ const reducer = ( state = {}, action = {} ) => {
 			const volume = parseVolume( action.volume );
 			localStorage.setItem( 'volume', volume );
 
+			const value = volume / 100;
 			if ( mp3player ) {
-				mp3player.volume = volume;
+				mp3player.volume = value;
 			} else if ( tdplayer ) {
-				tdplayer.setVolume( volume / 100 );
+				tdplayer.setVolume( value );
 			}
 
 			return Object.assign( {}, state, { volume } );

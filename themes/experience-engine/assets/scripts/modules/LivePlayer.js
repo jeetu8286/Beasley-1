@@ -9,13 +9,13 @@ import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
 import Volume from '../components/player/Volume';
 
-import { initTdPlayer } from '../redux/actions/player';
+import * as actions from '../redux/actions/player';
 
 class LivePlayer extends Component {
 
 	componentDidMount() {
 		// @see: https://userguides.tritondigital.com/spc/tdplay2/
-		this.props.initTdPlayer( [
+		this.props.initPlayer( [
 			{
 				id: 'MediaPlayer',
 				playerId: 'td_container',
@@ -41,6 +41,9 @@ class LivePlayer extends Component {
 	}
 
 	render() {
+		const self = this;
+		const { station, status, play, pause, resume } = self.props;
+
 		const container = document.getElementById( 'live-player' );
 		if ( !container ) {
 			return false;
@@ -52,7 +55,7 @@ class LivePlayer extends Component {
 				<div id="audio-ad-inplayer" />
 
 				<div className="controls">
-					<Controls />
+					<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
 					<Info />
 					<Volume />
 				</div>
@@ -67,9 +70,24 @@ class LivePlayer extends Component {
 }
 
 LivePlayer.propTypes = {
-	initTdPlayer: PropTypes.func.isRequired,
+	station: PropTypes.string.isRequired,
+	status: PropTypes.string.isRequired,
+	initPlayer: PropTypes.func.isRequired,
+	play: PropTypes.func.isRequired,
+	pause: PropTypes.func.isRequired,
+	resume: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( { initTdPlayer }, dispatch );
+const mapStateToProps = ( { player } ) => ( {
+	station: player.station,
+	status: player.status,
+} );
 
-export default connect( null, mapDispatchToProps )( LivePlayer );
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
+	initPlayer: actions.initTdPlayer,
+	play: actions.playStation,
+	pause: actions.pause,
+	resume: actions.resume,
+}, dispatch );
+
+export default connect( mapStateToProps, mapDispatchToProps )( LivePlayer );
