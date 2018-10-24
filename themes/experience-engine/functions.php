@@ -45,3 +45,4 @@ function ee_enqueue_front_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts' );
+add_filter( 'wp_audio_shortcode_library', '__return_false' );
