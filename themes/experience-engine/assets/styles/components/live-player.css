@@ -1,6 +1,4 @@
 #live-player {
-	display: flex;
-	justify-content: space-between;
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -10,26 +8,22 @@
 	padding: 20px;
 }
 
-.player {
-	min-width: 60%;
-}
-
-#live-player .player .play-btn,
-#live-player .player .pause-btn,
-#live-player .player .resume-btn,
-#live-player .player .loading-btn {
+#live-player .play-btn,
+#live-player .pause-btn,
+#live-player .resume-btn,
+#live-player .loading-btn {
 	display: none;
 }
 
-#live-player .player .LIVE_PAUSE .resume-btn,
-#live-player .player .LIVE_PLAYING .pause-btn,
-#live-player .player .LIVE_STOP .play-btn,
-#live-player .player .LIVE_FAILED .play-btn,
-#live-player .player .LIVE_BUFFERING .loading-btn,
-#live-player .player .LIVE_CONNECTING .loading-btn,
-#live-player .player .LIVE_RECONNECTING .loading-btn,
-#live-player .player .STREAM_GEO_BLOCKED .play-btn,
-#live-player .player .STATION_NOT_FOUND .play-btn {
+#live-player .LIVE_PAUSE .resume-btn,
+#live-player .LIVE_PLAYING .pause-btn,
+#live-player .LIVE_STOP .play-btn,
+#live-player .LIVE_FAILED .play-btn,
+#live-player .LIVE_BUFFERING .loading-btn,
+#live-player .LIVE_CONNECTING .loading-btn,
+#live-player .LIVE_RECONNECTING .loading-btn,
+#live-player .STREAM_GEO_BLOCKED .play-btn,
+#live-player .STATION_NOT_FOUND .play-btn {
 	display: block;
 }
 
