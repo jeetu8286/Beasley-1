@@ -165,15 +165,9 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 
 		$post_id = wp_insert_post( $args, true );
 		if ( ! is_wp_error( $post_id ) ) {
-			$post_ids[] = $post_id;
-			// omny_import_clip_image( $clip['ImageUrl'], $post_id );
+			set_post_thumbnail( $post_id, get_post_thumbnail_id( $clip['PodcastId'] ) );
 			$is_wp_cli && \WP_CLI::success( sprintf( 'Imported %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
 		}
-	}
-
-	// make sure we don't have thumbnail ids
-	foreach ( $post_ids as $post_id ) {
-		delete_post_meta( $post_id, '_thumbnail_id' );
 	}
 
 	update_option( 'omny_last_import_finished', time(), 'no' );
