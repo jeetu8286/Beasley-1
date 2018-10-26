@@ -129,6 +129,7 @@ class ContentDispatcher extends Component {
 					history.pushState( payload.state, pageDocument.title, response.url );
 
 					document.title = pageDocument.title;
+					document.body.className = pageDocument.body.className;
 				}
 
 				NProgress.done();
