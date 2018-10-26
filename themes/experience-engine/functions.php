@@ -62,3 +62,4 @@ function font_loader() { ?>
 }
 
 add_action( 'wp_head', 'font_loader', 0 );
+add_filter( 'wp_audio_shortcode_library', '__return_false' );

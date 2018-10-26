@@ -157,6 +157,7 @@ function greatermedia_scripts_styles() {
 	wp_enqueue_script( 'gmlp-js' );
 	wp_enqueue_script( 'gmr-gallery' );
 	wp_enqueue_script( 'gmedia_keywords-autocomplete-script' );
+	wp_enqueue_script( 'omny' );
 
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );

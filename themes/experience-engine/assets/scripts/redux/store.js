@@ -1,10 +1,11 @@
 import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
 
 import playerReducer, { DEFAULT_STATE as PLAYER_DEFAULT_STATE } from './reducers/player';
 import modalReducer, { DEFAULT_STATE as MODAL_DEFAULT_STATE } from './reducers/modal';
 
 export default function() {
-	const middleware = [];
+	const middleware = [thunk];
 
 	let composeEnhancers = compose;
 	if ( 'production' !== process.env.NODE_ENV ) {

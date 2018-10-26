@@ -44,8 +44,8 @@ function omny_init() {
 }
 
 function omny_enqueue_scripts() {
-	wp_enqueue_script( 'playerjs', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
-	wp_enqueue_script( 'omny', plugins_url( '/player.js', __FILE__ ), array( 'jquery', 'playerjs' ), OMNY_STUDIO_VERSION, true );
+	wp_register_script( 'playerjs', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
+	wp_register_script( 'omny', plugins_url( '/player.js', __FILE__ ), array( 'jquery', 'playerjs' ), OMNY_STUDIO_VERSION, true );
 }
 
 function omny_register_oembed( $providers ) {
@@ -120,6 +120,7 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 	$clips = omny_get_clips( $page, $per_page, $is_wp_cli );
 	$clips_map = omny_get_clips_map( $clips );
 
+	$post_ids = array();
 	foreach ( $clips as $clip ) {
 		if ( ! empty( $clips_map[ $clip['Id'] ] ) ) {
 			$is_wp_cli && \WP_CLI::log( sprintf( 'Skipping %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
@@ -164,9 +165,15 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 
 		$post_id = wp_insert_post( $args, true );
 		if ( ! is_wp_error( $post_id ) ) {
-			omny_import_clip_image( $clip['ImageUrl'], $post_id );
+			$post_ids[] = $post_id;
+			// omny_import_clip_image( $clip['ImageUrl'], $post_id );
 			$is_wp_cli && \WP_CLI::success( sprintf( 'Imported %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
 		}
+	}
+
+	// make sure we don't have thumbnail ids
+	foreach ( $post_ids as $post_id ) {
+		delete_post_meta( $post_id, '_thumbnail_id' );
 	}
 
 	update_option( 'omny_last_import_finished', time(), 'no' );
@@ -316,7 +323,7 @@ add_action( 'admin_init', 'omny_register_scheduled_events' );
 add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
 add_action( 'omny_start_import_episodes', 'omny_start_import_episodes' );
 add_action( 'omny_run_import_episodes', 'omny_run_import_episodes' );
-add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts', 1 );
 
 add_filter( 'oembed_providers', 'omny_register_oembed', 100 );
 add_filter( 'beasley-episode-audio-url', 'omny_get_episode_audio_url', 10, 2 );

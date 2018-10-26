@@ -5,16 +5,11 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 import delayed from '../../library/delayed-component';
-import { playAudio } from '../../redux/actions/player';
+import * as actions from '../../redux/actions/player';
+
+import Controls from '../player/Controls';
 
 class AudioEmbed extends PureComponent {
-
-	constructor( props ) {
-		super( props );
-
-		const self = this;
-		self.onPlayClick = self.handlePlayClick.bind( self );
-	}
 
 	getTitle() {
 		const { src, sources } = this.props;
@@ -63,22 +58,18 @@ class AudioEmbed extends PureComponent {
 		return src;
 	}
 
-	handlePlayClick() {
-		const self = this;
-		const src = self.getPlayableSource();
-		if ( src ) {
-			self.props.playAudio( src );
-		}
-	}
-
 	render() {
 		const self = this;
-		const { placeholder } = self.props;
+		const { placeholder, audio, status, play, pause, resume } = self.props;
+
+		const title = self.getTitle();
+		const src = self.getPlayableSource();
+		const audioStatus = audio === src ? status : actions.STATUSES.LIVE_STOP;
 
 		return ReactDOM.createPortal(
 			<div>
-				<button type="button" onClick={self.onPlayClick}>Play</button>
-				{self.getTitle()}
+				<Controls status={audioStatus} play={() => play( src, title )} pause={pause} resume={resume} />
+				{title}
 			</div>,
 			document.getElementById( placeholder ),
 		);
@@ -87,12 +78,25 @@ class AudioEmbed extends PureComponent {
 }
 
 AudioEmbed.propTypes = {
+	audio: PropTypes.string.isRequired,
+	status: PropTypes.string.isRequired,
 	placeholder: PropTypes.string.isRequired,
 	src: PropTypes.string.isRequired,
 	sources: PropTypes.shape( {} ).isRequired,
-	playAudio: PropTypes.func.isRequired,
+	play: PropTypes.func.isRequired,
+	pause: PropTypes.func.isRequired,
+	resume: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( { playAudio }, dispatch );
+const mapStateToProps = ( { player } ) => ( {
+	audio: player.audio,
+	status: player.status,
+} );
 
-export default delayed( connect( null, mapDispatchToProps )( AudioEmbed ) );
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
+	play: actions.playAudio,
+	pause: actions.pause,
+	resume: actions.resume,
+}, dispatch );
+
+export default delayed( connect( mapStateToProps, mapDispatchToProps )( AudioEmbed ) );

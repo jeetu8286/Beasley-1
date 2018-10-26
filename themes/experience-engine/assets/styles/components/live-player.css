@@ -8,22 +8,22 @@
 	padding: 20px;
 }
 
-#live-player .player .play-btn,
-#live-player .player .pause-btn,
-#live-player .player .resume-btn,
-#live-player .player .loading-btn {
+.play-btn,
+.pause-btn,
+.resume-btn,
+.loading-btn {
 	display: none;
 }
 
-#live-player .player.LIVE_PAUSE .resume-btn,
-#live-player .player.LIVE_PLAYING .pause-btn,
-#live-player .player.LIVE_STOP .play-btn,
-#live-player .player.LIVE_FAILED .play-btn,
-#live-player .player.LIVE_BUFFERING .loading-btn,
-#live-player .player.LIVE_CONNECTING .loading-btn,
-#live-player .player.LIVE_RECONNECTING .loading-btn,
-#live-player .player.STREAM_GEO_BLOCKED .play-btn,
-#live-player .player.STATION_NOT_FOUND .play-btn {
+.LIVE_PAUSE .resume-btn,
+.LIVE_PLAYING .pause-btn,
+.LIVE_STOP .play-btn,
+.LIVE_FAILED .play-btn,
+.LIVE_BUFFERING .loading-btn,
+.LIVE_CONNECTING .loading-btn,
+.LIVE_RECONNECTING .loading-btn,
+.STREAM_GEO_BLOCKED .play-btn,
+.STATION_NOT_FOUND .play-btn {
 	display: block;
 }
 
@@ -38,4 +38,9 @@
 .cue-point-title + .cue-point-artist:before {
 	content: '-';
 	margin: 0 10px;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-around;
 }
