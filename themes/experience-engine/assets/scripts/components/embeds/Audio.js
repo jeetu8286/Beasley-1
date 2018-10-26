@@ -62,17 +62,23 @@ class AudioEmbed extends PureComponent {
 		const self = this;
 		const { placeholder, audio, status, play, pause, resume } = self.props;
 
+		const container = document.getElementById( placeholder );
+		if ( !container ) {
+			return false;
+		}
+
 		const title = self.getTitle();
 		const src = self.getPlayableSource();
 		const audioStatus = audio === src ? status : actions.STATUSES.LIVE_STOP;
 
-		return ReactDOM.createPortal(
+		const embed = (
 			<div>
 				<Controls status={audioStatus} play={() => play( src, title )} pause={pause} resume={resume} />
 				{title}
-			</div>,
-			document.getElementById( placeholder ),
+			</div>
 		);
+
+		return ReactDOM.createPortal( embed, container );
 	}
 
 }
@@ -82,10 +88,15 @@ AudioEmbed.propTypes = {
 	status: PropTypes.string.isRequired,
 	placeholder: PropTypes.string.isRequired,
 	src: PropTypes.string.isRequired,
+	omny: PropTypes.bool,
 	sources: PropTypes.shape( {} ).isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
+};
+
+AudioEmbed.defaultProps = {
+	omny: false,
 };
 
 const mapStateToProps = ( { player } ) => ( {
@@ -99,4 +110,4 @@ const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
 	resume: actions.resume,
 }, dispatch );
 
-export default delayed( connect( mapStateToProps, mapDispatchToProps )( AudioEmbed ) );
+export default delayed( connect( mapStateToProps, mapDispatchToProps )( AudioEmbed ), 50 );
