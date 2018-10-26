@@ -1,3 +1,7 @@
-@import 'components/nprogress.css';
-@import 'components/modal.css';
-@import 'components/live-player.css';
+@import 'global/variables';
+
+@import 'base/typography';
+
+@import 'components/nprogress';
+@import 'components/modal';
+@import 'components/live-player';
