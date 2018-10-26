@@ -32,7 +32,7 @@ const getAudioEmbedParams = ( element ) => {
 };
 
 const getOmnyEmbedParams = ( element ) => ( {
-	script: element.getAttribute( 'src' ),
+	src: element.getAttribute( 'src' ),
 	omny: true,
 } );
 

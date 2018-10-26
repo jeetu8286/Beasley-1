@@ -30,7 +30,7 @@ class AudioEmbed extends PureComponent {
 			}
 		}
 
-		return '(no title)';
+		return false;
 	}
 
 	getPlayableSource() {
@@ -60,14 +60,14 @@ class AudioEmbed extends PureComponent {
 
 	render() {
 		const self = this;
-		const { placeholder, audio, status, play, pause, resume } = self.props;
+		const { placeholder, omny, audio, status, play, pause, resume } = self.props;
 
 		const container = document.getElementById( placeholder );
 		if ( !container ) {
 			return false;
 		}
 
-		const title = self.getTitle();
+		const title = !omny ? self.getTitle() : false;
 		const src = self.getPlayableSource();
 		const audioStatus = audio === src ? status : actions.STATUSES.LIVE_STOP;
 
@@ -89,7 +89,7 @@ AudioEmbed.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	src: PropTypes.string.isRequired,
 	omny: PropTypes.bool,
-	sources: PropTypes.shape( {} ).isRequired,
+	sources: PropTypes.shape( {} ),
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
@@ -97,6 +97,7 @@ AudioEmbed.propTypes = {
 
 AudioEmbed.defaultProps = {
 	omny: false,
+	sources: {},
 };
 
 const mapStateToProps = ( { player } ) => ( {
