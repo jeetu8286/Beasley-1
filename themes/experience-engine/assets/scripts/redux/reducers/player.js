@@ -7,6 +7,7 @@ const { streams } = bbgiconfig.livePlayer || {};
 
 let tdplayer = null;
 let mp3player = null;
+let omnyplayer = null;
 
 const parseVolume = ( value ) => {
 	let volume = parseInt( value, 10 );
@@ -17,6 +18,27 @@ const parseVolume = ( value ) => {
 	}
 
 	return volume;
+};
+
+const tearDownMp3Player = () => {
+	if ( mp3player ) {
+		mp3player.pause();
+		mp3player = null;
+	}
+};
+
+const tearDownOmnyPlayer = () => {
+	if ( omnyplayer ) {
+		omnyplayer.off( 'ready' );
+		omnyplayer.off( 'play' );
+		omnyplayer.off( 'pause' );
+		omnyplayer.off( 'ended' );
+		omnyplayer.off( 'timeupdate' );
+
+		omnyplayer.pause();
+		omnyplayer.elem.parentNode.removeChild( omnyplayer.elem );
+		omnyplayer = null;
+	}
 };
 
 export const DEFAULT_STATE = {
@@ -41,9 +63,8 @@ const reducer = ( state = {}, action = {} ) => {
 				tdplayer.stop();
 			}
 
-			if ( mp3player ) {
-				mp3player.pause();
-			}
+			tearDownOmnyPlayer();
+			tearDownMp3Player();
 
 			mp3player = action.player;
 			mp3player.volume = state.volume / 100;
@@ -59,10 +80,8 @@ const reducer = ( state = {}, action = {} ) => {
 		case actions.ACTION_PLAY_STATION: {
 			const { station } = action;
 
-			if ( mp3player ) {
-				mp3player.pause();
-				mp3player = null;
-			}
+			tearDownOmnyPlayer();
+			tearDownMp3Player();
 
 			if ( tdplayer ) {
 				tdplayer.stop();
@@ -79,9 +98,33 @@ const reducer = ( state = {}, action = {} ) => {
 			} );
 		}
 
+		case actions.ACTION_PLAY_OMNY: {
+			if ( tdplayer ) {
+				tdplayer.stop();
+			}
+
+			tearDownOmnyPlayer();
+			tearDownMp3Player();
+
+			omnyplayer = action.player;
+			omnyplayer.play();
+
+			// Omny doesn't support sound provider, thus we can't change/control volume :(
+			// omnyplayer.setVolume( state.volume );
+
+			return Object.assign( {}, state, {
+				audio: action.audio,
+				station: '',
+				time: 0,
+				duration: 0,
+			} );
+		}
+
 		case actions.ACTION_PAUSE:
 			if ( mp3player ) {
 				mp3player.pause();
+			} else if ( omnyplayer ) {
+				omnyplayer.pause();
 			} else if ( tdplayer ) {
 				tdplayer.pause();
 			}
@@ -90,6 +133,8 @@ const reducer = ( state = {}, action = {} ) => {
 		case actions.ACTION_RESUME:
 			if ( mp3player ) {
 				mp3player.play();
+			} else if ( omnyplayer ) {
+				omnyplayer.play();
 			} else if ( tdplayer ) {
 				tdplayer.resume();
 			}
@@ -105,6 +150,8 @@ const reducer = ( state = {}, action = {} ) => {
 			const value = volume / 100;
 			if ( mp3player ) {
 				mp3player.volume = value;
+			} else if ( omnyplayer ) {
+				// omnyplayer.setVolume( volume );
 			} else if ( tdplayer ) {
 				tdplayer.setVolume( value );
 			}
@@ -116,18 +163,29 @@ const reducer = ( state = {}, action = {} ) => {
 			return Object.assign( {}, state, { cuePoint: action.cuePoint } );
 
 		case actions.ACTION_DURATION_CHANGE:
-			return Object.assign( {}, state, { duration: action.duration } );
+			return Object.assign( {}, state, { duration: +action.duration } );
 
-		case actions.ACTION_TIME_CHANGE:
-			return Object.assign( {}, state, { time: action.time } );
+		case actions.ACTION_TIME_CHANGE: {
+			const override = { time: +action.time };
+			if ( action.duration ) {
+				override.duration = +action.duration;
+			}
 
-		case actions.ACTION_SEEK_POSITION:
+			return Object.assign( {}, state, override );
+		}
+
+		case actions.ACTION_SEEK_POSITION: {
+			const { position } = action;
+
 			if ( mp3player ) {
-				const { position } = action;
 				mp3player.currentTime = position;
-				return Object.assign( {}, state, { time: position } );
+				return Object.assign( {}, state, { time: +position } );
+			} else if ( omnyplayer ) {
+				omnyplayer.setCurrentTime( position );
+				return Object.assign( {}, state, { time: +position } );
 			}
 			break;
+		}
 
 		default:
 			// do nothing

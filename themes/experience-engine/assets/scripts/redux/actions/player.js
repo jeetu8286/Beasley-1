@@ -4,6 +4,7 @@ export const ACTION_CUEPOINT_CHANGE = 'ACTION_CUEPOINT_CHANGE';
 export const ACTION_SET_VOLUME = 'ACTION_SET_VOLUME';
 export const ACTION_PLAY_AUDIO = 'ACTION_PLAY_AUDIO';
 export const ACTION_PLAY_STATION = 'ACTION_PLAY_STATION';
+export const ACTION_PLAY_OMNY = 'ACTION_PLAY_OMNY';
 export const ACTION_PAUSE = 'ACTION_PAUSE';
 export const ACTION_RESUME = 'ACTION_RESUME';
 export const ACTION_DURATION_CHANGE = 'ACTION_DURATION_CHANGE';
@@ -116,6 +117,51 @@ export const playAudio = ( audio, title = '', artist = '' ) => ( dispatch ) => {
 	} );
 };
 
+export const playOmny = ( audio, title = '', artist = '' ) => ( dispatch ) => {
+	const bindStatusUpdate = ( status ) => () => {
+		dispatch( {
+			type: ACTION_STATUS_CHANGE,
+			status,
+		} );
+	};
+
+	const { playerjs } = window;
+
+	const iframe = document.createElement( 'iframe' );
+	iframe.src = audio;
+	document.body.appendChild( iframe );
+
+	const player = new playerjs.Player( iframe );
+
+	player.on( 'ready', bindStatusUpdate( STATUSES.LIVE_BUFFERING ) );
+	player.on( 'play', bindStatusUpdate( STATUSES.LIVE_PLAYING ) );
+	player.on( 'pause', bindStatusUpdate( STATUSES.LIVE_PAUSE ) );
+	player.on( 'ended', bindStatusUpdate( STATUSES.LIVE_STOP ) );
+
+	player.on( 'timeupdate', ( e ) => {
+		dispatch( {
+			type: ACTION_TIME_CHANGE,
+			time: e.seconds,
+			duration: e.duration,
+		} );
+	} );
+
+	dispatch( {
+		type: ACTION_PLAY_OMNY,
+		player,
+		audio,
+	} );
+
+	dispatch( {
+		type: ACTION_CUEPOINT_CHANGE,
+		cuePoint: {
+			type: 'track',
+			cueTitle: title,
+			artistName: artist,
+		},
+	} );
+};
+
 export const playStation = ( station ) => ( {
 	type: ACTION_PLAY_STATION,
 	station,
@@ -143,6 +189,7 @@ export default {
 	initTdPlayer,
 	playAudio,
 	playStation,
+	playOmny,
 	pause,
 	resume,
 	setVolume,

@@ -11,6 +11,33 @@ const specialPages = [
 	'/wp-login.php',
 ];
 
+const getSecondStreetEmbedParams = ( element ) => ( {
+	script: element.getAttribute( 'src' ),
+	embed: element.getAttribute( 'data-ss-embed' ),
+	opguid: element.getAttribute( 'data-opguid' ),
+	routing: element.getAttribute( 'data-routing' ),
+} );
+
+const getAudioEmbedParams = ( element ) => {
+	const sources = {};
+	const tags = element.getElementsByTagName( 'source' );
+	for ( let i  = 0, len = tags.length; i < len; i++ ) {
+		sources[tags[i].getAttribute( 'src' )] = tags[i].getAttribute( 'type' );
+	}
+
+	return {
+		src: element.getAttribute( 'src' ) || '',
+		sources,
+	};
+};
+
+const getOmnyEmbedParams = ( element ) => ( {
+	src: element.getAttribute( 'src' ),
+	title: element.getAttribute( 'data-title' ),
+	author: element.getAttribute( 'data-author' ),
+	omny: true,
+} );
+
 class ContentDispatcher extends Component {
 
 	constructor( props ) {
@@ -104,6 +131,7 @@ class ContentDispatcher extends Component {
 					history.pushState( payload.state, pageDocument.title, response.url );
 
 					document.title = pageDocument.title;
+					document.body.className = pageDocument.body.className;
 				}
 
 				NProgress.done();
@@ -139,69 +167,42 @@ class ContentDispatcher extends Component {
 		return element;
 	}
 
-	populateStateFromContent( container ) {
-		const self = this;
-		const state = {
-			embeds: [],
-			content: '',
-		};
-
-		if ( container ) {
-			const embeds = [];
-			self.replaceSecondStreetEmbeds( container, embeds );
-			self.replaceAudioEmbeds( container, embeds );
-
-			state.embeds = embeds;
-			state.content = container.innerHTML;
-		}
-
-		return state;
-	}
-
-	replaceSecondStreetEmbeds( container, embeds ) {
-		const elements = container.querySelectorAll( '.secondstreet-embed' );
+	processEmbeds( container, type, selector, callback ) {
+		const embeds = [];
+		const elements = container.querySelectorAll( selector );
 		for ( let i = 0, len = elements.length; i < len; i++ ) {
 			const element = elements[i];
 			const placeholder = this.generatePlaceholder();
 
 			embeds.push( {
-				type: 'secondstreet',
+				type,
 				params: {
 					placeholder: placeholder.getAttribute( 'id' ),
-					script: element.getAttribute( 'src' ),
-					embed: element.getAttribute( 'data-ss-embed' ),
-					opguid: element.getAttribute( 'data-opguid' ),
-					routing: element.getAttribute( 'data-routing' ),
+					...callback( element ),
 				},
 			} );
 
 			element.parentNode.replaceChild( placeholder, element );
 		}
+
+		return embeds;
 	}
 
-	replaceAudioEmbeds( container, embeds ) {
-		const elements = container.querySelectorAll( '.wp-audio-shortcode' );
-		for ( let i = 0, len = elements.length; i < len; i++ ) {
-			const element = elements[i];
-			const placeholder = this.generatePlaceholder();
+	populateStateFromContent( container ) {
+		const self = this;
+		const state = { embeds: [], content: '' };
+		if ( container ) {
+			state.embeds = [
+				...self.processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
+				...self.processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
+				...self.processEmbeds( container, 'audio', 'iframe[src^="https://omny.fm"]', getOmnyEmbedParams ),
+			];
 
-			const sources = {};
-			const tags = element.getElementsByTagName( 'source' );
-			for ( let i  = 0, len = tags.length; i < len; i++ ) {
-				sources[tags[i].getAttribute( 'src' )] = tags[i].getAttribute( 'type' );
-			}
-
-			embeds.push( {
-				type: 'audio',
-				params: {
-					placeholder: placeholder.getAttribute( 'id' ),
-					src: element.getAttribute( 'src' ) || '',
-					sources,
-				}
-			} );
-
-			element.parentNode.replaceChild( placeholder, element );
+			// MUST follow after embeds processing
+			state.content = container.innerHTML;
 		}
+
+		return state;
 	}
 
 	render() {

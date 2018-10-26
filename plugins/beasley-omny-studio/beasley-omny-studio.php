@@ -8,6 +8,8 @@
  * Author URI:  http://10up.com/
  */
 
+new WP_Embed;
+
 define( 'OMNY_STUDIO_VERSION', '20180319.1' );
 
 function omny_init() {
@@ -41,16 +43,39 @@ function omny_init() {
 			),
 		) );
 	}
+
+	wp_embed_register_handler( 'omny', '#https://omny.fm/shows/.*#i', 'omny_render_embed' );
+}
+
+function omny_render_embed( $matches, $attr, $url ) {
+	$embed = wp_cache_get( $url, 'omny' );
+	if ( empty( $embed ) ) {
+		$embed = '';
+		$response = wp_remote_get( 'https://omny.fm/oembed?url=' . urlencode( $url ) );
+		if ( wp_remote_retrieve_response_code( $response ) == 200 ) {
+			$body = wp_remote_retrieve_body( $response );
+			if ( ! empty( $body ) ) {
+				$body = json_decode( $body, true );
+				if ( ! empty( $body['html'] ) ) {
+					$replace = sprintf(
+						'<iframe data-title="%s" data-author="%s" ',
+						! empty( $body['title'] ) ? $body['title'] : '',
+						! empty( $body['author_name'] ) ? $body['author_name'] : ''
+					);
+
+					$embed = str_replace( '<iframe ', $replace, $body['html'] );
+					wp_cache_set( $url, $embed, 'omny', HOUR_IN_SECONDS );
+				}
+			}
+		}
+	}
+
+	return $embed;
 }
 
 function omny_enqueue_scripts() {
 	wp_register_script( 'playerjs', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
 	wp_register_script( 'omny', plugins_url( '/player.js', __FILE__ ), array( 'jquery', 'playerjs' ), OMNY_STUDIO_VERSION, true );
-}
-
-function omny_register_oembed( $providers ) {
-	$providers['https://omny.fm/shows/*'] = array( 'https://omny.fm/oembed', false );
-	return $providers;
 }
 
 function omny_register_scheduled_events() {
@@ -325,7 +350,6 @@ add_action( 'omny_start_import_episodes', 'omny_start_import_episodes' );
 add_action( 'omny_run_import_episodes', 'omny_run_import_episodes' );
 add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts', 1 );
 
-add_filter( 'oembed_providers', 'omny_register_oembed', 100 );
 add_filter( 'beasley-episode-audio-url', 'omny_get_episode_audio_url', 10, 2 );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {

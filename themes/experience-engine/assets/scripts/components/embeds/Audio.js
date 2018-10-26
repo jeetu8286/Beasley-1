@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
@@ -9,15 +9,26 @@ import * as actions from '../../redux/actions/player';
 
 import Controls from '../player/Controls';
 
-class AudioEmbed extends PureComponent {
+class AudioEmbed extends Component {
+
+	constructor( props ) {
+		super( props );
+
+		const self = this;
+		self.onPlayClick = self.handlePlayClick.bind( self );
+	}
 
 	getTitle() {
-		const { src, sources } = this.props;
+		const { src, title, sources } = this.props;
 		const extractTitle = url => url
 			.split( '/' ).pop() // take file name from URL
 			.split( '?' ).shift() // drop query parameters
 			.split( '.' ).shift() // drop file extension
 			.split( '_' ).join( ' ' ); // replace underscores with white spaces
+
+		if ( title ) {
+			return title;
+		}
 
 		if ( src ) {
 			return extractTitle( src );
@@ -30,7 +41,7 @@ class AudioEmbed extends PureComponent {
 			}
 		}
 
-		return '(no title)';
+		return false;
 	}
 
 	getPlayableSource() {
@@ -58,21 +69,45 @@ class AudioEmbed extends PureComponent {
 		return src;
 	}
 
+	handlePlayClick() {
+		const self = this;
+		const { omny, title, author, playAudio, playOmny } = self.props;
+		const src = self.getPlayableSource();
+
+		if ( omny ) {
+			playOmny( src, title, author );
+		} else {
+			playAudio( src, self.getTitle(), author );
+		}
+	}
+
+	getStatus() {
+		const self = this;
+		const { audio, status } = self.props;
+		const src = self.getPlayableSource();
+
+		return audio === src ? status : actions.STATUSES.LIVE_STOP;
+	}
+
 	render() {
 		const self = this;
-		const { placeholder, audio, status, play, pause, resume } = self.props;
+		const { placeholder, omny, pause, resume } = self.props;
 
-		const title = self.getTitle();
-		const src = self.getPlayableSource();
-		const audioStatus = audio === src ? status : actions.STATUSES.LIVE_STOP;
+		const container = document.getElementById( placeholder );
+		if ( !container ) {
+			return false;
+		}
 
-		return ReactDOM.createPortal(
+		const title = !omny ? self.getTitle() : false;
+
+		const embed = (
 			<div>
-				<Controls status={audioStatus} play={() => play( src, title )} pause={pause} resume={resume} />
+				<Controls status={self.getStatus()} play={self.onPlayClick} pause={pause} resume={resume} />
 				{title}
-			</div>,
-			document.getElementById( placeholder ),
+			</div>
 		);
+
+		return ReactDOM.createPortal( embed, container );
 	}
 
 }
@@ -82,10 +117,21 @@ AudioEmbed.propTypes = {
 	status: PropTypes.string.isRequired,
 	placeholder: PropTypes.string.isRequired,
 	src: PropTypes.string.isRequired,
-	sources: PropTypes.shape( {} ).isRequired,
-	play: PropTypes.func.isRequired,
+	omny: PropTypes.bool,
+	title: PropTypes.string,
+	author: PropTypes.string,
+	sources: PropTypes.shape( {} ),
+	playAudio: PropTypes.func.isRequired,
+	playOmny: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
+};
+
+AudioEmbed.defaultProps = {
+	omny: false,
+	title: '',
+	author: '',
+	sources: {},
 };
 
 const mapStateToProps = ( { player } ) => ( {
@@ -94,9 +140,10 @@ const mapStateToProps = ( { player } ) => ( {
 } );
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
-	play: actions.playAudio,
+	playAudio: actions.playAudio,
+	playOmny: actions.playOmny,
 	pause: actions.pause,
 	resume: actions.resume,
 }, dispatch );
 
-export default delayed( connect( mapStateToProps, mapDispatchToProps )( AudioEmbed ) );
+export default delayed( connect( mapStateToProps, mapDispatchToProps )( AudioEmbed ), 50 );
