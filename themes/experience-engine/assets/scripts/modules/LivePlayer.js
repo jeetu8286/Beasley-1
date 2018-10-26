@@ -16,29 +16,36 @@ class LivePlayer extends Component {
 
 	componentDidMount() {
 		// @see: https://userguides.tritondigital.com/spc/tdplay2/
-		this.props.initPlayer( [
-			{
-				id: 'MediaPlayer',
-				playerId: 'td_container',
-				techPriority: ['Html5'],
-			},
-			{
-				id: 'NowPlayingApi',
-			},
-			{
-				id: 'TargetSpot'
-			},
-			{
-				id: 'SyncBanners',
-				elements: [
-					{
-						id: 'audio-ad-inplayer',
-						width: 320,
-						height: 50
-					}
-				]
-			},
-		] );
+		const tdmodules = [];
+
+		tdmodules.push( {
+			id: 'MediaPlayer',
+			playerId: 'td_container',
+			techPriority: ['Html5'],
+		} );
+
+		tdmodules.push( { id: 'NowPlayingApi' } );
+		tdmodules.push( { id: 'TargetSpot' } );
+
+		tdmodules.push( {
+			id: 'SyncBanners',
+			elements: [
+				{
+					id: 'audio-ad-inplayer',
+					width: 320,
+					height: 50
+				}
+			]
+		} );
+
+		// TDSdk is loaded asynchronously, so we need to wait till its loaded and
+		// parsed by browser, and only then start initializing the player
+		const tdinterval = setInterval( () => {
+			if ( window.TDSdk ) {
+				this.props.initPlayer( tdmodules );
+				clearInterval( tdinterval );
+			}
+		}, 500 );
 	}
 
 	render() {
