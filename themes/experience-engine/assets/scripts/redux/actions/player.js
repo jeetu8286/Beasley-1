@@ -6,6 +6,9 @@ export const ACTION_PLAY_AUDIO = 'ACTION_PLAY_AUDIO';
 export const ACTION_PLAY_STATION = 'ACTION_PLAY_STATION';
 export const ACTION_PAUSE = 'ACTION_PAUSE';
 export const ACTION_RESUME = 'ACTION_RESUME';
+export const ACTION_DURATION_CHANGE = 'ACTION_DURATION_CHANGE';
+export const ACTION_TIME_CHANGE = 'ACTION_TIME_CHANGE';
+export const ACTION_SEEK_POSITION = 'ACTION_SEEK_POSITION';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -83,6 +86,20 @@ export const playAudio = ( audio, title = '', artist = '' ) => ( dispatch ) => {
 	player.addEventListener( 'playing', bindStatusUpdate( STATUSES.LIVE_PLAYING ) );
 	player.addEventListener( 'ended', bindStatusUpdate( STATUSES.LIVE_STOP ) );
 
+	player.addEventListener( 'loadedmetadata', () => {
+		dispatch( {
+			type: ACTION_DURATION_CHANGE,
+			duration: player.duration,
+		} );
+	} );
+
+	player.addEventListener( 'timeupdate', () => {
+		dispatch( {
+			type: ACTION_TIME_CHANGE,
+			time: player.currentTime,
+		} );
+	} );
+
 	dispatch( {
 		type: ACTION_PLAY_AUDIO,
 		player,
@@ -117,6 +134,11 @@ export const setVolume = ( volume ) => ( {
 	volume,
 } );
 
+export const seekPosition = ( position ) => ( {
+	type: ACTION_SEEK_POSITION,
+	position,
+} );
+
 export default {
 	initTdPlayer,
 	playAudio,
@@ -124,4 +146,5 @@ export default {
 	pause,
 	resume,
 	setVolume,
+	seekPosition,
 };

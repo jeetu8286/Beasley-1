@@ -25,6 +25,8 @@ export const DEFAULT_STATE = {
 	station: localStorage.getItem( 'station' ) || Object.keys( streams || {} )[0] || '', // first station by default
 	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
 	cuePoint: false,
+	time: 0,
+	duration: 0,
 };
 
 const reducer = ( state = {}, action = {} ) => {
@@ -50,6 +52,8 @@ const reducer = ( state = {}, action = {} ) => {
 			return Object.assign( {}, state, {
 				audio: action.audio,
 				station: '',
+				time: 0,
+				duration: 0,
 			} );
 
 		case actions.ACTION_PLAY_STATION: {
@@ -70,6 +74,8 @@ const reducer = ( state = {}, action = {} ) => {
 			return Object.assign( {}, state, {
 				audio: '',
 				station,
+				time: 0,
+				duration: 0,
 			} );
 		}
 
@@ -108,6 +114,20 @@ const reducer = ( state = {}, action = {} ) => {
 
 		case actions.ACTION_CUEPOINT_CHANGE:
 			return Object.assign( {}, state, { cuePoint: action.cuePoint } );
+
+		case actions.ACTION_DURATION_CHANGE:
+			return Object.assign( {}, state, { duration: action.duration } );
+
+		case actions.ACTION_TIME_CHANGE:
+			return Object.assign( {}, state, { time: action.time } );
+
+		case actions.ACTION_SEEK_POSITION:
+			if ( mp3player ) {
+				const { position } = action;
+				mp3player.currentTime = position;
+				return Object.assign( {}, state, { time: position } );
+			}
+			break;
 
 		default:
 			// do nothing

@@ -8,6 +8,7 @@ import Stations from '../components/player/Stations';
 import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
 import Volume from '../components/player/Volume';
+import Progress from '../components/player/Progress';
 
 import * as actions from '../redux/actions/player';
 
@@ -57,6 +58,7 @@ class LivePlayer extends Component {
 				<div className="controls">
 					<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
 					<Info />
+					<Progress />
 					<Volume />
 				</div>
 
