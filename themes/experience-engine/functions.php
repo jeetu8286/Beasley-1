@@ -45,4 +45,21 @@ function ee_enqueue_front_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts' );
+
+function font_loader() { ?>
+	<script type="text/javascript">
+		var WebFontConfig = {
+			google: { families: [
+				'Libre+Franklin:300,400,500,600,700',
+			] }
+		};
+	</script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" async></script>
+
+	<noscript>
+		<link href="https://fonts.googleapis.com/css?family=Libre+Franklin:300,400,500,600,700" rel="stylesheet">
+	</noscript><?php
+}
+
+add_action( 'wp_head', 'font_loader', 0 );
 add_filter( 'wp_audio_shortcode_library', '__return_false' );
