@@ -108,7 +108,9 @@ const reducer = ( state = {}, action = {} ) => {
 
 			omnyplayer = action.player;
 			omnyplayer.play();
-			omnyplayer.setVolume( state.volume );
+
+			// Omny doesn't support sound provider, thus we can't change/control volume :(
+			// omnyplayer.setVolume( state.volume );
 
 			return Object.assign( {}, state, {
 				audio: action.audio,
@@ -149,7 +151,7 @@ const reducer = ( state = {}, action = {} ) => {
 			if ( mp3player ) {
 				mp3player.volume = value;
 			} else if ( omnyplayer ) {
-				omnyplayer.setVolume( volume );
+				// omnyplayer.setVolume( volume );
 			} else if ( tdplayer ) {
 				tdplayer.setVolume( value );
 			}

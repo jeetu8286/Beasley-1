@@ -19,12 +19,16 @@ class AudioEmbed extends Component {
 	}
 
 	getTitle() {
-		const { src, sources } = this.props;
+		const { src, title, sources } = this.props;
 		const extractTitle = url => url
 			.split( '/' ).pop() // take file name from URL
 			.split( '?' ).shift() // drop query parameters
 			.split( '.' ).shift() // drop file extension
 			.split( '_' ).join( ' ' ); // replace underscores with white spaces
+
+		if ( title ) {
+			return title;
+		}
 
 		if ( src ) {
 			return extractTitle( src );
@@ -67,13 +71,13 @@ class AudioEmbed extends Component {
 
 	handlePlayClick() {
 		const self = this;
-		const { omny, playAudio, playOmny } = self.props;
+		const { omny, title, author, playAudio, playOmny } = self.props;
 		const src = self.getPlayableSource();
 
 		if ( omny ) {
-			playOmny( src );
+			playOmny( src, title, author );
 		} else {
-			playAudio( src, self.getTitle() );
+			playAudio( src, self.getTitle(), author );
 		}
 	}
 
@@ -114,6 +118,8 @@ AudioEmbed.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	src: PropTypes.string.isRequired,
 	omny: PropTypes.bool,
+	title: PropTypes.string,
+	author: PropTypes.string,
 	sources: PropTypes.shape( {} ),
 	playAudio: PropTypes.func.isRequired,
 	playOmny: PropTypes.func.isRequired,
@@ -123,6 +129,8 @@ AudioEmbed.propTypes = {
 
 AudioEmbed.defaultProps = {
 	omny: false,
+	title: '',
+	author: '',
 	sources: {},
 };
 

@@ -33,6 +33,8 @@ const getAudioEmbedParams = ( element ) => {
 
 const getOmnyEmbedParams = ( element ) => ( {
 	src: element.getAttribute( 'src' ),
+	title: element.getAttribute( 'data-title' ),
+	author: element.getAttribute( 'data-author' ),
 	omny: true,
 } );
 

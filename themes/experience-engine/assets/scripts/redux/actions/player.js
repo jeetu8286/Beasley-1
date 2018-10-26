@@ -117,7 +117,7 @@ export const playAudio = ( audio, title = '', artist = '' ) => ( dispatch ) => {
 	} );
 };
 
-export const playOmny = ( audio ) => ( dispatch ) => {
+export const playOmny = ( audio, title = '', artist = '' ) => ( dispatch ) => {
 	const bindStatusUpdate = ( status ) => () => {
 		dispatch( {
 			type: ACTION_STATUS_CHANGE,
@@ -150,6 +150,15 @@ export const playOmny = ( audio ) => ( dispatch ) => {
 		type: ACTION_PLAY_OMNY,
 		player,
 		audio,
+	} );
+
+	dispatch( {
+		type: ACTION_CUEPOINT_CHANGE,
+		cuePoint: {
+			type: 'track',
+			cueTitle: title,
+			artistName: artist,
+		},
 	} );
 };
 
