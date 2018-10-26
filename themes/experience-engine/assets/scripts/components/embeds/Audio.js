@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
@@ -9,7 +9,14 @@ import * as actions from '../../redux/actions/player';
 
 import Controls from '../player/Controls';
 
-class AudioEmbed extends PureComponent {
+class AudioEmbed extends Component {
+
+	constructor( props ) {
+		super( props );
+
+		const self = this;
+		self.onPlayClick = self.handlePlayClick.bind( self );
+	}
 
 	getTitle() {
 		const { src, sources } = this.props;
@@ -58,9 +65,29 @@ class AudioEmbed extends PureComponent {
 		return src;
 	}
 
+	handlePlayClick() {
+		const self = this;
+		const { omny, playAudio, playOmny } = self.props;
+		const src = self.getPlayableSource();
+
+		if ( omny ) {
+			playOmny( src );
+		} else {
+			playAudio( src, self.getTitle() );
+		}
+	}
+
+	getStatus() {
+		const self = this;
+		const { audio, status } = self.props;
+		const src = self.getPlayableSource();
+
+		return audio === src ? status : actions.STATUSES.LIVE_STOP;
+	}
+
 	render() {
 		const self = this;
-		const { placeholder, omny, audio, status, play, pause, resume } = self.props;
+		const { placeholder, omny, pause, resume } = self.props;
 
 		const container = document.getElementById( placeholder );
 		if ( !container ) {
@@ -68,12 +95,10 @@ class AudioEmbed extends PureComponent {
 		}
 
 		const title = !omny ? self.getTitle() : false;
-		const src = self.getPlayableSource();
-		const audioStatus = audio === src ? status : actions.STATUSES.LIVE_STOP;
 
 		const embed = (
 			<div>
-				<Controls status={audioStatus} play={() => play( src, title )} pause={pause} resume={resume} />
+				<Controls status={self.getStatus()} play={self.onPlayClick} pause={pause} resume={resume} />
 				{title}
 			</div>
 		);
@@ -90,7 +115,8 @@ AudioEmbed.propTypes = {
 	src: PropTypes.string.isRequired,
 	omny: PropTypes.bool,
 	sources: PropTypes.shape( {} ),
-	play: PropTypes.func.isRequired,
+	playAudio: PropTypes.func.isRequired,
+	playOmny: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
 };
@@ -106,7 +132,8 @@ const mapStateToProps = ( { player } ) => ( {
 } );
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
-	play: actions.playAudio,
+	playAudio: actions.playAudio,
+	playOmny: actions.playOmny,
 	pause: actions.pause,
 	resume: actions.resume,
 }, dispatch );
