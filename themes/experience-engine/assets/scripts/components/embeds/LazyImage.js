@@ -67,15 +67,11 @@ class LazyImage extends PureComponent {
 		window.requestAnimationFrame( this.loadImage );
 	}
 
-	isInViewport( newWidth, newHeight ) {
+	isInViewport( containerWidth, containerHeight ) {
 		const bounding = this.container.getBoundingClientRect();
 		const { top, left } = bounding;
 
-		const { documentElement } = document;
-		const innerHeight = window.innerHeight || documentElement.clientHeight;
-		const innerWidth = window.innerWidth || documentElement.clientWidth;
-
-		return 0 <= top && 0 <= left && ( top + newHeight ) <= innerHeight && ( left + newWidth ) <= innerWidth;
+		return -containerHeight <= top && -containerWidth <= left;
 	}
 
 	render() {
