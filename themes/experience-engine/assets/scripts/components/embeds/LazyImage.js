@@ -11,6 +11,7 @@ class LazyImage extends PureComponent {
 
 		const self = this;
 
+		self.boxRef = React.createRef();
 		self.state = {
 			containerWidth: 0,
 			containerHeight: 0,
@@ -58,7 +59,9 @@ class LazyImage extends PureComponent {
 
 			imageLoader.src = imageSrc;
 			imageLoader.onload = () => {
-				self.setState( { image: imageSrc } );
+				if ( self.boxRef.current ) { // check if component is still mounted
+					self.setState( { image: imageSrc } );
+				}
 			};
 		}
 	}
@@ -92,7 +95,7 @@ class LazyImage extends PureComponent {
 		const loader = !image ? <div className="loading" /> : false;
 
 		const embed = (
-			<div className="lazy-image" style={styles}>
+			<div className="lazy-image" ref={self.boxRef} style={styles}>
 				{loader}
 			</div>
 		);
