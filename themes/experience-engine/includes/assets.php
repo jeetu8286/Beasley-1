@@ -49,9 +49,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 			'livePlayer' => array(
 				'streams' => function_exists( 'gmr_streams_get_public_streams' ) ? gmr_streams_get_public_streams() : array(),
 			),
-			'workers'    => array(
-				'image' => "{$base}/assets/scripts/workers/image.js",
-			),
 		) );
 	}
 endif;

@@ -18,20 +18,14 @@ class LazyImage extends PureComponent {
 		};
 
 		self.loadImage = self.loadImage.bind( self );
-		self.onImageLoaded = self.handleImageLoaded.bind( self );
 		self.onResize = self.handleResize.bind( self );
 	}
 
 	componentDidMount() {
-		const { bbgiconfig } = window;
-
 		const self = this;
 		const { placeholder } = self.props;
 
 		self.container = document.getElementById( placeholder );
-
-		self.worker = new Worker( bbgiconfig.workers.image );
-		self.worker.onmessage = self.onImageLoaded;
 
 		self.loadImage();
 
@@ -41,8 +35,6 @@ class LazyImage extends PureComponent {
 
 	componentWillUnmount() {
 		const self = this;
-
-		self.worker.terminate();
 
 		window.removeEventListener( 'scroll', self.onResize );
 		window.removeEventListener( 'resize', self.onResize );
@@ -57,17 +49,18 @@ class LazyImage extends PureComponent {
 		const containerWidth = offsetWidth;
 		const containerHeight = offsetWidth / aspect;
 		const anchor = width > height ? 'middlecenter' : 'leftop';
-		const image = `${src.split( '?' )[0]}?maxwidth=${containerWidth}&maxheight=${containerHeight}&anchor=${anchor}`;
 
 		self.setState( { containerWidth, containerHeight } );
 
 		if ( self.isInViewport( containerWidth, containerHeight ) ) {
-			self.worker.postMessage( image );
-		}
-	}
+			const imageSrc = `${src.split( '?' )[0]}?maxwidth=${containerWidth}&maxheight=${containerHeight}&anchor=${anchor}`;
+			const imageLoader = new Image();
 
-	handleImageLoaded( e ) {
-		this.setState( { image: e.data } );
+			imageLoader.src = imageSrc;
+			imageLoader.onload = () => {
+				self.setState( { image: imageSrc } );
+			};
+		}
 	}
 
 	handleResize() {
