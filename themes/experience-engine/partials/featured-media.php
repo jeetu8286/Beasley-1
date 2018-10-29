@@ -1,3 +1,3 @@
 <div>
-	<?php the_post_thumbnail( 'medium' ); ?>
+	<?php ee_the_lazy_thumbnail(); ?>
 </div>

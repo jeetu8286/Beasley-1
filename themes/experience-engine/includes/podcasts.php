@@ -86,3 +86,23 @@ if ( ! function_exists( 'ee_the_latest_episode' ) ) :
 		}
 	}
 endif;
+
+if ( ! function_exists( 'ee_get_podcast_meta' ) ) :
+	function ee_get_podcast_meta( $podcast, $meta_key ) {
+		$post = get_post( $podcast );
+		if ( ! is_a( $post, '\WP_Post' ) ) {
+			return false;
+		}
+
+		switch ( $meta_key ) {
+			case 'feed_url':
+				return get_post_meta( $post->ID, 'gmp_podcast_feed', true );
+			case 'itunes_url':
+				return get_post_meta( $post->ID, 'gmp_podcast_itunes_url', true );
+			case 'google_play_url':
+				return get_post_meta( $post->ID, 'gmp_podcast_google_play_url', true );
+		}
+
+		return false;
+	}
+endif;
