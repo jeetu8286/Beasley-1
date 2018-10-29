@@ -151,3 +151,8 @@ small {
 big {
 	font-size: 125%;
 }
+
+img {
+	height: auto;
+	max-width: 100%;
+}
