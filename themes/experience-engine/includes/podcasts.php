@@ -31,6 +31,33 @@ if ( ! function_exists( 'ee_get_episodes_count' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_get_episode_player' ) ) :
+	function ee_get_episode_player( $episode = null ) {
+		$matches = array();
+		$episode = get_post( $episode );
+
+		if (
+			is_a( $episode, '\WP_Post' )
+			&& preg_match( '#\[(embed|audio).*?\].*?\[\/(embed|audio)\]#i', $episode->post_content, $matches )
+			&& $matches[1] == $matches[2]
+		) {
+			remove_filter( 'the_content', 'wpautop' );
+			$content = apply_filters( 'the_content', $matches[0] );
+			add_filter( 'the_content', 'wpautop' );
+
+			return $content;
+		}
+
+		return null;
+	}
+endif;
+
+if ( ! function_exists( 'ee_the_episode_player' ) ) :
+	function ee_the_episode_player( $episode = null ) {
+		echo ee_get_episode_player( $episode );
+	}
+endif;
+
 if ( ! function_exists( 'ee_the_latest_episode' ) ) :
 	function ee_the_latest_episode( $podcast = null ) {
 		$podcast = get_post( $podcast );
@@ -47,26 +74,15 @@ if ( ! function_exists( 'ee_the_latest_episode' ) ) :
 			wp_cache_set( $key, $episode, 'experience-engine', 15 * MINUTE_IN_SECONDS );
 		}
 
-		if ( empty( $episode ) ) {
-			return;
-		}
-
-		$matches = array();
-		$episode = get_post( $episode );
-
-		if (
-			is_a( $episode, '\WP_Post' )
-			&& preg_match( '#\[(embed|audio).*?\].*?\[\/(embed|audio)\]#i', $episode->post_content, $matches )
-			&& $matches[1] == $matches[2]
-		) {
-			remove_filter( 'the_content', 'wpautop' );
-			$content = apply_filters( 'the_content', $matches[0] );
-			add_filter( 'the_content', 'wpautop' );
-
-			?><div>
-				<div><?php echo $content; ?></div>
-				<div>Play Latest: <?php ee_the_date( $episode ); ?></div>
-			</div><?php
+		if ( $episode ) {
+			$episode = get_post( $episode );
+			$player = ee_get_episode_player( $episode );
+			if ( $player ) {
+				?><div>
+					<div><?php echo $player; ?></div>
+					<div>Play Latest: <?php ee_the_date( $episode ); ?></div>
+				</div><?php
+			}
 		}
 	}
 endif;
