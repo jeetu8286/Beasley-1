@@ -4,6 +4,7 @@ import NProgress from 'nprogress';
 
 import AudioEmbed from '../components/embeds/Audio';
 import SecondStreetEmbed from '../components/embeds/SecondStreet';
+import LazyImage from '../components/embeds/LazyImage';
 
 const specialPages = [
 	'/wp-admin/',
@@ -36,6 +37,13 @@ const getOmnyEmbedParams = ( element ) => ( {
 	title: element.getAttribute( 'data-title' ),
 	author: element.getAttribute( 'data-author' ),
 	omny: true,
+} );
+
+const getLazyImageParams = ( element ) => ( {
+	src: element.getAttribute( 'data-src' ),
+	width: element.getAttribute( 'data-width' ),
+	height: element.getAttribute( 'data-height' ),
+	aspect: element.getAttribute( 'data-aspect' ),
 } );
 
 class ContentDispatcher extends Component {
@@ -196,6 +204,7 @@ class ContentDispatcher extends Component {
 				...self.processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
 				...self.processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
 				...self.processEmbeds( container, 'audio', 'iframe[src^="https://omny.fm"]', getOmnyEmbedParams ),
+				...self.processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
 			];
 
 			// MUST follow after embeds processing
@@ -214,10 +223,15 @@ class ContentDispatcher extends Component {
 		);
 
 		const embedComponents = embeds.map( ( embed ) => {
-			if ( 'secondstreet' === embed.type ) {
-				return <SecondStreetEmbed key={embed.params.placeholder} {...embed.params} />;
-			} else if ( 'audio' === embed.type ) {
-				return <AudioEmbed key={embed.params.placeholder} {...embed.params} />;
+			const { type, params } = embed;
+			const { placeholder } = params;
+
+			if ( 'secondstreet' === type ) {
+				return <SecondStreetEmbed key={placeholder} {...params} />;
+			} else if ( 'audio' === type ) {
+				return <AudioEmbed key={placeholder} {...params} />;
+			} else if ( 'lazyimage' === type ) {
+				return <LazyImage key={placeholder} {...params} />;
 			}
 
 			return false;

@@ -45,9 +45,12 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'ee-app-vendors', "{$base}/bundle/vendors-app.js", null, null, true );
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'ee-app-vendors' ), null, true );
 		wp_localize_script( 'ee-app', 'bbgiconfig', array(
-			'firebase'    => apply_filters( 'firebase_settings', array() ),
+			'firebase'   => apply_filters( 'firebase_settings', array() ),
 			'livePlayer' => array(
 				'streams' => function_exists( 'gmr_streams_get_public_streams' ) ? gmr_streams_get_public_streams() : array(),
+			),
+			'workers'    => array(
+				'image' => "{$base}/assets/scripts/workers/image.js",
 			),
 		) );
 	}
@@ -73,17 +76,18 @@ if ( ! function_exists( 'ee_script_loader' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_the_lazy_image' ) ) :
-	function ee_the_lazy_image( $image_id ) {
+	function ee_the_lazy_image( $image_id, $aspect = false ) {
 		$img = wp_get_attachment_image_src( $image_id, 'original' );
 		if ( empty( $img ) ) {
 			return;
 		}
 
 		printf(
-			'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s"></div>',
+			'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s" data-aspect="%s"></div>',
 			esc_attr( $img[0] ),
 			esc_attr( $img[1] ),
-			esc_attr( $img[2] )
+			esc_attr( $img[2] ),
+			! empty( $aspect ) ? esc_attr( $aspect ) : 16 / 10
 		);
 	}
 endif;
