@@ -1,6 +1,10 @@
 @import 'global/variables';
 
+@import 'base/a11y';
 @import 'base/typography';
+
+@import 'components/navigation/primary-sidebar';
+@import 'components/navigation/primary-nav';
 
 @import 'components/nprogress';
 @import 'components/modal';
