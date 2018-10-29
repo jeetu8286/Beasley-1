@@ -42,8 +42,8 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		/**
 		 * Application script
 		 */
-		wp_register_script( 'ee-app-vendors', "{$base}/bundle/vendors-app.js", null, null, true );
-		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'ee-app-vendors' ), null, true );
+		wp_register_script( 'ee-app-vendors', "{$base}/bundle/vendors-app.js", null, GREATERMEDIA_VERSION, true );
+		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'ee-app-vendors' ), GREATERMEDIA_VERSION, true );
 		wp_localize_script( 'ee-app', 'bbgiconfig', array(
 			'firebase'   => apply_filters( 'firebase_settings', array() ),
 			'livePlayer' => array(
