@@ -71,3 +71,29 @@ if ( ! function_exists( 'ee_script_loader' ) ) :
 		return $tag;
 	}
 endif;
+
+if ( ! function_exists( 'ee_the_lazy_image' ) ) :
+	function ee_the_lazy_image( $image_id ) {
+		$img = wp_get_attachment_image_src( $image_id, 'original' );
+		if ( empty( $img ) ) {
+			return;
+		}
+
+		printf(
+			'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s"></div>',
+			esc_attr( $img[0] ),
+			esc_attr( $img[1] ),
+			esc_attr( $img[2] )
+		);
+	}
+endif;
+
+if ( ! function_exists( 'ee_the_lazy_thumbnail' ) ) :
+	function ee_the_lazy_thumbnail( $post = null ) {
+		$post = get_post( $post );
+		if ( has_post_thumbnail( $post ) ) {
+			$thumbnail_id = get_post_thumbnail_id( $post );
+			ee_the_lazy_image( $thumbnail_id );
+		}
+	}
+endif;

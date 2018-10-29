@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<div>
+<div class="podcast-archive">
 	<?php while ( have_posts() ) : ?>
 		<?php the_post(); ?>
 		<?php get_template_part( 'partials/tile', get_post_type() ); ?>
