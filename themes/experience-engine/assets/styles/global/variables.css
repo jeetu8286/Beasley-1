@@ -30,3 +30,5 @@
 	--global-theme-font-secondary: #202124;
 	--global-theme-font-tertiary: var(--global-dove-gray);
 }
+
+@custom-media --medium-viewport (min-width: 768px);
