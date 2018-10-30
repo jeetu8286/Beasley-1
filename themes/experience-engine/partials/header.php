@@ -18,7 +18,10 @@ endif;
 			<span class="screen-reader-text"><?php wp_title(); ?></span>
 		</a>
 	</div>
-	<nav id="js-primary-nav" class="primary-nav" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" aria-hidden="false">
+	<nav id="js-primary-nav" class="primary-nav" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement" aria-hidden="true">
+		<?php echo get_search_form(); ?>
 		<?php get_template_part( 'partials/primary', 'navigation' ); ?>
 	</nav>
+
+	<div id="user-nav" class="user-nav"></div>
 </div>
