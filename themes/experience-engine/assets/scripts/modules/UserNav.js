@@ -29,10 +29,10 @@ class UserNav extends Component {
 
 	componentDidMount() {
 		const { bbgiconfig } = window;
-		const { firebase } = bbgiconfig;
+		const { firebase: config } = bbgiconfig;
 
-		if ( firebase.projectId ) {
-			firebase.initializeApp( bbgiconfig.firebase );
+		if ( config.projectId ) {
+			firebase.initializeApp( config );
 
 			const auth = firebase.auth();
 			auth.onAuthStateChanged( this.onAuthStateChanged );
@@ -101,9 +101,9 @@ class UserNav extends Component {
 
 	render() {
 		const { bbgiconfig } = window;
-		const { firebase } = bbgiconfig;
+		const { firebase: config } = bbgiconfig;
 
-		if ( !firebase.projectId ) {
+		if ( !config.projectId ) {
 			return false;
 		}
 
