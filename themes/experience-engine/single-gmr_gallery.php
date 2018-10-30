@@ -3,8 +3,7 @@
 <?php the_post(); ?>
 
 <div>
-	<?php get_template_part( 'partials/show-information' ); ?>
-	<?php get_template_part( 'partials/show-navigation' ); ?>
+	<?php get_template_part( 'partials/show-block' ); ?>
 </div>
 
 <?php get_footer(); ?>
