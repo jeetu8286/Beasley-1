@@ -31,11 +31,7 @@
 	<div>
 		<?php $query = ee_get_episodes_query(); ?>
 		<?php if ( $query->have_posts() ) : ?>
-			<?php while ( $query->have_posts() ) : ?>
-				<?php $query->the_post(); ?>
-				<?php get_template_part( 'partials/tile', get_post_type() ); ?>
-			<?php endwhile; ?>
-			<?php wp_reset_postdata(); ?>
+			<?php ee_the_query_tiles( $query ); ?>
 		<?php endif; ?>
 	</div>
 </div>

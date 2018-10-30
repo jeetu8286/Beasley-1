@@ -13,6 +13,5 @@
 				<?php the_title(); ?>
 			</a>
 		</h3>
-		<?php the_excerpt(); ?>
 	</div>
 </div>

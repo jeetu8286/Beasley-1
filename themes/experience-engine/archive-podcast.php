@@ -1,12 +1,14 @@
 <?php get_header(); ?>
 
-<div class="podcast-archive">
+<div>
 	<h1>Podcasts</h1>
 
-	<?php while ( have_posts() ) : ?>
-		<?php the_post(); ?>
-		<?php get_template_part( 'partials/tile', get_post_type() ); ?>
-	<?php endwhile; ?>
+	<div style="display:flex">
+		<?php while ( have_posts() ) : ?>
+			<?php the_post(); ?>
+			<?php get_template_part( 'partials/tile', get_post_type() ); ?>
+		<?php endwhile; ?>
+	</div>
 
 	<div>
 		<?php previous_posts_link(); ?>

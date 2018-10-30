@@ -26,3 +26,14 @@ if ( ! function_exists( 'ee_the_date' ) ) :
 		return printf( date( 'M jS, Y', $created_offset ) );
 	}
 endif;
+
+if ( !function_exists( 'ee_the_query_tiles' ) ) :
+	function ee_the_query_tiles( $query ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			get_template_part( 'partials/tile', get_post_type() );
+		}
+
+		wp_reset_postdata();
+	}
+endif;
