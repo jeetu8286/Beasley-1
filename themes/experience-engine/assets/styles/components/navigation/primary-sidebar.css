@@ -19,6 +19,7 @@
 
 	& .logo {
 		margin: 0 auto;
+		z-index: 5;
 
 		@media (--medium-viewport) {
 			margin: 0;
@@ -31,6 +32,15 @@
 			@media (--medium-viewport) {
 				max-height: none;
 			}
+		}
+	}
+
+	&.menu-is-active {
+		& .logo {
+			display: flex;
+			justify-content: center;
+			margin: 0;
+			width: calc(82.6667vw - 2.2rem);
 		}
 	}
 }
