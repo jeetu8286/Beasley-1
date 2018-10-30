@@ -232,14 +232,19 @@ class ContentDispatcher extends Component {
 			const { placeholder } = params;
 
 			let component = false;
-			if ( 'secondstreet' === type ) {
-				component = SecondStreetEmbed;
-			} else if ( 'audio' === type ) {
-				component = AudioEmbed;
-			} else if ( 'lazyimage' === type ) {
-				component = LazyImage;
-			} else if ( 'share' === type ) {
-				component = Share;
+			switch ( type ) {
+				case 'secondstreet':
+					component = SecondStreetEmbed;
+					break;
+				case 'audio':
+					component = AudioEmbed;
+					break;
+				case 'lazyimage':
+					component = LazyImage;
+					break;
+				case 'share':
+					component = Share;
+					break;
 			}
 
 			if ( component ) {

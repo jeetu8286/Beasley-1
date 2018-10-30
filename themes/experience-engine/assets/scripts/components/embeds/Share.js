@@ -1,41 +1,35 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-class Share extends PureComponent {
+const getUrl = () => encodeURIComponent( window.location.href );
+const getTitle = () => encodeURIComponent( document.title );
 
-	constructor( props ) {
-		super( props );
+const handleFacebookClick = () => {
+	const url = `https://www.facebook.com/sharer/sharer.php?u=${getUrl()}&t=${getTitle()}`;
+	window.open( url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600' );
+};
 
-		const self = this;
-		self.onFacebookClick = self.handleFacebookClick.bind( self );
-		self.onTwitterClick = self.handleTwitterClick.bind( self );
-	}
+const handleTwitterClick = () => {
+	const url = `https://twitter.com/share?url=${getUrl()}&text=${getTitle()}`;
+	window.open( url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600' );
+};
 
-	handleFacebookClick() {
-		console.log( 'Facebook' );
-	}
+//const handleGoogleClick = () => {
+//	const url = `https://plus.google.com/share?url=${getUrl()}`;
+//	window.open( url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480' );
+//};
 
-	handleTwitterClick() {
-		console.log( 'Twitter' );
-	}
+const Share = () => (
+	<div>
+		Share:
 
-	render() {
-		const self = this;
+		<button type="button" onClick={handleFacebookClick}>
+			Facebook
+		</button>
 
-		return (
-			<div>
-				Share:
-
-				<button type="button" onClick={self.onFacebookClick}>
-					Facebook
-				</button>
-
-				<button type="button" onClick={self.onTwitterClick}>
-					Twitter
-				</button>
-			</div>
-		);
-	}
-
-}
+		<button type="button" onClick={handleTwitterClick}>
+			Twitter
+		</button>
+	</div>
+);
 
 export default Share;
