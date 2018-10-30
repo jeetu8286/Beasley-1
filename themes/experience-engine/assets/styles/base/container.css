@@ -1,0 +1,5 @@
+.container {
+	@media(--medium-viewport) {
+		padding-left: 190px;
+	}
+}
