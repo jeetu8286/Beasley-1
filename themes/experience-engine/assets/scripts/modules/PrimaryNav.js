@@ -23,60 +23,93 @@ class PrimaryNav extends Component {
 		};
 
 		self.handleSubMenu = self.handleSubMenu.bind( self );
+		self.handleMobileNav = self.handleMobileNav.bind( self );
+		self.onResize = self.onResize.bind( self );
 	}
 
 	componentDidMount() {
+		const self = this;
+
 		document.querySelectorAll( '.menu-item-has-children' ).forEach( el => {
 			const subMenuActivator = document.createElement( 'button' );
 			subMenuActivator.classList.add( 'sub-menu-activator' );
 			el.insertBefore( subMenuActivator, el.querySelector( '.sub-menu' ) );
+			el.querySelector( 'a' ).setAttribute( 'aria-haspopup', 'true' );
+			el.querySelector( '.sub-menu' ).setAttribute( 'aria-hidden', 'true' );
+			el.querySelector( '.sub-menu' ).setAttribute( 'aria-label', 'Submenu' );
 		} );
 
-		this.primaryNavRef.current.addEventListener( 'click', el => {
-			if ( el.target.classList.contains( 'sub-menu-activator' ) ) {
-				this.handleSubMenu( el );
-			}
-		} );
+		window.addEventListener( 'resize', self.onResize );
+		self.primaryNavRef.current.addEventListener( 'click', self.handleSubMenu );
+		siteMenuToggle.addEventListener( 'click', self.handleMobileNav );
 
-		siteMenuToggle.addEventListener( 'click', () => {
-			this.handleMobileNav();
-		} );
-
-		if( window.matchMedia( '(min-width: 768px)' ).matches ) {
+		if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 			navRoot.setAttribute( 'aria-hidden', false );
+			this.setState( { primaryMenuOpen: false } );
 		}
+	}
+
+	componentWillUnmount() {
+		const self = this;
+		window.removeEventListener( 'resize', self.onResize );
+		self.primaryNavRef.current.removeEventListener( 'click', self.handleSubMenu );
+		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
 	}
 
 	handleSubMenu( el ) {
+		const self = this;
 		const parent = el.target.parentNode;
 		const subMenu = parent.querySelector( '.sub-menu' );
 		const actives = document.querySelectorAll( '.menu-item-has-children .is-active' );
-		const { subMenuOpen } = this.state;
+		const { subMenuOpen } = self.state;
 
-		if ( true === subMenuOpen && !el.target.classList.contains( 'is-active' ) ) {
-			actives.forEach( el => {
-				el.classList.remove( 'is-active' );
-			} );
+
+		if ( el.target.classList.contains( 'sub-menu-activator' ) ) {
+
+			if ( true === subMenuOpen && !el.target.classList.contains( 'is-active' ) ) {
+				actives.forEach( el => {
+					el.classList.remove( 'is-active' );
+					el.setAttribute( 'aria-hidden', true );
+					self.setState( { subMenuOpen: false } );
+				} );
+			}
+
+			subMenu.classList.toggle( 'is-active' );
+			el.target.classList.toggle( 'is-active' );
+			self.setState( ( state ) => { return { subMenuOpen: !state.subMenuOpen }; } );
+			subMenu.setAttribute( 'aria-hidden', !this.state.subMenuOpen );
 		}
-
-		subMenu.classList.toggle( 'is-active' );
-		el.target.classList.toggle( 'is-active' );
-
-		this.setState( { subMenuOpen: true } );
 	}
 
 	handleMobileNav() {
-		const { primaryMenuOpen } = this.state;
+		const self = this;
+		const { primaryMenuOpen } = self.state;
 
 		if ( true === primaryMenuOpen ) {
 			navRoot.setAttribute( 'aria-hidden', true );
 			navRoot.classList.remove( 'is-active' );
+			navRoot.parentNode.classList.remove( 'menu-is-active' );
+			self.setState( { primaryMenuOpen: false } );
 		} else if ( false === primaryMenuOpen ) {
 			navRoot.classList.add( 'is-active' );
+			navRoot.parentNode.classList.add( 'menu-is-active' );
 			navRoot.setAttribute( 'aria-hidden', false );
+			self.setState( { primaryMenuOpen: true } );
 		}
+	}
 
-		this.setState( ( state ) => { return { primaryMenuOpen: !state.primaryMenuOpen }; } );
+	onResize() {
+		window.requestAnimationFrame( () => {
+			navRoot.parentNode.classList.remove( 'menu-is-active' );
+
+			if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
+				navRoot.setAttribute( 'aria-hidden', false );
+				this.setState( { primaryMenuOpen: true } );
+			} else {
+				navRoot.setAttribute( 'aria-hidden', true );
+				this.setState( { primaryMenuOpen: false } );
+			}
+		} );
 	}
 
 	render() {
