@@ -160,6 +160,7 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 				'omny-publish-url' => $clip['PublishedUrl'],
 				'omny-audio-url'   => $clip['AudioUrl'],
 				'omny-image-url'   => $clip['ImageUrl'],
+				'omny-duration'    => $clip['DurationSeconds'],
 			),
 		);
 
