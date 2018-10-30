@@ -98,12 +98,16 @@ if ( ! function_exists( 'ee_get_episode_meta' ) ) :
 			case 'duration':
 				$duration = intval( get_post_meta( $episode->ID, 'duration', true ) );
 				if ( ! $duration ) {
+					$duration = intval( get_post_meta( $episode->ID, 'omny-duration', true ) );
+				}
+
+				if ( ! $duration ) {
 					return false;
 				}
 
 				$hours = floor( $duration / HOUR_IN_SECONDS );
 				$minutes = floor( $duration / MINUTE_IN_SECONDS );
-				$seconds = $duration % MINUTE_IN_SECONDS;
+				$seconds = floor( $duration % MINUTE_IN_SECONDS );
 
 				$duration = substr( '0' . $minutes, -2 ) . ':' . substr( '0' . $seconds, -2 );
 				if ( $hours > 0 ) {

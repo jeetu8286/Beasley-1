@@ -3,7 +3,7 @@
 	<div>
 		<div>
 			<?php if ( ( $duration = ee_get_episode_meta( null, 'duration' ) ) ) : ?>
-				<span><?php echo esc_html( $duration ); ?></span>
+				<span style="margin-right: 5em"><?php echo esc_html( $duration ); ?></span>
 			<?php endif; ?>
 
 			<span><?php ee_the_date(); ?></span>
