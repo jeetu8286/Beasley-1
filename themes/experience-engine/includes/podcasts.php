@@ -87,20 +87,50 @@ if ( ! function_exists( 'ee_the_latest_episode' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_get_episode_meta' ) ) :
+	function ee_get_episode_meta( $episode, $meta_key ) {
+		$episode = get_post( $episode );
+		if ( ! is_a( $episode, '\WP_Post' ) ) {
+			return false;
+		}
+
+		switch ( $meta_key ) {
+			case 'duration':
+				$duration = intval( get_post_meta( $episode->ID, 'duration', true ) );
+				if ( ! $duration ) {
+					return false;
+				}
+
+				$hours = floor( $duration / HOUR_IN_SECONDS );
+				$minutes = floor( $duration / MINUTE_IN_SECONDS );
+				$seconds = $duration % MINUTE_IN_SECONDS;
+
+				$duration = substr( '0' . $minutes, -2 ) . ':' . substr( '0' . $seconds, -2 );
+				if ( $hours > 0 ) {
+					$duration = substr( '0' . $hours, - 2 ) . ':' . $duration;
+				}
+
+				return $duration;
+		}
+
+		return false;
+	}
+endif;
+
 if ( ! function_exists( 'ee_get_podcast_meta' ) ) :
 	function ee_get_podcast_meta( $podcast, $meta_key ) {
-		$post = get_post( $podcast );
-		if ( ! is_a( $post, '\WP_Post' ) ) {
+		$podcast = get_post( $podcast );
+		if ( ! is_a( $podcast, '\WP_Post' ) ) {
 			return false;
 		}
 
 		switch ( $meta_key ) {
 			case 'feed_url':
-				return get_post_meta( $post->ID, 'gmp_podcast_feed', true );
+				return get_post_meta( $podcast->ID, 'gmp_podcast_feed', true );
 			case 'itunes_url':
-				return get_post_meta( $post->ID, 'gmp_podcast_itunes_url', true );
+				return get_post_meta( $podcast->ID, 'gmp_podcast_itunes_url', true );
 			case 'google_play_url':
-				return get_post_meta( $post->ID, 'gmp_podcast_google_play_url', true );
+				return get_post_meta( $podcast->ID, 'gmp_podcast_google_play_url', true );
 		}
 
 		return false;
