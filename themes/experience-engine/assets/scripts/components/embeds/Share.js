@@ -13,22 +13,11 @@ const handleTwitterClick = () => {
 	window.open( url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600' );
 };
 
-//const handleGoogleClick = () => {
-//	const url = `https://plus.google.com/share?url=${getUrl()}`;
-//	window.open( url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=350,width=480' );
-//};
-
 const Share = () => (
 	<div>
-		Share:
-
-		<button type="button" onClick={handleFacebookClick}>
-			Facebook
-		</button>
-
-		<button type="button" onClick={handleTwitterClick}>
-			Twitter
-		</button>
+		<span>Share:</span>
+		<button onClick={handleFacebookClick}>Facebook</button>
+		<button onClick={handleTwitterClick}>Twitter</button>
 	</div>
 );
 
