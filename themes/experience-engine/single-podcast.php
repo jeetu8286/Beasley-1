@@ -4,6 +4,7 @@
 
 <div>
 	<?php get_template_part( 'partials/show-information' ); ?>
+	<?php get_template_part( 'partials/show-navigation' ); ?>
 	<?php get_template_part( 'partials/podcast-information' ); ?>
 
 	<div>

@@ -3,6 +3,9 @@
 <?php the_post(); ?>
 
 <div>
+	<?php get_template_part( 'partials/show-information' ); ?>
+	<?php get_template_part( 'partials/show-navigation' ); ?>
+
 	<h1><?php the_title(); ?></h1>
 
 	<div>
