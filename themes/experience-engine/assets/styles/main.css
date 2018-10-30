@@ -5,6 +5,7 @@
 @import 'components/nprogress';
 @import 'components/modal';
 @import 'components/live-player';
-@import 'components/podcast';
 @import 'components/loading';
 @import 'components/lazy-image';
+@import 'components/podcast';
+@import 'components/episode';

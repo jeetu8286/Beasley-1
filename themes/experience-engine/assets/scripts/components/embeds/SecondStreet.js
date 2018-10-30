@@ -1,8 +1,6 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import delayed from '../../library/delayed-component';
-
 class SecondStreet extends PureComponent {
 
 	componentDidMount() {
@@ -45,4 +43,4 @@ SecondStreet.defaultProps = {
 	routing: '',
 };
 
-export default delayed( SecondStreet, 50 );
+export default SecondStreet;

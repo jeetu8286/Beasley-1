@@ -17,4 +17,8 @@ endif;
 	<?php if ( ( $instagram_url = ee_get_show_meta( $show, 'instagram' ) ) ): ?>
 		<a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer">Instagram</a>
 	<?php endif; ?>
+
+	<?php if ( ( $google_url = ee_get_show_meta( $show, 'google' ) ) ): ?>
+		<a href="<?php echo esc_url( $google_url ); ?>" target="_blank" rel="noopener noreferrer">Google+</a>
+	<?php endif; ?>
 </div>

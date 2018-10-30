@@ -1,5 +1,7 @@
 <div <?php post_class(); ?>>
-	<?php ee_the_lazy_thumbnail(); ?>
+	<div class="podcast-image">
+		<?php ee_the_lazy_thumbnail(); ?>
+	</div>
 	<h3>
 		<a href="<?php the_permalink(); ?>">
 			<?php the_title(); ?>
