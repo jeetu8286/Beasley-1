@@ -1,4 +1,5 @@
-		</div>
+		</main>
+	</div>
 
 		<?php get_template_part( 'partials/footer' ); ?>
 		<?php get_template_part( 'partials/modals' ); ?>
