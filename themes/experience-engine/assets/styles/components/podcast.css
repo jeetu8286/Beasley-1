@@ -1,0 +1,8 @@
+.post-type-archive-podcast .podcast-archive {
+	display: flex;
+}
+
+.post-type-archive-podcast 	.hentry.type-podcast {
+	padding: 20px;
+	min-width: 45%;
+}

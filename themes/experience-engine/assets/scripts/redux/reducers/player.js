@@ -75,6 +75,7 @@ const reducer = ( state = {}, action = {} ) => {
 				station: '',
 				time: 0,
 				duration: 0,
+				cuePoint: false,
 			} );
 
 		case actions.ACTION_PLAY_STATION: {
@@ -95,6 +96,7 @@ const reducer = ( state = {}, action = {} ) => {
 				station,
 				time: 0,
 				duration: 0,
+				cuePoint: false,
 			} );
 		}
 
@@ -117,6 +119,7 @@ const reducer = ( state = {}, action = {} ) => {
 				station: '',
 				time: 0,
 				duration: 0,
+				cuePoint: false,
 			} );
 		}
 

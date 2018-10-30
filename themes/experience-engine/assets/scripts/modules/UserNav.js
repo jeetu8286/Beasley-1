@@ -29,10 +29,14 @@ class UserNav extends Component {
 
 	componentDidMount() {
 		const { bbgiconfig } = window;
-		firebase.initializeApp( bbgiconfig.firebase );
+		const { firebase: config } = bbgiconfig;
 
-		const auth = firebase.auth();
-		auth.onAuthStateChanged( this.onAuthStateChanged );
+		if ( config.projectId ) {
+			firebase.initializeApp( config );
+
+			const auth = firebase.auth();
+			auth.onAuthStateChanged( this.onAuthStateChanged );
+		}
 	}
 
 	handleAuthStateChanged( user ) {
@@ -96,6 +100,13 @@ class UserNav extends Component {
 	}
 
 	render() {
+		const { bbgiconfig } = window;
+		const { firebase: config } = bbgiconfig;
+
+		if ( !config.projectId ) {
+			return false;
+		}
+
 		const self = this;
 		const { loading, user } = self.state;
 		const container = document.getElementById( 'user-nav' );

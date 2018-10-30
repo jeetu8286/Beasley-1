@@ -64,6 +64,8 @@ function omny_render_embed( $matches, $attr, $url ) {
 					);
 
 					$embed = str_replace( '<iframe ', $replace, $body['html'] );
+					$embed = apply_filters( 'omny_embed_html', $embed, $body );
+
 					wp_cache_set( $url, $embed, 'omny', HOUR_IN_SECONDS );
 				}
 			}
@@ -185,6 +187,7 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 				'omny-publish-url' => $clip['PublishedUrl'],
 				'omny-audio-url'   => $clip['AudioUrl'],
 				'omny-image-url'   => $clip['ImageUrl'],
+				'omny-duration'    => $clip['DurationSeconds'],
 			),
 		);
 
