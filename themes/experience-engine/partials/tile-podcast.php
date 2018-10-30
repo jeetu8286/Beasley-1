@@ -1,5 +1,5 @@
 <div <?php post_class(); ?>>
-	<div style="width: 300px">
+	<div class="podcast-image">
 		<?php ee_the_lazy_thumbnail(); ?>
 	</div>
 	<h3>

@@ -7,3 +7,5 @@
 @import 'components/live-player';
 @import 'components/loading';
 @import 'components/lazy-image';
+@import 'components/podcast';
+@import 'components/episode';
