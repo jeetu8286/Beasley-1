@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-import delayed from '../../library/delayed-component';
 import * as actions from '../../redux/actions/player';
-
 import Controls from '../player/Controls';
 
 class AudioEmbed extends Component {
@@ -91,23 +88,15 @@ class AudioEmbed extends Component {
 
 	render() {
 		const self = this;
-		const { placeholder, omny, pause, resume } = self.props;
-
-		const container = document.getElementById( placeholder );
-		if ( !container ) {
-			return false;
-		}
-
+		const { omny, pause, resume } = self.props;
 		const title = !omny ? self.getTitle() : false;
 
-		const embed = (
+		return (
 			<div>
 				<Controls status={self.getStatus()} play={self.onPlayClick} pause={pause} resume={resume} />
 				{title}
 			</div>
 		);
-
-		return ReactDOM.createPortal( embed, container );
 	}
 
 }
@@ -115,7 +104,6 @@ class AudioEmbed extends Component {
 AudioEmbed.propTypes = {
 	audio: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
-	placeholder: PropTypes.string.isRequired,
 	src: PropTypes.string.isRequired,
 	omny: PropTypes.bool,
 	title: PropTypes.string,
@@ -146,4 +134,4 @@ const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
 	resume: actions.resume,
 }, dispatch );
 
-export default delayed( connect( mapStateToProps, mapDispatchToProps )( AudioEmbed ), 50 );
+export default connect( mapStateToProps, mapDispatchToProps )( AudioEmbed );

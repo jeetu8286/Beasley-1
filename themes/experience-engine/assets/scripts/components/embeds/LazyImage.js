@@ -1,8 +1,5 @@
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-
-import delayed from '../../library/delayed-component';
 
 class LazyImage extends PureComponent {
 
@@ -94,13 +91,11 @@ class LazyImage extends PureComponent {
 
 		const loader = !image ? <div className="loading" /> : false;
 
-		const embed = (
+		return (
 			<div className="lazy-image" ref={self.boxRef} style={styles}>
 				{loader}
 			</div>
 		);
-
-		return ReactDOM.createPortal( embed, container );
 	}
 
 }
@@ -113,4 +108,4 @@ LazyImage.propTypes = {
 	aspect: PropTypes.string.isRequired,
 };
 
-export default delayed( LazyImage, 50 );
+export default LazyImage;

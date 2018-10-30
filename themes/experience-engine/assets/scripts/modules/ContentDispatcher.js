@@ -2,9 +2,11 @@ import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import NProgress from 'nprogress';
 
+import DelayedComponent from '../components/embeds/DelayedEmbed';
 import AudioEmbed from '../components/embeds/Audio';
 import SecondStreetEmbed from '../components/embeds/SecondStreet';
 import LazyImage from '../components/embeds/LazyImage';
+import Share from '../components/embeds/Share';
 
 const specialPages = [
 	'/wp-admin/',
@@ -45,6 +47,8 @@ const getLazyImageParams = ( element ) => ( {
 	height: element.getAttribute( 'data-height' ),
 	aspect: element.getAttribute( 'data-aspect' ),
 } );
+
+const getShareParams = () => ( {} );
 
 class ContentDispatcher extends Component {
 
@@ -205,6 +209,7 @@ class ContentDispatcher extends Component {
 				...self.processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
 				...self.processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
 				...self.processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
+				...self.processEmbeds( container, 'share', '.share-buttons', getShareParams ),
 			];
 
 			// MUST follow after embeds processing
@@ -226,15 +231,27 @@ class ContentDispatcher extends Component {
 			const { type, params } = embed;
 			const { placeholder } = params;
 
+			let component = false;
 			if ( 'secondstreet' === type ) {
-				return <SecondStreetEmbed key={placeholder} {...params} />;
+				component = SecondStreetEmbed;
 			} else if ( 'audio' === type ) {
-				return <AudioEmbed key={placeholder} {...params} />;
+				component = AudioEmbed;
 			} else if ( 'lazyimage' === type ) {
-				return <LazyImage key={placeholder} {...params} />;
+				component = LazyImage;
+			} else if ( 'share' === type ) {
+				component = Share;
 			}
 
-			return false;
+			if ( component ) {
+				component = React.createElement( component, params );
+				component = (
+					<DelayedComponent key={placeholder} placeholder={placeholder}>
+						{component}
+					</DelayedComponent>
+				);
+			}
+
+			return component;
 		} );
 
 		return (
