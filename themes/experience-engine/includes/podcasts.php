@@ -1,5 +1,7 @@
 <?php
 
+add_filter( 'omny_embed_html', 'ee_update_omny_embed' );
+
 if ( ! function_exists( 'ee_get_episodes_query' ) ) :
 	function ee_get_episodes_query( $podcast = null, $args = array() ) {
 		$podcast = get_post( $podcast );
@@ -138,5 +140,14 @@ if ( ! function_exists( 'ee_get_podcast_meta' ) ) :
 		}
 
 		return false;
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_omny_embed' ) ) :
+	function ee_update_omny_embed( $embed ) {
+		$embed = str_replace( 'iframe', 'div', $embed );
+		$embed = str_replace( '<div ', '<div class="omny-embed" ', $embed );
+
+		return $embed;
 	}
 endif;

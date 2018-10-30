@@ -203,7 +203,7 @@ class ContentDispatcher extends Component {
 			state.embeds = [
 				...self.processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
 				...self.processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
-				...self.processEmbeds( container, 'audio', 'iframe[src^="https://omny.fm"]', getOmnyEmbedParams ),
+				...self.processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
 				...self.processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
 			];
 

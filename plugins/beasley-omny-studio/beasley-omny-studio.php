@@ -64,6 +64,8 @@ function omny_render_embed( $matches, $attr, $url ) {
 					);
 
 					$embed = str_replace( '<iframe ', $replace, $body['html'] );
+					$embed = apply_filters( 'omny_embed_html', $embed, $body );
+
 					wp_cache_set( $url, $embed, 'omny', HOUR_IN_SECONDS );
 				}
 			}
