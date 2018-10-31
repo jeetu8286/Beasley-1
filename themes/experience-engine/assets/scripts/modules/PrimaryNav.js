@@ -7,10 +7,11 @@ const siteMenuToggle = document.getElementById( 'js-menu-toggle' );
 class PrimaryNav extends Component {
 	constructor( props ) {
 		super( props );
-		this.primaryNavRef = React.createRef();
 
 		const self = this;
 		const navHtml = navRoot.innerHTML;
+
+		self.primaryNavRef = React.createRef();
 
 		while ( navRoot.firstChild ) {
 			navRoot.removeChild( navRoot.firstChild );
@@ -29,22 +30,27 @@ class PrimaryNav extends Component {
 
 	componentDidMount() {
 		const self = this;
+		const container = navRoot.parentNode;
+		const itemsWithChildren = document.querySelectorAll( '.menu-item-has-children' );
 
-		document.querySelectorAll( '.menu-item-has-children' ).forEach( el => {
+		for ( let i = 0; i < itemsWithChildren.length; i++ ) {
+			const el = itemsWithChildren[i];
 			const subMenuActivator = document.createElement( 'button' );
+			const subMenuEl = el.querySelector( '.sub-menu' );
+
 			subMenuActivator.classList.add( 'sub-menu-activator' );
-			el.insertBefore( subMenuActivator, el.querySelector( '.sub-menu' ) );
+			el.insertBefore( subMenuActivator, subMenuEl );
 			el.querySelector( 'a' ).setAttribute( 'aria-haspopup', 'true' );
-			el.querySelector( '.sub-menu' ).setAttribute( 'aria-hidden', 'true' );
-			el.querySelector( '.sub-menu' ).setAttribute( 'aria-label', 'Submenu' );
-		} );
+			subMenuEl.setAttribute( 'aria-hidden', 'true' );
+			subMenuEl.setAttribute( 'aria-label', 'Submenu' );
+		}
 
 		window.addEventListener( 'resize', self.onResize );
 		self.primaryNavRef.current.addEventListener( 'click', self.handleSubMenu );
 		siteMenuToggle.addEventListener( 'click', self.handleMobileNav );
 
 		if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
-			navRoot.setAttribute( 'aria-hidden', false );
+			container.setAttribute( 'aria-hidden', false );
 			this.setState( { primaryMenuOpen: false } );
 		}
 	}
@@ -67,16 +73,17 @@ class PrimaryNav extends Component {
 		if ( el.target.classList.contains( 'sub-menu-activator' ) ) {
 
 			if ( true === subMenuOpen && !el.target.classList.contains( 'is-active' ) ) {
-				actives.forEach( el => {
+				for ( let i = 0; i < actives.length; i++ ) {
+					const el = actives[i];
 					el.classList.remove( 'is-active' );
 					el.setAttribute( 'aria-hidden', true );
 					self.setState( { subMenuOpen: false } );
-				} );
+				}
 			}
 
 			subMenu.classList.toggle( 'is-active' );
 			el.target.classList.toggle( 'is-active' );
-			self.setState( ( state ) => { return { subMenuOpen: !state.subMenuOpen }; } );
+			self.setState( ( state ) => ( { subMenuOpen: !state.subMenuOpen } ) );
 			subMenu.setAttribute( 'aria-hidden', !this.state.subMenuOpen );
 		}
 	}
