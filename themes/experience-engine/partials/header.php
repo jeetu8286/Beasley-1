@@ -1,10 +1,3 @@
-<?php
-
-if ( ! has_custom_logo() ) :
-	return;
-endif;
-
-?>
 <div class="primary-sidebar">
 	<a href="#primary-menu" id="js-menu-toggle" class="site-menu-toggle">
 		<span class="screen-reader-text">
@@ -18,7 +11,9 @@ endif;
 	</a>
 	<div class="logo" itemscope itemtype="http://schema.org/Organization">
 		<a itemprop="url" href="<?php the_permalink(); ?>">
-			<?php the_custom_logo(); ?>
+			<?php if ( has_custom_logo() ) : ?>
+				<?php the_custom_logo(); ?>
+			<?php endif; ?>
 			<span class="screen-reader-text"><?php wp_title(); ?></span>
 		</a>
 	</div>
