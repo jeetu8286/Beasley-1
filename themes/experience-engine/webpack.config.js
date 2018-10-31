@@ -63,7 +63,7 @@ const coreConfig = ( options = {} ) => ( {
 
 								return [
 									require( 'postcss-import' )( importOptions ),
-									require( 'postcss-custom-media' ),
+									require( 'postcss-custom-media' )(),
 									require( 'postcss-preset-env' )( envOptions ),
 									...( plugins || [] ),
 								];
