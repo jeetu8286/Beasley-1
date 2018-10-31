@@ -20,6 +20,12 @@ const parseVolume = ( value ) => {
 	return volume;
 };
 
+const loadNowPlaying = ( station ) => {
+	if ( station && tdplayer && !omnyplayer && !mp3player ) {
+		tdplayer.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
+	}
+};
+
 const tearDownMp3Player = () => {
 	if ( mp3player ) {
 		mp3player.pause();
@@ -87,7 +93,7 @@ const reducer = ( state = {}, action = {} ) => {
 			if ( tdplayer ) {
 				tdplayer.stop();
 				tdplayer.play( { station } );
-				tdplayer.NowPlayingApi.load( { numberToFetch: 15, mount: station } );
+				loadNowPlaying( station );
 			}
 
 			localStorage.setItem( 'station', station );
@@ -152,6 +158,7 @@ const reducer = ( state = {}, action = {} ) => {
 		}
 
 		case actions.ACTION_CUEPOINT_CHANGE:
+			loadNowPlaying( state.station );
 			return Object.assign( {}, state, { cuePoint: action.cuePoint } );
 
 		case actions.ACTION_DURATION_CHANGE:
