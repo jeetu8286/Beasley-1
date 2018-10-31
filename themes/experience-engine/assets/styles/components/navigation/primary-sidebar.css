@@ -35,6 +35,44 @@
 		}
 	}
 
+	& .nav-wrap {
+		background-color: var(--global-theme-secondary);
+		box-shadow: 1px 0 3px rgba(0, 0, 0, 0.08);
+		height: calc(100vh - 86px);
+		left: 0;
+		max-width: 82.6667vw;
+		overflow: auto;
+		padding: 3.5rem 1.1rem 0;
+		position: fixed;
+		top: 0;
+		width: 100%;
+
+		@media (--medium-viewport) {
+			box-shadow: none;
+			display: block;
+			height: auto;
+			overflow: visible;
+			position: static;
+			padding: 0;
+			top: 0;
+			width: auto;
+		}
+
+		@nest .admin-bar & {
+			top: 46px;
+		}
+
+		&[aria-hidden="true"] {
+			padding: 0;
+			width: 0;
+		}
+
+		&[aria-hidden="false"],
+		&:target {
+			display: block;
+		}
+	}
+
 	&.menu-is-active {
 		& .logo {
 			display: flex;
