@@ -20,6 +20,12 @@ const parseVolume = ( value ) => {
 	return volume;
 };
 
+const loadNowPlaying = ( station ) => {
+	if ( station && tdplayer && !omnyplayer && !mp3player ) {
+		tdplayer.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
+	}
+};
+
 const tearDownMp3Player = () => {
 	if ( mp3player ) {
 		mp3player.pause();
@@ -41,14 +47,20 @@ const tearDownOmnyPlayer = () => {
 	}
 };
 
-export const DEFAULT_STATE = {
-	status: actions.STATUSES.LIVE_STOP,
+const resetState = {
 	audio: '',
-	station: localStorage.getItem( 'station' ) || Object.keys( streams || {} )[0] || '', // first station by default
-	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
+	station: '',
 	cuePoint: false,
 	time: 0,
 	duration: 0,
+	songs: [],
+};
+
+export const DEFAULT_STATE = {
+	...resetState,
+	status: actions.STATUSES.LIVE_STOP,
+	station: localStorage.getItem( 'station' ) || Object.keys( streams || {} )[0] || '', // first station by default
+	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
 };
 
 const reducer = ( state = {}, action = {} ) => {
@@ -70,13 +82,7 @@ const reducer = ( state = {}, action = {} ) => {
 			mp3player.volume = state.volume / 100;
 			mp3player.play();
 
-			return Object.assign( {}, state, {
-				audio: action.audio,
-				station: '',
-				time: 0,
-				duration: 0,
-				cuePoint: false,
-			} );
+			return Object.assign( {}, state, resetState, { audio: action.audio } );
 
 		case actions.ACTION_PLAY_STATION: {
 			const { station } = action;
@@ -87,17 +93,12 @@ const reducer = ( state = {}, action = {} ) => {
 			if ( tdplayer ) {
 				tdplayer.stop();
 				tdplayer.play( { station } );
+				loadNowPlaying( station );
 			}
 
 			localStorage.setItem( 'station', station );
 
-			return Object.assign( {}, state, {
-				audio: '',
-				station,
-				time: 0,
-				duration: 0,
-				cuePoint: false,
-			} );
+			return Object.assign( {}, state, resetState, { station } );
 		}
 
 		case actions.ACTION_PLAY_OMNY: {
@@ -114,13 +115,7 @@ const reducer = ( state = {}, action = {} ) => {
 			// Omny doesn't support sound provider, thus we can't change/control volume :(
 			// omnyplayer.setVolume( state.volume );
 
-			return Object.assign( {}, state, {
-				audio: action.audio,
-				station: '',
-				time: 0,
-				duration: 0,
-				cuePoint: false,
-			} );
+			return Object.assign( {}, state, resetState, { audio: action.audio } );
 		}
 
 		case actions.ACTION_PAUSE:
@@ -163,6 +158,7 @@ const reducer = ( state = {}, action = {} ) => {
 		}
 
 		case actions.ACTION_CUEPOINT_CHANGE:
+			loadNowPlaying( state.station );
 			return Object.assign( {}, state, { cuePoint: action.cuePoint } );
 
 		case actions.ACTION_DURATION_CHANGE:
@@ -189,6 +185,9 @@ const reducer = ( state = {}, action = {} ) => {
 			}
 			break;
 		}
+
+		case actions.ACTION_NOW_PLAYING_LOADED:
+			return Object.assign( {}, state, { songs: action.list } );
 
 		default:
 			// do nothing
