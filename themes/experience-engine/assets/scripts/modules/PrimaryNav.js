@@ -31,19 +31,6 @@ class PrimaryNav extends PureComponent {
 	componentDidMount() {
 		const self = this;
 		const container = navRoot.parentNode;
-		const itemsWithChildren = document.querySelectorAll( '.menu-item-has-children' );
-
-		for ( let i = 0; i < itemsWithChildren.length; i++ ) {
-			const el = itemsWithChildren[i];
-			const subMenuActivator = document.createElement( 'button' );
-			const subMenuEl = el.querySelector( '.sub-menu' );
-
-			subMenuActivator.classList.add( 'sub-menu-activator' );
-			el.insertBefore( subMenuActivator, subMenuEl );
-			el.querySelector( 'a' ).setAttribute( 'aria-haspopup', 'true' );
-			subMenuEl.setAttribute( 'aria-hidden', 'true' );
-			subMenuEl.setAttribute( 'aria-label', 'Submenu' );
-		}
 
 		window.addEventListener( 'resize', self.onResize );
 		self.primaryNavRef.current.addEventListener( 'click', self.handleSubMenu );
@@ -62,17 +49,17 @@ class PrimaryNav extends PureComponent {
 		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
 	}
 
-	handleSubMenu( el ) {
+	handleSubMenu( e ) {
+		const { target } = e;
+
 		const self = this;
-		const parent = el.target.parentNode;
-		const subMenu = parent.querySelector( '.sub-menu' );
-		const actives = document.querySelectorAll( '.menu-item-has-children .is-active' );
 		const { subMenuOpen } = self.state;
 
+		const subMenu = target.parentNode.querySelector( '.sub-menu' );
+		const actives = document.querySelectorAll( '.menu-item-has-children .is-active' );
 
-		if ( el.target.classList.contains( 'sub-menu-activator' ) ) {
-
-			if ( true === subMenuOpen && !el.target.classList.contains( 'is-active' ) ) {
+		if ( target.classList.contains( 'sub-menu-activator' ) ) {
+			if ( true === subMenuOpen && !target.classList.contains( 'is-active' ) ) {
 				for ( let i = 0; i < actives.length; i++ ) {
 					const el = actives[i];
 					el.classList.remove( 'is-active' );
@@ -82,7 +69,7 @@ class PrimaryNav extends PureComponent {
 			}
 
 			subMenu.classList.toggle( 'is-active' );
-			el.target.classList.toggle( 'is-active' );
+			target.classList.toggle( 'is-active' );
 			self.setState( ( state ) => ( { subMenuOpen: !state.subMenuOpen } ) );
 			subMenu.setAttribute( 'aria-hidden', !this.state.subMenuOpen );
 		}
