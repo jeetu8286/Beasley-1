@@ -8,7 +8,7 @@ endif;
 <div class="primary-sidebar">
 	<a href="#primary-menu" id="js-menu-toggle" class="site-menu-toggle">
 		<span class="screen-reader-text">
-			<?php esc_html_e( 'Primary Menu', 'tenup' ); ?>
+			Primary Menu
 		</span>
 		<svg viewBox="0 0 100 100" width="50" xmlns="http://www.w3.org/2000/svg">
 			<path class="line top" d="m 30,33 h 40 c 0,0 9.044436,-0.654587 9.044436,-8.508902 0,-7.854315 -8.024349,-11.958003 -14.89975,-10.85914 -6.875401,1.098863 -13.637059,4.171617 -13.637059,16.368042 v 40" />
