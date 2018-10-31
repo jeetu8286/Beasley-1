@@ -7,6 +7,7 @@ import createStore from './redux/store';
 import ContentDispatcher from './modules/ContentDispatcher';
 import ModalDispatcher from './modules/ModalDispatcher';
 import LivePlayer from './modules/LivePlayer';
+import PrimaryNav from './modules/PrimaryNav';
 import UserNav from './modules/UserNav';
 
 import '../styles/main.css';
@@ -20,6 +21,7 @@ const app = (
 			<ContentDispatcher />
 			<ModalDispatcher />
 			<LivePlayer />
+			<PrimaryNav />
 			<UserNav />
 		</Fragment>
 	</Provider>

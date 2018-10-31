@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<?php wp_head(); ?>
 	</head>
-	<body <?php body_class(); ?>>
+	<body <?php body_class( '-dark' ); ?>>
 		<?php get_template_part( 'partials/header' ); ?>
-		<?php get_template_part( 'partials/sidebar' ); ?>
-		<div id="content">
+		<div class="container">
+			<main id="content" class="content">

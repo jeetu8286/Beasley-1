@@ -1,12 +1,12 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require( 'path' );
+const webpack = require( 'webpack' );
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
+const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
 
-const coreConfig = (options = {}) => ({
+const coreConfig = ( options = {} ) => ( {
 	output: {
-		path: path.resolve(__dirname, 'bundle'),
+		path: path.resolve( __dirname, 'bundle' ),
 	},
 	module: {
 		rules: [
@@ -46,7 +46,7 @@ const coreConfig = (options = {}) => ({
 						loader: 'postcss-loader',
 						options: {
 							ident: 'postcss',
-							plugins(loader) {
+							plugins( loader ) {
 								const { postcss } = options;
 								const { plugins } = postcss || {};
 
@@ -62,9 +62,10 @@ const coreConfig = (options = {}) => ({
 								};
 
 								return [
-									require('postcss-import')(importOptions),
-									require('postcss-preset-env')(envOptions),
-									...(plugins || []),
+									require( 'postcss-import' )( importOptions ),
+									require( 'postcss-custom-media' )(),
+									require( 'postcss-preset-env' )( envOptions ),
+									...( plugins || [] ),
 								];
 							},
 						},
@@ -83,25 +84,25 @@ const coreConfig = (options = {}) => ({
 			automaticNameDelimiter: '-',
 		},
 	},
-});
+} );
 
 const development = () => {
-	const config = Object.assign(coreConfig(), {
+	const config = Object.assign( coreConfig(), {
 		name: 'dev-config',
 		mode: 'development',
 		devtool: 'eval',
-	});
+	} );
 
 	return config;
 };
 
 const watch = () => {
-	const config = Object.assign(coreConfig(), {
+	const config = Object.assign( coreConfig(), {
 		name: 'watch-config',
 		mode: 'development',
 		devtool: 'eval',
 		watch: true,
-	});
+	} );
 
 	return config;
 };
@@ -110,27 +111,27 @@ const production = () => {
 	const options = {
 		postcss: {
 			plugins: [
-				require('cssnano')(),
+				require( 'cssnano' )(),
 			],
 		},
 	};
 
-	const config = Object.assign(coreConfig(options), {
+	const config = Object.assign( coreConfig( options ), {
 		name: 'prod-config',
 		mode: 'production',
-	});
+	} );
 
 	return config;
 };
 
 const analyze = () => {
-	const config = Object.assign(coreConfig(), {
+	const config = Object.assign( coreConfig(), {
 		name: 'analyze-config',
 		mode: 'production',
-	});
+	} );
 
 	const analyzer = new BundleAnalyzerPlugin();
-	config.plugins.push(analyzer);
+	config.plugins.push( analyzer );
 
 	return config;
 };
