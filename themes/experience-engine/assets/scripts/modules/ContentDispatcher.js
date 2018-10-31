@@ -8,6 +8,8 @@ import SecondStreetEmbed from '../components/embeds/SecondStreet';
 import LazyImage from '../components/embeds/LazyImage';
 import Share from '../components/embeds/Share';
 
+import { removeChildren } from '../library/dom';
+
 const specialPages = [
 	'/wp-admin/',
 	'/wp-signup.php',
@@ -61,13 +63,11 @@ class ContentDispatcher extends Component {
 		self.embedsIndex = 0;
 		self.state = this.populateStateFromContent( content );
 
-		// clean up content block for now, it will be poplated in the render function
-		while ( content.firstChild ) {
-			content.removeChild( content.firstChild );
-		}
-
 		self.onClick = self.handleClick.bind( self );
 		self.onPageChange = self.handlePageChange.bind( self );
+
+		// clean up content block for now, it will be poplated in the render function
+		removeChildren( content );
 	}
 
 	componentDidMount() {

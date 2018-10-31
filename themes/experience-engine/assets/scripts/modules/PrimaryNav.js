@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+
+import { removeChildren } from '../library/dom';
 
 const navRoot = document.getElementById( 'js-primary-nav' );
 const siteMenuToggle = document.getElementById( 'js-menu-toggle' );
 
-class PrimaryNav extends Component {
+class PrimaryNav extends PureComponent {
+
 	constructor( props ) {
 		super( props );
 
@@ -12,11 +15,6 @@ class PrimaryNav extends Component {
 		const navHtml = navRoot.innerHTML;
 
 		self.primaryNavRef = React.createRef();
-
-		while ( navRoot.firstChild ) {
-			navRoot.removeChild( navRoot.firstChild );
-		}
-
 		self.state = {
 			navHtml,
 			primaryMenuOpen: false,
@@ -26,6 +24,8 @@ class PrimaryNav extends Component {
 		self.handleSubMenu = self.handleSubMenu.bind( self );
 		self.handleMobileNav = self.handleMobileNav.bind( self );
 		self.onResize = self.onResize.bind( self );
+
+		removeChildren( navRoot );
 	}
 
 	componentDidMount() {
@@ -122,8 +122,16 @@ class PrimaryNav extends Component {
 	}
 
 	render() {
-		return ReactDOM.createPortal( <div ref={this.primaryNavRef} dangerouslySetInnerHTML={{ __html: this.state.navHtml }} />, document.getElementById( 'js-primary-nav' ) ); // render back into #primary-nav container
+		const self = this;
+		const { navHtml } = self.state;
+
+		// render back into #primary-nav container
+		return ReactDOM.createPortal(
+			<div ref={self.primaryNavRef} dangerouslySetInnerHTML={{ __html: navHtml }} />,
+			document.getElementById( 'js-primary-nav' )
+		);
 	}
+
 }
 
 export default PrimaryNav;
