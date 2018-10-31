@@ -10,6 +10,7 @@ export const ACTION_RESUME = 'ACTION_RESUME';
 export const ACTION_DURATION_CHANGE = 'ACTION_DURATION_CHANGE';
 export const ACTION_TIME_CHANGE = 'ACTION_TIME_CHANGE';
 export const ACTION_SEEK_POSITION = 'ACTION_SEEK_POSITION';
+export const ACTION_NOW_PLAYING_LOADED = 'ACTION_NOW_PLAYING_LOADED';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -34,13 +35,34 @@ const errorCatcher = prefix => ( e ) => {
 };
 
 export const initTdPlayer = ( modules ) => ( dispatch ) => {
+	const onStatusChange = ( { data } ) => {
+		dispatch( {
+			type: ACTION_STATUS_CHANGE,
+			status: data.code,
+		} );
+	};
+
+	const onTrackCuePoint = ( { data } ) => {
+		dispatch( {
+			type: ACTION_CUEPOINT_CHANGE,
+			cuePoint: ( data || {} ).cuePoint || false,
+		} );
+	};
+
+	const onListLoaded = ( { data } ) => {
+		dispatch( {
+			type: ACTION_NOW_PLAYING_LOADED,
+			...data,
+		} );
+	};
+
 	const player = new window.TDSdk( {
 		coreModules: modules,
 		configurationError: errorCatcher( 'Configuration Error' ),
 		moduleError: errorCatcher( 'Module Error' ),
 		playerReady() {
 			player.addEventListener( 'stream-status', onStatusChange );
-
+			player.addEventListener( 'list-loaded', onListLoaded );
 			player.addEventListener( 'track-cue-point', onTrackCuePoint );
 			player.addEventListener( 'speech-cue-point', onTrackCuePoint );
 			player.addEventListener( 'custom-cue-point', onTrackCuePoint );
@@ -53,23 +75,6 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 			} );
 		},
 	} );
-
-	const onStatusChange = ( e ) => {
-		dispatch( {
-			type: ACTION_STATUS_CHANGE,
-			status: e.data.code,
-		} );
-	};
-
-	const onTrackCuePoint = ( e ) => {
-		const { data } = e;
-		const { cuePoint } = data || {};
-
-		dispatch( {
-			type: ACTION_CUEPOINT_CHANGE,
-			cuePoint: cuePoint || false,
-		} );
-	};
 };
 
 export const playAudio = ( audio, title = '', artist = '' ) => ( dispatch ) => {
