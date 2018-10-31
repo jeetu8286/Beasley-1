@@ -14,6 +14,7 @@
 		box-shadow: none;
 		display: block;
 		height: auto;
+		overflow: visible;
 		position: static;
 		padding: 0;
 		top: 0;
@@ -71,6 +72,24 @@
 			&.is-active {
 				transform: rotate(-135deg);
 			}
+		}
+	}
+
+	& .current-menu-item {
+		position: relative;
+
+		&:before {
+			background-color: var(--brand-primary);
+			content: '';
+			height: 100%;
+			left: -1.1rem;
+			max-height: 25px;
+			position: absolute;
+			transform: translateY(50%);
+			width: 3px;
+		}
+		& a {
+			color: var(--brand-primary);
 		}
 	}
 
