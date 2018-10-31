@@ -9,6 +9,7 @@ import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
 import Volume from '../components/player/Volume';
 import Progress from '../components/player/Progress';
+import RecentSongs from '../components/player/RecentSongs';
 
 import * as actions from '../redux/actions/player';
 
@@ -70,6 +71,7 @@ class LivePlayer extends Component {
 				</div>
 
 				<Stations />
+				<RecentSongs />
 			</Fragment>
 		);
 
