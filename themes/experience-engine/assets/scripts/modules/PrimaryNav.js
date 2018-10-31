@@ -83,30 +83,32 @@ class PrimaryNav extends Component {
 
 	handleMobileNav() {
 		const self = this;
+		const container = navRoot.parentNode;
 		const { primaryMenuOpen } = self.state;
 
 		if ( true === primaryMenuOpen ) {
-			navRoot.setAttribute( 'aria-hidden', true );
-			navRoot.classList.remove( 'is-active' );
-			navRoot.parentNode.classList.remove( 'menu-is-active' );
+			container.setAttribute( 'aria-hidden', true );
+			container.classList.remove( 'is-active' );
+			container.parentNode.classList.remove( 'menu-is-active' );
 			self.setState( { primaryMenuOpen: false } );
 		} else if ( false === primaryMenuOpen ) {
-			navRoot.classList.add( 'is-active' );
-			navRoot.parentNode.classList.add( 'menu-is-active' );
-			navRoot.setAttribute( 'aria-hidden', false );
+			container.classList.add( 'is-active' );
+			container.parentNode.classList.add( 'menu-is-active' );
+			container.setAttribute( 'aria-hidden', false );
 			self.setState( { primaryMenuOpen: true } );
 		}
 	}
 
 	onResize() {
+		const container = navRoot.parentNode;
 		window.requestAnimationFrame( () => {
-			navRoot.parentNode.classList.remove( 'menu-is-active' );
+			container.parentNode.classList.remove( 'menu-is-active' );
 
 			if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
-				navRoot.setAttribute( 'aria-hidden', false );
+				container.setAttribute( 'aria-hidden', false );
 				this.setState( { primaryMenuOpen: true } );
 			} else {
-				navRoot.setAttribute( 'aria-hidden', true );
+				container.setAttribute( 'aria-hidden', true );
 				this.setState( { primaryMenuOpen: false } );
 			}
 		} );
