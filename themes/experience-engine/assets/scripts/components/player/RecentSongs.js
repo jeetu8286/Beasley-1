@@ -2,20 +2,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { formatDate } from '../../library/time';
-
 const RecentSongs = ( { songs } ) => {
 	if ( !Array.isArray( songs ) || !songs.length ) {
 		return false;
 	}
 
-	const items = songs.map( ( song ) => (
-		<li key={song.cueTimeStart}>
-			<span className="cue-point-title">{song.cueTitle}</span>
-			<span className="cue-point-artist">{song.artistName}</span>
-			{0 < song.cueTimeStart && <span>{formatDate( +song.cueTimeStart )}</span>}
-		</li>
-	) );
+	const items = songs.map( ( song ) => {
+		let time = false;
+		if ( 0 < song.cueTimeStart ) {
+			time = new Date( +song.cueTimeStart );
+			time = time.toLocaleString( 'en-US', {
+				hour: 'numeric',
+				minute: 'numeric',
+				hour12: true,
+			} );
+
+			time = <span>{time}</span>;
+		}
+
+		return (
+			<li key={song.cueTimeStart}>
+				<span className="cue-point-title">{song.cueTitle}</span>
+				<span className="cue-point-artist">{song.artistName}</span>
+				{time}
+			</li>
+		);
+	} );
 
 	return (
 		<div>
