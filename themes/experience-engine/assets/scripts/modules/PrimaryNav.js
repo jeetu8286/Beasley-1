@@ -85,7 +85,7 @@ class PrimaryNav extends PureComponent {
 			}
 		}
 
-		if ( 'false' === navRoot.parentNode.getAttribute( 'aria-hidden' ) ) {
+		if ( !window.matchMedia( '(min-width: 768px)' ).matches ) {
 			self.handleMobileNav();
 		}
 	}
