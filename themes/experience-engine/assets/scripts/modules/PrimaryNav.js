@@ -18,7 +18,6 @@ class PrimaryNav extends PureComponent {
 		self.state = {
 			navHtml,
 			primaryMenuOpen: false,
-			subMenuOpen: false,
 		};
 
 		self.handleSubMenu = self.handleSubMenu.bind( self );
@@ -51,29 +50,32 @@ class PrimaryNav extends PureComponent {
 
 	handleSubMenu( e ) {
 		const { target } = e;
+		const menuItem = target.parentNode;
 
 		const self = this;
-		const { subMenuOpen } = self.state;
 		const { primaryNavRef } = self;
 		const container = primaryNavRef.current;
 
-		const subMenu = target.parentNode.querySelector( '.sub-menu' );
-		const actives = container.querySelectorAll( '.menu-item-has-children .is-active' );
-
-		if ( target.classList.contains( 'sub-menu-activator' ) ) {
-			if ( true === subMenuOpen && !target.classList.contains( 'is-active' ) ) {
-				for ( let i = 0; i < actives.length; i++ ) {
-					const el = actives[i];
-					el.classList.remove( 'is-active' );
-					el.setAttribute( 'aria-hidden', true );
-					self.setState( { subMenuOpen: false } );
-				}
+		if ( 'BUTTON' === target.nodeName.toUpperCase() ) {
+			const toggler = menuItem.querySelector( '.sub-menu-activator' );
+			if ( toggler ) {
+				toggler.classList.toggle( 'is-active' );
 			}
 
-			subMenu.classList.toggle( 'is-active' );
-			target.classList.toggle( 'is-active' );
-			self.setState( ( state ) => ( { subMenuOpen: !state.subMenuOpen } ) );
-			subMenu.setAttribute( 'aria-hidden', !this.state.subMenuOpen );
+			const subMenu = menuItem.querySelector( '.sub-menu' );
+			if ( subMenu ) {
+				subMenu.setAttribute( 'aria-hidden', subMenu.classList.contains( 'is-active' ) );
+				subMenu.classList.toggle( 'is-active' );
+			}
+
+			const actives = container.querySelectorAll( '.menu-item-has-children .is-active' );
+			for ( let i = 0; i < actives.length; i++ ) {
+				const element = actives[i];
+				if ( element !== toggler && element !== subMenu ) {
+					element.classList.remove( 'is-active' );
+					element.setAttribute( 'aria-hidden', true );
+				}
+			}
 		}
 	}
 

@@ -8,12 +8,19 @@
 		padding: 0;
 	}
 
-	& a {
+	& a,
+	& button:first-child {
 		color: var(--global-theme-font-primary);
 		display: block;
 		font-size: .77778rem;
 		padding: 1rem 1.1rem;
 		text-decoration: none;
+		background: none;
+		border: none;
+		width: 100%;
+		text-align: left;
+		outline: none;
+		cursor: pointer;
 
 		&:hover {
 			background-color: rgba(255, 255, 255, .05);

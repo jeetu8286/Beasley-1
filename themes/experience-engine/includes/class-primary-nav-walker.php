@@ -11,12 +11,23 @@ class PrimaryNavWalker extends \Walker_Nav_Menu {
 	}
 
 	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+		if ( $item->url == '#' || empty( $item->url ) ) {
+			$item->url = '';
+			$item->classes[] = 'menu-item-toggle';
+		}
+
 		$element = '';
 		parent::start_el( $element, $item, $depth, $args, $id );
 
 		if ( in_array( 'menu-item-has-children', $item->classes ) ) {
 			$element = str_replace( '<a ', '<a aria-haspopup="true" ', $element );
 			$element .= '<button class="sub-menu-activator"></button>';
+		}
+
+		if ( in_array( 'menu-item-toggle', $item->classes ) ) {
+			$element = str_replace( '<a>', '<button>', $element );
+			$element = str_replace( '<a ', '<button ', $element );
+			$element = str_replace( '</a>', '</button>', $element );
 		}
 
 		$output .= $element;
