@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { removeChildren } from '../library/dom';
+import { loadPage } from '../redux/actions/screen';
 
 const navRoot = document.getElementById( 'js-primary-nav' );
 const siteMenuToggle = document.getElementById( 'js-menu-toggle' );
@@ -142,7 +146,8 @@ class PrimaryNav extends PureComponent {
 
 		e.preventDefault();
 
-		console.log( url, search );
+		this.props.loadPage( `${url}?s=${encodeURIComponent( search )}` );
+		target.querySelector( 'input[name="s"]' ).value = '';
 	}
 
 	onResize() {
@@ -171,4 +176,10 @@ class PrimaryNav extends PureComponent {
 
 }
 
-export default PrimaryNav;
+PrimaryNav.propTypes = {
+	loadPage: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( { loadPage }, dispatch );
+
+export default connect( null, mapDispatchToProps )( PrimaryNav );
