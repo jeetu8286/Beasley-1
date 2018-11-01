@@ -3,8 +3,11 @@
 class PrimaryNavWalker extends \Walker_Nav_Menu {
 
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
-		parent::start_lvl( $output, $depth, $args );
-		$output = str_replace( '<ul ', '<ul aria-hidden="true" aria-label="Submenu" ', $output );
+		$element = '';
+		parent::start_lvl( $element, $depth, $args );
+
+		$element = str_replace( '<ul ', '<ul aria-hidden="true" aria-label="Submenu" ', $element );
+		$output .= $element;
 	}
 
 	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
