@@ -12,13 +12,9 @@ class PrimaryNav extends PureComponent {
 		super( props );
 
 		const self = this;
-		const navHtml = navRoot.innerHTML;
 
 		self.primaryNavRef = React.createRef();
-		self.state = {
-			navHtml,
-			primaryMenuOpen: false,
-		};
+		self.state = { navHtml: navRoot.innerHTML };
 
 		self.handleSubMenu = self.handleSubMenu.bind( self );
 		self.handleMobileNav = self.handleMobileNav.bind( self );
@@ -41,7 +37,6 @@ class PrimaryNav extends PureComponent {
 
 		if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 			container.setAttribute( 'aria-hidden', false );
-			this.setState( { primaryMenuOpen: false } );
 		}
 	}
 
@@ -74,6 +69,10 @@ class PrimaryNav extends PureComponent {
 			if ( element.getAttribute( 'href' ) === currentUrl ) {
 				element.parentNode.classList.add( 'current-menu-item' );
 			}
+		}
+
+		if ( 'false' === navRoot.parentNode.getAttribute( 'aria-hidden' ) ) {
+			self.handleMobileNav();
 		}
 	}
 
@@ -109,24 +108,15 @@ class PrimaryNav extends PureComponent {
 	}
 
 	handleMobileNav( e ) {
-		const self = this;
-		const container = navRoot.parentNode;
-		const { primaryMenuOpen } = self.state;
-
-		e.preventDefault();
-		e.stopPropagation();
-
-		if ( true === primaryMenuOpen ) {
-			container.setAttribute( 'aria-hidden', true );
-			container.classList.remove( 'is-active' );
-			container.parentNode.classList.remove( 'menu-is-active' );
-			self.setState( { primaryMenuOpen: false } );
-		} else if ( false === primaryMenuOpen ) {
-			container.classList.add( 'is-active' );
-			container.parentNode.classList.add( 'menu-is-active' );
-			container.setAttribute( 'aria-hidden', false );
-			self.setState( { primaryMenuOpen: true } );
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
 		}
+
+		const container = navRoot.parentNode;
+		container.classList.toggle( 'is-active' );
+		container.parentNode.classList.toggle( 'menu-is-active' );
+		container.setAttribute( 'aria-hidden', 'false' === container.getAttribute( 'aria-hidden' ) );
 	}
 
 	onResize() {
@@ -136,10 +126,8 @@ class PrimaryNav extends PureComponent {
 
 			if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 				container.setAttribute( 'aria-hidden', false );
-				this.setState( { primaryMenuOpen: true } );
 			} else {
 				container.setAttribute( 'aria-hidden', true );
-				this.setState( { primaryMenuOpen: false } );
 			}
 		} );
 	}
