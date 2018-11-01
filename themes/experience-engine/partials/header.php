@@ -10,7 +10,7 @@
 		</svg>
 	</a>
 	<div class="logo" itemscope itemtype="http://schema.org/Organization">
-		<a itemprop="url" href="<?php the_permalink(); ?>">
+		<a itemprop="url" href="<?php echo esc_url( home_url() ); ?>">
 			<?php if ( has_custom_logo() ) : ?>
 				<?php the_custom_logo(); ?>
 			<?php endif; ?>
