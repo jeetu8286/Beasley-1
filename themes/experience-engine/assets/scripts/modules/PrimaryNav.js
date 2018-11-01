@@ -61,7 +61,7 @@ class PrimaryNav extends PureComponent {
 		const { primaryNavRef } = self;
 		const container = primaryNavRef.current;
 
-		const currentUrl = window.location.href;
+		const { href, pathname } = window.location;
 
 		const previouslySelected = container.querySelectorAll( '.current-menu-item' );
 		for ( let i = 0; i < previouslySelected.length; i++ ) {
@@ -71,7 +71,8 @@ class PrimaryNav extends PureComponent {
 		const links = container.querySelectorAll( '.menu-item > a' );
 		for ( let i = 0; i < links.length; i++ ) {
 			const element = links[i];
-			if ( element.getAttribute( 'href' ) === currentUrl ) {
+			const link = element.getAttribute( 'href' );
+			if ( href === link || pathname === link ) {
 				element.parentNode.classList.add( 'current-menu-item' );
 			}
 		}
