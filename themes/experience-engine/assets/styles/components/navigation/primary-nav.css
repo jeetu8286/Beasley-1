@@ -10,17 +10,17 @@
 
 	& a,
 	& button:first-child {
-		color: var(--global-theme-font-primary);
-		display: block;
-		font-size: .77778rem;
-		padding: 1rem 1.1rem;
-		text-decoration: none;
 		background: none;
 		border: none;
-		width: 100%;
-		text-align: left;
-		outline: none;
+		color: var(--global-theme-font-primary);
 		cursor: pointer;
+		display: block;
+		font-size: .77778rem;
+		outline: none;
+		padding: 1rem 1.1rem;
+		text-decoration: none;
+		text-align: left;
+		width: 100%;
 
 		&:hover {
 			background-color: rgba(255, 255, 255, .05);
@@ -31,31 +31,31 @@
 		position: relative;
 
 		& .sub-menu-activator {
+			background: none;
+			border: none;
+			cursor: pointer;
 			display: block;
+			outline: none;
 			padding: 1.2rem;
 			position: absolute;
 			right: 0;
 			top: 0;
-			background: none;
-			border: none;
-			outline: none;
-			cursor: pointer;
-
-			&:hover {
-				background-color: rgba(255, 255, 255, .05);
-			}
 
 			&:before {
-				content: " ";
-				display: block;
 				border: none;
 				border-bottom: 2px solid var(--brand-secondary);
 				border-right: 2px solid var(--brand-secondary);
-				width: 8px;
+				content: " ";
+				display: block;
 				height: 8px;
 				transform: rotate(45deg);
 				transform-origin: 50%;
 				transition: transform 300ms ease;
+				width: 8px;
+			}
+
+			&:hover {
+				background-color: rgba(255, 255, 255, .05);
 			}
 
 			&.is-active:before {
@@ -89,13 +89,13 @@
 		&:before {
 			background-color: var(--brand-primary);
 			content: '';
-			width: 3px;
 			height: 100%;
-			max-height: 25px;
 			left: 0;
-			top: 0;
+			max-height: 25px;
 			position: absolute;
+			top: 0;
 			transform: translateY(50%);
+			width: 3px;
 		}
 
 		& > a {

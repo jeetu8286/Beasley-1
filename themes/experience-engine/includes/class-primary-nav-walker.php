@@ -20,13 +20,12 @@ class PrimaryNavWalker extends \Walker_Nav_Menu {
 		parent::start_el( $element, $item, $depth, $args, $id );
 
 		if ( in_array( 'menu-item-has-children', $item->classes ) ) {
-			$element = str_replace( '<a ', '<a aria-haspopup="true" ', $element );
-			$element .= '<button class="sub-menu-activator"></button>';
+			$element .= '<button class="sub-menu-activator" aria-haspopup="true"></button>';
 		}
 
 		if ( in_array( 'menu-item-toggle', $item->classes ) ) {
-			$element = str_replace( '<a>', '<button>', $element );
-			$element = str_replace( '<a ', '<button ', $element );
+			$element = str_replace( '<a>', '<button aria-haspopup="true">', $element );
+			$element = str_replace( '<a ', '<button aria-haspopup="true" ', $element );
 			$element = str_replace( '</a>', '</button>', $element );
 		}
 
