@@ -22,6 +22,7 @@ class PrimaryNav extends PureComponent {
 
 		self.handleSubMenu = self.handleSubMenu.bind( self );
 		self.handleMobileNav = self.handleMobileNav.bind( self );
+		self.onPageChange = self.handlePageChange.bind( self );
 		self.onResize = self.onResize.bind( self );
 
 		removeChildren( navRoot );
@@ -32,6 +33,9 @@ class PrimaryNav extends PureComponent {
 		const container = navRoot.parentNode;
 
 		window.addEventListener( 'resize', self.onResize );
+		window.addEventListener( 'popstate', self.onPageChange );
+		window.addEventListener( 'pushstate', self.onPageChange );
+
 		self.primaryNavRef.current.addEventListener( 'click', self.handleSubMenu );
 		siteMenuToggle.addEventListener( 'click', self.handleMobileNav );
 
@@ -43,9 +47,34 @@ class PrimaryNav extends PureComponent {
 
 	componentWillUnmount() {
 		const self = this;
+
 		window.removeEventListener( 'resize', self.onResize );
+		window.removeEventListener( 'popstate', self.onPageChange );
+		window.removeEventListener( 'pushstate', self.onPageChange );
+
 		self.primaryNavRef.current.removeEventListener( 'click', self.handleSubMenu );
 		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
+	}
+
+	handlePageChange() {
+		const self = this;
+		const { primaryNavRef } = self;
+		const container = primaryNavRef.current;
+
+		const currentUrl = window.location.href;
+
+		const previouslySelected = container.querySelectorAll( '.current-menu-item' );
+		for ( let i = 0; i < previouslySelected.length; i++ ) {
+			previouslySelected[i].classList.remove( 'current-menu-item' );
+		}
+
+		const links = container.querySelectorAll( '.menu-item > a' );
+		for ( let i = 0; i < links.length; i++ ) {
+			const element = links[i];
+			if ( element.getAttribute( 'href' ) === currentUrl ) {
+				element.parentNode.classList.add( 'current-menu-item' );
+			}
+		}
 	}
 
 	handleSubMenu( e ) {
@@ -122,7 +151,7 @@ class PrimaryNav extends PureComponent {
 		// render back into #primary-nav container
 		return ReactDOM.createPortal(
 			<div ref={self.primaryNavRef} dangerouslySetInnerHTML={{ __html: navHtml }} />,
-			document.getElementById( 'js-primary-nav' )
+			document.getElementById( 'js-primary-nav' ),
 		);
 	}
 

@@ -64,6 +64,25 @@
 		}
 	}
 
+	& .sub-menu {
+		display: none;
+
+		&.is-active {
+			display: block;
+		}
+
+		& a {
+			color: var(--global-theme-font-secondary);
+			font-size: .66667rem;
+		}
+
+		& .current-menu-item {
+			&:before {
+				max-height: 23px;
+			}
+		}
+	}
+
 	& .current-menu-item {
 		position: relative;
 
@@ -79,21 +98,8 @@
 			transform: translateY(50%);
 		}
 
-		& a {
+		& > a {
 			color: var(--brand-primary);
-		}
-	}
-
-	& .sub-menu {
-		display: none;
-
-		&.is-active {
-			display: block;
-		}
-
-		& a {
-			color: var(--global-theme-font-secondary);
-			font-size: .66667rem;
 		}
 	}
 }

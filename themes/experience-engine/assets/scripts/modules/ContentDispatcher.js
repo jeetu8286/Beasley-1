@@ -142,6 +142,19 @@ class ContentDispatcher extends Component {
 					history.replaceState( state, document.title, location.href );
 					history.pushState( payload.state, pageDocument.title, response.url );
 
+					let event = false;
+					if ( 'function' === typeof( Event ) ) {
+						event = new Event( 'pushstate' );
+					} else {
+						// ie11 compatibility
+						event = document.createEvent( 'Event' );
+						event.initEvent( 'pushstate', true, true );
+					}
+
+					if ( event ) {
+						window.dispatchEvent( event );
+					}
+
 					document.title = pageDocument.title;
 					document.body.className = pageDocument.body.className;
 				}
