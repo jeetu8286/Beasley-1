@@ -54,9 +54,11 @@ class PrimaryNav extends PureComponent {
 
 		const self = this;
 		const { subMenuOpen } = self.state;
+		const { primaryNavRef } = self;
+		const container = primaryNavRef.current;
 
 		const subMenu = target.parentNode.querySelector( '.sub-menu' );
-		const actives = document.querySelectorAll( '.menu-item-has-children .is-active' );
+		const actives = container.querySelectorAll( '.menu-item-has-children .is-active' );
 
 		if ( target.classList.contains( 'sub-menu-activator' ) ) {
 			if ( true === subMenuOpen && !target.classList.contains( 'is-active' ) ) {
