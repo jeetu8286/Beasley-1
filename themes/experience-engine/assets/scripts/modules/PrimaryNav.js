@@ -75,10 +75,13 @@ class PrimaryNav extends PureComponent {
 		}
 	}
 
-	handleMobileNav() {
+	handleMobileNav( e ) {
 		const self = this;
 		const container = navRoot.parentNode;
 		const { primaryMenuOpen } = self.state;
+
+		e.preventDefault();
+		e.stopPropagation();
 
 		if ( true === primaryMenuOpen ) {
 			container.setAttribute( 'aria-hidden', true );
