@@ -18,6 +18,7 @@ class PrimaryNav extends PureComponent {
 
 		self.handleSubMenu = self.handleSubMenu.bind( self );
 		self.handleMobileNav = self.handleMobileNav.bind( self );
+		self.onSearchSubmit = self.handleSearchSubmit.bind( self );
 		self.onPageChange = self.handlePageChange.bind( self );
 		self.onResize = self.onResize.bind( self );
 
@@ -26,17 +27,23 @@ class PrimaryNav extends PureComponent {
 
 	componentDidMount() {
 		const self = this;
-		const container = navRoot.parentNode;
 
 		window.addEventListener( 'resize', self.onResize );
 		window.addEventListener( 'popstate', self.onPageChange );
 		window.addEventListener( 'pushstate', self.onPageChange );
 
-		self.primaryNavRef.current.addEventListener( 'click', self.handleSubMenu );
+		const container = self.primaryNavRef.current;
+		container.addEventListener( 'click', self.handleSubMenu );
+
+		const searchForm = container.querySelector( '.search-form' );
+		if ( searchForm ) {
+			searchForm.addEventListener( 'submit', self.onSearchSubmit );
+		}
+
 		siteMenuToggle.addEventListener( 'click', self.handleMobileNav );
 
 		if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
-			container.setAttribute( 'aria-hidden', false );
+			navRoot.parentNode.setAttribute( 'aria-hidden', false );
 		}
 	}
 
@@ -47,7 +54,14 @@ class PrimaryNav extends PureComponent {
 		window.removeEventListener( 'popstate', self.onPageChange );
 		window.removeEventListener( 'pushstate', self.onPageChange );
 
-		self.primaryNavRef.current.removeEventListener( 'click', self.handleSubMenu );
+		const container = self.primaryNavRef.current;
+		container.removeEventListener( 'click', self.handleSubMenu );
+
+		const searchForm = container.querySelector( '.search-form' );
+		if ( searchForm ) {
+			searchForm.removeEventListener( 'submit', self.onSearchSubmit );
+		}
+
 		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
 	}
 
@@ -117,6 +131,10 @@ class PrimaryNav extends PureComponent {
 		container.classList.toggle( 'is-active' );
 		container.parentNode.classList.toggle( 'menu-is-active' );
 		container.setAttribute( 'aria-hidden', 'false' === container.getAttribute( 'aria-hidden' ) );
+	}
+
+	handleSearchSubmit( e ) {
+		e.preventDefault();
 	}
 
 	onResize() {
