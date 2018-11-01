@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import NProgress from 'nprogress';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import DelayedComponent from '../components/embeds/DelayedEmbed';
 import AudioEmbed from '../components/embeds/Audio';
@@ -9,6 +11,7 @@ import LazyImage from '../components/embeds/LazyImage';
 import Share from '../components/embeds/Share';
 
 import { removeChildren } from '../library/dom';
+import { loadPage } from '../redux/actions/screen';
 
 const specialPages = [
 	'/wp-admin/',
@@ -86,6 +89,7 @@ class ContentDispatcher extends Component {
 	}
 
 	handleClick( e ) {
+		const self = this;
 		const { target } = e;
 		let linkNode = target;
 
@@ -119,11 +123,10 @@ class ContentDispatcher extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// set loading state
-		NProgress.start();
-
 		// fetch next page
-		fetch( link )
+		self.props.load( link );
+
+		/*fetch( link )
 			.then( response => response.text().then( data => {
 				const payload = {
 					state: {
@@ -158,10 +161,9 @@ class ContentDispatcher extends Component {
 					document.title = pageDocument.title;
 					document.body.className = pageDocument.body.className;
 				}
-
-				NProgress.done();
 			} ) )
 			.catch( error => console.error( error ) ); // eslint-disable-line no-console
+		*/
 	}
 
 	handlePageChange( event ) {
@@ -282,4 +284,10 @@ class ContentDispatcher extends Component {
 
 }
 
-export default ContentDispatcher;
+ContendDispatcher.propTypes = {
+	load: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( { load: loadPage }, dispatch );
+
+export default connect( null, mapDispatchToProps )( ContentDispatcher );

@@ -134,7 +134,15 @@ class PrimaryNav extends PureComponent {
 	}
 
 	handleSearchSubmit( e ) {
+		const { target } = e;
+		const url = target.getAttribute( 'action' ) || '/';
+
+		const formData = new FormData( target );
+		const search = formData.get( 's' );
+
 		e.preventDefault();
+
+		console.log( url, search );
 	}
 
 	onResize() {
