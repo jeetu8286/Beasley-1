@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+
+import { removeChildren } from '../library/dom';
 
 const navRoot = document.getElementById( 'js-primary-nav' );
 const siteMenuToggle = document.getElementById( 'js-menu-toggle' );
 
-class PrimaryNav extends Component {
+class PrimaryNav extends PureComponent {
+
 	constructor( props ) {
 		super( props );
 
@@ -12,40 +15,27 @@ class PrimaryNav extends Component {
 		const navHtml = navRoot.innerHTML;
 
 		self.primaryNavRef = React.createRef();
-
-		while ( navRoot.firstChild ) {
-			navRoot.removeChild( navRoot.firstChild );
-		}
-
 		self.state = {
 			navHtml,
 			primaryMenuOpen: false,
-			subMenuOpen: false,
 		};
 
 		self.handleSubMenu = self.handleSubMenu.bind( self );
 		self.handleMobileNav = self.handleMobileNav.bind( self );
+		self.onPageChange = self.handlePageChange.bind( self );
 		self.onResize = self.onResize.bind( self );
+
+		removeChildren( navRoot );
 	}
 
 	componentDidMount() {
 		const self = this;
 		const container = navRoot.parentNode;
-		const itemsWithChildren = document.querySelectorAll( '.menu-item-has-children' );
-
-		for ( let i = 0; i < itemsWithChildren.length; i++ ) {
-			const el = itemsWithChildren[i];
-			const subMenuActivator = document.createElement( 'button' );
-			const subMenuEl = el.querySelector( '.sub-menu' );
-
-			subMenuActivator.classList.add( 'sub-menu-activator' );
-			el.insertBefore( subMenuActivator, subMenuEl );
-			el.querySelector( 'a' ).setAttribute( 'aria-haspopup', 'true' );
-			subMenuEl.setAttribute( 'aria-hidden', 'true' );
-			subMenuEl.setAttribute( 'aria-label', 'Submenu' );
-		}
 
 		window.addEventListener( 'resize', self.onResize );
+		window.addEventListener( 'popstate', self.onPageChange );
+		window.addEventListener( 'pushstate', self.onPageChange );
+
 		self.primaryNavRef.current.addEventListener( 'click', self.handleSubMenu );
 		siteMenuToggle.addEventListener( 'click', self.handleMobileNav );
 
@@ -57,41 +47,75 @@ class PrimaryNav extends Component {
 
 	componentWillUnmount() {
 		const self = this;
+
 		window.removeEventListener( 'resize', self.onResize );
+		window.removeEventListener( 'popstate', self.onPageChange );
+		window.removeEventListener( 'pushstate', self.onPageChange );
+
 		self.primaryNavRef.current.removeEventListener( 'click', self.handleSubMenu );
 		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
 	}
 
-	handleSubMenu( el ) {
+	handlePageChange() {
 		const self = this;
-		const parent = el.target.parentNode;
-		const subMenu = parent.querySelector( '.sub-menu' );
-		const actives = document.querySelectorAll( '.menu-item-has-children .is-active' );
-		const { subMenuOpen } = self.state;
+		const { primaryNavRef } = self;
+		const container = primaryNavRef.current;
 
+		const { href, pathname } = window.location;
 
-		if ( el.target.classList.contains( 'sub-menu-activator' ) ) {
+		const previouslySelected = container.querySelectorAll( '.current-menu-item' );
+		for ( let i = 0; i < previouslySelected.length; i++ ) {
+			previouslySelected[i].classList.remove( 'current-menu-item' );
+		}
 
-			if ( true === subMenuOpen && !el.target.classList.contains( 'is-active' ) ) {
-				for ( let i = 0; i < actives.length; i++ ) {
-					const el = actives[i];
-					el.classList.remove( 'is-active' );
-					el.setAttribute( 'aria-hidden', true );
-					self.setState( { subMenuOpen: false } );
-				}
+		const links = container.querySelectorAll( '.menu-item > a' );
+		for ( let i = 0; i < links.length; i++ ) {
+			const element = links[i];
+			const link = element.getAttribute( 'href' );
+			if ( href === link || pathname === link ) {
+				element.parentNode.classList.add( 'current-menu-item' );
 			}
-
-			subMenu.classList.toggle( 'is-active' );
-			el.target.classList.toggle( 'is-active' );
-			self.setState( ( state ) => ( { subMenuOpen: !state.subMenuOpen } ) );
-			subMenu.setAttribute( 'aria-hidden', !this.state.subMenuOpen );
 		}
 	}
 
-	handleMobileNav() {
+	handleSubMenu( e ) {
+		const { target } = e;
+		const menuItem = target.parentNode;
+
+		const self = this;
+		const { primaryNavRef } = self;
+		const container = primaryNavRef.current;
+
+		if ( 'BUTTON' === target.nodeName.toUpperCase() ) {
+			const toggler = menuItem.querySelector( '.sub-menu-activator' );
+			if ( toggler ) {
+				toggler.classList.toggle( 'is-active' );
+			}
+
+			const subMenu = menuItem.querySelector( '.sub-menu' );
+			if ( subMenu ) {
+				subMenu.setAttribute( 'aria-hidden', subMenu.classList.contains( 'is-active' ) );
+				subMenu.classList.toggle( 'is-active' );
+			}
+
+			const actives = container.querySelectorAll( '.menu-item-has-children .is-active' );
+			for ( let i = 0; i < actives.length; i++ ) {
+				const element = actives[i];
+				if ( element !== toggler && element !== subMenu ) {
+					element.classList.remove( 'is-active' );
+					element.setAttribute( 'aria-hidden', true );
+				}
+			}
+		}
+	}
+
+	handleMobileNav( e ) {
 		const self = this;
 		const container = navRoot.parentNode;
 		const { primaryMenuOpen } = self.state;
+
+		e.preventDefault();
+		e.stopPropagation();
 
 		if ( true === primaryMenuOpen ) {
 			container.setAttribute( 'aria-hidden', true );
@@ -122,8 +146,16 @@ class PrimaryNav extends Component {
 	}
 
 	render() {
-		return ReactDOM.createPortal( <div ref={this.primaryNavRef} dangerouslySetInnerHTML={{ __html: this.state.navHtml }} />, document.getElementById( 'js-primary-nav' ) ); // render back into #primary-nav container
+		const self = this;
+		const { navHtml } = self.state;
+
+		// render back into #primary-nav container
+		return ReactDOM.createPortal(
+			<div ref={self.primaryNavRef} dangerouslySetInnerHTML={{ __html: navHtml }} />,
+			document.getElementById( 'js-primary-nav' ),
+		);
 	}
+
 }
 
 export default PrimaryNav;
