@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import NProgress from 'nprogress';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import DelayedComponent from '../components/embeds/DelayedEmbed';
 import AudioEmbed from '../components/embeds/Audio';
@@ -8,7 +10,7 @@ import SecondStreetEmbed from '../components/embeds/SecondStreet';
 import LazyImage from '../components/embeds/LazyImage';
 import Share from '../components/embeds/Share';
 
-import { removeChildren } from '../library/dom';
+import { initPage, loadPage, updatePage } from '../redux/actions/screen';
 
 const specialPages = [
 	'/wp-admin/',
@@ -16,68 +18,29 @@ const specialPages = [
 	'/wp-login.php',
 ];
 
-const getSecondStreetEmbedParams = ( element ) => ( {
-	script: element.getAttribute( 'src' ),
-	embed: element.getAttribute( 'data-ss-embed' ),
-	opguid: element.getAttribute( 'data-opguid' ),
-	routing: element.getAttribute( 'data-routing' ),
-} );
-
-const getAudioEmbedParams = ( element ) => {
-	const sources = {};
-	const tags = element.getElementsByTagName( 'source' );
-	for ( let i  = 0, len = tags.length; i < len; i++ ) {
-		sources[tags[i].getAttribute( 'src' )] = tags[i].getAttribute( 'type' );
-	}
-
-	return {
-		src: element.getAttribute( 'src' ) || '',
-		sources,
-	};
-};
-
-const getOmnyEmbedParams = ( element ) => ( {
-	src: element.getAttribute( 'src' ),
-	title: element.getAttribute( 'data-title' ),
-	author: element.getAttribute( 'data-author' ),
-	omny: true,
-} );
-
-const getLazyImageParams = ( element ) => ( {
-	src: element.getAttribute( 'data-src' ),
-	width: element.getAttribute( 'data-width' ),
-	height: element.getAttribute( 'data-height' ),
-	aspect: element.getAttribute( 'data-aspect' ),
-} );
-
-const getShareParams = () => ( {} );
-
 class ContentDispatcher extends Component {
 
 	constructor( props ) {
 		super( props );
 
 		const self = this;
-		const content = document.getElementById( 'content' );
-
-		self.embedsIndex = 0;
-		self.state = this.populateStateFromContent( content );
-
 		self.onClick = self.handleClick.bind( self );
 		self.onPageChange = self.handlePageChange.bind( self );
-
-		// clean up content block for now, it will be poplated in the render function
-		removeChildren( content );
 	}
 
 	componentDidMount() {
-		window.addEventListener( 'click', this.onClick );
-		window.addEventListener( 'popstate', this.onPageChange );
+		const self = this;
+
+		window.addEventListener( 'click', self.onClick );
+		window.addEventListener( 'popstate', self.onPageChange );
 
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
 		const state = { data: document.documentElement.outerHTML, pageXOffset, pageYOffset };
 		history.replaceState( state, document.title, location.href );
+
+		// load current page into the state
+		self.props.init();
 	}
 
 	componentWillUnmount() {
@@ -86,6 +49,7 @@ class ContentDispatcher extends Component {
 	}
 
 	handleClick( e ) {
+		const self = this;
 		const { target } = e;
 		let linkNode = target;
 
@@ -99,7 +63,7 @@ class ContentDispatcher extends Component {
 			return;
 		}
 
-		const { location, history, pageXOffset, pageYOffset } = window;
+		const { location } = window;
 		const { origin } = location;
 
 		const link = linkNode.getAttribute( 'href' );
@@ -119,121 +83,26 @@ class ContentDispatcher extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// set loading state
-		NProgress.start();
-
 		// fetch next page
-		fetch( link )
-			.then( response => response.text().then( data => {
-				const payload = {
-					state: {
-						data,
-						pageXOffset: 0,
-						pageYOffset: 0,
-					},
-				};
-
-				const pageDocument = this.handlePageChange( payload );
-				if ( pageDocument ) {
-					const state = Object.assign( {}, history.state );
-					state.pageXOffset = pageXOffset;
-					state.pageYOffset = pageYOffset;
-
-					history.replaceState( state, document.title, location.href );
-					history.pushState( payload.state, pageDocument.title, response.url );
-
-					let event = false;
-					if ( 'function' === typeof( Event ) ) {
-						event = new Event( 'pushstate' );
-					} else {
-						// ie11 compatibility
-						event = document.createEvent( 'Event' );
-						event.initEvent( 'pushstate', true, true );
-					}
-
-					if ( event ) {
-						window.dispatchEvent( event );
-					}
-
-					document.title = pageDocument.title;
-					document.body.className = pageDocument.body.className;
-				}
-
-				NProgress.done();
-			} ) )
-			.catch( error => console.error( error ) ); // eslint-disable-line no-console
+		self.props.load( link );
 	}
 
 	handlePageChange( event ) {
-		if ( !event || !event.state ) {
-			return false;
+		if ( event && event.state ) {
+			const { data, pageXOffset, pageYOffset } = event.state;
+			// update content state
+			this.props.update( data );
+			// scroll to the top of the page
+			setTimeout( () => window.scrollTo( pageXOffset, pageYOffset ), 100 );
 		}
-
-		// parse HTML markup and grab content
-		const parser = new DOMParser();
-		const { data, pageXOffset, pageYOffset } = event.state;
-		const pageDocument = parser.parseFromString( data, 'text/html' );
-
-		// update content state
-		const content = pageDocument.querySelector( '#content' );
-		this.setState( this.populateStateFromContent( content ) );
-
-		// scroll to the top of the page
-		setTimeout( () => {
-			window.scrollTo( pageXOffset, pageYOffset );
-		}, 100 );
-
-		return pageDocument;
-	}
-
-	generatePlaceholder() {
-		const element = document.createElement( 'div' );
-		element.setAttribute( 'id', `__cd-${++this.embedsIndex}` );
-		return element;
-	}
-
-	processEmbeds( container, type, selector, callback ) {
-		const embeds = [];
-		const elements = container.querySelectorAll( selector );
-		for ( let i = 0, len = elements.length; i < len; i++ ) {
-			const element = elements[i];
-			const placeholder = this.generatePlaceholder();
-
-			embeds.push( {
-				type,
-				params: {
-					placeholder: placeholder.getAttribute( 'id' ),
-					...callback( element ),
-				},
-			} );
-
-			element.parentNode.replaceChild( placeholder, element );
-		}
-
-		return embeds;
-	}
-
-	populateStateFromContent( container ) {
-		const self = this;
-		const state = { embeds: [], content: '' };
-		if ( container ) {
-			state.embeds = [
-				...self.processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
-				...self.processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
-				...self.processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
-				...self.processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
-				...self.processEmbeds( container, 'share', '.share-buttons', getShareParams ),
-			];
-
-			// MUST follow after embeds processing
-			state.content = container.innerHTML;
-		}
-
-		return state;
 	}
 
 	render() {
-		const { content, embeds } = this.state;
+		const { content, embeds } = this.props;
+
+		if ( !content || !content.length ) {
+			return false;
+		}
 
 		const portal = ReactDOM.createPortal(
 			<div dangerouslySetInnerHTML={{ __html: content }} />,
@@ -282,4 +151,23 @@ class ContentDispatcher extends Component {
 
 }
 
-export default ContentDispatcher;
+ContentDispatcher.propTypes = {
+	content: PropTypes.string.isRequired,
+	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
+	init: PropTypes.func.isRequired,
+	load: PropTypes.func.isRequired,
+	update: PropTypes.func.isRequired,
+};
+
+const mapStateToProps= ( { screen } ) => ( {
+	content: screen.content,
+	embeds: screen.embeds,
+} );
+
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
+	init: initPage,
+	load: loadPage,
+	update: updatePage,
+}, dispatch );
+
+export default connect( mapStateToProps, mapDispatchToProps )( ContentDispatcher );

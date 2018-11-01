@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { removeChildren } from '../library/dom';
+import { loadPage } from '../redux/actions/screen';
 
 const navRoot = document.getElementById( 'js-primary-nav' );
 const siteMenuToggle = document.getElementById( 'js-menu-toggle' );
@@ -12,16 +16,13 @@ class PrimaryNav extends PureComponent {
 		super( props );
 
 		const self = this;
-		const navHtml = navRoot.innerHTML;
 
 		self.primaryNavRef = React.createRef();
-		self.state = {
-			navHtml,
-			primaryMenuOpen: false,
-		};
+		self.state = { navHtml: navRoot.innerHTML };
 
 		self.handleSubMenu = self.handleSubMenu.bind( self );
 		self.handleMobileNav = self.handleMobileNav.bind( self );
+		self.onSearchSubmit = self.handleSearchSubmit.bind( self );
 		self.onPageChange = self.handlePageChange.bind( self );
 		self.onResize = self.onResize.bind( self );
 
@@ -30,18 +31,23 @@ class PrimaryNav extends PureComponent {
 
 	componentDidMount() {
 		const self = this;
-		const container = navRoot.parentNode;
 
 		window.addEventListener( 'resize', self.onResize );
 		window.addEventListener( 'popstate', self.onPageChange );
 		window.addEventListener( 'pushstate', self.onPageChange );
 
-		self.primaryNavRef.current.addEventListener( 'click', self.handleSubMenu );
+		const container = self.primaryNavRef.current;
+		container.addEventListener( 'click', self.handleSubMenu );
+
+		const searchForm = container.querySelector( '.search-form' );
+		if ( searchForm ) {
+			searchForm.addEventListener( 'submit', self.onSearchSubmit );
+		}
+
 		siteMenuToggle.addEventListener( 'click', self.handleMobileNav );
 
 		if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
-			container.setAttribute( 'aria-hidden', false );
-			this.setState( { primaryMenuOpen: false } );
+			navRoot.parentNode.setAttribute( 'aria-hidden', false );
 		}
 	}
 
@@ -52,7 +58,14 @@ class PrimaryNav extends PureComponent {
 		window.removeEventListener( 'popstate', self.onPageChange );
 		window.removeEventListener( 'pushstate', self.onPageChange );
 
-		self.primaryNavRef.current.removeEventListener( 'click', self.handleSubMenu );
+		const container = self.primaryNavRef.current;
+		container.removeEventListener( 'click', self.handleSubMenu );
+
+		const searchForm = container.querySelector( '.search-form' );
+		if ( searchForm ) {
+			searchForm.removeEventListener( 'submit', self.onSearchSubmit );
+		}
+
 		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
 	}
 
@@ -75,6 +88,10 @@ class PrimaryNav extends PureComponent {
 			if ( href === link || pathname === link ) {
 				element.parentNode.classList.add( 'current-menu-item' );
 			}
+		}
+
+		if ( !window.matchMedia( '(min-width: 768px)' ).matches ) {
+			self.handleMobileNav();
 		}
 	}
 
@@ -110,24 +127,28 @@ class PrimaryNav extends PureComponent {
 	}
 
 	handleMobileNav( e ) {
-		const self = this;
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+
 		const container = navRoot.parentNode;
-		const { primaryMenuOpen } = self.state;
+		container.classList.toggle( 'is-active' );
+		container.parentNode.classList.toggle( 'menu-is-active' );
+		container.setAttribute( 'aria-hidden', 'false' === container.getAttribute( 'aria-hidden' ) );
+	}
+
+	handleSearchSubmit( e ) {
+		const { target } = e;
+		const url = target.getAttribute( 'action' ) || '/';
+
+		const formData = new FormData( target );
+		const search = formData.get( 's' );
 
 		e.preventDefault();
-		e.stopPropagation();
 
-		if ( true === primaryMenuOpen ) {
-			container.setAttribute( 'aria-hidden', true );
-			container.classList.remove( 'is-active' );
-			container.parentNode.classList.remove( 'menu-is-active' );
-			self.setState( { primaryMenuOpen: false } );
-		} else if ( false === primaryMenuOpen ) {
-			container.classList.add( 'is-active' );
-			container.parentNode.classList.add( 'menu-is-active' );
-			container.setAttribute( 'aria-hidden', false );
-			self.setState( { primaryMenuOpen: true } );
-		}
+		this.props.loadPage( `${url}?s=${encodeURIComponent( search )}` );
+		target.querySelector( 'input[name="s"]' ).value = '';
 	}
 
 	onResize() {
@@ -137,10 +158,8 @@ class PrimaryNav extends PureComponent {
 
 			if ( window.matchMedia( '(min-width: 768px)' ).matches ) {
 				container.setAttribute( 'aria-hidden', false );
-				this.setState( { primaryMenuOpen: true } );
 			} else {
 				container.setAttribute( 'aria-hidden', true );
-				this.setState( { primaryMenuOpen: false } );
 			}
 		} );
 	}
@@ -158,4 +177,10 @@ class PrimaryNav extends PureComponent {
 
 }
 
-export default PrimaryNav;
+PrimaryNav.propTypes = {
+	loadPage: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( { loadPage }, dispatch );
+
+export default connect( null, mapDispatchToProps )( PrimaryNav );
