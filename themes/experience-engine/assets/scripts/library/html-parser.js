@@ -1,11 +1,15 @@
 let embedsIndex = 0;
 
-const getSecondStreetEmbedParams = ( element ) => ( {
-	script: element.getAttribute( 'src' ),
-	embed: element.getAttribute( 'data-ss-embed' ),
-	opguid: element.getAttribute( 'data-opguid' ),
-	routing: element.getAttribute( 'data-routing' ),
-} );
+const getSecondStreetEmbedParams = ( element ) => {
+	const { dataset } = element;
+
+	return {
+		script: element.getAttribute( 'src' ),
+		embed: dataset.ssEmbed,
+		opguid: dataset.opguid,
+		routing: dataset.routing,
+	};
+};
 
 const getAudioEmbedParams = ( element ) => {
 	const sources = {};
@@ -20,19 +24,27 @@ const getAudioEmbedParams = ( element ) => {
 	};
 };
 
-const getOmnyEmbedParams = ( element ) => ( {
-	src: element.getAttribute( 'src' ),
-	title: element.getAttribute( 'data-title' ),
-	author: element.getAttribute( 'data-author' ),
-	omny: true,
-} );
+const getOmnyEmbedParams = ( element ) => {
+	const { dataset } = element;
 
-const getLazyImageParams = ( element ) => ( {
-	src: element.getAttribute( 'data-src' ),
-	width: element.getAttribute( 'data-width' ),
-	height: element.getAttribute( 'data-height' ),
-	aspect: element.getAttribute( 'data-aspect' ),
-} );
+	return {
+		src: element.getAttribute( 'src' ),
+		title: dataset.title,
+		author: dataset.author,
+		omny: true,
+	};
+};
+
+const getLazyImageParams = ( element ) => {
+	const { dataset } = element;
+
+	return {
+		src: dataset.src,
+		width: dataset.width,
+		height: dataset.height,
+		aspect: dataset.aspect,
+	};
+};
 
 const processEmbeds = ( container, type, selector, callback ) => {
 	const embeds = [];
@@ -40,6 +52,7 @@ const processEmbeds = ( container, type, selector, callback ) => {
 	const elements = container.querySelectorAll( selector );
 	for ( let i = 0, len = elements.length; i < len; i++ ) {
 		const element = elements[i];
+		const extraAttributes = callback ? callback( element ) : {};
 		const placeholder = document.createElement( 'div' );
 
 		placeholder.setAttribute( 'id', `__cd-${++embedsIndex}` );
@@ -48,7 +61,7 @@ const processEmbeds = ( container, type, selector, callback ) => {
 			type,
 			params: {
 				placeholder: placeholder.getAttribute( 'id' ),
-				...callback( element ),
+				...extraAttributes,
 			},
 		} );
 
@@ -70,7 +83,7 @@ export const getStateFromContent = ( container ) => {
 			...processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
 			...processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
-			...processEmbeds( container, 'share', '.share-buttons', () => ( {} ) ),
+			...processEmbeds( container, 'share', '.share-buttons' ),
 		];
 
 		// MUST follow after embeds processing
