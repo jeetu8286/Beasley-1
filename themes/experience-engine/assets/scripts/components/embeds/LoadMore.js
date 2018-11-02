@@ -3,18 +3,28 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { loadPartialPage } from '../../redux/actions/screen';
+
 class LoadMore extends PureComponent {
 
 	constructor( props ) {
 		super( props );
 
 		const self = this;
+		self.state = { loading: false };
 		self.onLoadClick = self.handleLoadClick.bind( self );
 	}
 
 	handleLoadClick() {
-		const { link, placeholder } = this.props;
-		console.log( link, placeholder );
+		const self = this;
+		const { loading } = self.state;
+		const { link, placeholder, load } = self.props;
+
+		// prevent double clicking
+		if ( !loading ) {
+			self.setState( { loading: true } );
+			load( link, placeholder );
+		}
 	}
 
 	render() {
@@ -32,8 +42,9 @@ class LoadMore extends PureComponent {
 LoadMore.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	link: PropTypes.string.isRequired,
+	load: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( {}, dispatch );
+const mapDispatchToProps = ( dispatch ) => bindActionCreators( { load: loadPartialPage }, dispatch );
 
 export default connect( null, mapDispatchToProps )( LoadMore );
