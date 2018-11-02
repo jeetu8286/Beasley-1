@@ -1,6 +1,7 @@
 <?php
 
 add_filter( 'next_posts_link_attributes', 'ee_load_more_attributes' );
+add_filter( 'get_the_archive_title', 'ee_update_archive_title' );
 
 if ( ! function_exists( 'ee_the_date' ) ) :
 	function ee_the_date( $post = null ) {
@@ -57,5 +58,18 @@ endif;
 if ( ! function_exists( 'ee_load_more_attributes' ) ) :
 	function ee_load_more_attributes() {
 		return 'class="load-more"';
+	}
+endif;
+
+if ( ! function_exists( 'ee_is_first_page' ) ) :
+	function ee_is_first_page() {
+		return get_query_var( 'paged', 1 ) < 2;
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_archive_title' ) ) :
+	function ee_update_archive_title( $title ) {
+		$parts = explode( ':', $title, 2 );
+		return array_pop( $parts );
 	}
 endif;
