@@ -9,6 +9,7 @@ import AudioEmbed from '../components/embeds/Audio';
 import SecondStreetEmbed from '../components/embeds/SecondStreet';
 import LazyImage from '../components/embeds/LazyImage';
 import Share from '../components/embeds/Share';
+import LoadMore from '../components/embeds/LoadMore';
 
 import { initPage, loadPage, updatePage } from '../redux/actions/screen';
 
@@ -17,6 +18,14 @@ const specialPages = [
 	'/wp-signup.php',
 	'/wp-login.php',
 ];
+
+const mapping = {
+	secondstreet: SecondStreetEmbed,
+	audio: AudioEmbed,
+	lazyimage: LazyImage,
+	share: Share,
+	loadmore: LoadMore,
+};
 
 class ContentDispatcher extends Component {
 
@@ -113,22 +122,7 @@ class ContentDispatcher extends Component {
 			const { type, params } = embed;
 			const { placeholder } = params;
 
-			let component = false;
-			switch ( type ) {
-				case 'secondstreet':
-					component = SecondStreetEmbed;
-					break;
-				case 'audio':
-					component = AudioEmbed;
-					break;
-				case 'lazyimage':
-					component = LazyImage;
-					break;
-				case 'share':
-					component = Share;
-					break;
-			}
-
+			let component = mapping[type] || false;
 			if ( component ) {
 				component = React.createElement( component, params );
 				component = (
