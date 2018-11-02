@@ -118,7 +118,7 @@ export const loadPartialPage = ( url, placeholder ) => ( dispatch ) => {
 			content: results.content,
 			embeds: results.embeds,
 			error: '',
-			remove: placeholder,
+			placeholder,
 		} );
 	};
 

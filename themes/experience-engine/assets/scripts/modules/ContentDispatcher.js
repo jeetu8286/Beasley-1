@@ -1,16 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import DelayedComponent from '../components/embeds/DelayedEmbed';
-import AudioEmbed from '../components/embeds/Audio';
-import SecondStreetEmbed from '../components/embeds/SecondStreet';
-import LazyImage from '../components/embeds/LazyImage';
-import Share from '../components/embeds/Share';
-import LoadMore from '../components/embeds/LoadMore';
-
+import ContentBlock from '../components/content/ContentBlock';
 import { initPage, loadPage, updatePage } from '../redux/actions/screen';
 
 const specialPages = [
@@ -18,14 +11,6 @@ const specialPages = [
 	'/wp-signup.php',
 	'/wp-login.php',
 ];
-
-const mapping = {
-	secondstreet: SecondStreetEmbed,
-	audio: AudioEmbed,
-	lazyimage: LazyImage,
-	share: Share,
-	loadmore: LoadMore,
-};
 
 class ContentDispatcher extends Component {
 
@@ -107,38 +92,21 @@ class ContentDispatcher extends Component {
 	}
 
 	render() {
-		const { content, embeds } = this.props;
+		const { content, embeds, partials } = this.props;
 
 		if ( !content || !content.length ) {
 			return false;
 		}
 
-		const portal = ReactDOM.createPortal(
-			<div dangerouslySetInnerHTML={{ __html: content }} />,
-			document.getElementById( 'content' )
-		);
-
-		const embedComponents = embeds.map( ( embed ) => {
-			const { type, params } = embed;
-			const { placeholder } = params;
-
-			let component = mapping[type] || false;
-			if ( component ) {
-				component = React.createElement( component, params );
-				component = (
-					<DelayedComponent key={placeholder} placeholder={placeholder}>
-						{component}
-					</DelayedComponent>
-				);
-			}
-
-			return component;
+		const extraBlocks = [];
+		Object.keys( partials ).forEach( ( key ) => {
+			extraBlocks.push( <ContentBlock key={key} {...partials[key]} /> );
 		} );
 
 		return (
 			<Fragment>
-				{portal}
-				{embedComponents}
+				<ContentBlock content={content} embeds={embeds} />
+				{extraBlocks}
 			</Fragment>
 		);
 	}
@@ -148,6 +116,7 @@ class ContentDispatcher extends Component {
 ContentDispatcher.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
+	partials: PropTypes.shape( {} ).isRequired,
 	init: PropTypes.func.isRequired,
 	load: PropTypes.func.isRequired,
 	update: PropTypes.func.isRequired,
@@ -156,6 +125,7 @@ ContentDispatcher.propTypes = {
 const mapStateToProps= ( { screen } ) => ( {
 	content: screen.content,
 	embeds: screen.embeds,
+	partials: screen.partials,
 } );
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
