@@ -1,10 +1,10 @@
 {
 	"name": "experience-engine",
 	"scripts": {
-		"analyze": "webpack --progress app=./assets/scripts/app.js --config-name=analyze-config",
-		"build": "webpack --progress app=./assets/scripts/app.js --config-name=dev-config",
+		"analyze": "webpack app=./assets/scripts/app.js --config-name=analyze-config",
+		"build": "webpack app=./assets/scripts/app.js --config-name=dev-config",
 		"watch": "webpack --progress app=./assets/scripts/app.js --config-name=watch-config",
-		"bundle": "webpack --progress app=./assets/scripts/app.js --config-name=prod-config"
+		"bundle": "webpack app=./assets/scripts/app.js --config-name=prod-config"
 	},
 	"dependencies": {
 		"@10up/eslint-config": "^1.0.6",
@@ -73,6 +73,11 @@
 					}
 				}
 			]
+		},
+		"settings": {
+			"react": {
+				"version": "16.5.2"
+			}
 		}
 	},
 	"browserslist": [

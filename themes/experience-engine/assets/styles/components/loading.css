@@ -7,7 +7,7 @@
 
 .loading::after {
 	animation: loading 500ms infinite linear;
-	border: .1rem solid #5755d9;
+	border: .1rem solid var(--brand-primary);
 	border-radius: 50%;
 	border-right-color: transparent;
 	border-top-color: transparent;

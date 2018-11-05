@@ -1,4 +1,6 @@
 .primary-nav {
+	margin: 0 -1.1rem;
+
 	& ul {
 		display: inline;
 		list-style: none;
@@ -6,11 +8,23 @@
 		padding: 0;
 	}
 
-	& a {
+	& a,
+	& button:first-child {
+		background: none;
+		border: none;
 		color: var(--global-theme-font-primary);
+		cursor: pointer;
 		display: block;
 		font-size: .77778rem;
-		padding: 1rem 0;
+		outline: none;
+		padding: 1rem 1.1rem;
+		text-decoration: none;
+		text-align: left;
+		width: 100%;
+
+		&:hover {
+			background-color: rgba(255, 255, 255, .05);
+		}
 	}
 
 	& .menu-item-has-children {
@@ -19,41 +33,34 @@
 		& .sub-menu-activator {
 			background: none;
 			border: none;
-			border-bottom: 2px solid var(--brand-secondary);
-			border-right: 2px solid var(--brand-secondary);
 			cursor: pointer;
-			height: 8px;
-			margin: 1rem 1rem 0 0;
-			padding: 0;
+			display: block;
+			outline: none;
+			padding: 1.2rem;
 			position: absolute;
 			right: 0;
 			top: 0;
-			transform: rotate(45deg);
-			transform-origin: 50%;
-			transition: transform 300ms ease;
-			width: 8px;
 
-			&.is-active {
+			&:before {
+				border: none;
+				border-bottom: 2px solid var(--brand-secondary);
+				border-right: 2px solid var(--brand-secondary);
+				content: " ";
+				display: block;
+				height: 8px;
+				transform: rotate(45deg);
+				transform-origin: 50%;
+				transition: transform 300ms ease;
+				width: 8px;
+			}
+
+			&:hover {
+				background-color: rgba(255, 255, 255, .05);
+			}
+
+			&.is-active:before {
 				transform: rotate(-135deg);
 			}
-		}
-	}
-
-	& .current-menu-item {
-		position: relative;
-
-		&:before {
-			background-color: var(--brand-primary);
-			content: '';
-			height: 100%;
-			left: -1.1rem;
-			max-height: 25px;
-			position: absolute;
-			transform: translateY(50%);
-			width: 3px;
-		}
-		& a {
-			color: var(--brand-primary);
 		}
 	}
 
@@ -67,6 +74,32 @@
 		& a {
 			color: var(--global-theme-font-secondary);
 			font-size: .66667rem;
+		}
+
+		& .current-menu-item {
+			&:before {
+				max-height: 23px;
+			}
+		}
+	}
+
+	& .current-menu-item {
+		position: relative;
+
+		&:before {
+			background-color: var(--brand-primary);
+			content: '';
+			height: 100%;
+			left: 0;
+			max-height: 25px;
+			position: absolute;
+			top: 0;
+			transform: translateY(50%);
+			width: 3px;
+		}
+
+		& > a {
+			color: var(--brand-primary);
 		}
 	}
 }
