@@ -5,9 +5,13 @@
 <div>
 	<?php get_template_part( 'partials/show-block' ); ?>
 
-	<div>
-		<?php ee_the_episode_player(); ?>
-		<h1><?php the_title(); ?></h1>
+	<div><?php
+
+		if ( ! ee_is_jacapps() ) :
+			ee_the_episode_player();
+		endif;
+
+		?><h1><?php the_title(); ?></h1>
 
 		<div>
 			<?php if ( ( $duration = ee_get_episode_meta( null, 'duration' ) ) ) : ?>
@@ -21,9 +25,15 @@
 	</div>
 
 	<div><?php
-		add_filter( 'the_content', 'strip_shortcodes', 1 );
-		the_content();
-		remove_filter( 'the_content', 'strip_shortcodes', 1 );
+
+		if ( ! ee_is_jacapps() ) :
+			add_filter( 'the_content', 'strip_shortcodes', 1 );
+			the_content();
+			remove_filter( 'the_content', 'strip_shortcodes', 1 );
+		else :
+			the_content();
+		endif;
+
 	?></div>
 
 	<?php get_template_part( 'partials/episode/next-episodes' ); ?>
