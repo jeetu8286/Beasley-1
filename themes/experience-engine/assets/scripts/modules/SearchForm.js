@@ -24,15 +24,16 @@ class SearchForm extends PureComponent {
 
 	handleSearchSubmit( e ) {
 		const { target } = e;
-		const url = target.getAttribute( 'action' ) || '/';
-
-		const formData = new FormData( target );
-		const search = formData.get( 's' );
 
 		e.preventDefault();
 
-		this.props.loadPage( `${url}?s=${encodeURIComponent( search )}` );
-		target.querySelector( 'input[name="s"]' ).value = '';
+		const url = target.getAttribute( 'action' ) || '/';
+		const formData = new FormData( target );
+		const search = formData.get( 's' );
+		if ( search && search.length ) {
+			this.props.loadPage( `${url}?s=${encodeURIComponent( search )}` );
+			target.querySelector( 'input[name="s"]' ).value = '';
+		}
 	}
 
 	render() {
