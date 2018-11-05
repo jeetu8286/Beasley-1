@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
@@ -12,24 +12,36 @@ import UserNav from './modules/UserNav';
 
 import '../styles/main.css';
 
+class Application extends PureComponent {
+
+	componentDidMount() {
+		const splashScreen = document.getElementById( 'splash-screen' );
+		if ( splashScreen ) {
+			splashScreen.parentNode.removeChild( splashScreen );
+		}
+	}
+
+	render() {
+		return (
+			<Fragment>
+				<ContentDispatcher />
+				<ModalDispatcher />
+				<LivePlayer />
+				<PrimaryNav />
+				<UserNav />
+			</Fragment>
+		);
+	}
+
+}
+
 const root = document.createElement( 'div' );
 document.body.appendChild( root );
 
 const app = (
 	<Provider store={createStore()}>
-		<Fragment>
-			<ContentDispatcher />
-			<ModalDispatcher />
-			<LivePlayer />
-			<PrimaryNav />
-			<UserNav />
-		</Fragment>
+		<Application />
 	</Provider>
 );
 
 ReactDOM.render( app, root );
-
-const splashScreen = document.getElementById( 'splash-screen' );
-if ( splashScreen ) {
-	splashScreen.parentNode.removeChild( splashScreen );
-}
