@@ -200,6 +200,7 @@ const reducer = ( state = {}, action = {} ) => {
 		case actions.ACTION_AD_PLAYBACK_START:
 			return Object.assign( {}, state, { adPlayback: true } );
 
+		case actions.ACTION_AD_PLAYBACK_ERROR:
 		case actions.ACTION_AD_PLAYBACK_COMPLETE:
 			tdplayer.play( {
 				station: state.station,

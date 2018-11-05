@@ -13,6 +13,7 @@ export const ACTION_SEEK_POSITION = 'ACTION_SEEK_POSITION';
 export const ACTION_NOW_PLAYING_LOADED = 'ACTION_NOW_PLAYING_LOADED';
 export const ACTION_AD_PLAYBACK_START = 'ACTION_AD_PLAYBACK_START';
 export const ACTION_AD_PLAYBACK_COMPLETE = 'ACTION_AD_PLAYBACK_COMPLETE';
+export const ACTION_AD_PLAYBACK_ERROR = 'ACTION_AD_PLAYBACK_ERROR';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -69,13 +70,17 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 		playerReady() {
 			player.addEventListener( 'stream-status', dispatchStatusChange );
 			player.addEventListener( 'list-loaded', dispatchListLoaded );
+
 			player.addEventListener( 'track-cue-point', dispatchCuePoint );
 			player.addEventListener( 'speech-cue-point', dispatchCuePoint );
 			player.addEventListener( 'custom-cue-point', dispatchCuePoint );
+
 			player.addEventListener( 'ad-break-cue-point', dispatchCuePoint );
 			player.addEventListener( 'ad-break-cue-point-complete', dispatchCuePoint );
+
 			player.addEventListener( 'ad-playback-start', dispatchAction( ACTION_AD_PLAYBACK_START ) );
 			player.addEventListener( 'ad-playback-complete', dispatchAction( ACTION_AD_PLAYBACK_COMPLETE ) );
+			player.addEventListener( 'ad-playback-error', dispatchAction( ACTION_AD_PLAYBACK_ERROR ) );
 
 			dispatch( {
 				type: ACTION_INIT_TDPLAYER,
