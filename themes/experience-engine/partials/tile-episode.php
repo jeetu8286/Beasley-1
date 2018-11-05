@@ -1,6 +1,10 @@
-<div>
-	<?php ee_the_episode_player(); ?>
-	<div>
+<div><?php
+
+	if ( ! ee_is_jacapps() ) :
+		ee_the_episode_player();
+	endif;
+
+	?><div>
 		<div>
 			<?php if ( ( $duration = ee_get_episode_meta( null, 'duration' ) ) ) : ?>
 				<span class="episode-duration"><?php echo esc_html( $duration ); ?></span>
