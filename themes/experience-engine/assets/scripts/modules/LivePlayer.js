@@ -51,7 +51,7 @@ class LivePlayer extends Component {
 
 	render() {
 		const self = this;
-		const { station, status, play, pause, resume } = self.props;
+		const { station, status, adPlayback, play, pause, resume } = self.props;
 
 		const container = document.getElementById( 'live-player' );
 		if ( !container ) {
@@ -60,7 +60,13 @@ class LivePlayer extends Component {
 
 		const children = (
 			<Fragment>
-				<div id="td_container" />
+				<div className={`preroll-wrapper${adPlayback ? ' -active' : ''}`}>
+					<div className="preroll-container">
+						<div id="td_container" className="preroll-player"></div>
+						<div className="preroll-notification">Live stream will be available after this brief ad from our sponsors</div>
+					</div>
+				</div>
+
 				<div id="audio-ad-inplayer" />
 
 				<div className="controls">
@@ -83,6 +89,7 @@ class LivePlayer extends Component {
 LivePlayer.propTypes = {
 	station: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
+	adPlayback: PropTypes.bool.isRequired,
 	initPlayer: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
@@ -92,6 +99,7 @@ LivePlayer.propTypes = {
 const mapStateToProps = ( { player } ) => ( {
 	station: player.station,
 	status: player.status,
+	adPlayback: player.adPlayback,
 } );
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( {

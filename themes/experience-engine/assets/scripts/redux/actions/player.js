@@ -11,6 +11,8 @@ export const ACTION_DURATION_CHANGE = 'ACTION_DURATION_CHANGE';
 export const ACTION_TIME_CHANGE = 'ACTION_TIME_CHANGE';
 export const ACTION_SEEK_POSITION = 'ACTION_SEEK_POSITION';
 export const ACTION_NOW_PLAYING_LOADED = 'ACTION_NOW_PLAYING_LOADED';
+export const ACTION_AD_PLAYBACK_START = 'ACTION_AD_PLAYBACK_START';
+export const ACTION_AD_PLAYBACK_COMPLETE = 'ACTION_AD_PLAYBACK_COMPLETE';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -56,6 +58,16 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 		} );
 	};
 
+	const onAdPlaybackStart = ( ...params ) => {
+		console.log( 'ad playback start', ...params );
+		dispatch( { type: ACTION_AD_PLAYBACK_START } );
+	};
+
+	const onAdPlaybackComplete = ( ...params ) => {
+		console.log( 'ad playback complete', ...params );
+		dispatch( { type: ACTION_AD_PLAYBACK_COMPLETE } );
+	};
+
 	const player = new window.TDSdk( {
 		coreModules: modules,
 		configurationError: errorCatcher( 'Configuration Error' ),
@@ -68,6 +80,9 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 			player.addEventListener( 'custom-cue-point', onTrackCuePoint );
 			player.addEventListener( 'ad-break-cue-point', onTrackCuePoint );
 			player.addEventListener( 'ad-break-cue-point-complete', onTrackCuePoint );
+
+			player.addEventListener( 'ad-playback-start', onAdPlaybackStart );
+			player.addEventListener( 'ad-playback-complete', onAdPlaybackComplete );
 
 			dispatch( {
 				type: ACTION_INIT_TDPLAYER,

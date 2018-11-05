@@ -54,6 +54,7 @@ const resetState = {
 	time: 0,
 	duration: 0,
 	songs: [],
+	adPlayback: false,
 };
 
 export const DEFAULT_STATE = {
@@ -188,6 +189,12 @@ const reducer = ( state = {}, action = {} ) => {
 
 		case actions.ACTION_NOW_PLAYING_LOADED:
 			return Object.assign( {}, state, { songs: action.list } );
+
+		case actions.ACTION_AD_PLAYBACK_START:
+			return Object.assign( {}, state, { adPlayback: true } );
+
+		case actions.ACTION_AD_PLAYBACK_COMPLETE:
+			return Object.assign( {}, state, { adPlayback: false } );
 
 		default:
 			// do nothing
