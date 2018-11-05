@@ -28,3 +28,8 @@ const app = (
 );
 
 ReactDOM.render( app, root );
+
+const splashScreen = document.getElementById( 'splash-screen' );
+if ( splashScreen ) {
+	splashScreen.parentNode.removeChild( splashScreen );
+}
