@@ -93,8 +93,15 @@ const reducer = ( state = {}, action = {} ) => {
 
 			if ( tdplayer ) {
 				tdplayer.stop();
-				tdplayer.play( { station } );
-				loadNowPlaying( station );
+				tdplayer.skipAd();
+
+				tdplayer.playAd( 'tap', {
+					host: 'cmod.live.streamtheworld.com',
+					type: 'preroll',
+					format: 'vast',
+					stationId: streams[station].station_id,
+					trackingParameters: { dist: 'debug' }
+				} );
 			}
 
 			localStorage.setItem( 'station', station );
@@ -194,6 +201,13 @@ const reducer = ( state = {}, action = {} ) => {
 			return Object.assign( {}, state, { adPlayback: true } );
 
 		case actions.ACTION_AD_PLAYBACK_COMPLETE:
+			tdplayer.play( {
+				station: state.station,
+				timeShift: true,
+			} );
+
+			loadNowPlaying( state.station );
+
 			return Object.assign( {}, state, { adPlayback: false } );
 
 		default:
