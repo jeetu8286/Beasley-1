@@ -1,10 +1,12 @@
-		</main>
-	</div>
+			</main>
+		</div><?php
 
-		<?php get_template_part( 'partials/footer' ); ?>
-		<?php get_template_part( 'partials/modals' ); ?>
-		<?php get_template_part( 'partials/live-player' ); ?>
+		if ( ! ee_is_jacapps() ) :
+			get_template_part( 'partials/footer' );
+			get_template_part( 'partials/modals' );
+			get_template_part( 'partials/live-player' );
+		endif;
 
-		<?php wp_footer(); ?>
-	</body>
+		wp_footer();
+	?></body>
 </html>
