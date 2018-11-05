@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+<?php get_search_form(); ?>
+
 <div>
 	<?php while ( have_posts() ) : ?>
 		<?php the_post(); ?>

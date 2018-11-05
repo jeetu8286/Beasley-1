@@ -9,6 +9,7 @@ import ModalDispatcher from './modules/ModalDispatcher';
 import LivePlayer from './modules/LivePlayer';
 import PrimaryNav from './modules/PrimaryNav';
 import UserNav from './modules/UserNav';
+import SearchForm from './modules/SearchForm';
 
 import '../styles/main.css';
 
@@ -23,6 +24,7 @@ const app = (
 			<LivePlayer />
 			<PrimaryNav />
 			<UserNav />
+			<SearchForm />
 		</Fragment>
 	</Provider>
 );
