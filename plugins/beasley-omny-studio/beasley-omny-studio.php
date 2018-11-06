@@ -48,7 +48,9 @@ function omny_init() {
 }
 
 function omny_render_embed( $matches, $attr, $url ) {
-	$embed = wp_cache_get( $url, 'omny' );
+	$key = apply_filters( 'omny_embed_key', $url, $matches, $attr );
+
+	$embed = wp_cache_get( $key, 'omny' );
 	if ( empty( $embed ) ) {
 		$embed = '';
 		$response = wp_remote_get( 'https://omny.fm/oembed?url=' . urlencode( $url ) );
@@ -66,7 +68,7 @@ function omny_render_embed( $matches, $attr, $url ) {
 					$embed = str_replace( '<iframe ', $replace, $body['html'] );
 					$embed = apply_filters( 'omny_embed_html', $embed, $body );
 
-					wp_cache_set( $url, $embed, 'omny', HOUR_IN_SECONDS );
+					wp_cache_set( $key, $embed, 'omny', HOUR_IN_SECONDS );
 				}
 			}
 		}

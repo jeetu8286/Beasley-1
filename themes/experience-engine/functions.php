@@ -21,3 +21,4 @@ require_once __DIR__ . '/includes/podcasts.php';
 require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/includes/shows.php';
 require_once __DIR__ . '/includes/class-primary-nav-walker.php';
+require_once __DIR__ . '/includes/jacapps.php';
