@@ -4,6 +4,8 @@ import { getStateFromContent, parseHtml } from '../../library/html-parser';
 export const ACTION_INIT_PAGE = 'ACTION_INIT_PAGE';
 export const ACTION_LOADING_PAGE = 'ACTION_LOADING_PAGE';
 export const ACTION_LOADED_PAGE = 'ACTION_LOADED_PAGE';
+export const ACTION_LOADING_PARTIAL = 'ACTION_LOADING_PARTIAL';
+export const ACTION_LOADED_PARTIAL = 'ACTION_LOADED_PARTIAL';
 
 export const initPage = () => {
 	const content = document.getElementById( 'content' );
@@ -38,7 +40,7 @@ export const loadPage = ( url ) => ( dispatch ) => {
 		} );
 	};
 
-	const onSuccess = ( response ) => response.text().then( ( data ) => {
+	const onSuccess = ( data ) => {
 		const results = parseHtml( data );
 		const pageDocument = results.document;
 
@@ -69,9 +71,12 @@ export const loadPage = ( url ) => ( dispatch ) => {
 		} );
 
 		window.scrollTo( 0, 0 );
-	} );
+	};
 
-	fetch( url ).then( onSuccess ).catch( onError );
+	fetch( url )
+		.then( response => response.text() )
+		.then( onSuccess )
+		.catch( onError );
 };
 
 export const updatePage = ( data ) => {
@@ -88,9 +93,44 @@ export const updatePage = ( data ) => {
 	};
 };
 
+export const loadPartialPage = ( url, placeholder ) => ( dispatch ) => {
+	dispatch( {
+		type: ACTION_LOADING_PARTIAL,
+		url,
+	} );
+
+	const onError =  ( error ) => {
+		console.error( error ); // eslint-disable-line no-console
+
+		dispatch( {
+			type: ACTION_LOADED_PARTIAL,
+			content: '',
+			embeds: [],
+			error,
+		} );
+	};
+
+	const onSuccess = ( data ) => {
+		const results = parseHtml( data );
+
+		dispatch( {
+			type: ACTION_LOADED_PARTIAL,
+			content: results.content,
+			embeds: results.embeds,
+			error: '',
+			placeholder,
+		} );
+	};
+
+	fetch( url )
+		.then( response => response.text() )
+		.then( onSuccess )
+		.catch( onError );
+};
 
 export default {
 	initPage,
 	loadPage,
 	updatePage,
+	loadPartialPage,
 };

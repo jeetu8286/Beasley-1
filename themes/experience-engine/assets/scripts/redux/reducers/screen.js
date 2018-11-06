@@ -5,6 +5,7 @@ import * as actions from '../actions/screen';
 export const DEFAULT_STATE = {
 	embeds: [],
 	content: '',
+	partials: {},
 	error: '',
 };
 
@@ -16,6 +17,7 @@ const reducer = ( state = {}, action = {} ) => {
 				content: action.content,
 			} );
 
+		case actions.ACTION_LOADING_PARTIAL:
 		case actions.ACTION_LOADING_PAGE:
 			NProgress.start();
 			break;
@@ -26,6 +28,20 @@ const reducer = ( state = {}, action = {} ) => {
 				embeds: action.embeds,
 				content: action.content,
 				error: action.error,
+				partials: {},
+			} );
+
+		case actions.ACTION_LOADED_PARTIAL:
+			NProgress.done();
+			return Object.assign( {}, state, {
+				error: action.error,
+				partials: {
+					...state.partials,
+					[action.placeholder]: {
+						content: action.content,
+						embeds: action.embeds,
+					},
+				},
 			} );
 
 		default:

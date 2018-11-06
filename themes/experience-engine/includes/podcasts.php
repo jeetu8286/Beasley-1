@@ -5,6 +5,7 @@ add_filter( 'omny_embed_html', 'ee_update_omny_embed' );
 if ( ! function_exists( 'ee_get_episodes_query' ) ) :
 	function ee_get_episodes_query( $podcast = null, $args = array() ) {
 		$podcast = get_post( $podcast );
+		$args = wp_parse_args( $args );
 
 		return new \WP_Query( array_merge( $args, array(
 			'post_type'   => 'episode',
