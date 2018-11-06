@@ -28,7 +28,3 @@
 	font-weight: bold;
 	margin-bottom: 1rem;
 }
-
-body.modal-opened {
-	overflow: hidden;
-}
