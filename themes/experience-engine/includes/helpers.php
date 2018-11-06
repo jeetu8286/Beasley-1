@@ -47,7 +47,7 @@ if ( ! function_exists( 'ee_load_more' ) ) :
 			$GLOBALS['wp_query'] = $query;
 		}
 
-		next_posts_link( 'Load More' );
+		get_template_part( 'partials/load-more' );
 
 		if ( $query ) {
 			wp_reset_query();
