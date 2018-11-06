@@ -57,12 +57,14 @@ class SecondStreet extends \Bbgi\Module {
 			return '';
 		}
 
-		return sprintf(
+		$embed = sprintf(
 			'<div class="secondstreet-embed" src="https://embed-%s.secondstreetapp.com/Scripts/dist/embed.js" data-ss-embed="promotion" data-opguid="%s" data-routing="%s"></div>',
 			esc_attr( $attributes['op_id'] ),
 			esc_attr( $attributes['op_guid'] ),
 			esc_attr( $attributes['routing'] )
 		);
+
+		return apply_filters( 'secondstreet_embed_html', $embed, $attributes );
 	}
 
 }
