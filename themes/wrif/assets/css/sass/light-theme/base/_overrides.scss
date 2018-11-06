@@ -439,7 +439,7 @@ color: #333333!important;
 }
 #header__nav{background-color: #ffffff!important;}
 
-.header__main button, input, optgroup, select, textarea
+.header__main button, .header__main input, .header__main optgroup, .header__main select, .header__main textarea
 {color: #ffffff!important;}
 
 .header__search--span a
@@ -484,7 +484,7 @@ input[type=range]::-moz-range-thumb {background: #dddddd!important;}
 input[type=range]::-ms-thumb {background: #dddddd!important;}
 .audio-playing .audio-playing__track
 {color: #ffffff!important;}
- .audio-interface button, input, optgroup, select, textarea
+ .audio-interface button, .audio-interface input, .audio-interface optgroup, .audio-interface select, .audio-interface textarea
 {color: #ffffff!important;}
 
 .audio-controls__loading, .audio-controls__pause, .audio-controls__play, .audio-controls__resume
@@ -510,7 +510,7 @@ color: #ffffff;
 {background-color: #D22228!important;}
 
 
-.audio-volume .audio-volume__btn, .audio-volume .audio-volume__mute button, input, optgroup, select, textarea
+.audio-volume .audio-volume__btn, .audio-volume button, .audio-volume input, .audio-volume optgroup, .audio-volume select, .audio-volume textarea
 {color: #ffffff!important;}
 
 .audio-expand

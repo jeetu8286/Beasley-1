@@ -56,6 +56,9 @@ class Syndication_Detach_Post {
 				</div>
 				<?php
 			}
+
+			// debugging info:
+			echo '<!-- ', intval( get_post_meta( $post->ID, 'syndication_post_id', true ) ), ' -->';
 		}
 	}
 

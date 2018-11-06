@@ -120,6 +120,7 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 	$clips = omny_get_clips( $page, $per_page, $is_wp_cli );
 	$clips_map = omny_get_clips_map( $clips );
 
+	$post_ids = array();
 	foreach ( $clips as $clip ) {
 		if ( ! empty( $clips_map[ $clip['Id'] ] ) ) {
 			$is_wp_cli && \WP_CLI::log( sprintf( 'Skipping %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
@@ -159,12 +160,13 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 				'omny-publish-url' => $clip['PublishedUrl'],
 				'omny-audio-url'   => $clip['AudioUrl'],
 				'omny-image-url'   => $clip['ImageUrl'],
+				'omny-duration'    => $clip['DurationSeconds'],
 			),
 		);
 
 		$post_id = wp_insert_post( $args, true );
 		if ( ! is_wp_error( $post_id ) ) {
-			omny_import_clip_image( $clip['ImageUrl'], $post_id );
+			set_post_thumbnail( $post_id, get_post_thumbnail_id( $clip['PodcastId'] ) );
 			$is_wp_cli && \WP_CLI::success( sprintf( 'Imported %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
 		}
 	}

@@ -15,13 +15,11 @@
 	while( $hp_comm_query->have_posts() ) : $hp_comm_query->the_post(); ?>
 		<div class="highlights__community--item">
 			<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
-
-				<div class="highlights__community--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
+				<div class="highlights__community--thumb" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 180, 180 ); ?>)"></div>
 
 				<h3 class="highlights__community--title">
 					<?php the_title(); ?>
 				</h3>
-
 			</a>
 		</div>
 	<?php endwhile; ?>
@@ -41,7 +39,7 @@
 	while( $events_query->have_posts() ) : $events_query->the_post(); ?>
 		<div class="highlights__event--item">
 			<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
-				<div class="highlights__event--thumb" style='background-image: url(<?php gm_post_thumbnail_url( 'gmr-featured-secondary', null, true ) ?>)'></div>
+				<div class="highlights__event--thumb" style="background-image: url(<?php bbgi_post_thumbnail_url( null, true, 180, 180 ); ?>)"></div>
 
 				<div class="highlights__event--meta">
 					<h3 class="highlights__event--title"><?php the_title(); ?></h3>

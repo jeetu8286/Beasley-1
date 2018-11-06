@@ -59,44 +59,6 @@ class GreaterMediaGallery {
 	}
 
 	/**
-	 * Get an array of photos for a gallery.
-	 *
-	 * @param $post
-	 *
-	 * @return array
-	 */
-	public static function get_gallery_photos( $post ) {
-		preg_match_all( '/\[gallery.*ids=.(.*).\]/', $post->post_content, $ids );
-
-		$array_ids = array();
-		foreach( $ids[1] as $match ) {
-			$array_id = explode( ',', $match );
-			$array_id = array_map( 'intval', $array_id );
-
-			$array_ids = array_merge( $array_ids, $array_id );
-		}
-
-		$photos = array();
-
-		foreach( $array_ids as $id ) {
-			$image = wp_get_attachment_image_src( $id, 'gmr-gallery' );
-			$thumb = wp_get_attachment_image_src( $id, 'gmr-gallery-thumbnail' );
-
-			if ( ! $image ) {
-				continue;
-			}
-
-			$photos[] = array(
-				'url'       => $image[0],
-				'title'     => get_post_field( 'post_excerpt', $id ),
-				'thumbnail' => $thumb[0], // 82x46
-			);
-		}
-
-		return $photos;
-	}
-
-	/**
 	 * Returns a WP_Query that corresponds to the IDs provided
 	 *
 	 * @param array $ids Array of image IDs
@@ -200,10 +162,10 @@ class GreaterMediaGallery {
 
 		$image = current( $ids );
 		$content = sprintf(
-			'<div class="gallery__embed"><a href="%s/view/%s/"><div>%s</div>',
+			'<div class="gallery__embed"><a href="%s/view/%s/"><div><img src="%s" style="margin: 0 auto"></div>',
 			esc_attr( untrailingslashit( get_permalink( $post ) ) ),
 			esc_attr( get_post_field( 'post_name', $sponsored_image ? $sponsored_image : $image ) ),
-			wp_get_attachment_image( $image, 'gmr-gallery-grid-featured' )
+			bbgi_get_image_url( $image, 512, 342, 'crop', true )
 		);
 
 		$content .= '<div class="gallery__embed--thumbnails">';
@@ -211,7 +173,7 @@ class GreaterMediaGallery {
 		for ( $max = 5, $i = 1, $len = count( $ids ); $i < $len && $i <= $max; $i++ ) {
 			$content .= '<div class="gallery__embed--thumbnail">';
 
-			$content .= wp_get_attachment_image( $ids[ $i ], 'gmr-gallery-grid-thumb' );
+			$content .= '<img src="' . esc_url( bbgi_get_image_url( $ids[ $i ], 100, 75 ) ) . '">';
 			if ( $i == $max && $len > $max ) {
 				$content .= '<span class="gallery__embed--more">+' . ( $len - $max ) . '</span>';
 			}

@@ -10,14 +10,10 @@
 
 get_header(); ?>
 
-	<div class="container">
-
-		<section class="gallery__archive">
-
-			<?php get_template_part( 'partials/gallery-archive' ); ?>
-
-		</section>
-
-	</div>
+<div class="container">
+	<section class="gallery__archive">
+		<?php get_template_part( 'partials/gallery-archive' ); ?>
+	</section>
+</div>
 
 <?php get_footer(); ?>
