@@ -182,10 +182,13 @@ const reducer = ( state = {}, action = {} ) => {
 			return Object.assign( {}, state, { songs: action.list } );
 
 		case actions.ACTION_AD_PLAYBACK_START:
+			document.body.classList.add( 'locked' );
 			return Object.assign( {}, state, { adPlayback: true } );
 
 		case actions.ACTION_AD_PLAYBACK_ERROR:
 		case actions.ACTION_AD_PLAYBACK_COMPLETE:
+			document.body.classList.remove( 'locked' );
+
 			tdplayer.play( { station: state.station } );
 			loadNowPlaying( state.station );
 
