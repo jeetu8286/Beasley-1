@@ -3,7 +3,7 @@
 get_header();
 
 if ( ee_is_first_page() ) :
-	get_search_form();
+	the_archive_title( '<h1 class="archive-title">', '</h1>' );
 endif;
 
 echo '<div class="archive-tiles">';
