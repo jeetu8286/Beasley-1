@@ -74,6 +74,15 @@ endif;
 
 if ( ! function_exists( 'ee_the_lazy_image' ) ) :
 	function ee_the_lazy_image( $image_id, $aspect = false ) {
+		if (ee_is_jacapps() ) {
+			printf(
+				'<img src="%s" width="800" height="500">',
+				bbgi_get_image_url( $image_id, 800, 500 )
+			);
+
+			return;
+		}
+
 		$img = wp_get_attachment_image_src( $image_id, 'original' );
 		if ( empty( $img ) ) {
 			return;
