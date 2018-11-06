@@ -46,6 +46,10 @@ const getLazyImageParams = ( element ) => {
 	};
 };
 
+const getLoadMoreParams = ( element ) => ( {
+	link: element.getAttribute( 'href' ),
+} );
+
 const processEmbeds = ( container, type, selector, callback ) => {
 	const embeds = [];
 
@@ -84,6 +88,7 @@ export const getStateFromContent = ( container ) => {
 			...processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
 			...processEmbeds( container, 'share', '.share-buttons' ),
+			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
 		];
 
 		// MUST follow after embeds processing

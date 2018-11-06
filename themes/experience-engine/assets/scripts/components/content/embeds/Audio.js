@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import * as actions from '../../redux/actions/player';
-import Controls from '../player/Controls';
+import * as actions from '../../../redux/actions/player';
+import Controls from '../../player/Controls';
 
 class AudioEmbed extends Component {
 
