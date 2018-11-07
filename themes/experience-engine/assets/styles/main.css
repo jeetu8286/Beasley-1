@@ -10,10 +10,12 @@
 @import 'components/navigation/primary-nav';
 @import 'components/navigation/user-nav';
 
+@import 'components/archive/tile';
+@import 'components/archive/tile-podcast';
+
 @import 'components/nprogress';
 @import 'components/modal';
 @import 'components/live-player';
 @import 'components/loading';
 @import 'components/lazy-image';
-@import 'components/podcast';
 @import 'components/episode';
