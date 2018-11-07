@@ -1,4 +1,4 @@
-<div id="post-<?php the_ID(); ?>" <?php post_class(); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting"><?php
+<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>><?php
 
 	if ( ! ee_is_jacapps() ) :
 		ee_the_episode_player();
