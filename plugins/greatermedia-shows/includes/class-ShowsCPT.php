@@ -32,7 +32,6 @@ class ShowsCPT {
 
 			add_action( 'init', array( self::$_instance, 'register_post_type' ) );
 			add_action( 'init', array( self::$_instance, 'register_shadow_taxonomy' ) );
-			add_action( 'wp_enqueue_scripts', array( self::$_instance, 'enqueue_scripts' ) );
 
 			add_action( 'wp_ajax_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
 			add_action( 'wp_ajax_nopriv_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
@@ -181,27 +180,6 @@ class ShowsCPT {
 	public function add_episode_pt_to_blogroll_widget( $post_types ) {
 		$post_types[] = self::EPISODE_CPT;
 		return $post_types;
-	}
-
-	/**
-	 * Enqueues front end scripts.
-	 *
-	 * @access public
-	 */
-	public function enqueue_scripts() {
-		if ( is_singular( self::SHOW_CPT ) ) {
-			$show_id = get_queried_object_id();
-			$postfix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-			wp_enqueue_script( 'greatermedia-show', GMEDIA_SHOWS_URL . 'assets/js/show' . $postfix . '.js', array( 'jquery' ), GMEDIA_SHOWS_VERSION, true );
-			wp_localize_script( 'greatermedia-show', 'gmr_show', array(
-				'ajaxurl' => add_query_arg( array(
-					'action' => 'gmr_show_load_live_links',
-					'show'   => $show_id,
-					'nonce'  => wp_create_nonce( 'show_load_more_links_' . $show_id ),
-				), admin_url( 'admin-ajax.php' ) ),
-			) );
-		}
 	}
 
 	/**
