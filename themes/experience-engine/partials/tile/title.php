@@ -1,4 +1,4 @@
-<div class="post-title" itemprop="headline">
+<div class="post-title">
 	<a href="<?php the_permalink(); ?>">
 		<?php the_title(); ?>
 	</a>

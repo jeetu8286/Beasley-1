@@ -11,6 +11,9 @@ export const ACTION_DURATION_CHANGE = 'ACTION_DURATION_CHANGE';
 export const ACTION_TIME_CHANGE = 'ACTION_TIME_CHANGE';
 export const ACTION_SEEK_POSITION = 'ACTION_SEEK_POSITION';
 export const ACTION_NOW_PLAYING_LOADED = 'ACTION_NOW_PLAYING_LOADED';
+export const ACTION_AD_PLAYBACK_START = 'ACTION_AD_PLAYBACK_START';
+export const ACTION_AD_PLAYBACK_COMPLETE = 'ACTION_AD_PLAYBACK_COMPLETE';
+export const ACTION_AD_PLAYBACK_ERROR = 'ACTION_AD_PLAYBACK_ERROR';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -35,25 +38,29 @@ const errorCatcher = prefix => ( e ) => {
 };
 
 export const initTdPlayer = ( modules ) => ( dispatch ) => {
-	const onStatusChange = ( { data } ) => {
+	const dispatchStatusChange = ( { data } ) => {
 		dispatch( {
 			type: ACTION_STATUS_CHANGE,
 			status: data.code,
 		} );
 	};
 
-	const onTrackCuePoint = ( { data } ) => {
+	const dispatchCuePoint = ( { data } ) => {
 		dispatch( {
 			type: ACTION_CUEPOINT_CHANGE,
 			cuePoint: ( data || {} ).cuePoint || false,
 		} );
 	};
 
-	const onListLoaded = ( { data } ) => {
+	const dispatchListLoaded = ( { data } ) => {
 		dispatch( {
 			type: ACTION_NOW_PLAYING_LOADED,
 			...data,
 		} );
+	};
+
+	const dispatchAction = ( type ) => () => {
+		dispatch( { type } );
 	};
 
 	const player = new window.TDSdk( {
@@ -61,13 +68,19 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 		configurationError: errorCatcher( 'Configuration Error' ),
 		moduleError: errorCatcher( 'Module Error' ),
 		playerReady() {
-			player.addEventListener( 'stream-status', onStatusChange );
-			player.addEventListener( 'list-loaded', onListLoaded );
-			player.addEventListener( 'track-cue-point', onTrackCuePoint );
-			player.addEventListener( 'speech-cue-point', onTrackCuePoint );
-			player.addEventListener( 'custom-cue-point', onTrackCuePoint );
-			player.addEventListener( 'ad-break-cue-point', onTrackCuePoint );
-			player.addEventListener( 'ad-break-cue-point-complete', onTrackCuePoint );
+			player.addEventListener( 'stream-status', dispatchStatusChange );
+			player.addEventListener( 'list-loaded', dispatchListLoaded );
+
+			player.addEventListener( 'track-cue-point', dispatchCuePoint );
+			player.addEventListener( 'speech-cue-point', dispatchCuePoint );
+			player.addEventListener( 'custom-cue-point', dispatchCuePoint );
+
+			player.addEventListener( 'ad-break-cue-point', dispatchCuePoint );
+			player.addEventListener( 'ad-break-cue-point-complete', dispatchCuePoint );
+
+			player.addEventListener( 'ad-playback-start', dispatchAction( ACTION_AD_PLAYBACK_START ) );
+			player.addEventListener( 'ad-playback-complete', dispatchAction( ACTION_AD_PLAYBACK_COMPLETE ) );
+			player.addEventListener( 'ad-playback-error', dispatchAction( ACTION_AD_PLAYBACK_ERROR ) );
 
 			dispatch( {
 				type: ACTION_INIT_TDPLAYER,
@@ -78,7 +91,7 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 };
 
 export const playAudio = ( audio, title = '', artist = '' ) => ( dispatch ) => {
-	const bindStatusUpdate = ( status ) => () => {
+	const dispatchStatusUpdate = ( status ) => () => {
 		dispatch( {
 			type: ACTION_STATUS_CHANGE,
 			status,
@@ -87,10 +100,10 @@ export const playAudio = ( audio, title = '', artist = '' ) => ( dispatch ) => {
 
 	const player = new Audio( audio );
 
-	player.addEventListener( 'loadstart', bindStatusUpdate( STATUSES.LIVE_BUFFERING ) );
-	player.addEventListener( 'pause', bindStatusUpdate( STATUSES.LIVE_PAUSE ) );
-	player.addEventListener( 'playing', bindStatusUpdate( STATUSES.LIVE_PLAYING ) );
-	player.addEventListener( 'ended', bindStatusUpdate( STATUSES.LIVE_STOP ) );
+	player.addEventListener( 'loadstart', dispatchStatusUpdate( STATUSES.LIVE_BUFFERING ) );
+	player.addEventListener( 'pause', dispatchStatusUpdate( STATUSES.LIVE_PAUSE ) );
+	player.addEventListener( 'playing', dispatchStatusUpdate( STATUSES.LIVE_PLAYING ) );
+	player.addEventListener( 'ended', dispatchStatusUpdate( STATUSES.LIVE_STOP ) );
 
 	player.addEventListener( 'loadedmetadata', () => {
 		dispatch( {
@@ -123,7 +136,7 @@ export const playAudio = ( audio, title = '', artist = '' ) => ( dispatch ) => {
 };
 
 export const playOmny = ( audio, title = '', artist = '' ) => ( dispatch ) => {
-	const bindStatusUpdate = ( status ) => () => {
+	const dispatchStatusUpdate = ( status ) => () => {
 		dispatch( {
 			type: ACTION_STATUS_CHANGE,
 			status,
@@ -138,10 +151,10 @@ export const playOmny = ( audio, title = '', artist = '' ) => ( dispatch ) => {
 
 	const player = new playerjs.Player( iframe );
 
-	player.on( 'ready', bindStatusUpdate( STATUSES.LIVE_BUFFERING ) );
-	player.on( 'play', bindStatusUpdate( STATUSES.LIVE_PLAYING ) );
-	player.on( 'pause', bindStatusUpdate( STATUSES.LIVE_PAUSE ) );
-	player.on( 'ended', bindStatusUpdate( STATUSES.LIVE_STOP ) );
+	player.on( 'ready', dispatchStatusUpdate( STATUSES.LIVE_BUFFERING ) );
+	player.on( 'play', dispatchStatusUpdate( STATUSES.LIVE_PLAYING ) );
+	player.on( 'pause', dispatchStatusUpdate( STATUSES.LIVE_PAUSE ) );
+	player.on( 'ended', dispatchStatusUpdate( STATUSES.LIVE_STOP ) );
 
 	player.on( 'timeupdate', ( e ) => {
 		dispatch( {
