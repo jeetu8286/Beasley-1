@@ -31,6 +31,7 @@ class ShowsCPT {
 
 			add_action( 'init', array( self::$_instance, 'register_post_type' ) );
 			add_action( 'init', array( self::$_instance, 'register_shadow_taxonomy' ) );
+			add_action( 'pre_get_posts', array( self::$_instance, 'update_show_archive_query' ) );
 
 			add_action( 'wp_ajax_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
 			add_action( 'wp_ajax_nopriv_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
@@ -42,6 +43,34 @@ class ShowsCPT {
 		return self::$_instance;
 	}
 
+	/**
+	 * Update main query for shows post type archive to not fetch shows without homepages.
+	 *
+	 * @access public
+	 * @param \WP_Query $query
+	 */
+	public function update_show_archive_query( $query ) {
+		if ( ! $query->is_main_query() ) {
+			return;
+		}
+
+		remove_action( 'pre_get_posts', array( self::$_instance, 'update_show_archive_query' ) );
+
+		if ( $query->is_post_type_archive( self::SHOW_CPT ) ) {
+			// hide shows without homepage
+			$meta_query = $query->get( 'meta_query' );
+			if ( ! is_array( $meta_query ) ) {
+				$meta_query = array();
+			}
+
+			$meta_query[] = array(
+				'key'   => 'show_homepage',
+				'value' => '1',
+			);
+
+			$query->set( 'meta_query', $meta_query );
+		}
+	}
 
 	/**
 	 * Registers show post type in the curration types list.
