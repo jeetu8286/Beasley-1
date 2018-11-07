@@ -8,7 +8,6 @@ class ShowsCPT {
 
 	const SHOW_CPT      = 'show';
 	const SHOW_TAXONOMY = '_shows';
-	const EPISODE_CPT   = 'show-episode';
 
 	/**
 	 * The singleton instance of the ShowsCPT class.
@@ -36,7 +35,6 @@ class ShowsCPT {
 			add_action( 'wp_ajax_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
 			add_action( 'wp_ajax_nopriv_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
 
-			add_filter( 'gmr_blogroll_widget_item_post_types', array( self::$_instance, 'add_episode_pt_to_blogroll_widget' ) );
 			add_filter( 'redirect_canonical', array( self::$_instance, 'check_redirect_canonical' ) );
 			add_filter( 'gmr-homepage-curation-post-types', array( self::$_instance, 'register_curration_post_type' ) );
 		}
@@ -86,18 +84,6 @@ class ShowsCPT {
 			'capability_type' => array( 'show', 'shows' ),
 			'map_meta_cap' => true,
 			'rewrite' => array( 'slug' => 'shows' )
-		) );
-
-		register_post_type( self::EPISODE_CPT, array(
-			'public'     => false,
-			'rewrite'    => false,
-			'can_export' => true,
-			'capability_type' => array( 'show_episode', 'show_episodes' ),
-			'map_meta_cap' => true,
-			'labels'     => array(
-				'name'          => __( 'Show Episodes', 'greatermedia' ),
-				'singular_name' => __( 'Show Episode', 'greatermedia' ),
-			),
 		) );
 	}
 
@@ -167,18 +153,6 @@ class ShowsCPT {
 			'gmr_album',
 		);
 
-		return $post_types;
-	}
-
-	/**
-	 * Registers show episode post type in the blogroll widget.
-	 *
-	 * @filter gmr_blogroll_widget_item_post_types
-	 * @param array $post_types The post types array.
-	 * @return array The post types array.
-	 */
-	public function add_episode_pt_to_blogroll_widget( $post_types ) {
-		$post_types[] = self::EPISODE_CPT;
 		return $post_types;
 	}
 
