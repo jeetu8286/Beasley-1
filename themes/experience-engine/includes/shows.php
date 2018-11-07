@@ -66,3 +66,9 @@ if ( ! function_exists( 'ee_get_show_meta' ) ) :
 		return false;
 	}
 endif;
+
+if ( ! function_exists( 'ee_get_show_query' ) ) :
+	function ee_get_show_query() {
+		return \GreaterMedia\Shows\get_show_main_query();
+	}
+endif;
