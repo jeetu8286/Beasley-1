@@ -1,1 +1,3 @@
-<div>[load more]</div>
+<div>
+	<?php next_posts_link( 'Load More' ); ?>
+</div>
