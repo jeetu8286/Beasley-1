@@ -31,7 +31,9 @@ class ShowsCPT {
 
 			add_action( 'init', array( self::$_instance, 'register_post_type' ) );
 			add_action( 'init', array( self::$_instance, 'register_shadow_taxonomy' ) );
-			add_action( 'pre_get_posts', array( self::$_instance, 'update_show_archive_query' ) );
+			if ( ! is_admin() ) {
+				add_action( 'pre_get_posts', array( self::$_instance, 'update_show_archive_query' ) );
+			}
 
 			add_action( 'wp_ajax_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
 			add_action( 'wp_ajax_nopriv_gmr_show_load_live_links', array( self::$_instance, 'load_more_links' ) );
@@ -56,7 +58,7 @@ class ShowsCPT {
 
 		remove_action( 'pre_get_posts', array( self::$_instance, 'update_show_archive_query' ) );
 
-		if ( $query->is_post_type_archive( self::SHOW_CPT ) ) {
+		if ( $query->is_post_type_archive( self::SHOW_CPT ) || ( $query->is_single() && $query->get( 'post_type' ) == self::SHOW_CPT ) ) {
 			// hide shows without homepage
 			$meta_query = $query->get( 'meta_query' );
 			if ( ! is_array( $meta_query ) ) {
