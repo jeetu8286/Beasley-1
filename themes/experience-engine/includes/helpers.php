@@ -3,30 +3,43 @@
 add_filter( 'next_posts_link_attributes', 'ee_load_more_attributes' );
 add_filter( 'get_the_archive_title', 'ee_update_archive_title' );
 
+if ( ! function_exists( 'ee_get_date' ) ) :
+	function ee_get_date( $timestamp, $gmt = 0 ) {
+		$elapsed = current_time( 'timestamp', $gmt ) - $timestamp;
+		$abs_elapsed = abs( $elapsed );
+
+		if ( $abs_elapsed < DAY_IN_SECONDS ) {
+			$text = '';
+			if ( $abs_elapsed < HOUR_IN_SECONDS ) {
+				$number = floor( $abs_elapsed / MINUTE_IN_SECONDS );
+				$text = sprintf( $number == 1 ? 'a minute' : '%d minutes', $number );
+			} else {
+				$number = floor( $abs_elapsed / HOUR_IN_SECONDS );
+				$text = sprintf( $number == 1 ? 'an hour' : '%s hours', $number );
+			}
+
+			return sprintf( $elapsed > 0 ? '%s ago' : 'in %s', $text );
+		}
+
+		$created_offset = $gmt
+			? $timestamp + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS
+			: $timestamp;
+
+		$format = date( 'Y' ) == date( 'Y', $created_offset )
+			? 'M jS'
+			: 'M jS, Y';
+
+		return date( $format, $created_offset );
+	}
+endif;
+
 if ( ! function_exists( 'ee_the_date' ) ) :
 	function ee_the_date( $post = null ) {
 		$post = get_post( $post );
-
-		$created = mysql2date( 'G', $post->post_date_gmt );
-		$now = current_time( 'timestamp', 1 );
-
-		$elapsed = abs( $now - $created );
-		if ( $elapsed < DAY_IN_SECONDS ) {
-			if ( $elapsed < HOUR_IN_SECONDS ) {
-				$number = floor( $elapsed / MINUTE_IN_SECONDS );
-				return printf( $number == 1 ? '%d minute ago' : '%d minutes ago', $number );
-			} else {
-				$number = floor( $elapsed / HOUR_IN_SECONDS );
-				return printf( $number == 1 ? '%s hour ago' : '%s hours ago', $number );
-			}
+		if ( is_a( $post, '\WP_Post' ) ) {
+			$created = mysql2date( 'G', $post->post_date_gmt );
+			echo ee_get_date( $created, 1 );
 		}
-
-		$created_offset = $created + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
-		if ( date( 'Y' ) == date( 'Y', $created_offset ) ) {
-			return print( date( 'M jS', $created_offset ) );
-		}
-
-		return printf( date( 'M jS, Y', $created_offset ) );
 	}
 endif;
 

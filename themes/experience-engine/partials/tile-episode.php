@@ -1,4 +1,4 @@
-<div><?php
+<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>><?php
 
 	if ( ! ee_is_jacapps() ) :
 		ee_the_episode_player();
@@ -12,10 +12,7 @@
 
 			<span><?php ee_the_date(); ?></span>
 		</div>
-		<h3>
-			<a href="<?php the_permalink(); ?>">
-				<?php the_title(); ?>
-			</a>
-		</h3>
+
+		<?php get_template_part( 'partials/tile/title' ); ?>
 	</div>
 </div>

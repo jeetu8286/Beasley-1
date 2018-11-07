@@ -1,0 +1,10 @@
+.post-thumbnail {
+	width: 300px;
+	height: 150px;
+}
+
+.post-title {
+	font-weight: 600;
+	font-size: 1.4444rem;
+	line-height: 1.308;
+}

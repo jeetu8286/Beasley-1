@@ -16,9 +16,10 @@ define( 'GREATERMEDIA_VERSION', $version ); // using this constant for backward 
 
 require_once __DIR__ . '/includes/theme.php';
 require_once __DIR__ . '/includes/experience-engine.php';
+require_once __DIR__ . '/includes/helpers.php';
 require_once __DIR__ . '/includes/assets.php';
 require_once __DIR__ . '/includes/podcasts.php';
-require_once __DIR__ . '/includes/helpers.php';
+require_once __DIR__ . '/includes/contests.php';
 require_once __DIR__ . '/includes/shows.php';
 require_once __DIR__ . '/includes/class-primary-nav-walker.php';
 require_once __DIR__ . '/includes/jacapps.php';
