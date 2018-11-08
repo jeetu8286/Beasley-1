@@ -19,8 +19,8 @@
 
 			& .post-thumbnail {
 				display: inline-block;
-				width: 100px;
 				height: 100px;
+				width: 100px;
 			}
 
 			& .placeholder-lazyimage {
