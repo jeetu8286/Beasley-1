@@ -13,6 +13,6 @@ if ( ! $query->have_posts() ) :
 endif;
 
 ?><div>
-	<h4>Podcasts you may like</h4>
+	<?php ee_the_subtitle( 'Podcasts you may like' ); ?>
 	<?php ee_the_query_tiles( $query ); ?>
 </div>

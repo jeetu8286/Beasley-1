@@ -86,3 +86,9 @@ if ( ! function_exists( 'ee_update_archive_title' ) ) :
 		return array_pop( $parts );
 	}
 endif;
+
+if ( ! function_exists( 'ee_the_subtitle' ) ) :
+	function ee_the_subtitle( $subtitle ) {
+		echo '<h3>', esc_html( $subtitle ), '</h3>';
+	}
+endif;

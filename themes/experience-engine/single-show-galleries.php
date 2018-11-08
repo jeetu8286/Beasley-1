@@ -4,11 +4,10 @@
 
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php get_template_part( 'partials/show/header' ); ?>
-	<?php get_template_part( 'partials/featured-media' ); ?>
-	<h1><?php the_title(); ?></h1>
 
+	<?php ee_the_subtitle( 'Galleries' ); ?>
 	<div>
-		<?php the_content(); ?>
+		TBD...
 	</div>
 </div>
 

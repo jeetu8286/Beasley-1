@@ -53,7 +53,6 @@ class GreaterMediaSiteOptions {
 				'advertiser',
 				'survey',
 				'show',
-				'show-episode',
 			);
 
 			// If the Post type is in the exclude list, then don't add to Media Page

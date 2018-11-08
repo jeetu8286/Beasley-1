@@ -74,12 +74,12 @@ endif;
 
 if ( ! function_exists( 'ee_the_lazy_image' ) ) :
 	function ee_the_lazy_image( $image_id, $aspect = false ) {
-		if (ee_is_jacapps() ) {
-			printf(
-				'<img src="%s" width="800" height="500">',
-				bbgi_get_image_url( $image_id, 800, 500 )
-			);
+		if ( ! $image_id ) {
+			return;
+		}
 
+		if ( ee_is_jacapps() ) {
+			printf( '<img src="%s" width="800" height="500">', bbgi_get_image_url( $image_id, 800, 500 ) );
 			return;
 		}
 
@@ -101,9 +101,10 @@ endif;
 if ( ! function_exists( 'ee_the_lazy_thumbnail' ) ) :
 	function ee_the_lazy_thumbnail( $post = null ) {
 		$post = get_post( $post );
-		if ( has_post_thumbnail( $post ) ) {
-			$thumbnail_id = get_post_thumbnail_id( $post );
-			ee_the_lazy_image( $thumbnail_id );
-		}
+
+		$thumbnail_id = get_post_thumbnail_id( $post );
+		$thumbnail_id = apply_filters( 'ee_post_thumbnail_id', $thumbnail_id, $post );
+
+		ee_the_lazy_image( $thumbnail_id );
 	}
 endif;

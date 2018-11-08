@@ -6,10 +6,7 @@
 		<?php get_template_part( 'partials/tile', get_post_type() ); ?>
 	<?php endwhile; ?>
 
-	<div>
-		<?php previous_posts_link(); ?>
-		<?php next_posts_link(); ?>
-	</div>
+	<?php ee_load_more(); ?>
 </div>
 
 <?php get_footer(); ?>
