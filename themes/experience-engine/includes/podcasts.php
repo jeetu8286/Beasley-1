@@ -1,6 +1,7 @@
 <?php
 
 add_filter( 'omny_embed_html', 'ee_update_omny_embed' );
+add_filter( 'ee_post_thumbnail_id', 'ee_update_episode_thumbnail', 10, 2 );
 
 if ( ! function_exists( 'ee_get_episodes_query' ) ) :
 	function ee_get_episodes_query( $podcast = null, $args = array() ) {
@@ -150,5 +151,19 @@ if ( ! function_exists( 'ee_update_omny_embed' ) ) :
 		$embed = str_replace( '<div ', '<div class="omny-embed" ', $embed );
 
 		return $embed;
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_episode_thumbnail' ) ) :
+	function ee_update_episode_thumbnail( $thumbnail_id, $post ) {
+		$episode = get_post( $post );
+		if ( is_a( $episode, '\WP_Post' ) && $episode->post_type == 'episode' && ! $thumbnail_id && $episode->post_parent ) {
+			$podcast = get_post( $episode->post_parent );
+			if ( is_a( $podcast, '\WP_Post' ) && $podcast->post_type == 'podcast' && has_post_thumbnail( $podcast ) ) {
+				$thumbnail_id = get_post_thumbnail_id( $podcast );
+			}
+		}
+
+		return $thumbnail_id;
 	}
 endif;
