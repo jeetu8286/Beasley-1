@@ -60,6 +60,8 @@ const processEmbeds = ( container, type, selector, callback ) => {
 		const placeholder = document.createElement( 'div' );
 
 		placeholder.setAttribute( 'id', `__cd-${++embedsIndex}` );
+		placeholder.classList.add( 'placeholder' );
+		placeholder.classList.add( `placeholder-${type}` );
 
 		embeds.push( {
 			type,
