@@ -39,8 +39,6 @@ include_once __DIR__ . '/vendor/autoload.php';
 
 require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
 require_once __DIR__ . '/includes/site-options/class-gmr-site-options.php';
-require_once __DIR__ . '/includes/site-options/class-gmr-site-options-helper-functions.php';
-require_once __DIR__ . '/includes/site-options/class-gmr-site-member-text.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';

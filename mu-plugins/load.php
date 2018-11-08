@@ -33,6 +33,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 add_action( 'wp_loaded', function() {
 	$modules = array(
 		new \Bbgi\Seo(),
+		new \Bbgi\Settings(),
 	);
 
 	if ( current_theme_supports( 'secondstreet' ) ) {

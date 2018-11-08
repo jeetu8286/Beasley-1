@@ -23,3 +23,4 @@ require_once __DIR__ . '/includes/contests.php';
 require_once __DIR__ . '/includes/shows.php';
 require_once __DIR__ . '/includes/class-primary-nav-walker.php';
 require_once __DIR__ . '/includes/jacapps.php';
+require_once __DIR__ . '/includes/settings.php';
