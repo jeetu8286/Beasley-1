@@ -14,5 +14,7 @@ endif;
 
 ?><div>
 	<h4>Next Episodes</h4>
-	<?php ee_the_query_tiles( $query ); ?>
+	<div class="archive-tiles">
+		<?php ee_the_query_tiles( $query ); ?>
+	</div>
 </div>

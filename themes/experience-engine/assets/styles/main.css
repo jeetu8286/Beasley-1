@@ -15,6 +15,7 @@
 
 @import 'components/archive/tile';
 @import 'components/archive/tile-podcast';
+@import 'components/archive/tile-episode';
 
 @import 'components/nprogress';
 @import 'components/modal';

@@ -1,0 +1,26 @@
+.archive-tiles {
+	& .type-episode {
+		& .placeholder-audio {
+			left: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+}
+
+
+.single-episode,
+.single-podcast {
+	& .archive-tiles {
+		& .type-episode {
+			display: flex;
+
+			& .post-thumbnail {
+				display: inline-block;
+				width: 100px;
+				height: 100px;
+			}
+		}
+	}
+}
