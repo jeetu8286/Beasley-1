@@ -158,7 +158,7 @@ class GreaterMediaSiteOptions {
 		$livelinks_more = get_option( 'gmr_livelinks_more_redirect', '' );
 		$liveplayer_disabled = get_option( 'gmr_liveplayer_disabled', '' );
 
-		$site_logo_id = GreaterMediaSiteOptionsHelperFunctions::get_site_logo_id();
+		$site_logo_id = get_option( 'gmr_site_logo', 0 );
 		self::render_image_select( 'Site Logo', 'gmr_site_logo', $site_logo_id ); ?>
 
 		<hr />
