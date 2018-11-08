@@ -52,21 +52,21 @@
         },
         {
             "name": "10up/wp-minions",
-            "version": "4.0.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/WP-Minions.git",
-                "reference": "afe3540d677e94489b9db70713a249725c9daef2"
+                "reference": "0f8bd01339efb78cea8ae54b7639ba7ef2722565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/10up/WP-Minions/zipball/afe3540d677e94489b9db70713a249725c9daef2",
-                "reference": "afe3540d677e94489b9db70713a249725c9daef2",
+                "url": "https://api.github.com/repos/10up/WP-Minions/zipball/0f8bd01339efb78cea8ae54b7639ba7ef2722565",
+                "reference": "0f8bd01339efb78cea8ae54b7639ba7ef2722565",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "~1.0",
-                "php-amqplib/php-amqplib": ">=2.6.1"
+                "php-amqplib/php-amqplib": "2.8.0"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9.0",
@@ -99,7 +99,7 @@
                 }
             ],
             "description": "Job Queue for WordPress",
-            "time": "2018-07-06T21:18:38+00:00"
+            "time": "2018-11-05T20:41:24+00:00"
         },
         {
             "name": "composer/installers",
@@ -655,15 +655,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "9.0.2",
+            "version": "9.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/9.0.2"
+                "reference": "tags/9.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.9.0.2.zip",
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.9.1.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -695,15 +695,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-fail2ban",
-            "version": "3.5.3",
+            "version": "3.6.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-fail2ban/",
-                "reference": "tags/3.5.3"
+                "reference": "tags/3.6.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-fail2ban.3.5.3.zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-fail2ban.3.6.0.zip",
                 "reference": null,
                 "shasum": null
             },
