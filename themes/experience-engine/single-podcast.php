@@ -6,7 +6,7 @@ the_post();
 
 ?><div id="post-<?php the_ID(); ?>" <?php post_class(); ?>><?php
 	if ( ee_is_first_page() ) :
-		get_template_part( 'partials/show-block' );
+		get_template_part( 'partials/show/header' );
 		get_template_part( 'partials/podcast-information' );
 
 		?><div><?php
