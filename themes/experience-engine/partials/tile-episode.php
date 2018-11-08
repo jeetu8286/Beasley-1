@@ -1,6 +1,7 @@
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php if ( ! ee_is_jacapps() ) : ?>
-		<div class="post-thumbnail"<?php ee_the_lazy_background_thumbnail(); ?>>
+		<div class="post-thumbnail">
+			<?php ee_the_lazy_thumbnail(); ?>
 			<?php ee_the_episode_player(); ?>
 		</div>
 	<?php endif; ?>

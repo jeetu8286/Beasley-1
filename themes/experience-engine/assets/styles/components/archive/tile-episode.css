@@ -5,6 +5,7 @@
 			position: absolute;
 			top: 50%;
 			transform: translate(-50%, -50%);
+			z-index: 10;
 		}
 	}
 }
@@ -20,6 +21,10 @@
 				display: inline-block;
 				width: 100px;
 				height: 100px;
+			}
+
+			& .placeholder-lazyimage {
+				display: none;
 			}
 		}
 	}
