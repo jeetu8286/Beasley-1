@@ -31,7 +31,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	 */
 	function bbgi_ee_request( $path, $args = array() ) {
 
-		$request = bbgi_ee_get_request_from_cache( $path );
+		$request = wp_cache_get( $path, 'experience_engine_api' );
 
 		if ( empty( $request ) ) {
 
@@ -90,20 +90,6 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 		$cache_time = end ( explode( 'max-age=', $response_headers['cache-control'] ) );
 
 		return absint( $cache_time );
-	}
-
-endif;
-
-if ( ! function_exists( 'bbgi_ee_get_request_from_cache' ) ) :
-	/**
-	 * Helper function to get request data from cache
-	 *
-	 * @param string $path Request path.
-	 *
-	 * @return mixed bool|array The response or false when nothing is found.
-	 */
-	function bbgi_ee_get_request_from_cache( $path ) {
-		return wp_cache_get( $path, 'experience_engine_api' );
 	}
 
 endif;
