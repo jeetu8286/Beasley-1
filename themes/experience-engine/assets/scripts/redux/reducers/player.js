@@ -216,6 +216,7 @@ const reducer = ( state = {}, action = {} ) => {
 
 			// start station only if the ad playback is playing now
 			if ( state.adPlayback ) {
+				tdplayer.skipAd();
 				tdplayer.play( { station: state.station } );
 				loadNowPlaying( state.station );
 			}
