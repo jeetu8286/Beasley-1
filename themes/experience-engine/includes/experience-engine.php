@@ -86,8 +86,22 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 		if ( empty( $response_headers['cache-control'] ) ) {
 			return 0;
 		}
+		
+		$cache_control = explode( ',', $response_headers['cache-control'] );
+		$cache_time    = 0;
 
-		$cache_time = end ( explode( 'max-age=', $response_headers['cache-control'] ) );
+		foreach( $cache_control as $control_string ) {
+			$control_string = trim($control_string);
+
+			if ( strpos( $control_string, 's-maxage' ) === 0 ) {
+				$cache_time = end ( explode( 's-maxage=', $control_string ) );
+				break;
+			}
+
+			if ( strpos( $control_string, 'max-age' ) === 0 ) {
+				$cache_time = end ( explode( 'max-age=', $control_string ) );
+			}
+		}
 
 		return absint( $cache_time );
 	}
