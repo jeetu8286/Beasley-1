@@ -25,36 +25,38 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	 *
 	 *
 	 * @param string $path Site URL to retrieve.
-	 * @param array  $args Optional. Request arguments. Default empty array.
+	 * @param array $args Optional. Request arguments. Default empty array.
 	 *
 	 * @return WP_Error|array The response or WP_Error on failure.
 	 */
-	 function bbgi_ee_request( $path, $args = array() ) {
-		 
+	function bbgi_ee_request( $path, $args = array() ) {
+
 		$request = bbgi_ee_get_request_from_cache( $path );
 
-		if ( ! empty( $request ) ) {
-			return $request
-		}
+		if ( empty( $request ) ) {
 
-		if ( empty( $args['method'] ) ) {
-			$args['method'] = 'GET';
-		}
+			if ( empty( $args['method'] ) ) {
+				$args['method'] = 'GET';
+			}
 
-		//Add the API Header
-		$args['headers'] = format_ee_request_headers();
-		
-		$host    =  esc_url( trailingslashit( EE_API_HOST ) . $path );
-		$request = wp_remote_request( $host, $args ); //try the existing host to avoid unnecessary calls
-		
-		$is_valid_res = ( $request_response_code >= 200 && $request_response_code <= 299 );
+			//Add the API Header
+			$args['headers'] = format_ee_request_headers();
 
-		if ( false === $request || is_wp_error( $request ) || ! $is_valid_res ) {
+			$host                  = esc_url( trailingslashit( EE_API_HOST ) . $path );
+			$request               = wp_remote_request( $host, $args );
+			$request_response_code = (int) wp_remote_retrieve_response_code( $request );
+
+			$is_valid_res = ( $request_response_code >= 200 && $request_response_code <= 299 );
+
+			if ( false === $request || is_wp_error( $request ) || ! $is_valid_res ) {
+				return $request;
+			}
+
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
 
 			if ( $cache_time ) {
 				wp_cache_set( $path, $request, 'experience_engine_api', $cache_time );
-			}		
+			}
 		}
 
 		return $request;
@@ -68,7 +70,7 @@ if ( ! function_exists( 'format_ee_request_headers' ) ) :
 	 *
 	 * @return array
 	 */
-	public function format_ee_request_headers() {
+	function format_ee_request_headers() {
 		$headers = array(
 			'Content-Type' => 'application/json',
 		);
@@ -91,14 +93,12 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 	/**
 	 * Get request cache time
 	 *
-	 * @param array $response HTTP response.
+	 * @param array $request HTTP response.
 	 *
 	 * @return Mixed false if cache time is not set int otherwise
 	 */
-	 function bbgi_ee_get_request_cache_time( $request ) {
+	function bbgi_ee_get_request_cache_time( $request ) {
 
-		$request_response_code = (int) wp_remote_retrieve_response_code( $request );
-		
 		$response_headers = wp_remote_retrieve_headers( $request );
 
 		if ( empty( $response_headers['cache-control']['max-age'] ) ) {
@@ -114,21 +114,12 @@ if ( ! function_exists( 'bbgi_ee_get_request_from_cache' ) ) :
 	/**
 	 * Helper function to get request data from cache
 	 *
-	 * @param array $response HTTP response.
+	 * @param string $path Request path.
 	 *
-	 * @return mixed false if max-age is not set int otherwise
+	 * @return mixed bool|array The response or false when nothing is found.
 	 */
-	 function bbgi_ee_get_request_from_cache( $path ) {
-
-		$request_response_code = (int) wp_remote_retrieve_response_code( $request );
-		
-		$response_headers = wp_remote_retrieve_headers( $request );
-
-		if ( empty( $response_headers['cache-control']['max-age'] ) ) {
-			return false;
-		}
-
-		return absint( $response_headers['cache-control']['max-age'] );
+	function bbgi_ee_get_request_from_cache( $path ) {
+		return wp_cache_get( $path, 'experience_engine_api' );
 	}
 
 endif;
