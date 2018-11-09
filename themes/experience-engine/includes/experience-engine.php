@@ -146,19 +146,6 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
 
 endif;
 
-
-if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
-	/**
-	 * Get a single publisher's feeds from BBGI Experience API.
-	 *
-	 * @return array Contains publisher feeds.
-	 */
-	function bbgi_ee_get_publisher_feeds( $publisher ) {
-		return bbgi_ee_request( "publishers/{$publisher}/feeds/" );
-	}
-
-endif;
-
 if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
 	/**
 	 * Get a particular feed belonging to a publisher from BBGI Experience API.
@@ -167,18 +154,6 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
 	 */
 	function bbgi_ee_get_publisher_feed( $publisher, $feed ) {
 		return bbgi_ee_request( "publishers/{$publisher}/feeds/{$feed}" );
-	}
-
-endif;
-
-if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
-	/**
-	 * Get a locations from BBGI Experience API.
-	 *
-	 * @return array Containing locations.
-	 */
-	function bbgi_ee_get_locations() {
-		return bbgi_ee_request( 'locations' );
 	}
 
 endif;
