@@ -6,9 +6,7 @@ import { bindActionCreators } from 'redux';
 import { playStation } from '../../redux/actions/player';
 
 const Stations = ( { play } ) => {
-	const { bbgiconfig } = window;
-	const { streams } = bbgiconfig.livePlayer || {};
-
+	const { streams } = window.bbgiconfig || {};
 	const stations = Object.keys( streams || {} ).map( key => (
 		<div key={key}>
 			<button type="button" onClick={() => play( key )}>{key}</button>
