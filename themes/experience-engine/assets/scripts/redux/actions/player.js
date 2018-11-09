@@ -20,6 +20,7 @@ export const ACTION_AD_PLAYBACK_START    = 'production' === process.env.NODE_ENV
 export const ACTION_AD_PLAYBACK_COMPLETE = 'production' === process.env.NODE_ENV ? 'pe' : 'PLAYER_AD_PLAYBACK_COMPLETE';
 export const ACTION_AD_PLAYBACK_ERROR    = 'production' === process.env.NODE_ENV ? 'pf' : 'PLAYER_AD_PLAYBACK_ERROR';
 export const ACTION_AD_BREAK_SYNCED      = 'production' === process.env.NODE_ENV ? 'pg' : 'PLAYER_AD_BREAK_SYNCED';
+export const ACTION_AD_BREAK_SYNCED_HIDE = 'production' === process.env.NODE_ENV ? 'ph' : 'PLAYER_AD_BREAK_SYNCED_HIDE';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -44,6 +45,9 @@ const errorCatcher = prefix => ( e ) => {
 };
 
 export const initTdPlayer = ( modules ) => ( dispatch ) => {
+	let adPlaybackTimeout = false;
+	let adSyncedTimeout = false;
+
 	const dispatchStatusChange = ( { data } ) => {
 		dispatch( {
 			type: ACTION_STATUS_CHANGE,
@@ -65,7 +69,29 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 		} );
 	};
 
-	const dispatchAction = ( type ) => () => {
+	const clearAdTimeout = ( timeout ) => {
+		timeout && clearTimeout( timeout );
+		return false;
+	};
+
+	const dispatchSyncedStart = () => {
+		// hide after 35 seconds if it hasn't been hidden yet
+		clearAdTimeout( adSyncedTimeout );
+		adSyncedTimeout = setTimeout( () => dispatch( { type: ACTION_AD_BREAK_SYNCED_HIDE } ), 35000 );
+
+		dispatch( { type: ACTION_AD_BREAK_SYNCED } );
+	};
+
+	const dispatchPlaybackStart = () => {
+		// hide after 1 min if it hasn't been hidden yet
+		clearAdTimeout( adPlaybackTimeout );
+		adPlaybackTimeout = setTimeout( dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR ), 60000 );
+
+		dispatch( { type: ACTION_AD_PLAYBACK_START } );
+	};
+
+	const dispatchPlaybackStop = ( type ) => () => {
+		adPlaybackTimeout = clearAdTimeout();
 		dispatch( { type } );
 	};
 
@@ -83,16 +109,13 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 
 			player.addEventListener( 'ad-break-cue-point', dispatchCuePoint );
 			player.addEventListener( 'ad-break-cue-point-complete', dispatchCuePoint );
-			player.addEventListener( 'ad-break-synced-element', dispatchAction( ACTION_AD_BREAK_SYNCED ) );
+			player.addEventListener( 'ad-break-synced-element', dispatchSyncedStart );
 
-			player.addEventListener( 'ad-playback-start', dispatchAction( ACTION_AD_PLAYBACK_START ) );
-			player.addEventListener( 'ad-playback-complete', dispatchAction( ACTION_AD_PLAYBACK_COMPLETE ) );
-			player.addEventListener( 'ad-playback-error', dispatchAction( ACTION_AD_PLAYBACK_ERROR ) );
+			player.addEventListener( 'ad-playback-start', dispatchPlaybackStart );
+			player.addEventListener( 'ad-playback-complete', dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ) );
+			player.addEventListener( 'ad-playback-error', dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) );
 
-			dispatch( {
-				type: ACTION_INIT_TDPLAYER,
-				player,
-			} );
+			dispatch( { type: ACTION_INIT_TDPLAYER, player } );
 		},
 	} );
 };

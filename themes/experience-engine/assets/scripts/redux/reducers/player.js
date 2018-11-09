@@ -17,6 +17,7 @@ import {
 	ACTION_AD_PLAYBACK_COMPLETE,
 	ACTION_AD_PLAYBACK_ERROR,
 	ACTION_AD_BREAK_SYNCED,
+	ACTION_AD_BREAK_SYNCED_HIDE,
 	STATUSES,
 } from '../actions/player';
 
@@ -220,6 +221,9 @@ const reducer = ( state = {}, action = {} ) => {
 
 		case ACTION_AD_BREAK_SYNCED:
 			return { ...state, ...adReset, adSynced: true };
+
+		case ACTION_AD_BREAK_SYNCED_HIDE:
+			return { ...state, ...adReset };
 
 		default:
 			// do nothing
