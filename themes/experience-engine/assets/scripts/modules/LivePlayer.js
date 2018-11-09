@@ -35,7 +35,7 @@ class LivePlayer extends Component {
 
 		tdmodules.push( {
 			id: 'SyncBanners',
-			elements: [{ id: 'audio-ad-inplayer', width: 320, height: 50 }],
+			elements: [{ id: 'sync-banner', width: 320, height: 50 }],
 		} );
 
 		// TDSdk is loaded asynchronously, so we need to wait till its loaded and
@@ -50,7 +50,7 @@ class LivePlayer extends Component {
 
 	render() {
 		const self = this;
-		const { station, status, adPlayback, play, pause, resume } = self.props;
+		const { station, status, adPlayback, adSynced, play, pause, resume } = self.props;
 
 		const container = document.getElementById( 'live-player' );
 		if ( !container ) {
@@ -66,7 +66,7 @@ class LivePlayer extends Component {
 					</div>
 				</div>
 
-				<div id="audio-ad-inplayer" />
+				<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
 
 				<div className="controls">
 					<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
@@ -89,6 +89,7 @@ LivePlayer.propTypes = {
 	station: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
+	adSynced: PropTypes.bool.isRequired,
 	initPlayer: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
@@ -99,6 +100,7 @@ const mapStateToProps = ( { player } ) => ( {
 	station: player.station,
 	status: player.status,
 	adPlayback: player.adPlayback,
+	adSynced: player.adSynced,
 } );
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
