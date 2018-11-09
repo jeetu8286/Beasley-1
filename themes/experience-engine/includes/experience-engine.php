@@ -107,3 +107,126 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 	}
 
 endif;
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_list' ) ) :
+	/**
+	 * Get publisher list from BBGI Experience API.
+	 *
+	 * @return array Contains list of publishers.
+	 */
+	function bbgi_ee_get_publisher_list() {
+		return bbgi_ee_get_un_authenticated_request( 'publishers' );
+	}
+
+endif;
+
+
+if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
+	/**
+	 * Get a single publisher from BBGI Experience API.
+	 *
+	 * @return array Contains publisher data
+	 */
+	function bbgi_ee_get_publisher( $publisher ) {
+		return bbgi_ee_get_un_authenticated_request( "publishers/{$publisher}" );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
+	/**
+	 * Get a single publisher's feeds from BBGI Experience API.
+	 *
+	 * @return array Contains publisher feeds.
+	 */
+	function bbgi_ee_get_publisher_feeds( $publisher ) {
+		return bbgi_ee_get_un_authenticated_request( "publishers/{$publisher}/feeds/" );
+	}
+
+endif;
+
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
+	/**
+	 * Get a single publisher's feeds from BBGI Experience API.
+	 *
+	 * @return array Contains publisher feeds.
+	 */
+	function bbgi_ee_get_publisher_feeds( $publisher ) {
+		return bbgi_ee_get_un_authenticated_request( "publishers/{$publisher}/feeds/" );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
+	/**
+	 * Get a particular feed belonging to a publisher from BBGI Experience API.
+	 *
+	 * @return array Containing the publisher feed.
+	 */
+	function bbgi_ee_get_publisher_feed( $publisher, $feed ) {
+		return bbgi_ee_get_un_authenticated_request( "publishers/{$publisher}/feeds/{$feed}" );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
+	/**
+	 * Get a locations from BBGI Experience API.
+	 *
+	 * @return array Containing locations.
+	 */
+	function bbgi_ee_get_locations() {
+		return bbgi_ee_get_un_authenticated_request( 'locations' );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
+	/**
+	 * Get list of all locations from BBGI Experience API.
+	 *
+	 * @return array Containing locations.
+	 */
+	function bbgi_ee_get_locations() {
+		return bbgi_ee_get_un_authenticated_request( 'locations' );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_genres' ) ) :
+	/**
+	 * Get list of all genres from BBGI Experience API.
+	 *
+	 * @return array Containing genres.
+	 */
+	function bbgi_ee_get_genres() {
+		return bbgi_ee_get_un_authenticated_request( 'genres' );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_un_authenticated_request' ) ) :
+	/**
+	 * Do an un authenticated request.
+	 *
+	 * @return array $request_results.
+	 */
+	function bbgi_ee_get_un_authenticated_request( $path ) {
+		$request = bbgi_ee_request( 'publishers' );
+
+		if ( ! is_wp_error( $request ) ) {
+
+			$response = json_decode( wp_remote_retrieve_body( $request ) );
+
+			return $response;
+
+		}
+
+		return array(
+			'status' => false,
+			'msg'    => $request->get_error_message(),
+		);
+	}
+
+endif;
