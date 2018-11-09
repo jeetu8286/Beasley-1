@@ -61,7 +61,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
 
-			if ( absint( $cache_time ) ) {
+			if ( $cache_time ) {
 				wp_cache_set( $path, $request, 'experience_engine_api', $cache_time );
 			}
 		}
