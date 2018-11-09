@@ -42,7 +42,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 			//Add the API Header
 			$args['headers'] = format_ee_request_headers();
 
-			$host                  = esc_url( trailingslashit( EE_API_HOST ) . "/v1/{$path}" );
+			$host                  = filter_var( trailingslashit( EE_API_HOST ) . "/v1/{$path}", FILTER_SANITIZE_URL );
 			$request               = wp_remote_request( $host, $args );
 			$request_response_code = (int) wp_remote_retrieve_response_code( $request );
 
