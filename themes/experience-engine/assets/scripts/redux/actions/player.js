@@ -1,19 +1,25 @@
-export const ACTION_INIT_TDPLAYER = 'ACTION_INIT_TDPLAYER';
-export const ACTION_STATUS_CHANGE = 'ACTION_STATUS_CHANGE';
-export const ACTION_CUEPOINT_CHANGE = 'ACTION_CUEPOINT_CHANGE';
-export const ACTION_SET_VOLUME = 'ACTION_SET_VOLUME';
-export const ACTION_PLAY_AUDIO = 'ACTION_PLAY_AUDIO';
-export const ACTION_PLAY_STATION = 'ACTION_PLAY_STATION';
-export const ACTION_PLAY_OMNY = 'ACTION_PLAY_OMNY';
-export const ACTION_PAUSE = 'ACTION_PAUSE';
-export const ACTION_RESUME = 'ACTION_RESUME';
-export const ACTION_DURATION_CHANGE = 'ACTION_DURATION_CHANGE';
-export const ACTION_TIME_CHANGE = 'ACTION_TIME_CHANGE';
-export const ACTION_SEEK_POSITION = 'ACTION_SEEK_POSITION';
-export const ACTION_NOW_PLAYING_LOADED = 'ACTION_NOW_PLAYING_LOADED';
-export const ACTION_AD_PLAYBACK_START = 'ACTION_AD_PLAYBACK_START';
-export const ACTION_AD_PLAYBACK_COMPLETE = 'ACTION_AD_PLAYBACK_COMPLETE';
-export const ACTION_AD_PLAYBACK_ERROR = 'ACTION_AD_PLAYBACK_ERROR';
+/**
+ * We use this approach to create actions to minify its names in the production bundle
+ * and have human friendly actions in dev bundle. Use "p{x}" format to create new actions.
+ */
+
+export const ACTION_INIT_TDPLAYER        = 'production' === process.env.NODE_ENV ? 'p0' : 'PLAYER_INIT_TDPLAYER';
+export const ACTION_STATUS_CHANGE        = 'production' === process.env.NODE_ENV ? 'p1' : 'PLAYER_STATUS_CHANGE';
+export const ACTION_CUEPOINT_CHANGE      = 'production' === process.env.NODE_ENV ? 'p2' : 'PLAYER_CUEPOINT_CHANGE';
+export const ACTION_SET_VOLUME           = 'production' === process.env.NODE_ENV ? 'p3' : 'PLAYER_SET_VOLUME';
+export const ACTION_PLAY_AUDIO           = 'production' === process.env.NODE_ENV ? 'p4' : 'PLAYER_PLAY_AUDIO';
+export const ACTION_PLAY_STATION         = 'production' === process.env.NODE_ENV ? 'p5' : 'PLAYER_PLAY_STATION';
+export const ACTION_PLAY_OMNY            = 'production' === process.env.NODE_ENV ? 'p6' : 'PLAYER_PLAY_OMNY';
+export const ACTION_PAUSE                = 'production' === process.env.NODE_ENV ? 'p7' : 'PLAYER_PAUSE';
+export const ACTION_RESUME               = 'production' === process.env.NODE_ENV ? 'p8' : 'PLAYER_RESUME';
+export const ACTION_DURATION_CHANGE      = 'production' === process.env.NODE_ENV ? 'p9' : 'PLAYER_DURATION_CHANGE';
+export const ACTION_TIME_CHANGE          = 'production' === process.env.NODE_ENV ? 'pa' : 'PLAYER_TIME_CHANGE';
+export const ACTION_SEEK_POSITION        = 'production' === process.env.NODE_ENV ? 'pb' : 'PLAYER_SEEK_POSITION';
+export const ACTION_NOW_PLAYING_LOADED   = 'production' === process.env.NODE_ENV ? 'pc' : 'PLAYER_NOW_PLAYING_LOADED';
+export const ACTION_AD_PLAYBACK_START    = 'production' === process.env.NODE_ENV ? 'pd' : 'PLAYER_AD_PLAYBACK_START';
+export const ACTION_AD_PLAYBACK_COMPLETE = 'production' === process.env.NODE_ENV ? 'pe' : 'PLAYER_AD_PLAYBACK_COMPLETE';
+export const ACTION_AD_PLAYBACK_ERROR    = 'production' === process.env.NODE_ENV ? 'pf' : 'PLAYER_AD_PLAYBACK_ERROR';
+export const ACTION_AD_BREAK_SYNCED      = 'production' === process.env.NODE_ENV ? 'pg' : 'PLAYER_AD_BREAK_SYNCED';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -77,6 +83,7 @@ export const initTdPlayer = ( modules ) => ( dispatch ) => {
 
 			player.addEventListener( 'ad-break-cue-point', dispatchCuePoint );
 			player.addEventListener( 'ad-break-cue-point-complete', dispatchCuePoint );
+			player.addEventListener( 'ad-break-synced-element', dispatchAction( ACTION_AD_BREAK_SYNCED ) );
 
 			player.addEventListener( 'ad-playback-start', dispatchAction( ACTION_AD_PLAYBACK_START ) );
 			player.addEventListener( 'ad-playback-complete', dispatchAction( ACTION_AD_PLAYBACK_COMPLETE ) );

@@ -1,5 +1,24 @@
-import * as actions from '../actions/player';
 import { getStorage } from '../../library/local-storage';
+import {
+	ACTION_INIT_TDPLAYER,
+	ACTION_STATUS_CHANGE,
+	ACTION_CUEPOINT_CHANGE,
+	ACTION_SET_VOLUME,
+	ACTION_PLAY_AUDIO,
+	ACTION_PLAY_STATION,
+	ACTION_PLAY_OMNY,
+	ACTION_PAUSE,
+	ACTION_RESUME,
+	ACTION_DURATION_CHANGE,
+	ACTION_TIME_CHANGE,
+	ACTION_SEEK_POSITION,
+	ACTION_NOW_PLAYING_LOADED,
+	ACTION_AD_PLAYBACK_START,
+	ACTION_AD_PLAYBACK_COMPLETE,
+	ACTION_AD_PLAYBACK_ERROR,
+	ACTION_AD_BREAK_SYNCED,
+	STATUSES,
+} from '../actions/player';
 
 const localStorage = getStorage( 'liveplayer' );
 const { bbgiconfig } = window;
@@ -50,40 +69,45 @@ const fullStop = () => {
 	}
 };
 
-const resetState = {
+const adReset = {
+	adPlayback: false,
+	adSynced: false,
+};
+
+const stateReset = {
 	audio: '',
 	station: '',
 	cuePoint: false,
 	time: 0,
 	duration: 0,
 	songs: [],
-	adPlayback: false,
+	...adReset,
 };
 
 export const DEFAULT_STATE = {
-	...resetState,
-	status: actions.STATUSES.LIVE_STOP,
+	...stateReset,
+	status: STATUSES.LIVE_STOP,
 	station: localStorage.getItem( 'station' ) || Object.keys( streams || {} )[0] || '', // first station by default
 	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
 };
 
 const reducer = ( state = {}, action = {} ) => {
 	switch ( action.type ) {
-		case actions.ACTION_INIT_TDPLAYER:
+		case ACTION_INIT_TDPLAYER:
 			tdplayer = action.player;
 			tdplayer.setVolume( state.volume / 100 );
 			break;
 
-		case actions.ACTION_PLAY_AUDIO:
+		case ACTION_PLAY_AUDIO:
 			fullStop();
 
 			mp3player = action.player;
 			mp3player.volume = state.volume / 100;
 			mp3player.play();
 
-			return Object.assign( {}, state, resetState, { audio: action.audio } );
+			return { ...state, ...stateReset, audio: action.audio };
 
-		case actions.ACTION_PLAY_STATION: {
+		case ACTION_PLAY_STATION: {
 			const { station } = action;
 
 			fullStop();
@@ -97,10 +121,10 @@ const reducer = ( state = {}, action = {} ) => {
 
 			localStorage.setItem( 'station', station );
 
-			return Object.assign( {}, state, resetState, { station } );
+			return { ...state, ...stateReset, station };
 		}
 
-		case actions.ACTION_PLAY_OMNY:
+		case ACTION_PLAY_OMNY:
 			fullStop();
 
 			omnyplayer = action.player;
@@ -108,9 +132,9 @@ const reducer = ( state = {}, action = {} ) => {
 			// Omny doesn't support sound provider, thus we can't change/control volume :(
 			// omnyplayer.setVolume( state.volume );
 
-			return Object.assign( {}, state, resetState, { audio: action.audio } );
+			return { ...state, ...stateReset, audio: action.audio };
 
-		case actions.ACTION_PAUSE:
+		case ACTION_PAUSE:
 			if ( mp3player ) {
 				mp3player.pause();
 			} else if ( omnyplayer ) {
@@ -118,9 +142,9 @@ const reducer = ( state = {}, action = {} ) => {
 			} else if ( tdplayer ) {
 				tdplayer.pause();
 			}
-			break;
+			return { ...state, ...adReset };
 
-		case actions.ACTION_RESUME:
+		case ACTION_RESUME:
 			if ( mp3player ) {
 				mp3player.play();
 			} else if ( omnyplayer ) {
@@ -128,12 +152,12 @@ const reducer = ( state = {}, action = {} ) => {
 			} else if ( tdplayer ) {
 				tdplayer.resume();
 			}
-			break;
+			return { ...state, ...adReset };
 
-		case actions.ACTION_STATUS_CHANGE:
-			return Object.assign( {}, state, { status: action.status } );
+		case ACTION_STATUS_CHANGE:
+			return { ...state, status: action.status };
 
-		case actions.ACTION_SET_VOLUME: {
+		case ACTION_SET_VOLUME: {
 			const volume = parseVolume( action.volume );
 			localStorage.setItem( 'volume', volume );
 
@@ -146,26 +170,26 @@ const reducer = ( state = {}, action = {} ) => {
 				tdplayer.setVolume( value );
 			}
 
-			return Object.assign( {}, state, { volume } );
+			return { ...state, volume };
 		}
 
-		case actions.ACTION_CUEPOINT_CHANGE:
+		case ACTION_CUEPOINT_CHANGE:
 			loadNowPlaying( state.station );
-			return Object.assign( {}, state, { cuePoint: action.cuePoint } );
+			return { ...state, ...adReset, cuePoint: action.cuePoint };
 
-		case actions.ACTION_DURATION_CHANGE:
-			return Object.assign( {}, state, { duration: +action.duration } );
+		case ACTION_DURATION_CHANGE:
+			return { ...state, duration: +action.duration };
 
-		case actions.ACTION_TIME_CHANGE: {
+		case ACTION_TIME_CHANGE: {
 			const override = { time: +action.time };
 			if ( action.duration ) {
 				override.duration = +action.duration;
 			}
 
-			return Object.assign( {}, state, override );
+			return { ...state, ...override };
 		}
 
-		case actions.ACTION_SEEK_POSITION: {
+		case ACTION_SEEK_POSITION: {
 			const { position } = action;
 
 			if ( mp3player ) {
@@ -178,21 +202,24 @@ const reducer = ( state = {}, action = {} ) => {
 			break;
 		}
 
-		case actions.ACTION_NOW_PLAYING_LOADED:
-			return Object.assign( {}, state, { songs: action.list } );
+		case ACTION_NOW_PLAYING_LOADED:
+			return { ...state, songs: action.list };
 
-		case actions.ACTION_AD_PLAYBACK_START:
+		case ACTION_AD_PLAYBACK_START:
 			document.body.classList.add( 'locked' );
-			return Object.assign( {}, state, { adPlayback: true } );
+			return { ...state, adPlayback: true };
 
-		case actions.ACTION_AD_PLAYBACK_ERROR:
-		case actions.ACTION_AD_PLAYBACK_COMPLETE:
+		case ACTION_AD_PLAYBACK_ERROR:
+		case ACTION_AD_PLAYBACK_COMPLETE:
 			document.body.classList.remove( 'locked' );
 
 			tdplayer.play( { station: state.station } );
 			loadNowPlaying( state.station );
 
-			return Object.assign( {}, state, { adPlayback: false } );
+			return { ...state, adPlayback: false };
+
+		case ACTION_AD_BREAK_SYNCED:
+			return { ...state, ...adReset, adSynced: true };
 
 		default:
 			// do nothing

@@ -25,18 +25,17 @@ class LivePlayer extends Component {
 			techPriority: ['Html5'],
 		} );
 
-		tdmodules.push( { id: 'NowPlayingApi' } );
-		tdmodules.push( { id: 'TargetSpot' } );
+		tdmodules.push( {
+			id: 'NowPlayingApi',
+		} );
+
+		tdmodules.push( {
+			id: 'TargetSpot',
+		} );
 
 		tdmodules.push( {
 			id: 'SyncBanners',
-			elements: [
-				{
-					id: 'audio-ad-inplayer',
-					width: 320,
-					height: 50
-				}
-			]
+			elements: [{ id: 'audio-ad-inplayer', width: 320, height: 50 }],
 		} );
 
 		// TDSdk is loaded asynchronously, so we need to wait till its loaded and

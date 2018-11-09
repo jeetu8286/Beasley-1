@@ -1,5 +1,10 @@
-export const ACTION_SHOW_MODAL = 'ACTION_SHOW_MODAL';
-export const ACTION_HIDE_MODAL = 'ACTION_HIDE_MODAL';
+/**
+ * We use this approach to create actions to minify its names in the production bundle
+ * and have human friendly actions in dev bundle. Use "m{x}" format to create new actions.
+ */
+
+export const ACTION_SHOW_MODAL = 'production' === process.env.NODE_ENV ? 'm0' : 'MODAL_SHOW';
+export const ACTION_HIDE_MODAL = 'production' === process.env.NODE_ENV ? 'm1' : 'MODAL_HIDE';
 
 export const SIGNIN_MODAL = 'SIGNIN-MODAL';
 export const SIGNUP_MODAL = 'SIGNUP-MODAL';

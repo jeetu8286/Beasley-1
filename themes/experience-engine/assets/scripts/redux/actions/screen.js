@@ -1,11 +1,16 @@
 import { removeChildren, dispatchEvent } from '../../library/dom';
 import { getStateFromContent, parseHtml } from '../../library/html-parser';
 
-export const ACTION_INIT_PAGE = 'ACTION_INIT_PAGE';
-export const ACTION_LOADING_PAGE = 'ACTION_LOADING_PAGE';
-export const ACTION_LOADED_PAGE = 'ACTION_LOADED_PAGE';
-export const ACTION_LOADING_PARTIAL = 'ACTION_LOADING_PARTIAL';
-export const ACTION_LOADED_PARTIAL = 'ACTION_LOADED_PARTIAL';
+/**
+ * We use this approach to create actions to minify its names in the production bundle
+ * and have human friendly actions in dev bundle. Use "s{x}" format to create new actions.
+ */
+
+export const ACTION_INIT_PAGE       = 'production' === process.env.NODE_ENV ? 's0' : 'PAGE_INIT';
+export const ACTION_LOADING_PAGE    = 'production' === process.env.NODE_ENV ? 's1' : 'PAGE_LOADING';
+export const ACTION_LOADED_PAGE     = 'production' === process.env.NODE_ENV ? 's2' : 'PAGE_LOADED';
+export const ACTION_LOADING_PARTIAL = 'production' === process.env.NODE_ENV ? 's3' : 'PARTIAL_LOADING';
+export const ACTION_LOADED_PARTIAL  = 'production' === process.env.NODE_ENV ? 's4' : 'PARTIAL_LOADED';
 
 export const initPage = () => {
 	const content = document.getElementById( 'content' );
