@@ -2,8 +2,8 @@ import { removeChildren, dispatchEvent } from '../../library/dom';
 import { getStateFromContent, parseHtml } from '../../library/html-parser';
 
 /**
- * We use this approach to create actions to minify its names in the production bundle
- * and have human friendly actions in dev bundle. Use "s{x}" format to create new actions.
+ * We use this approach to minify action names in the production bundle and have
+ * human friendly actions in the dev bundle. Use "s{x}" format to create new actions.
  */
 
 export const ACTION_INIT_PAGE       = 'production' === process.env.NODE_ENV ? 's0' : 'PAGE_INIT';

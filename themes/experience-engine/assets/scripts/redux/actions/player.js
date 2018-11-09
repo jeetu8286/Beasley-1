@@ -1,6 +1,6 @@
 /**
- * We use this approach to create actions to minify its names in the production bundle
- * and have human friendly actions in dev bundle. Use "p{x}" format to create new actions.
+ * We use this approach to minify action names in the production bundle and have
+ * human friendly actions in the dev bundle. Use "p{x}" format to create new actions.
  */
 
 export const ACTION_INIT_TDPLAYER        = 'production' === process.env.NODE_ENV ? 'p0' : 'PLAYER_INIT_TDPLAYER';
