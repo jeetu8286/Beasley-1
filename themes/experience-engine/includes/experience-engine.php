@@ -31,9 +31,9 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	 */
 	function bbgi_ee_request( $path, $args = array() ) {
 
-		$request = wp_cache_get( $path, 'experience_engine_api' );
+		$response = wp_cache_get( $path, 'experience_engine_api' );
 
-		if ( empty( $request ) ) {
+		if ( empty( $response ) ) {
 
 			if ( empty( $args['method'] ) ) {
 				$args['method'] = 'GET';
@@ -59,14 +59,15 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 				return $request;
 			}
 
+			$response   = json_decode( wp_remote_retrieve_body( $request ) );
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
 
 			if ( $cache_time ) {
-				wp_cache_set( $path, $request, 'experience_engine_api', $cache_time );
+				wp_cache_set( $path, $response, 'experience_engine_api', $cache_time );
 			}
 		}
 
-		return $request;
+		return $response;
 	}
 
 endif;
@@ -104,6 +105,79 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 		}
 
 		return absint( $cache_time );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_list' ) ) :
+	/**
+	 * Get publisher list from BBGI Experience API.
+	 *
+	 * @return array Contains list of publishers.
+	 */
+	function bbgi_ee_get_publisher_list() {
+		return bbgi_ee_request( 'publishers' );
+	}
+
+endif;
+
+
+if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
+	/**
+	 * Get a single publisher from BBGI Experience API.
+	 *
+	 * @return array Contains publisher data
+	 */
+	function bbgi_ee_get_publisher( $publisher ) {
+		return bbgi_ee_request( "publishers/{$publisher}" );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
+	/**
+	 * Get a single publisher's feeds from BBGI Experience API.
+	 *
+	 * @return array Contains publisher feeds.
+	 */
+	function bbgi_ee_get_publisher_feeds( $publisher ) {
+		return bbgi_ee_request( "publishers/{$publisher}/feeds/" );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
+	/**
+	 * Get a particular feed belonging to a publisher from BBGI Experience API.
+	 *
+	 * @return array Containing the publisher feed.
+	 */
+	function bbgi_ee_get_publisher_feed( $publisher, $feed ) {
+		return bbgi_ee_request( "publishers/{$publisher}/feeds/{$feed}" );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
+	/**
+	 * Get list of all locations from BBGI Experience API.
+	 *
+	 * @return array Containing locations.
+	 */
+	function bbgi_ee_get_locations() {
+		return bbgi_ee_request( 'locations' );
+	}
+
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_genres' ) ) :
+	/**
+	 * Get list of all genres from BBGI Experience API.
+	 *
+	 * @return array Containing genres.
+	 */
+	function bbgi_ee_get_genres() {
+		return bbgi_ee_request( 'genres' );
 	}
 
 endif;
