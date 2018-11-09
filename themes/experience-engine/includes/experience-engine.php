@@ -1,5 +1,7 @@
 <?php
 
+add_filter( 'bbgiconfig', 'ee_update_bbgiconfig' );
+
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
 	function ee_has_publisher_information( $meata ) {
 		// not implemented yet
@@ -14,6 +16,21 @@ if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 		}
 
 		return '';
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_bbgiconfig' ) ) :
+	function ee_update_bbgiconfig( $config ) {
+		$publishers = array();
+		foreach ( bbgi_ee_get_publisher_list() as $publisher ) {
+			$publishers[ $publisher['id'] ] = $publisher['title'];
+		}
+
+		$config['publishers'] = $publishers;
+		$config['locations'] = bbgi_ee_get_locations();
+		$config['genres'] = bbgi_ee_get_genres();
+
+		return $config;
 	}
 endif;
 
@@ -53,7 +70,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 				return $request;
 			}
 
-			$response   = json_decode( wp_remote_retrieve_body( $request ) );
+			$response   = json_decode( wp_remote_retrieve_body( $request ), true );
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
 			if ( $cache_time ) {
 				wp_cache_set( $path, $response, 'experience_engine_api', $cache_time );
