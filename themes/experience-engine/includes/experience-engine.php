@@ -42,7 +42,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 			//Add the API Header
 			$args['headers'] = format_ee_request_headers();
 
-			$host                  = esc_url( trailingslashit( EE_API_HOST ) . $path );
+			$host                  = esc_url( trailingslashit( EE_API_HOST ) . "/v1/{$path}" );
 			$request               = wp_remote_request( $host, $args );
 			$request_response_code = (int) wp_remote_retrieve_response_code( $request );
 
@@ -54,7 +54,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
 
-			if ( $cache_time ) {
+			if ( absint( $cache_time ) ) {
 				wp_cache_set( $path, $request, 'experience_engine_api', $cache_time );
 			}
 		}
@@ -75,15 +75,6 @@ if ( ! function_exists( 'format_ee_request_headers' ) ) :
 			'Content-Type' => 'application/json',
 		);
 
-		/**
-		 * Define the constant FIREBASE_AUTHORIZATION in your wp-config.php
-		 * Example: define( 'FIREBASE_AUTHORIZATION', 'es_admin:password' );
-		 *
-		 */
-		if ( defined( 'FIREBASE_AUTHORIZATION' ) && FIREBASE_AUTHORIZATION ) {
-			$headers['Authorization'] = 'Basic ' . base64_encode( FIREBASE_AUTHORIZATION );
-		}
-
 		return $headers;
 	}
 
@@ -95,17 +86,19 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 	 *
 	 * @param array $request HTTP response.
 	 *
-	 * @return Mixed false if cache time is not set int otherwise
+	 * @return int cache time.
 	 */
 	function bbgi_ee_get_request_cache_time( $request ) {
 
 		$response_headers = wp_remote_retrieve_headers( $request );
 
-		if ( empty( $response_headers['cache-control']['max-age'] ) ) {
-			return false;
+		if ( empty( $response_headers['cache-control'] ) ) {
+			return 0;
 		}
 
-		return $response_headers['cache-control']['max-age'];
+		$cache_time = end ( explode( 'max-age=', $response_headers['cache-control'] ) );
+
+		return absint( $cache_time );
 	}
 
 endif;
@@ -123,4 +116,3 @@ if ( ! function_exists( 'bbgi_ee_get_request_from_cache' ) ) :
 	}
 
 endif;
-
