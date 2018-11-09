@@ -40,10 +40,12 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 			}
 
 			//Add the API Header
-			$args['headers'] = format_ee_request_headers();
+			$args['headers'] = array(
+				'Content-Type' => 'application/json',
+			);
 
-			$host                  = filter_var( trailingslashit( EE_API_HOST ) . "/v1/{$path}", FILTER_SANITIZE_URL );
-			$request               = wp_remote_request( $host, $args );
+			$host            = trailingslashit( EE_API_HOST ) . "/v1/{$path}";
+			$request         = wp_remote_request( $host, $args );
 
 			if ( is_wp_error( $request ) ) {
 				return $request;
@@ -65,22 +67,6 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 		}
 
 		return $request;
-	}
-
-endif;
-
-if ( ! function_exists( 'format_ee_request_headers' ) ) :
-	/**
-	 * Add appropriate request headers
-	 *
-	 * @return array
-	 */
-	function format_ee_request_headers() {
-		$headers = array(
-			'Content-Type' => 'application/json',
-		);
-
-		return $headers;
 	}
 
 endif;
