@@ -1,5 +1,6 @@
 .footer {
 	background-color: var(--global-theme-primary);
+	color: var(--global-theme-font-primary);
 	padding: 2.7222rem 2.222rem;
 
 	& .custom-logo-link {

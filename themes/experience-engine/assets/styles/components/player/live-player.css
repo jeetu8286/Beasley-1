@@ -26,7 +26,19 @@
 .LIVE_RECONNECTING .loading-btn,
 .STREAM_GEO_BLOCKED .play-btn,
 .STATION_NOT_FOUND .play-btn {
-	display: block;
+	align-items: center;
+	background-color: var(--brand-primary);
+	cursor: pointer;
+	display: flex;
+	height: 64px;
+	justify-content: center;
+	width: 64px;
+
+	& svg {
+		fill: var(--brand-tertiary);
+		max-height: 31px;
+		transform: translateX(10%);
+	}
 }
 
 .cue-point-title {
