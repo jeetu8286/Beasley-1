@@ -1,5 +1,5 @@
 body {
-	color: var(--global-theme-font-primary);
+	color: var(--global-font-primary);
 	font-family: var(--global-font-family-primary);
 	font-size: 18px;
 	font-weight: 300;
