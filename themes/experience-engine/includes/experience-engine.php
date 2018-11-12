@@ -55,14 +55,25 @@ endif;
 
 if ( ! function_exists( 'ee_update_bbgiconfig' ) ) :
 	function ee_update_bbgiconfig( $config ) {
-		$publishers = array();
-		foreach ( bbgi_ee_get_publisher_list() as $publisher ) {
-			$publishers[ $publisher['id'] ] = $publisher['title'];
+		$publishers = bbgi_ee_get_publisher_list();
+		$publisher_id = get_option( 'ee_publisher' );
+
+		$publishers_map = array();
+		$current_publisher = array();
+		foreach ( $publishers as $publisher ) {
+			$publishers_map[ $publisher['id'] ] = $publisher['title'];
+			if ( $publisher['id'] == $publisher_id ) {
+				$current_publisher['phone'] = $publisher['phone'];
+				$current_publisher['address'] = $publisher['address'];
+				$current_publisher['email'] = $publisher['email'];
+				$current_publisher['picture'] = $publisher['picture'];
+			}
 		}
 
-		$config['publishers'] = $publishers;
+		$config['publishers'] = $publishers_map;
 		$config['locations'] = bbgi_ee_get_locations();
 		$config['genres'] = bbgi_ee_get_genres();
+		$config['publisher'] = $current_publisher;
 
 		return $config;
 	}
