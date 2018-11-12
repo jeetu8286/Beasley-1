@@ -45,7 +45,7 @@
 	& > div {
 		flex: 0 1 100%;
 
-		@media (--medium-viewport) {
+		@media (--min-medium-viewport) {
 			flex: 0 1 25%;
 		}
 	}

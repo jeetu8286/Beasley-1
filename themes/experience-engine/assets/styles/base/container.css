@@ -7,7 +7,7 @@ body {
 .container {
 	padding-bottom: 74px; /*height of the fixed player*/
 
-	@media(--medium-viewport) {
+	@media(--min-medium-viewport) {
 		padding-left: 190px;
 	}
 }
