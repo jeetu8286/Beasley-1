@@ -2,8 +2,7 @@ import * as actions from '../actions/player';
 import { getStorage } from '../../library/local-storage';
 
 const localStorage = getStorage( 'liveplayer' );
-const { bbgiconfig } = window;
-const { streams } = bbgiconfig.livePlayer || {};
+const { streams } = window.bbgiconfig || {};
 
 let tdplayer = null;
 let mp3player = null;

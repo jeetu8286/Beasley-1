@@ -44,12 +44,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		 */
 		wp_register_script( 'ee-app-vendors', "{$base}/bundle/vendors-app.js", null, GREATERMEDIA_VERSION, true );
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'ee-app-vendors' ), GREATERMEDIA_VERSION, true );
-		wp_localize_script( 'ee-app', 'bbgiconfig', array(
-			'firebase'   => apply_filters( 'firebase_settings', array() ),
-			'livePlayer' => array(
-				'streams' => function_exists( 'gmr_streams_get_public_streams' ) ? gmr_streams_get_public_streams() : array(),
-			),
-		) );
+		wp_localize_script( 'ee-app', 'bbgiconfig', apply_filters( 'bbgiconfig', array() ) );
 	}
 endif;
 
