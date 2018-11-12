@@ -13,7 +13,9 @@ if ( ! $query->have_posts() ) :
 endif;
 
 ?><div>
-	<?php ee_the_subtitle( 'Next Episodes' ); ?>
+	<h2 class="section-head">
+		<span>Next Episodes</span>
+	</h2>
 
 	<div class="archive-tiles">
 		<?php ee_the_query_tiles( $query ); ?>
