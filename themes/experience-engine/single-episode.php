@@ -6,30 +6,29 @@
 	<?php get_template_part( 'partials/show/header' ); ?>
 
 	<div class="episode-info">
-		<div class="show-meta">
-			<p class="show"><?php echo esc_html( get_the_title( get_post_field( 'post_parent' ) ) ); ?></p>
-			<button class="btn -empty -nobor -icon">
-				<svg width="15" height="15" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
-					<path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 0H6.5V6.5H0V8.5H6.5V15H8.5V8.5H15V6.5H8.5V0Z" />
-				</svg>
-				Add podcast to my feed
-			</button>
-		</div>
-		<div class="show-actions">
-			<?php if ( ! ee_is_jacapps() ) :
+		<?php if ( get_post_field( 'post_parent' ) > 0 ) : ?>
+			<div class="show-meta">
+				<p class="show"><?php echo esc_html( get_the_title( get_post_field( 'post_parent' ) ) ); ?></p>
+				<?php get_template_part( 'partials/add-to-favorite' ); ?>
+			</div>
+		<?php endif; ?>
+
+		<div class="show-actions"><?php
+			if ( ! ee_is_jacapps() ) :
 				ee_the_episode_player();
 			endif;
 
-			?>
-			<h1><?php the_title(); ?></h1>
-		</div>
+			the_title( '<h1>', '</h1>' );
+		?></div>
 
 		<div class="episode-meta">
 			<?php if ( ( $duration = ee_get_episode_meta( null, 'duration' ) ) ) : ?>
 				<span class="duration"><?php echo esc_html( $duration ); ?></span>
 			<?php endif; ?>
 
-			<a class="btn -empty -nobor" href="#">Download</a>
+			<?php if ( ( $download = ee_get_episode_meta( null, 'download' ) ) ) : ?>
+				<a class="btn -empty -nobor" href="<?php echo esc_url( $download ); ?>" target="_blank" rel="noopener noreferrer">Download</a>
+			<?php endif; ?>
 
 			<span class="date"><?php ee_the_date(); ?></span>
 
