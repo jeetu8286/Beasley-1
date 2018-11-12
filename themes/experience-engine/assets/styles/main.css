@@ -22,6 +22,7 @@
 @import 'components/player/live-player';
 
 @import 'components/episode/episode-info';
+@import 'components/episode/episode-content';
 
 @import 'components/nprogress';
 @import 'components/modal';

@@ -25,7 +25,10 @@ if ( ! function_exists( 'ee_get_date' ) ) :
 			? $timestamp + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS
 			: $timestamp;
 
-		$format = 'F jS, Y';
+		$format = date( 'Y' ) == date( 'Y', $created_offset )
+			? 'M jS'
+			: 'M jS, Y';
+
 
 		return date( $format, $created_offset );
 	}

@@ -21,12 +21,7 @@
 			endif;
 
 			?>
-			<h1>
-				<span><?php the_title(); ?></span>
-				<?php if ( ee_is_jacapps() ) : ?>
-					<a class="btn -empty" href="#">Download</a>
-				<?php endif; ?>
-			</h1>
+			<h1><?php the_title(); ?></h1>
 		</div>
 
 		<div class="episode-meta">
@@ -34,29 +29,30 @@
 				<span class="duration"><?php echo esc_html( $duration ); ?></span>
 			<?php endif; ?>
 
-			<?php if ( ! ee_is_jacapps() ) :?>
-				<a class="btn -empty -nobor" href="#">Download</a>
-			<?php endif; ?>
+			<a class="btn -empty -nobor" href="#">Download</a>
 
 			<span class="date"><?php ee_the_date(); ?></span>
 
 			<?php get_template_part( 'partials/share' ); ?>
 		</div>
 	</div>
-
-	<div><?php
-
-		if ( ! ee_is_jacapps() ) :
-			add_filter( 'the_content', 'strip_shortcodes', 1 );
-			the_content();
-			remove_filter( 'the_content', 'strip_shortcodes', 1 );
-		else :
-			the_content();
-		endif;
-
-	?></div>
-
-	<?php get_template_part( 'partials/episode/next-episodes' ); ?>
+	<div class="episode-content">
+		<div class="description">
+			<?php
+				if ( ! ee_is_jacapps() ) :
+					add_filter( 'the_content', 'strip_shortcodes', 1 );
+					the_content();
+					remove_filter( 'the_content', 'strip_shortcodes', 1 );
+				else :
+					the_content();
+				endif;
+			?>
+		</div>
+		<?php get_template_part( 'partials/episode/next-episodes' ); ?>
+		<div class="ad">
+			[Sidebar Ad Slot]
+		</div>
+	</div>
 	<?php get_template_part( 'partials/episode/podcasts' ); ?>
 </div>
 
