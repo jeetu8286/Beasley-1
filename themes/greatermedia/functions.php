@@ -142,9 +142,7 @@ function greatermedia_scripts_styles() {
 	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
 
 	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
-	wp_localize_script( 'greatermedia', 'platformConfig', array(
-		'firebase' => apply_filters( 'firebase_settings', array() ),
-	) );
+	wp_localize_script( 'greatermedia', 'platformConfig', apply_filters( 'bbgiconfig', array() ) );
 
 	/**
 	 * Insert the global Simpli.fi retargeting script tag.

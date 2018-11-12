@@ -1,5 +1,7 @@
 <?php
 
+add_filter( 'bbgiconfig', 'ee_update_bbgiconfig' );
+
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
 	function ee_has_publisher_information( $meata ) {
 		// not implemented yet
@@ -17,6 +19,21 @@ if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_update_bbgiconfig' ) ) :
+	function ee_update_bbgiconfig( $config ) {
+		$publishers = array();
+		foreach ( bbgi_ee_get_publisher_list() as $publisher ) {
+			$publishers[ $publisher['id'] ] = $publisher['title'];
+		}
+
+		$config['publishers'] = $publishers;
+		$config['locations'] = bbgi_ee_get_locations();
+		$config['genres'] = bbgi_ee_get_genres();
+
+		return $config;
+	}
+endif;
+
 if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	/**
 	 * Wrapper for wp_remote_request
@@ -30,11 +47,8 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	 * @return WP_Error|array The response or WP_Error on failure.
 	 */
 	function bbgi_ee_request( $path, $args = array() ) {
-
 		$response = wp_cache_get( $path, 'experience_engine_api' );
-
 		if ( empty( $response ) ) {
-
 			if ( empty( $args['method'] ) ) {
 				$args['method'] = 'GET';
 			}
@@ -46,22 +60,18 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 
 			$host    = trailingslashit( EE_API_HOST ) . "/v1/{$path}";
 			$request = wp_remote_request( $host, $args );
-
 			if ( is_wp_error( $request ) ) {
 				return $request;
 			}
 
 			$request_response_code = (int) wp_remote_retrieve_response_code( $request );
-
 			$is_valid_res = ( $request_response_code >= 200 && $request_response_code <= 299 );
-
 			if ( false === $request || ! $is_valid_res ) {
 				return $request;
 			}
 
-			$response   = json_decode( wp_remote_retrieve_body( $request ) );
+			$response   = json_decode( wp_remote_retrieve_body( $request ), true );
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
-
 			if ( $cache_time ) {
 				wp_cache_set( $path, $response, 'experience_engine_api', $cache_time );
 			}
@@ -69,7 +79,6 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 
 		return $response;
 	}
-
 endif;
 
 if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
@@ -81,16 +90,13 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 	 * @return int cache time.
 	 */
 	function bbgi_ee_get_request_cache_time( $request ) {
-
 		$response_headers = wp_remote_retrieve_headers( $request );
-
 		if ( empty( $response_headers['cache-control'] ) ) {
 			return 0;
 		}
 
 		$cache_control = explode( ',', $response_headers['cache-control'] );
 		$cache_time    = 0;
-
 		foreach ( $cache_control as $control_string ) {
 			$control_string = trim( $control_string );
 
@@ -106,7 +112,6 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 
 		return absint( $cache_time );
 	}
-
 endif;
 
 if ( ! function_exists( 'bbgi_ee_get_publisher_list' ) ) :
@@ -118,7 +123,6 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_list' ) ) :
 	function bbgi_ee_get_publisher_list() {
 		return bbgi_ee_request( 'publishers' );
 	}
-
 endif;
 
 
@@ -131,7 +135,6 @@ if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
 	function bbgi_ee_get_publisher( $publisher ) {
 		return bbgi_ee_request( "publishers/{$publisher}" );
 	}
-
 endif;
 
 if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
@@ -143,7 +146,6 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
 	function bbgi_ee_get_publisher_feeds( $publisher ) {
 		return bbgi_ee_request( "publishers/{$publisher}/feeds/" );
 	}
-
 endif;
 
 if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
@@ -155,7 +157,6 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
 	function bbgi_ee_get_publisher_feed( $publisher, $feed ) {
 		return bbgi_ee_request( "publishers/{$publisher}/feeds/{$feed}" );
 	}
-
 endif;
 
 if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
@@ -167,7 +168,6 @@ if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
 	function bbgi_ee_get_locations() {
 		return bbgi_ee_request( 'locations' );
 	}
-
 endif;
 
 if ( ! function_exists( 'bbgi_ee_get_genres' ) ) :
@@ -179,5 +179,4 @@ if ( ! function_exists( 'bbgi_ee_get_genres' ) ) :
 	function bbgi_ee_get_genres() {
 		return bbgi_ee_request( 'genres' );
 	}
-
 endif;
