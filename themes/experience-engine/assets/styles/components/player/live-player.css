@@ -101,3 +101,8 @@ iframe[src^="https://omny.fm"] {
 		display: block;
 	}
 }
+
+.offline-title {
+	color: var(--global-theme-font-primary);
+	font-weight: 600;
+}

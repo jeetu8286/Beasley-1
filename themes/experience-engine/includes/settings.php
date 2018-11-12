@@ -13,7 +13,13 @@ if ( ! function_exists( 'ee_register_settings' ) ) :
 			'option_none_value' => '0',
 		) );
 
+		add_settings_field( 'ee_publisher', 'Publisher', 'ee_render_publisher_select', $page, 'ee_site_settings', array(
+			'name'     => 'ee_publisher',
+			'selected' => get_option( 'ee_publisher' ),
+		) );
+
 		register_setting( $group, 'ee_newsletter_signup_page', 'intval' );
+		register_setting( $group, 'ee_publisher', 'sanitize_text_field' );
 	}
 endif;
 
@@ -37,5 +43,24 @@ if ( ! function_exists( 'ee_the_newsletter_page_permalink' ) ) :
 	function ee_the_newsletter_page_permalink() {
 		$page_id = get_option( 'ee_newsletter_signup_page' );
 		the_permalink( $page_id );
+	}
+endif;
+
+if ( ! function_exists( 'ee_render_publisher_select' ) ) :
+	function ee_render_publisher_select( $args ) {
+		$publishers = bbgi_ee_get_publisher_list();
+
+		?>
+		<select name="<?php echo esc_attr( $args['name'] ); ?>">
+			<option value="">—</option>
+			<?php foreach ( $publishers as $publisher ): ?>
+				<option
+					value="<?php echo esc_attr( $publisher['id'] ); ?>"
+					<?php selected( $args['selected'], $publisher['id'] ); ?>>
+					<?php echo esc_html( $publisher['title'] ); ?>
+				</option>
+			<?php endforeach; ?>
+		</select>
+		<?php
 	}
 endif;

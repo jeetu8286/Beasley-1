@@ -11,7 +11,7 @@ class Firebase extends \Bbgi\Module {
 	 */
 	public function register() {
 		add_action( 'admin_init', $this( 'register_settings' ), 9 );
-		add_filter( 'firebase_settings', $this( 'populate_settings' ) );
+		add_filter( 'bbgiconfig', $this( 'populate_settings' ) );
 	}
 
 	/**
@@ -60,14 +60,16 @@ class Firebase extends \Bbgi\Module {
 	 * @return array Updated array of settings.
 	 */
 	public function populate_settings( $settings ) {
-		return array_merge( $settings, array(
+		$settings['firebase'] =  array(
 			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),
 			'authDomain'        => get_option( 'beasley_firebase_authDomain' ),
 			'databaseURL'       => get_option( 'beasley_firebase_databaseURL' ),
 			'projectId'         => get_option( 'beasley_firebase_projectId' ),
 			'storageBucket'     => get_option( 'beasley_firebase_storageBucket' ),
 			'messagingSenderId' => get_option( 'beasley_firebase_messagingSenderId' ),
-		) );
+		);
+
+		return $settings;
 	}
 
 }

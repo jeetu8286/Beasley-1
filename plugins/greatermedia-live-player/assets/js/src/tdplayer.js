@@ -583,7 +583,10 @@
 		detachAdListeners();
 		attachAdListeners();
 
-		player.stop();
+		if (livePlaying) {
+			player.stop();
+		}
+
 		player.skipAd();
 
 		player.playAd('tap', {
