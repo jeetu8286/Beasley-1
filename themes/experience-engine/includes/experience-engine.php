@@ -3,7 +3,7 @@
 add_filter( 'bbgiconfig', 'ee_update_bbgiconfig' );
 
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
-	function ee_has_publisher_information( $meata ) {
+	function ee_has_publisher_information( $meta ) {
 		// not implemented yet
 		return true;
 	}
@@ -98,15 +98,14 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 		$cache_control = explode( ',', $response_headers['cache-control'] );
 		$cache_time    = 0;
 		foreach ( $cache_control as $control_string ) {
-			$control_string = trim( $control_string );
+			$control_string = strtolower( trim( $control_string ) );
+			$parts = explode( '=', $control_string );
 
-			if ( strpos( $control_string, 's-maxage' ) === 0 ) {
-				$cache_time = end( explode( 's-maxage=', $control_string ) );
+			if ( $parts[0] == 's-maxage' ) {
+				$cache_time = end( $parts );
 				break;
-			}
-
-			if ( strpos( $control_string, 'max-age' ) === 0 ) {
-				$cache_time = end( explode( 'max-age=', $control_string ) );
+			} elseif ( $parts[0] == 'max-age' ) {
+				$cache_time = end( $parts );
 			}
 		}
 
