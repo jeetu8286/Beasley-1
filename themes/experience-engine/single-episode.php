@@ -31,7 +31,6 @@
 
 		<div class="episode-meta">
 			<?php if ( ( $duration = ee_get_episode_meta( null, 'duration' ) ) ) : ?>
-				<!-- @TODO :: Ensure this value is pulled from the meta -->
 				<span class="duration"><?php echo esc_html( $duration ); ?></span>
 			<?php endif; ?>
 
