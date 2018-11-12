@@ -21,12 +21,7 @@
 			endif;
 
 			?>
-			<h1>
-				<span><?php the_title(); ?></span>
-				<?php if ( ee_is_jacapps() ) : ?>
-					<a class="btn -empty" href="#">Download</a>
-				<?php endif; ?>
-			</h1>
+			<h1><?php the_title(); ?></h1>
 		</div>
 
 		<div class="episode-meta">
@@ -34,9 +29,7 @@
 				<span class="duration"><?php echo esc_html( $duration ); ?></span>
 			<?php endif; ?>
 
-			<?php if ( ! ee_is_jacapps() ) :?>
-				<a class="btn -empty -nobor" href="#">Download</a>
-			<?php endif; ?>
+			<a class="btn -empty -nobor" href="#">Download</a>
 
 			<span class="date"><?php ee_the_date(); ?></span>
 
