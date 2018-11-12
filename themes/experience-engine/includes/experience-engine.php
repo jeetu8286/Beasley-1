@@ -4,18 +4,52 @@ add_filter( 'bbgiconfig', 'ee_update_bbgiconfig' );
 
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
 	function ee_has_publisher_information( $meta ) {
-		// not implemented yet
-		return true;
+		$value = ee_get_publisher_information( $meta );
+		return ! empty( $value );
 	}
 endif;
 
 if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 	function ee_get_publisher_information( $meta ) {
-		switch ( $meta ) {
-			// not implemented yet
+		static $publisher_info = null;
+
+		if ( is_null( $publisher_info ) ) {
+			$publisher = get_option( 'ee_publisher' );
+			if ( ! empty( $publisher ) ) {
+				$publisher_info = bbgi_ee_get_publisher( $publisher );
+			}
 		}
 
-		return '';
+		if ( empty( $publisher_info ) || empty( $publisher_info[ $meta ] ) ) {
+			return false;
+		}
+
+		$value = $publisher_info[ $meta ];
+
+		switch ( $meta ) {
+			case 'facebook':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://www.facebook.com/' . urlencode( $value );
+				}
+				break;
+			case 'twitter':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://twitter.com/' . urlencode( ltrim( $value, '@' ) );
+				}
+				break;
+			case 'instagram':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://www.instagram.com/' . urlencode( ltrim( $value, '@' ) );
+				}
+				break;
+			case 'youtube':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://www.youtube.com/user/' . urlencode( $value );
+				}
+				break;
+		}
+
+		return $value;
 	}
 endif;
 
@@ -132,7 +166,12 @@ if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
 	 * @return array Contains publisher data
 	 */
 	function bbgi_ee_get_publisher( $publisher ) {
-		return bbgi_ee_request( "publishers/{$publisher}" );
+		$data = bbgi_ee_request( "publishers/{$publisher}" );
+		if ( is_array( $data ) && count( $data ) == 1 && is_array( $data[0] ) ) {
+			$data = $data[0];
+		}
+
+		return $data;
 	}
 endif;
 
