@@ -3,6 +3,7 @@
 	border: 1px solid var(--brand-primary);
 	border-radius: 70px;
 	color: var(--brand-tertiary);
+	cursor: pointer;
 	display: block;
 	font-size: .889rem;
 	font-weight: 600;
@@ -15,6 +16,7 @@
 
 	&.-empty {
 		background-color: transparent;
+		color: var(--brand-primary);
 	}
 
 	&.-secondary {
@@ -26,7 +28,18 @@
 		}
 	}
 
-	&.-icon {
+	&.-nobor {
+		border: none;
+		padding: 0;
+	}
 
+	&.-icon {
+		align-items: center;
+		display: flex;
+
+		& svg {
+			fill: var(--brand-primary);
+			margin-right: .667rem;
+		}
 	}
 }

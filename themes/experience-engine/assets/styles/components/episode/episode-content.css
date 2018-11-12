@@ -1,0 +1,11 @@
+.episode-content {
+	margin: 0 auto;
+	max-width: 1071px;
+	padding: 0 1rem 2.22rem;
+
+	& .description {
+		& p {
+			line-height: 1.6;
+		}
+	}
+}
