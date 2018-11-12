@@ -29,6 +29,7 @@ if ( ! function_exists( 'ee_get_date' ) ) :
 			? 'M jS'
 			: 'M jS, Y';
 
+
 		return date( $format, $created_offset );
 	}
 endif;

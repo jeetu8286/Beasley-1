@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -88,14 +88,12 @@ class AudioEmbed extends Component {
 
 	render() {
 		const self = this;
-		const { omny, pause, resume } = self.props;
-		const title = !omny ? self.getTitle() : false;
+		const { pause, resume } = self.props;
 
 		return (
-			<div>
+			<Fragment>
 				<Controls status={self.getStatus()} play={self.onPlayClick} pause={pause} resume={resume} />
-				{title}
-			</div>
+			</Fragment>
 		);
 	}
 

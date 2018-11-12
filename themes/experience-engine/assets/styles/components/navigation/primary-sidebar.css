@@ -6,7 +6,7 @@
 	overflow: auto;
 	padding: .75rem 1.1rem;
 
-	@media (--medium-viewport) {
+	@media (--min-medium-viewport) {
 		display: block;
 		position: absolute;
 		top: 0;
@@ -21,7 +21,7 @@
 		margin: 0 auto;
 		z-index: 5;
 
-		@media (--medium-viewport) {
+		@media (--min-medium-viewport) {
 			margin: 0;
 		}
 
@@ -29,7 +29,7 @@
 			max-height: 56px;
 			width: auto;
 
-			@media (--medium-viewport) {
+			@media (--min-medium-viewport) {
 				max-height: none;
 			}
 		}
@@ -48,7 +48,7 @@
 		z-index: 1;
 		width: 100%;
 
-		@media (--medium-viewport) {
+		@media (--min-medium-viewport) {
 			box-shadow: none;
 			display: block;
 			height: auto;
@@ -108,7 +108,7 @@
 	text-decoration: none;
 	z-index: 10;
 
-	@media (--medium-viewport) {
+	@media (--min-medium-viewport) {
 		display: none;
 	}
 

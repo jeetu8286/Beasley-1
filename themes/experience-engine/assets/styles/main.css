@@ -18,9 +18,14 @@
 @import 'components/archive/tile-episode';
 @import 'components/archive/tile-gmr_gallery';
 
+@import 'components/player/controls';
+@import 'components/player/live-player';
+
+@import 'components/episode/episode-info';
+@import 'components/episode/episode-content';
+
 @import 'components/nprogress';
 @import 'components/modal';
-@import 'components/live-player';
 @import 'components/loading';
 @import 'components/lazy-image';
 @import 'components/episode';
