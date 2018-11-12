@@ -33,5 +33,5 @@
 	--global-theme-font-tertiary: var(--global-dove-gray);
 }
 
-@custom-media --medium-viewport (min-width: 768px);
-@custom-media --small-viewport (min-width: 480px);
+@custom-media --min-medium-viewport (min-width: 768px);
+@custom-media --min-small-viewport (min-width: 480px);
