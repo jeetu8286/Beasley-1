@@ -55,9 +55,9 @@ if ( ! function_exists( 'ee_render_publisher_select' ) ) :
 			<option value="">—</option>
 			<?php foreach ( $publishers as $publisher ): ?>
 				<option
-					value="<?php echo esc_attr( $publisher->id ); ?>"
-					<?php selected( $args['selected'], $publisher->id ); ?>>
-					<?php echo esc_html( $publisher->title ); ?>
+					value="<?php echo esc_attr( $publisher['id'] ); ?>"
+					<?php selected( $args['selected'], $publisher['id'] ); ?>>
+					<?php echo esc_html( $publisher['title'] ); ?>
 				</option>
 			<?php endforeach; ?>
 		</select>
