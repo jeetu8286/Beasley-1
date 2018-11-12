@@ -1,10 +1,4 @@
-<?php get_header();
-
-	// $show = ee_get_current_show();
-	// if ( ! $show ) :
-	// 	return;
-	// endif;
-?>
+<?php get_header(); ?>
 
 <?php the_post(); ?>
 
