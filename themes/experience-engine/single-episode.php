@@ -43,20 +43,23 @@
 			<?php get_template_part( 'partials/share' ); ?>
 		</div>
 	</div>
-
-	<div><?php
-
-		if ( ! ee_is_jacapps() ) :
-			add_filter( 'the_content', 'strip_shortcodes', 1 );
-			the_content();
-			remove_filter( 'the_content', 'strip_shortcodes', 1 );
-		else :
-			the_content();
-		endif;
-
-	?></div>
-
-	<?php get_template_part( 'partials/episode/next-episodes' ); ?>
+	<div class="episode-content">
+		<div class="description">
+			<?php
+				if ( ! ee_is_jacapps() ) :
+					add_filter( 'the_content', 'strip_shortcodes', 1 );
+					the_content();
+					remove_filter( 'the_content', 'strip_shortcodes', 1 );
+				else :
+					the_content();
+				endif;
+			?>
+		</div>
+		<?php get_template_part( 'partials/episode/next-episodes' ); ?>
+		<div class="ad">
+			[Sidebar Ad Slot]
+		</div>
+	</div>
 	<?php get_template_part( 'partials/episode/podcasts' ); ?>
 </div>
 
