@@ -34,22 +34,22 @@ if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 		switch ( $meta ) {
 			case 'facebook':
 				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
-					$value = 'https://www.facebook.com/' . urlencode( $value );
+					$value = 'https://www.facebook.com/' . rawurlencode( $value );
 				}
 				break;
 			case 'twitter':
 				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
-					$value = 'https://twitter.com/' . urlencode( ltrim( $value, '@' ) );
+					$value = 'https://twitter.com/' . rawurlencode( ltrim( $value, '@' ) );
 				}
 				break;
 			case 'instagram':
 				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
-					$value = 'https://www.instagram.com/' . urlencode( ltrim( $value, '@' ) );
+					$value = 'https://www.instagram.com/' . rawurlencode( ltrim( $value, '@' ) );
 				}
 				break;
 			case 'youtube':
 				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
-					$value = 'https://www.youtube.com/user/' . urlencode( $value );
+					$value = 'https://www.youtube.com/user/' . rawurlencode( $value );
 				}
 				break;
 		}
