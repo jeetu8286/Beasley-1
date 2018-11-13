@@ -109,13 +109,9 @@ if ( ! function_exists( 'ee_get_episode_meta' ) ) :
 					return false;
 				}
 
-				$hours = floor( $duration / HOUR_IN_SECONDS );
-				$minutes = floor( $duration / MINUTE_IN_SECONDS );
-				$seconds = floor( $duration % MINUTE_IN_SECONDS );
-
-				$duration = substr( '0' . $minutes, -2 ) . ':' . substr( '0' . $seconds, -2 );
-				if ( $hours > 0 ) {
-					$duration = substr( '0' . $hours, - 2 ) . ':' . $duration;
+				$duration = date( 'H:i:s', strtotime( '2000-01-01' ) + $duration  );
+				if ( preg_match( '/00\:(\d{2}\:\d{2})/', $duration, $matches ) ) {
+					$duration = $matches[1];
 				}
 
 				return $duration;
