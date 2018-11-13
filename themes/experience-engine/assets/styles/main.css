@@ -27,9 +27,13 @@
 @import 'components/episode/episode-content';
 @import 'components/episode/episode-tile';
 
+@import 'components/ads/ad-title';
+@import 'components/ads/ad';
+
 @import 'components/nprogress';
 @import 'components/modal';
 @import 'components/loading';
 @import 'components/lazy-image';
+
 
 @import 'utilities/display';

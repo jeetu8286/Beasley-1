@@ -1,0 +1,10 @@
+.ad {
+	&.-sticky {
+		& > div {
+			@media (--min-large-viewport) {
+				position: sticky;
+				top: 10px;
+			}
+		}
+	}
+}
