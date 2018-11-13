@@ -48,7 +48,9 @@
 		?></div>
 
 		<?php get_template_part( 'partials/episode/next-episodes' ); ?>
-		<?php get_template_part( 'partials/ad-slot' ); ?>
+		<div class="ad -sidebar -right -sticky">
+			<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
+		</div>
 	</div>
 
 	<?php get_template_part( 'partials/episode/podcasts' ); ?>
