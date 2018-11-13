@@ -6,7 +6,7 @@
  * @subpackage SeriouslySimplePodcasting
  */
 
-function feed_podcast_clean_output( $output, $filter ) {
+function feed_podcast_clean_output( $output, $filter = null ) {
 	$output = html_entity_decode( $output );
 
 	if ( ! is_null( $filter ) ) {
@@ -167,9 +167,11 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 
 		// Featured image
 		$image = false;
+		$image_width = 500;
+		$image_height = 375;
 		$thumbnail_id = get_post_thumbnail_id( $episode_id );
 		if ( ! empty( $thumbnail_id ) ) {
-			$image = bbgi_get_image_url( $thumbnail_id, 500, 375 );
+			$image = bbgi_get_image_url( $thumbnail_id, $image_width, $image_height );
 		}
 
 		// Enclosure (audio file)
@@ -177,7 +179,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 
 		// Episode duration
 		$duration = get_post_meta( $episode_id, 'duration' , true );
-		if ( ! $duration || strlen( $duration ) == 0 || $duration == '' ) {
+		if ( empty( $duration ) ) {
 			$duration = '0:00';
 		}
 
@@ -266,7 +268,7 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 		<itunes:keywords><?php echo esc_html( $keywords ); ?></itunes:keywords>
 		<?php endif; ?>
 		<?php if ( ! empty( $image ) ) : ?>
-		<media:content medium="image" url="<?php echo esc_url( $image[0] ); ?>" width="<?php echo esc_attr( $image[1] ); ?>" height="<?php echo esc_attr( $image[2] ); ?>" />
+		<media:content medium="image" url="<?php echo esc_url( $image ); ?>" width="<?php echo esc_attr( $image_width ); ?>" height="<?php echo esc_attr( $image_height ); ?>" />
 		<?php endif; ?>
 	</item><?php endwhile; endif; ?>
 </channel>
