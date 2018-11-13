@@ -119,6 +119,7 @@ if ( ! function_exists( 'ee_get_episode_meta' ) ) :
 			case 'download':
 				$download = get_post_meta( $episode->ID, 'omny-audio-url', true );
 				if ( filter_var( $download, FILTER_VALIDATE_URL ) ) {
+					$download = add_query_arg( 'download', 'true', $download );
 					return $download;
 				}
 				break;
