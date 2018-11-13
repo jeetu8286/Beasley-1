@@ -22,7 +22,7 @@ import {
 } from '../actions/player';
 
 const localStorage = getStorage( 'liveplayer' );
-const { streams } = window.bbgiconfig || {};
+const { streams, publisher } = window.bbgiconfig || {};
 
 let tdplayer = null;
 let mp3player = null;
@@ -75,6 +75,7 @@ const adReset = {
 };
 
 const stateReset = {
+	publisher,
 	audio: '',
 	station: '',
 	cuePoint: false,
