@@ -12,7 +12,7 @@ if ( ! $query->have_posts() ) :
 	return;
 endif;
 
-?><div>
+?><div class="episodes">
 	<h2 class="section-head">
 		<span>Next Episodes</span>
 	</h2>
