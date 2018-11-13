@@ -138,7 +138,14 @@ if ( ! function_exists( 'ee_get_podcast_meta' ) ) :
 
 		switch ( $meta_key ) {
 			case 'feed_url':
-				return get_post_meta( $podcast->ID, 'gmp_podcast_feed', true );
+				$feed_url = get_post_meta( $podcast->ID, 'gmp_podcast_feed', true );
+				if ( ! filter_var( $feed_url, FILTER_VALIDATE_URL ) ) {
+					$feed_url = add_query_arg( array(
+						'feed'           => 'podcast',
+						'podcast_series' => rawurldecode( $podcast->post_name ),
+					), home_url( '/' ) );
+				}
+				return $feed_url;
 			case 'itunes_url':
 				return get_post_meta( $podcast->ID, 'gmp_podcast_itunes_url', true );
 			case 'google_play_url':
