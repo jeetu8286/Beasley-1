@@ -11,6 +11,7 @@ import Volume from '../components/player/Volume';
 import Progress from '../components/player/Progress';
 import RecentSongs from '../components/player/RecentSongs';
 import Offline from '../components/player/Offline';
+import Contacts from '../components/player/Contacts';
 
 import * as actions from '../redux/actions/player';
 
@@ -89,12 +90,23 @@ class LivePlayer extends Component {
 		}
 
 		const { online } = state;
-		const { station, status, adPlayback, adSynced, play, pause, resume } = props;
+		const {
+			station,
+			status,
+			adPlayback,
+			adSynced,
+			play,
+			pause,
+			resume,
+			publisher,
+		} = props;
 
 		let notification = false;
 		if ( !online ) {
 			notification = <Offline />;
 		}
+
+		const { address, email, phone } = publisher;
 
 		const children = (
 			<Fragment>
@@ -118,6 +130,7 @@ class LivePlayer extends Component {
 
 				<Stations />
 				<RecentSongs />
+				<Contacts address={address || ''} email={email || ''} phone={phone || ''} />
 			</Fragment>
 		);
 
@@ -131,6 +144,7 @@ LivePlayer.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
+	publisher: PropTypes.shape( {} ).isRequired,
 	initPlayer: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
@@ -142,6 +156,7 @@ const mapStateToProps = ( { player } ) => ( {
 	status: player.status,
 	adPlayback: player.adPlayback,
 	adSynced: player.adSynced,
+	publisher: player.publisher || {},
 } );
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
