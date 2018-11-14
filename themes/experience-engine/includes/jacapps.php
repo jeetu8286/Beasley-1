@@ -56,7 +56,7 @@ endif;
 
 if ( ! function_exists( 'ee_update_jacapps_secondstreet_html' ) ) :
 	function ee_update_jacapps_secondstreet_html( $embed, $atts ) {
-		$url = 'https://embed-' . urlencode( $atts['op_id'] ) . '.secondstreetapp.com/Scripts/dist/embed.js';
+		$url = 'https://embed-' . rawurlencode( $atts['op_id'] ) . '.secondstreetapp.com/Scripts/dist/embed.js';
 		return '<script src="' . esc_url( $url ) . '" data-ss-embed="promotion" data-opguid="' . esc_attr( $atts['op_guid'] ) . '" data-routing="' . esc_attr( $atts['routing'] ) . '"></script>';
 	}
 endif;

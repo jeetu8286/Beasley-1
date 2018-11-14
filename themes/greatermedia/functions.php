@@ -175,6 +175,15 @@ add_action( 'get_footer', function () {
 } );
 
 /**
+ * Helper function for use in conditionals related to content display and the News/Sports theme
+ *
+ * @return bool
+ */
+function is_news_site() {
+	return (bool) filter_var( get_option( 'gmr_newssite' ), FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
  * Register Navigation Menus
  */
 function greatermedia_nav_menus() {
