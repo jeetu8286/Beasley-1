@@ -26,6 +26,8 @@
 
 		<?php get_template_part( 'partials/ad-slot' ); ?>
 	</div>
+
+	<?php get_template_part( 'partials/related-articles' ); ?>
 </div>
 
 <?php get_footer(); ?>
