@@ -6,6 +6,8 @@ $website = tribe_get_event_website_url();
 $cost = tribe_get_cost();
 
 ?><div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+	<?php get_template_part( 'partials/show/header' ); ?>
+
 	<div>
 		<a href="<?php echo esc_url( tribe_get_events_link() ); ?>">
 			<?php echo esc_html( tribe_get_event_label_plural() ); ?>
@@ -48,7 +50,15 @@ $cost = tribe_get_cost();
 	</div>
 
 	<div>
-		<?php get_template_part( 'partials/featured-media' ); ?>
-		<?php the_content(); ?>
+		<div>
+			<?php get_template_part( 'partials/featured-media' ); ?>
+			<?php the_content(); ?>
+
+			<div>
+				<?php the_tags( '<span>Tags</span>' ); ?>
+			</div>
+		</div>
+
+		<?php get_template_part( 'partials/ad-slot' ); ?>
 	</div>
 </div>
