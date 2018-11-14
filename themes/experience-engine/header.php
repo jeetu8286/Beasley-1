@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<?php wp_head(); ?>
 	</head>
-	<body <?php body_class( '-dark' ); ?>><?php
+	<body <?php body_class( sanitize_html_class( get_theme_mod( 'ee_theme_version', '-dark' ) ) ); ?>><?php
 		if ( ! ee_is_jacapps() ) :
 			get_template_part( 'partials/header' );
 		endif;
