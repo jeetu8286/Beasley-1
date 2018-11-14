@@ -16,7 +16,7 @@ if ( ! function_exists( 'ee_register_customizer' ) ) :
 
 		$wp_customize->add_setting( 'ee_theme_version',
 			array(
-				'default'    => 'light',
+				'default'    => '-dark',
 				'type'       => 'theme_mod',
 				'capability' => 'edit_theme_options',
 				'transport'  => 'refresh',
@@ -25,7 +25,7 @@ if ( ! function_exists( 'ee_register_customizer' ) ) :
 
 		$wp_customize->add_control( 'ee_theme_version',
 			array(
-				'type'    => 'select',
+				'type'    => 'radio',
 				'label'   => 'Theme Version',
 				'section' => 'beasley_theme_options',
 				'choices' => array(
