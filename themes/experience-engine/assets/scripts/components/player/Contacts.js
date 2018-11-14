@@ -13,10 +13,7 @@ class Contacts extends PureComponent {
 	}
 
 	handleToggleClick() {
-		const self = this;
-		const { isOpen } = self.state;
-
-		self.setState( { isOpen: !isOpen } );
+		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
 	}
 
 	render() {
