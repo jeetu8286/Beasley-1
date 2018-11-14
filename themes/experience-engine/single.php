@@ -18,6 +18,10 @@
 			<?php get_template_part( 'partials/featured-media' ); ?>
 
 			<?php the_content(); ?>
+
+			<div>
+				<?php the_tags( '<span>Tags</span>' ); ?>
+			</div>
 		</div>
 
 		<?php get_template_part( 'partials/ad-slot' ); ?>
