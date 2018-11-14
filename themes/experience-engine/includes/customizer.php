@@ -19,7 +19,7 @@ if ( ! function_exists( 'ee_register_customizer' ) ) :
 				'default'    => 'light',
 				'type'       => 'theme_mod',
 				'capability' => 'edit_theme_options',
-				'transport'  => 'postMessage',
+				'transport'  => 'refresh',
 			)
 		);
 
