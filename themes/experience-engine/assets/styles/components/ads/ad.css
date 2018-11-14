@@ -1,6 +1,6 @@
 .ad {
 	&.-sticky {
-		& > div {
+		& .wrapper {
 			@media (--min-large-viewport) {
 				position: sticky;
 				top: 10px;
