@@ -8,7 +8,7 @@ if ( ! function_exists( 'ee_register_customizer' ) ) :
 		$wp_customize->add_section( 'beasley_theme_options',
 			array(
 				'title'       => 'Theme Options',
-				'priority'    => 35,
+				'priority'    => 1,
 				'capability'  => 'edit_theme_options',
 				'description' => 'Select the theme version',
 			)
