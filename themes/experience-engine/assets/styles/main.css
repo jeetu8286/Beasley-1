@@ -15,8 +15,8 @@
 
 @import 'components/footer/footer';
 
-@import 'components/archive/tile';
-@import 'components/archive/tile-podcast';
+@import 'components/archive/archive-title';
+@import 'components/archive/archive-tile';
 @import 'components/archive/tile-episode';
 @import 'components/archive/tile-gmr_gallery';
 
@@ -26,6 +26,8 @@
 @import 'components/episode/episode-info';
 @import 'components/episode/episode-content';
 @import 'components/episode/episode-tile';
+
+@import 'components/podcast/podcast-tile';
 
 @import 'components/ads/ad-title';
 @import 'components/ads/ad';
