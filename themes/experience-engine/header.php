@@ -12,4 +12,5 @@
 		endif;
 
 		?><div class="container">
+			<?php get_template_part( 'partials/ads/leaderboard' ); ?>
 			<main id="content" class="content">
