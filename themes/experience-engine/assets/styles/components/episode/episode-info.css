@@ -30,17 +30,21 @@
 		}
 
 		& .show {
-			color: var(--brand-primary);
 			flex: 0 1 100%;
-			font-size: .889rem;
-			font-weight: 600;
 			line-height: 1;
 			margin-bottom: 1rem;
-			text-transform: uppercase;
 
 			@media (--min-small-viewport) {
 				margin-bottom: 0;
 				flex: 0 1 auto;
+			}
+
+			& a {
+				color: var(--brand-primary);
+				font-size: .889rem;
+				font-weight: 600;
+				line-height: 1;
+				text-transform: uppercase;
 			}
 		}
 

@@ -1,0 +1,10 @@
+.ad {
+	&.-sticky {
+		& .wrapper {
+			@media (--min-large-viewport) {
+				position: sticky;
+				top: 10px;
+			}
+		}
+	}
+}

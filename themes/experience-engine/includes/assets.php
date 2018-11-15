@@ -4,6 +4,7 @@ add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts' );
 
 add_filter( 'wp_audio_shortcode_library', '__return_false' );
 add_filter( 'script_loader_tag', 'ee_script_loader', 10, 3 );
+add_filter( 'tribe_events_assets_should_enqueue_frontend', '__return_false' );
 
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');

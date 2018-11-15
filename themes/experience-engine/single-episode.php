@@ -6,9 +6,13 @@
 	<?php get_template_part( 'partials/show/header' ); ?>
 
 	<div class="episode-info">
-		<?php if ( get_post_field( 'post_parent' ) > 0 ) : ?>
+		<?php if ( ( $podcast_id = get_post_field( 'post_parent' ) ) > 0 ) : ?>
 			<div class="show-meta">
-				<p class="show"><?php echo esc_html( get_the_title( get_post_field( 'post_parent' ) ) ); ?></p>
+				<p class="show">
+					<a href="<?php echo esc_url( the_permalink( $podcast_id ) ); ?>">
+						<?php echo esc_html( get_the_title( $podcast_id ) ); ?>
+					</a>
+				</p>
 				<?php get_template_part( 'partials/add-to-favorite' ); ?>
 			</div>
 		<?php endif; ?>
@@ -36,7 +40,7 @@
 		</div>
 	</div>
 
-	<div class="episode-content">
+	<div class="episode-content content-wrap">
 		<div class="description"><?php
 			if ( ! ee_is_jacapps() ) :
 				add_filter( 'the_content', 'strip_shortcodes', 1 );
@@ -48,10 +52,9 @@
 		?></div>
 
 		<?php get_template_part( 'partials/episode/next-episodes' ); ?>
-		<?php get_template_part( 'partials/ad-slot' ); ?>
+		<?php get_template_part( 'partials/episode/podcasts' ); ?>
+		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
 	</div>
-
-	<?php get_template_part( 'partials/episode/podcasts' ); ?>
 </div>
 
 <?php get_footer(); ?>

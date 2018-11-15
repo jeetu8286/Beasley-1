@@ -12,7 +12,7 @@ if ( ! $query->have_posts() ) :
 	return;
 endif;
 
-?><div>
+?><div class="episodes">
 	<?php ee_the_subtitle( 'Next Episodes' ); ?>
 
 	<div class="archive-tiles">

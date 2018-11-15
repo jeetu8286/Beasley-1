@@ -5,32 +5,82 @@ add_action( 'rest_api_init', 'ee_rest_api_init' );
 
 
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
-	function ee_has_publisher_information( $meata ) {
-		// not implemented yet
-		return true;
+	function ee_has_publisher_information( $meta ) {
+		$value = ee_get_publisher_information( $meta );
+		return ! empty( $value );
 	}
 endif;
 
 if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 	function ee_get_publisher_information( $meta ) {
-		switch ( $meta ) {
-			// not implemented yet
+		static $publisher_info = null;
+
+		if ( is_null( $publisher_info ) ) {
+			$publisher = get_option( 'ee_publisher' );
+			if ( ! empty( $publisher ) ) {
+				$publisher_info = bbgi_ee_get_publisher( $publisher );
+			}
 		}
 
-		return '';
+		// temporarily return # for itunes_app and play_app
+		if ( $meta == 'itunes_app' || $meta == 'play_app' ) {
+			return '#';
+		}
+
+		if ( empty( $publisher_info ) || empty( $publisher_info[ $meta ] ) ) {
+			return false;
+		}
+
+		$value = $publisher_info[ $meta ];
+
+		switch ( $meta ) {
+			case 'facebook':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://www.facebook.com/' . rawurlencode( $value );
+				}
+				break;
+			case 'twitter':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://twitter.com/' . rawurlencode( ltrim( $value, '@' ) );
+				}
+				break;
+			case 'instagram':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://www.instagram.com/' . rawurlencode( ltrim( $value, '@' ) );
+				}
+				break;
+			case 'youtube':
+				if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = 'https://www.youtube.com/user/' . rawurlencode( $value );
+				}
+				break;
+		}
+
+		return $value;
 	}
 endif;
 
 if ( ! function_exists( 'ee_update_bbgiconfig' ) ) :
 	function ee_update_bbgiconfig( $config ) {
-		$publishers = array();
-		foreach ( bbgi_ee_get_publisher_list() as $publisher ) {
-			$publishers[ $publisher['id'] ] = $publisher['title'];
+		$publishers = bbgi_ee_get_publisher_list();
+		$publisher_id = get_option( 'ee_publisher' );
+
+		$publishers_map = array();
+		$current_publisher = array();
+		foreach ( $publishers as $publisher ) {
+			$publishers_map[ $publisher['id'] ] = $publisher['title'];
+			if ( $publisher['id'] == $publisher_id ) {
+				$current_publisher['phone'] = $publisher['phone'];
+				$current_publisher['address'] = $publisher['address'];
+				$current_publisher['email'] = $publisher['email'];
+				$current_publisher['picture'] = $publisher['picture'];
+			}
 		}
 
-		$config['publishers'] = $publishers;
+		$config['publishers'] = $publishers_map;
 		$config['locations'] = bbgi_ee_get_locations();
 		$config['genres'] = bbgi_ee_get_genres();
+		$config['publisher'] = $current_publisher;
 
 		return $config;
 	}
@@ -100,15 +150,14 @@ if ( ! function_exists( 'bbgi_ee_get_request_cache_time' ) ) :
 		$cache_control = explode( ',', $response_headers['cache-control'] );
 		$cache_time    = 0;
 		foreach ( $cache_control as $control_string ) {
-			$control_string = trim( $control_string );
+			$control_string = strtolower( trim( $control_string ) );
+			$parts = explode( '=', $control_string );
 
-			if ( strpos( $control_string, 's-maxage' ) === 0 ) {
-				$cache_time = end( explode( 's-maxage=', $control_string ) );
+			if ( $parts[0] == 's-maxage' ) {
+				$cache_time = end( $parts );
 				break;
-			}
-
-			if ( strpos( $control_string, 'max-age' ) === 0 ) {
-				$cache_time = end( explode( 'max-age=', $control_string ) );
+			} elseif ( $parts[0] == 'max-age' ) {
+				$cache_time = end( $parts );
 			}
 		}
 
@@ -135,7 +184,12 @@ if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
 	 * @return array Contains publisher data
 	 */
 	function bbgi_ee_get_publisher( $publisher ) {
-		return bbgi_ee_request( "publishers/{$publisher}" );
+		$data = bbgi_ee_request( "publishers/{$publisher}" );
+		if ( is_array( $data ) && count( $data ) == 1 && is_array( $data[0] ) ) {
+			$data = $data[0];
+		}
+
+		return $data;
 	}
 endif;
 
