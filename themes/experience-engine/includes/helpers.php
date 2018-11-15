@@ -2,6 +2,7 @@
 
 add_filter( 'next_posts_link_attributes', 'ee_load_more_attributes' );
 add_filter( 'get_the_archive_title', 'ee_update_archive_title' );
+add_filter( 'the_category_list', 'ee_update_the_category_list', 10, 2 );
 
 if ( ! function_exists( 'ee_get_date' ) ) :
 	function ee_get_date( $timestamp, $gmt = 0 ) {
@@ -91,5 +92,21 @@ endif;
 if ( ! function_exists( 'ee_the_subtitle' ) ) :
 	function ee_the_subtitle( $subtitle ) {
 		echo '<h2 class="section-head"><span>', esc_html( $subtitle ), '</span></h2>';
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_the_category_list' ) ) :
+	function ee_update_the_category_list( $categories, $post_id ) {
+		$post = get_post( $post_id );
+		$cat_id = get_post_meta( $post->ID, '_yoast_wpseo_primary_category', true );
+		if ( $cat_id > 0 ) {
+			foreach ( $categories as $category ) {
+				if ( $category->term_id == $cat_id ) {
+					return array( $category );
+				}
+			}
+		}
+
+		return array( current( $categories ) );
 	}
 endif;
