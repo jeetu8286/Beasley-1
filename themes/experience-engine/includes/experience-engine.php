@@ -1,6 +1,8 @@
 <?php
 
 add_filter( 'bbgiconfig', 'ee_update_bbgiconfig' );
+add_action( 'rest_api_init', 'ee_rest_api_init' );
+
 
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
 	function ee_has_publisher_information( $meata ) {
@@ -179,4 +181,20 @@ if ( ! function_exists( 'bbgi_ee_get_genres' ) ) :
 	function bbgi_ee_get_genres() {
 		return bbgi_ee_request( 'genres' );
 	}
+endif;
+
+if ( ! function_exists( 'ee_rest_api_init' ) ) :
+	function ee_rest_api_init() {
+		register_rest_route( 'experience_engine/v1', '/purge-cache/', array(
+			'methods'  => 'GET',
+			'callback' => function () {
+				$cache_index = get_option( 'ee_cache_index', 0 );
+				$cache_index ++;
+				update_option( 'ee_cache_index', $cache_index );
+print_r($cache_index);exit;
+				return rest_ensure_response( 'Cache Flushed' );
+			},
+		) );
+	}
+
 endif;
