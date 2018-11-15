@@ -27,7 +27,7 @@ class Video extends \Bbgi\Module {
 	public function register() {
 		add_action( 'init', $this( 'setup_embeds' ) );
 		add_action( 'init', $this( 'setup_shortcodes' ) );
-		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
+		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 
 		add_action( 'wp_ajax_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
 		add_action( 'wp_ajax_nopriv_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
