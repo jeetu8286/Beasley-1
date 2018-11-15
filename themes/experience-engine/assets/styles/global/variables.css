@@ -2,6 +2,7 @@
 	--global-black: #000000;
 	--global-dove-gray: #737373;
 	--global-silver: #cccbcb;
+	--global-silver-chalice: #afafaf;
 	--global-white: #ffffff;
 
 	--global-alert: #ff0000;
@@ -33,5 +34,7 @@
 	--global-theme-font-tertiary: var(--global-dove-gray);
 }
 
+@custom-media --min-xlarge-viewport (min-width: 1060px);
+@custom-media --min-large-viewport (min-width: 900px);
 @custom-media --min-medium-viewport (min-width: 768px);
 @custom-media --min-small-viewport (min-width: 480px);

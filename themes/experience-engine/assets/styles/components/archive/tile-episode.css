@@ -1,28 +1,7 @@
-.archive-tiles {
-	& .type-episode {
-		& .placeholder-audio {
-			left: 50%;
-			position: absolute;
-			top: 50%;
-			transform: translate(-50%, -50%);
-			z-index: 10;
-		}
-	}
-}
-
-
 .single-episode,
 .single-podcast {
 	& .archive-tiles {
 		& .type-episode {
-			display: flex;
-
-			& .post-thumbnail {
-				display: inline-block;
-				height: 100px;
-				width: 100px;
-			}
-
 			& .placeholder-lazyimage {
 				display: none;
 			}

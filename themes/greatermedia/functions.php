@@ -1105,31 +1105,6 @@ add_filter( 'wp_get_attachment_image_attributes', 'greatermedia_update_image_att
 
 remove_filter( 'the_content', 'wp_make_content_images_responsive' );
 
-/**
- * Adds an image node to each RSS item that has a feature image.
- */
-add_action( 'rss2_item', 'greatermedia_add_mrss_node_to_rss' );
-
-function greatermedia_add_mrss_node_to_rss() {
-	global $post;
-
-	if ( has_post_thumbnail( $post->ID ) ):
-		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'original' );
-		if ( ! empty( $thumbnail[0] ) ) { ?>
-			<media:thumbnail url="<?php echo esc_attr( $thumbnail[0] ); ?>"  width="<?php echo esc_attr( $thumbnail[1] ); ?>"  height="<?php echo esc_attr( $thumbnail[2] ); ?>" /><?php
-		}
-	endif;
-}
-
-add_action( 'rss2_ns', 'greatermedia_add_mrss_ns_to_rss' );
-/**
- * Add required ns
- */
-function greatermedia_add_mrss_ns_to_rss() {
-	?> xmlns:media="http://search.yahoo.com/mrss/" <?php
-}
-
-
 add_action( 'admin_init', 'greatermedia_wpseo_save_compare_data', 10, 0 );
 /**
  * Remove yoast seo compare meta hook which is doing facebook api call.
