@@ -10,7 +10,9 @@ const Controls = ( { status, play, pause, resume } ) => (
 		</button>
 
 		<button type="button" className="pause-btn" onClick={pause}>
-			Pause
+			<svg viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
+				<path d="M11 22h-4v-20h4v20zm6-20h-4v20h4v-20z" />
+			</svg>
 		</button>
 
 		<button type="button" className="resume-btn" onClick={resume}>
@@ -20,7 +22,7 @@ const Controls = ( { status, play, pause, resume } ) => (
 		</button>
 
 		<button type="button" className="loading-btn">
-			Loading
+			<div className="loading" />
 		</button>
 	</div>
 );

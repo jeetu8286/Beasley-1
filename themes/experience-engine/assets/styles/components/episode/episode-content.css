@@ -16,26 +16,24 @@
 /* End Grid Fallbacks */
 
 .episode-content {
-	margin: 0 auto;
-	max-width: 1071px;
-	padding: 0 1rem 2.22rem;
-
 	@media (--min-large-viewport) {
 		display: grid;
 		grid-column-gap: 2.333rem;
 		grid-row-gap: 2.889rem;
 		grid-template-columns: auto 300px;
-		grid-template-rows: repeat(2, auto);
+		grid-template-rows: repeat(3, auto);
 	}
 
 	& .description {
 		grid-column: 1;
+
 		& p {
 			line-height: 1.6;
 		}
 	}
 
-	& .episodes {
+	& .episodes,
+	& .podcast-tiles {
 		grid-column: 1;
 	}
 

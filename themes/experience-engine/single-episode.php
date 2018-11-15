@@ -40,7 +40,7 @@
 		</div>
 	</div>
 
-	<div class="episode-content">
+	<div class="episode-content content-wrap">
 		<div class="description"><?php
 			if ( ! ee_is_jacapps() ) :
 				add_filter( 'the_content', 'strip_shortcodes', 1 );
@@ -52,10 +52,9 @@
 		?></div>
 
 		<?php get_template_part( 'partials/episode/next-episodes' ); ?>
+		<?php get_template_part( 'partials/episode/podcasts' ); ?>
 		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
 	</div>
-
-	<?php get_template_part( 'partials/episode/podcasts' ); ?>
 </div>
 
 <?php get_footer(); ?>
