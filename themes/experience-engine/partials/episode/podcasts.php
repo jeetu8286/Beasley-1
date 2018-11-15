@@ -12,7 +12,7 @@ if ( ! $query->have_posts() ) :
 	return;
 endif;
 
-?><div>
+?><div class="podcast-tiles">
 	<?php ee_the_subtitle( 'Podcasts you may like' ); ?>
 	<?php ee_the_query_tiles( $query ); ?>
 </div>
