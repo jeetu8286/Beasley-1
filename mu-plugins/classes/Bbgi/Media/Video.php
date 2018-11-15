@@ -1,8 +1,8 @@
 <?php
 
-namespace Beasley\Media;
+namespace Bbgi\Media;
 
-class Video extends \Beasley\Module {
+class Video extends \Bbgi\Module {
 
 	protected static $_accounts = array(
 		'bbgi-philadelphia' => '27204544',
@@ -199,7 +199,7 @@ class Video extends \Beasley\Module {
 	 * @return string
 	 */
 	protected function _get_videojs_embed( $key, $account_id, $event_id, $video_id ) {
-		$json = \Beasley\Cache::get( func_get_args(), function() use ( $key, $account_id, $event_id, $video_id ) {
+		$json = \Bbgi\Cache::get( func_get_args(), function() use ( $key, $account_id, $event_id, $video_id ) {
 			$response = wp_remote_get( "https://{$key}:@livestreamapis.com/v3/accounts/{$account_id}/events/{$event_id}/videos/{$video_id}" );
 
 			return ! is_wp_error( $response )

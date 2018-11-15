@@ -1,6 +1,6 @@
 <?php
 
-namespace Beasley;
+namespace Bbgi;
 
 class Cache {
 

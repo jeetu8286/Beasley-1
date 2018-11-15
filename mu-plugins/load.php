@@ -34,6 +34,7 @@ add_action( 'wp_loaded', function() {
 	$modules = array(
 		new \Bbgi\Seo(),
 		new \Bbgi\Settings(),
+		new \Bbgi\Media\Video(),
 		new \Bbgi\Image\Attributes(),
 	);
 
