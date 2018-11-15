@@ -50,6 +50,19 @@ const getLoadMoreParams = ( element ) => ( {
 	link: element.getAttribute( 'href' ),
 } );
 
+const getLiveStreamVideo = ( element ) => {
+	const attrs = { adTagUrl: element.dataset.adTag };
+
+	const video = element.getElementsByTagName( 'video' )[0];
+	if ( video ) {
+		attrs.id = video.getAttribute( 'id' );
+		attrs.poster = video.getAttribute( 'poster' );
+		attrs.src = video.dataset.src;
+	}
+
+	return attrs;
+};
+
 const processEmbeds = ( container, type, selector, callback ) => {
 	const embeds = [];
 
@@ -91,6 +104,7 @@ export const getStateFromContent = ( container ) => {
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
 			...processEmbeds( container, 'share', '.share-buttons' ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
+			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideo ),
 		];
 
 		// MUST follow after embeds processing

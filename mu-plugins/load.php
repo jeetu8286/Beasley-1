@@ -34,6 +34,7 @@ add_action( 'wp_loaded', function() {
 	$modules = array(
 		new \Bbgi\Seo(),
 		new \Bbgi\Settings(),
+		new \Bbgi\Media\Video(),
 		new \Bbgi\Image\Attributes(),
 	);
 
@@ -48,7 +49,7 @@ add_action( 'wp_loaded', function() {
 	foreach ( $modules as $module ) {
 		$module->register();
 	}
-} );
+}, 0 );
 
 // Allows overriding options with constants
 add_filter( 'configure_smtp__options', function( $options ) {

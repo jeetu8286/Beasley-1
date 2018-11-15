@@ -36,6 +36,6 @@
 @import 'components/modal';
 @import 'components/loading';
 @import 'components/lazy-image';
-
+@import 'components/videojs';
 
 @import 'utilities/display';

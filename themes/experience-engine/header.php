@@ -7,6 +7,8 @@
 		<?php wp_head(); ?>
 	</head>
 	<body <?php body_class( sanitize_html_class( get_theme_mod( 'ee_theme_version', '-dark' ) ) ); ?>><?php
+		do_action( 'beasley_after_body' );
+
 		if ( ! ee_is_jacapps() ) :
 			get_template_part( 'partials/header' );
 		endif;

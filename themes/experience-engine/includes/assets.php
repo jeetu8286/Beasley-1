@@ -32,6 +32,12 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_script_add_data( 'google-webfont', 'noscript', '<link href="//fonts.googleapis.com/css?family=Libre+Franklin:300,400,500,600,700" rel="stylesheet">' );
 
 		/**
+		 * Polyfills
+		 */
+		wp_register_script( 'es6-promise', '//cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js', null, null );
+		wp_script_add_data( 'es6-promise', 'conditional', 'lte IE 11' );
+
+		/**
 		 * Player scripts
 		 */
 		wp_register_script( 'embedly-player.js', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
@@ -43,8 +49,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		/**
 		 * Application script
 		 */
-		wp_register_script( 'ee-app-vendors', "{$base}/bundle/vendors-app.js", null, GREATERMEDIA_VERSION, true );
-		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'ee-app-vendors' ), GREATERMEDIA_VERSION, true );
+		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'es6-promise' ), GREATERMEDIA_VERSION, true );
 		wp_localize_script( 'ee-app', 'bbgiconfig', apply_filters( 'bbgiconfig', array() ) );
 	}
 endif;

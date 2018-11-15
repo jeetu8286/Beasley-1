@@ -59,6 +59,6 @@ $cost = tribe_get_cost();
 			</div>
 		</div>
 
-		<?php get_template_part( 'partials/ad-slot' ); ?>
+		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
 	</div>
 </div>

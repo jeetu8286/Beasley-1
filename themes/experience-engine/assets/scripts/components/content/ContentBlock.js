@@ -8,6 +8,7 @@ import SecondStreetEmbed from './embeds/SecondStreet';
 import LazyImage from './embeds/LazyImage';
 import Share from './embeds/Share';
 import LoadMore from './embeds/LoadMore';
+import Video from './embeds/Video';
 
 const mapping = {
 	secondstreet: SecondStreetEmbed,
@@ -15,6 +16,7 @@ const mapping = {
 	lazyimage: LazyImage,
 	share: Share,
 	loadmore: LoadMore,
+	video: Video,
 };
 
 const ContentBlock = ( { content, embeds } ) => {
