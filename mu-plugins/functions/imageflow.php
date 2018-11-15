@@ -64,11 +64,11 @@ function bbgi_the_image_attribution( $image_id = null ) {
 	if ( ! empty( $attribution ) ) {
 		$img_link = filter_var( $attribution, FILTER_VALIDATE_URL );
 		if ( $img_link ) {
-			echo '<div class="image__attribution">';
-				echo '<a href="' . esc_url( $attribution ) . '" class="image__attribution--link">Photo Credit</a>';
+			echo '<div class="image-attribution">';
+				echo '<a href="' . esc_url( $attribution ) . '" class="image-attribution--link">Photo Credit</a>';
 			echo '</div>';
 		} else {
-			echo '<div class="image__attribution">';
+			echo '<div class="image-attribution">';
 				echo wp_kses_post( $attribution );
 			echo '</div>';
 		}
