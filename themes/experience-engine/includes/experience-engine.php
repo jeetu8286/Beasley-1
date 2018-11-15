@@ -245,7 +245,7 @@ if ( ! function_exists( 'ee_rest_api_init' ) ) :
 				$cache_index = get_option( 'ee_cache_index', 0 );
 				$cache_index ++;
 				update_option( 'ee_cache_index', $cache_index );
-print_r($cache_index);exit;
+
 				return rest_ensure_response( 'Cache Flushed' );
 			},
 		) );
