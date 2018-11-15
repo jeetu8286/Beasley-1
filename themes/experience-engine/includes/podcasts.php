@@ -82,10 +82,10 @@ if ( ! function_exists( 'ee_the_latest_episode' ) ) :
 			$episode = get_post( $episode );
 			$player = ee_get_episode_player( $episode );
 			if ( $player ) {
-				?><div>
-					<div><?php echo $player; ?></div>
-					<div>Play Latest: <?php ee_the_date( $episode ); ?></div>
-				</div><?php
+				echo $player; ?>
+					<p class="latest">
+						Play Latest (<?php ee_the_date( $episode ); ?>)
+					</p><?php
 			}
 		}
 	}
