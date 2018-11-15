@@ -1,14 +1,9 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { loadAssets } from '../../../library/dom';
 
 class Video extends PureComponent {
-
-	constructor( props ) {
-		super( props );
-		this.videoRef = React.createRef();
-	}
 
 	componentDidMount() {
 		const self = this;
@@ -31,20 +26,36 @@ class Video extends PureComponent {
 			'/wp-content/themes/experience-engine/bundle/videojs.ima.css',
 		];
 
-		loadAssets( masterScripts )
-			.then( () => loadAssets( slaveScripts, styles ) )
+		loadAssets( masterScripts, styles )
+			.then( () => loadAssets( slaveScripts ) )
 			.then( self.loadVideoJs.bind( self ) )
 			.catch( error => console.error( error ) ); // eslint-disable-line no-console
 	}
 
+	componentWillUnmount() {
+		const self = this;
+		if ( self.player ) {
+			self.player.dispose();
+		}
+	}
+
 	loadVideoJs() {
 		const self = this;
-		const { current: videoRef } = self.videoRef;
-		if ( !videoRef ) {
+		const { placeholder, id, src, poster, adTagUrl } = self.props;
+
+		const container = document.getElementById( placeholder );
+		if ( !container ) {
 			return;
 		}
 
-		const { id, src, adTagUrl } = self.props;
+		const videoRef = document.createElement( 'video' );
+
+		videoRef.id = id;
+		videoRef.className = 'video-js vjs-default-skin';
+		videoRef.controls = true;
+		videoRef.poster = poster;
+
+		container.appendChild( videoRef );
 
 		const player = window.videojs( videoRef );
 		const videoArgs = {
@@ -73,20 +84,18 @@ class Video extends PureComponent {
 
 			videoRef.addEventListener( startEvent, initAdDisplayContainer );
 		}
+
+		self.player = player;
 	}
 
 	render() {
-		const self = this;
-		const { id, poster } = self.props;
-
-		return (
-			<video id={id} ref={self.videoRef} className="video-js vjs-default-skin" controls poster={poster} />
-		);
+		return false;
 	}
 
 }
 
 Video.propTypes = {
+	placeholder: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,
 	adTagUrl: PropTypes.string.isRequired,
 	poster: PropTypes.string.isRequired,
