@@ -13,7 +13,7 @@ if ( ! $query->have_posts() ) :
 endif;
 
 ?><div class="episodes">
-	<?php ee_the_subtitle( 'Next Episodesdvddfssfsffs' ); ?>
+	<?php ee_the_subtitle( 'Next Episodes' ); ?>
 
 	<div class="archive-tiles">
 		<?php ee_the_query_tiles( $query ); ?>
