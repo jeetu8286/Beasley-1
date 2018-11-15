@@ -74,15 +74,15 @@ class Video extends \Bbgi\Module {
 	public function register_settings( $group, $page ) {
 		$section_id = 'beasley_livestream_settings';
 
-		add_settings_section( $section_id, 'Livestream', '__return_false', $page );
+		add_settings_section( $section_id, 'Livestream', '__return_false', 'media' );
 
-		add_settings_field( 'livestream_client_id', 'Client ID', 'beasley_input_field', $page, $section_id, 'name=livestream_client_id' );
-		add_settings_field( 'livestream_secret_key', 'Secret Key', 'beasley_input_field', $page, $section_id, 'name=livestream_secret_key' );
-		add_settings_field( 'livestream_ad_tag_url', 'Ad Tag URL', 'beasley_input_field', $page, $section_id, 'name=livestream_ad_tag_url' );
+		add_settings_field( 'livestream_client_id', 'Client ID', 'bbgi_input_field', 'media', $section_id, 'name=livestream_client_id' );
+		add_settings_field( 'livestream_secret_key', 'Secret Key', 'bbgi_input_field', 'media', $section_id, 'name=livestream_secret_key' );
+		add_settings_field( 'livestream_ad_tag_url', 'Ad Tag URL', 'bbgi_input_field', 'media', $section_id, 'name=livestream_ad_tag_url' );
 
-		register_setting( $group, 'livestream_client_id', 'sanitize_text_field' );
-		register_setting( $group, 'livestream_secret_key', 'sanitize_text_field' );
-		register_setting( $group, 'livestream_ad_tag_url', 'strip_tags' );
+		register_setting( 'media', 'livestream_client_id', 'sanitize_text_field' );
+		register_setting( 'media', 'livestream_secret_key', 'sanitize_text_field' );
+		register_setting( 'media', 'livestream_ad_tag_url', 'strip_tags' );
 	}
 
 	/**
@@ -223,7 +223,7 @@ class Video extends \Bbgi\Module {
 			'token'     => hash_hmac( "md5", "{$key}:playback:{$timestamp}", $key ),
 		), $json['m3u8'] );
 
-		$proxy = admin_url( '/admin-ajax.php?action=livestream_m3u8_proxy&url=' . urlencode( $srouce ) );
+		$proxy = admin_url( '/admin-ajax.php?action=livestream_m3u8_proxy&url=' . rawurlencode( $srouce ) );
 
 		return sprintf(
 			'<div class="livestream livestream-oembed" data-ad-tag="%s">' .
