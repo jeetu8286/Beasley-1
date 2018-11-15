@@ -57,6 +57,11 @@ class ContentDispatcher extends Component {
 			return;
 		}
 
+		// do nothing if this link has to be opened in a new window
+		if ( '_blank' === linkNode.getAttribute( 'target' ) ) {
+			return;
+		}
+
 		const { location } = window;
 		const { origin } = location;
 

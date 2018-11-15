@@ -82,10 +82,10 @@ if ( ! function_exists( 'ee_the_latest_episode' ) ) :
 			$episode = get_post( $episode );
 			$player = ee_get_episode_player( $episode );
 			if ( $player ) {
-				?><div>
-					<div><?php echo $player; ?></div>
-					<div>Play Latest: <?php ee_the_date( $episode ); ?></div>
-				</div><?php
+				echo $player; ?>
+					<p class="latest">
+						Play Latest (<?php ee_the_date( $episode ); ?>)
+					</p><?php
 			}
 		}
 	}
@@ -109,13 +109,9 @@ if ( ! function_exists( 'ee_get_episode_meta' ) ) :
 					return false;
 				}
 
-				$hours = floor( $duration / HOUR_IN_SECONDS );
-				$minutes = floor( $duration / MINUTE_IN_SECONDS );
-				$seconds = floor( $duration % MINUTE_IN_SECONDS );
-
-				$duration = substr( '0' . $minutes, -2 ) . ':' . substr( '0' . $seconds, -2 );
-				if ( $hours > 0 ) {
-					$duration = substr( '0' . $hours, - 2 ) . ':' . $duration;
+				$duration = date( 'H:i:s', strtotime( '2000-01-01' ) + $duration  );
+				if ( preg_match( '/00\:(\d{2}\:\d{2})/', $duration, $matches ) ) {
+					$duration = $matches[1];
 				}
 
 				return $duration;
@@ -123,6 +119,7 @@ if ( ! function_exists( 'ee_get_episode_meta' ) ) :
 			case 'download':
 				$download = get_post_meta( $episode->ID, 'omny-audio-url', true );
 				if ( filter_var( $download, FILTER_VALIDATE_URL ) ) {
+					$download = add_query_arg( 'download', 'true', $download );
 					return $download;
 				}
 				break;
@@ -141,7 +138,14 @@ if ( ! function_exists( 'ee_get_podcast_meta' ) ) :
 
 		switch ( $meta_key ) {
 			case 'feed_url':
-				return get_post_meta( $podcast->ID, 'gmp_podcast_feed', true );
+				$feed_url = get_post_meta( $podcast->ID, 'gmp_podcast_feed', true );
+				if ( ! filter_var( $feed_url, FILTER_VALIDATE_URL ) ) {
+					$feed_url = add_query_arg( array(
+						'feed'           => 'podcast',
+						'podcast_series' => rawurldecode( $podcast->post_name ),
+					), home_url( '/' ) );
+				}
+				return $feed_url;
 			case 'itunes_url':
 				return get_post_meta( $podcast->ID, 'gmp_podcast_itunes_url', true );
 			case 'google_play_url':
