@@ -25,8 +25,8 @@ class Video extends \Bbgi\Module {
 	 * @access public
 	 */
 	public function register() {
-		add_action( 'init', $this( 'setup_embeds' ) );
-		add_action( 'init', $this( 'setup_shortcodes' ) );
+		add_action( 'wp_loaded', $this( 'setup_embeds' ) );
+		add_action( 'wp_loaded', $this( 'setup_shortcodes' ) );
 		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 
 		add_action( 'wp_ajax_livestream_m3u8_proxy', $this( 'livestream_m3u8_proxy' ) );
@@ -304,9 +304,11 @@ class Video extends \Bbgi\Module {
 				$cust_params[] = 'livestreamvideoid=' . urlencode( $video_id );
 			}
 
-			foreach ( greatermedia_get_global_targeting() as $targeting ) {
-				if ( is_array( $targeting ) && count( $targeting ) == 2 ) {
-					$cust_params[] = sprintf( '%s=%s', $targeting[0], urlencode( $targeting[1] ) );
+			if ( function_exists( 'greatermedia_get_global_targeting' ) ) {
+				foreach ( greatermedia_get_global_targeting() as $targeting ) {
+					if ( is_array( $targeting ) && count( $targeting ) == 2 ) {
+						$cust_params[] = sprintf( '%s=%s', $targeting[0], urlencode( $targeting[1] ) );
+					}
 				}
 			}
 
