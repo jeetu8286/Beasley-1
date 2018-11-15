@@ -34,6 +34,7 @@ add_action( 'wp_loaded', function() {
 	$modules = array(
 		new \Bbgi\Seo(),
 		new \Bbgi\Settings(),
+		new \Bbgi\Image\Attributes(),
 	);
 
 	if ( current_theme_supports( 'secondstreet' ) ) {
