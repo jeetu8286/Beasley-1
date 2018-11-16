@@ -99,7 +99,9 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	 * @return WP_Error|array The response or WP_Error on failure.
 	 */
 	function bbgi_ee_request( $path, $args = array() ) {
-		$response = wp_cache_get( $path, 'experience_engine_api' );
+		$cache_index = get_option( 'ee_cache_index', 0 );
+		$response    = wp_cache_get( $path, "experience_engine_api-{$cache_index}" );
+
 		if ( empty( $response ) ) {
 			if ( empty( $args['method'] ) ) {
 				$args['method'] = 'GET';
@@ -125,7 +127,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 			$response   = json_decode( wp_remote_retrieve_body( $request ), true );
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
 			if ( $cache_time ) {
-				wp_cache_set( $path, $response, 'experience_engine_api', $cache_time );
+				wp_cache_set( $path, $response, "experience_engine_api-{$cache_index}", $cache_time );
 			}
 		}
 
