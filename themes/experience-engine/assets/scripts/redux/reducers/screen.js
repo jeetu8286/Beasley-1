@@ -12,28 +12,45 @@ export const DEFAULT_STATE = {
 const reducer = ( state = {}, action = {} ) => {
 	switch ( action.type ) {
 		case actions.ACTION_INIT_PAGE:
-			return Object.assign( {}, state, {
+			return {
+				...state,
 				embeds: action.embeds,
 				content: action.content,
-			} );
+			};
 
 		case actions.ACTION_LOADING_PARTIAL:
 		case actions.ACTION_LOADING_PAGE:
 			NProgress.start();
 			break;
 
-		case actions.ACTION_LOADED_PAGE:
+		case actions.ACTION_LOADED_PAGE: {
+			const { document: pageDocument } = action;
+			if ( pageDocument ) {
+				const barId = 'wpadminbar';
+				const wpadminbar = document.getElementById( barId );
+				if ( wpadminbar ) {
+					const newbar = pageDocument.getElementById( barId );
+					if ( newbar ) {
+						wpadminbar.parentNode.replaceChild( newbar, wpadminbar );
+					}
+				}
+			}
+
 			NProgress.done();
-			return Object.assign( {}, state, {
+
+			return {
+				...state,
 				embeds: action.embeds,
 				content: action.content,
 				error: action.error,
 				partials: {},
-			} );
+			};
+		}
 
 		case actions.ACTION_LOADED_PARTIAL:
 			NProgress.done();
-			return Object.assign( {}, state, {
+			return {
+				...state,
 				error: action.error,
 				partials: {
 					...state.partials,
@@ -42,7 +59,7 @@ const reducer = ( state = {}, action = {} ) => {
 						embeds: action.embeds,
 					},
 				},
-			} );
+			};
 
 		default:
 			// do nothing

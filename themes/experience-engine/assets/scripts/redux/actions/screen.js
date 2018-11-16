@@ -73,6 +73,7 @@ export const loadPage = ( url ) => ( dispatch ) => {
 			content: results.content,
 			embeds: results.embeds,
 			error: '',
+			document: pageDocument,
 		} );
 
 		window.scrollTo( 0, 0 );
@@ -95,6 +96,7 @@ export const updatePage = ( data ) => {
 		content: results.content,
 		embeds: results.embeds,
 		error: '',
+		document: pageDocument,
 	};
 };
 
