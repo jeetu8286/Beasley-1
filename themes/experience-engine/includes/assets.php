@@ -14,6 +14,7 @@ remove_action( 'admin_print_styles', 'print_emoji_styles' );
 if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 	function ee_enqueue_front_scripts() {
 		$base = untrailingslashit( get_template_directory_uri() );
+		$min = defined( 'SCRIPT_DEBUG' ) && filter_var( SCRIPT_DEBUG, FILTER_VALIDATE_BOOLEAN ) ? '' : '.min';
 
 		wp_enqueue_style( 'ee-app', "{$base}/bundle/app.css", null, GREATERMEDIA_VERSION );
 
@@ -40,7 +41,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		/**
 		 * Player scripts
 		 */
-		wp_register_script( 'embedly-player.js', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
+		wp_register_script( 'embedly-player.js', "//cdn.embed.ly/player-0.1.0{$min}.js", null, null, true );
 		wp_script_add_data( 'embedly-player.js', 'async', true );
 
 		wp_register_script( 'td-sdk', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
