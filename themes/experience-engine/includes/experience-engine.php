@@ -90,6 +90,11 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 				continue;
 			}
 
+			// do nothing for the following feeds as weel
+			if ( $feed['type'] == 'stream' ) {
+				continue;
+			}
+
 			echo '<div class="ribon">';
 
 				if ( ! empty( $feed['title'] ) ) {
@@ -98,17 +103,26 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 						echo '<p>', esc_html( $feed['description'] ), '</p>';
 					}
 				}
+							var_dump( $feed['type'] );
 
 				echo '<div class="ribon-items">';
 					switch ( $feed['type'] ) {
+						case 'contests':
 						case 'news':
+							$post_type = 'post';
+							if ( $feed['type'] == 'contest' ) {
+								$post_type = 'contest';
+							} elseif ( $feed['type'] == 'podcast' ) {
+								$post_type = 'episode';
+							}
+
 							foreach ( $feed['content'] as $item ) {
 								if ( $item['contentType'] == 'link' ) {
 									$post = new \stdClass();
 									$post->ID = 0;
 									$post->post_title = $item['title'];
 									$post->post_status = 'publish';
-									$post->post_type = 'post';
+									$post->post_type = $post_type;
 									$post->post_content = $item['excerpt'];
 									$post->post_excerpt = $item['excerpt'];
 									$post->post_date = $post->post_date_gmt = $post->post_modified = $post->post_modified_gmt = date( 'Y:m:d H:i:s', strtotime( $item['publishedAt'] ) );
