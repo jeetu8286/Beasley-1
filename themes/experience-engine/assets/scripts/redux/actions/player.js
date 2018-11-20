@@ -169,9 +169,15 @@ export function playAudio( audio, cueTitle = '', artistName = '' ) {
 
 export function playOmny( audio, cueTitle = '', artistName = '' ) {
 	return ( dispatch ) => {
+		const id = audio.replace( /\W+/g, '' );
+		if ( document.getElementById( id ) ) {
+			return;
+		}
+
 		const { playerjs } = window;
 
 		const iframe = document.createElement( 'iframe' );
+		iframe.id = id;
 		iframe.src = audio;
 		document.body.appendChild( iframe );
 
