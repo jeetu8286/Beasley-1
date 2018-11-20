@@ -221,17 +221,20 @@ function reducer( state = {}, action = {} ) {
 			return { ...state, adPlayback: true };
 
 		case ACTION_AD_PLAYBACK_ERROR:
-		case ACTION_AD_PLAYBACK_COMPLETE:
+		case ACTION_AD_PLAYBACK_COMPLETE: {
+			const { station, adPlayback } = state;
 			document.body.classList.remove( 'locked' );
 
 			// start station only if the ad playback is playing now
-			if ( state.adPlayback ) {
+			if ( adPlayback ) {
 				tdplayer.skipAd();
-				tdplayer.play( { station: state.station } );
-				loadNowPlaying( state.station );
 			}
 
+			tdplayer.play( { station } );
+			loadNowPlaying( station );
+
 			return { ...state, adPlayback: false };
+		}
 
 		case ACTION_AD_BREAK_SYNCED:
 			return { ...state, ...adReset, adSynced: true };
