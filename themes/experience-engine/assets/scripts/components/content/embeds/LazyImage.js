@@ -139,7 +139,7 @@ class LazyImage extends PureComponent {
 		}
 
 		return (
-			<div className="lazy-image" ref={self.boxRef} style={styles}>
+			<div className="lazy-image" ref={self.boxRef} style={styles} role="img">
 				{loader}
 			</div>
 		);
