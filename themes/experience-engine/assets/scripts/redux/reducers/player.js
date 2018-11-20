@@ -22,7 +22,7 @@ import {
 } from '../actions/player';
 
 const localStorage = getStorage( 'liveplayer' );
-const { streams, publisher } = window.bbgiconfig || {};
+const { streams } = window.bbgiconfig || {};
 
 let tdplayer = null;
 let mp3player = null;
@@ -71,12 +71,9 @@ function fullStop() {
 
 function getInitialStation() {
 	let station = localStorage.getItem( 'station' );
-
-	/* eslint-disable camelcase */
 	if ( !streams.find( stream => stream.stream_call_letters === station ) ) {
 		station = ( streams[0] || {} ).stream_call_letters;
 	}
-	/* eslint-enable */
 
 	return station;
 }
@@ -87,7 +84,6 @@ const adReset = {
 };
 
 const stateReset = {
-	publisher,
 	audio: '',
 	station: '',
 	cuePoint: false,

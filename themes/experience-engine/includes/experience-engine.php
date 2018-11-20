@@ -60,25 +60,14 @@ endif;
 
 if ( ! function_exists( 'ee_update_bbgiconfig' ) ) :
 	function ee_update_bbgiconfig( $config ) {
-		$publishers = bbgi_ee_get_publisher_list();
-		$publisher_id = get_option( 'ee_publisher' );
-
 		$publishers_map = array();
-		$current_publisher = array();
-		foreach ( $publishers as $publisher ) {
+		foreach ( bbgi_ee_get_publisher_list() as $publisher ) {
 			$publishers_map[ $publisher['id'] ] = $publisher['title'];
-			if ( $publisher['id'] == $publisher_id ) {
-				$current_publisher['phone'] = $publisher['phone'];
-				$current_publisher['address'] = $publisher['address'];
-				$current_publisher['email'] = $publisher['email'];
-				$current_publisher['picture'] = $publisher['picture'];
-			}
 		}
 
 		$config['publishers'] = $publishers_map;
 		$config['locations'] = bbgi_ee_get_locations();
 		$config['genres'] = bbgi_ee_get_genres();
-		$config['publisher'] = $current_publisher;
 
 		$config['streams'] = array();
 		$feeds = bbgi_ee_get_publisher_feeds_with_content();
@@ -235,7 +224,12 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_list' ) ) :
 	 * @return array Contains list of publishers.
 	 */
 	function bbgi_ee_get_publisher_list() {
-		return bbgi_ee_request( 'publishers' );
+		$publishers = bbgi_ee_request( 'publishers' );
+		if ( is_wp_error( $publishers ) ) {
+			$publishers = array();
+		}
+
+		return $publishers;
 	}
 endif;
 
@@ -254,6 +248,10 @@ if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
 		$data = false;
 		if ( $publisher ) {
 			$data = bbgi_ee_request( "publishers/{$publisher}" );
+			if ( is_wp_error( $data ) ) {
+				$data = array();
+			}
+
 			if ( is_array( $data ) && count( $data ) == 1 && is_array( $data[0] ) ) {
 				$data = $data[0];
 			}
@@ -274,7 +272,12 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
 			$publisher = get_option( 'ee_publisher' );
 		}
 
-		return bbgi_ee_request( "publishers/{$publisher}/feeds/" );
+		$feeds = bbgi_ee_request( "publishers/{$publisher}/feeds/" );
+		if ( is_wp_error( $feeds ) ) {
+			$feeds = array();
+		}
+
+		return $feeds;
 	}
 endif;
 
@@ -284,7 +287,12 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feeds_with_content' ) ) :
 			$publisher = get_option( 'ee_publisher' );
 		}
 
-		return bbgi_ee_request( "experience/channels/{$publisher}/feeds/content/" );
+		$content = bbgi_ee_request( "experience/channels/{$publisher}/feeds/content/" );
+		if ( is_wp_error( $content ) ) {
+			$content = array();
+		}
+
+		return $content;
 	}
 endif;
 
@@ -299,7 +307,12 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
 			$publisher = get_option( 'ee_publisher' );
 		}
 
-		return bbgi_ee_request( "publishers/{$publisher}/feeds/{$feed}" );
+		$feed = bbgi_ee_request( "publishers/{$publisher}/feeds/{$feed}" );
+		if ( is_wp_error( $feed ) ) {
+			$feed = array();
+		}
+
+		return $feed;
 	}
 endif;
 
@@ -310,7 +323,12 @@ if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
 	 * @return array Containing locations.
 	 */
 	function bbgi_ee_get_locations() {
-		return bbgi_ee_request( 'locations' );
+		$locations = bbgi_ee_request( 'locations' );
+		if ( is_wp_error( $locations ) ) {
+			$locations = array();
+		}
+
+		return $locations;
 	}
 endif;
 
@@ -321,6 +339,11 @@ if ( ! function_exists( 'bbgi_ee_get_genres' ) ) :
 	 * @return array Containing genres.
 	 */
 	function bbgi_ee_get_genres() {
-		return bbgi_ee_request( 'genres' );
+		$genres = bbgi_ee_request( 'genres' );
+		if ( is_wp_error( $genres ) ) {
+			$genres = array();
+		}
+
+		return $genres;
 	}
 endif;

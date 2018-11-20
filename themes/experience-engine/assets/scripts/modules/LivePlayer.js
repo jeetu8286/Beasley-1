@@ -98,15 +98,12 @@ class LivePlayer extends Component {
 			play,
 			pause,
 			resume,
-			publisher,
 		} = props;
 
 		let notification = false;
 		if ( !online ) {
 			notification = <Offline />;
 		}
-
-		const { address, email, phone } = publisher;
 
 		const children = (
 			<Fragment>
@@ -130,7 +127,7 @@ class LivePlayer extends Component {
 
 				<Stations />
 				<RecentSongs />
-				<Contacts address={address || ''} email={email || ''} phone={phone || ''} />
+				<Contacts />
 			</Fragment>
 		);
 
@@ -144,7 +141,6 @@ LivePlayer.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
-	publisher: PropTypes.shape( {} ).isRequired,
 	initPlayer: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
@@ -157,7 +153,6 @@ function mapStateToProps( { player } ) {
 		status: player.status,
 		adPlayback: player.adPlayback,
 		adSynced: player.adSynced,
-		publisher: player.publisher || {},
 	};
 }
 
