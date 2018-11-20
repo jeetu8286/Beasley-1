@@ -119,14 +119,15 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_PLAY_STATION: {
 			const { station } = action;
+			const stream = state.streams.find( item => item.stream_call_letters === station );
 
 			fullStop();
 
 			tdplayer.playAd( 'tap', {
-				host: 'cmod.live.streamtheworld.com',
+				host: stream.stream_cmod_domain,
 				type: 'preroll',
 				format: 'vast',
-				stationId: streams[station].station_id,
+				stationId: stream.stream_tap_id,
 			} );
 
 			localStorage.setItem( 'station', station );
