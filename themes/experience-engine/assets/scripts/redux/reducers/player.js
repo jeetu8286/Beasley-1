@@ -28,7 +28,7 @@ let tdplayer = null;
 let mp3player = null;
 let omnyplayer = null;
 
-const parseVolume = ( value ) => {
+function parseVolume( value ) {
 	let volume = parseInt( value, 10 );
 	if ( Number.isNaN( volume ) || 100 < volume ) {
 		volume = 100;
@@ -37,15 +37,15 @@ const parseVolume = ( value ) => {
 	}
 
 	return volume;
-};
+}
 
-const loadNowPlaying = ( station ) => {
+function loadNowPlaying( station ) {
 	if ( station && tdplayer && !omnyplayer && !mp3player ) {
 		tdplayer.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
 	}
-};
+}
 
-const fullStop = () => {
+function fullStop() {
 	if ( mp3player ) {
 		mp3player.pause();
 		mp3player = null;
@@ -67,7 +67,19 @@ const fullStop = () => {
 		tdplayer.stop();
 		tdplayer.skipAd();
 	}
-};
+}
+
+function getInitialStation() {
+	let station = localStorage.getItem( 'station' );
+
+	/* eslint-disable camelcase */
+	if ( !streams.find( stream => stream.stream_call_letters === station ) ) {
+		station = ( streams[0] || {} ).stream_call_letters;
+	}
+	/* eslint-enable */
+
+	return station;
+}
 
 const adReset = {
 	adPlayback: false,
@@ -88,11 +100,12 @@ const stateReset = {
 export const DEFAULT_STATE = {
 	...stateReset,
 	status: STATUSES.LIVE_STOP,
-	station: localStorage.getItem( 'station' ) || Object.keys( streams || {} )[0] || '', // first station by default
+	station: getInitialStation(),
 	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
+	streams,
 };
 
-const reducer = ( state = {}, action = {} ) => {
+function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 		case ACTION_INIT_TDPLAYER:
 			tdplayer = action.player;
@@ -235,6 +248,6 @@ const reducer = ( state = {}, action = {} ) => {
 	}
 
 	return state;
-};
+}
 
 export default reducer;

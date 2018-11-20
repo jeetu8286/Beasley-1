@@ -1,6 +1,6 @@
 <?php
 
-add_filter( 'bbgiconfig', 'ee_update_bbgiconfig' );
+add_filter( 'bbgiconfig', 'ee_update_bbgiconfig', 50 );
 
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
 	function ee_has_publisher_information( $meta ) {
@@ -80,6 +80,15 @@ if ( ! function_exists( 'ee_update_bbgiconfig' ) ) :
 		$config['genres'] = bbgi_ee_get_genres();
 		$config['publisher'] = $current_publisher;
 
+		$config['streams'] = array();
+		$feeds = bbgi_ee_get_publisher_feeds_with_content();
+		$channels = wp_list_filter( $feeds, array( 'type' => 'stream' ) );
+		foreach ( $channels as $channel ) {
+			foreach ( $channel['content'] as $stream ) {
+				$config['streams'][] = $stream;
+			}
+		}
+
 		return $config;
 	}
 endif;
@@ -150,7 +159,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	 * @param string $path Site URL to retrieve.
 	 * @param array $args Optional. Request arguments. Default empty array.
 	 *
-	 * @return WP_Error|array The response or WP_Error on failure.
+	 * @return \WP_Error|array The response or WP_Error on failure.
 	 */
 	function bbgi_ee_request( $path, $args = array() ) {
 		$response = wp_cache_get( $path, 'experience_engine_api' );

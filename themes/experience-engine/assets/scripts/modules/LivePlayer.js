@@ -151,19 +151,23 @@ LivePlayer.propTypes = {
 	resume: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ( { player } ) => ( {
-	station: player.station,
-	status: player.status,
-	adPlayback: player.adPlayback,
-	adSynced: player.adSynced,
-	publisher: player.publisher || {},
-} );
+function mapStateToProps( { player } ) {
+	return {
+		station: player.station,
+		status: player.status,
+		adPlayback: player.adPlayback,
+		adSynced: player.adSynced,
+		publisher: player.publisher || {},
+	};
+}
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
-	initPlayer: actions.initTdPlayer,
-	play: actions.playStation,
-	pause: actions.pause,
-	resume: actions.resume,
-}, dispatch );
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( {
+		initPlayer: actions.initTdPlayer,
+		play: actions.playStation,
+		pause: actions.pause,
+		resume: actions.resume,
+	}, dispatch );
+}
 
 export default connect( mapStateToProps, mapDispatchToProps )( LivePlayer );

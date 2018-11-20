@@ -5,14 +5,17 @@ import { bindActionCreators } from 'redux';
 
 import { playStation } from '../../redux/actions/player';
 
-const Stations = ( { play } ) => {
-	const { streams } = window.bbgiconfig || {};
-	const stations = Object.keys( streams || {} ).map( key => (
-		<div key={key}>
-			<button type="button" onClick={() => play( key )}>{key}</button>
-			<span>{streams[key].description}</span>
+function Stations( { play, streams } ) {
+	const stations = [];
+
+	/* eslint-disable camelcase */
+	streams.forEach( ( { title, subtitle, stream_call_letters } ) => stations.push(
+		<div key={stream_call_letters}>
+			<button type="button" onClick={() => play( stream_call_letters )}>{title}</button>
+			<span>{subtitle}</span>
 		</div>
 	) );
+	/* eslint-enable */
 
 	return (
 		<div>
@@ -20,12 +23,21 @@ const Stations = ( { play } ) => {
 			{stations}
 		</div>
 	);
-};
+}
 
 Stations.propTypes = {
 	play: PropTypes.func.isRequired,
+	streams: PropTypes.arrayOf( PropTypes.object ).isRequired,
 };
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( { play: playStation }, dispatch );
+function mapStateToProps( { player } ) {
+	return {
+		streams: player.streams,
+	};
+}
 
-export default connect( null, mapDispatchToProps )( Stations );
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( { play: playStation }, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( Stations );
