@@ -176,6 +176,9 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 
 		// Enclosure (audio file)
 		$enclosure = get_post_meta( $episode_id, 'enclosure', true );
+		if ( empty( $enclosure ) ) {
+			$enclosure = get_post_meta( $episode_id, 'omny-audio-url', true );
+		}
 
 		// Episode duration
 		$duration = get_post_meta( $episode_id, 'duration' , true );
