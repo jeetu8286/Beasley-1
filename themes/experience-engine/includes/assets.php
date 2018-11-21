@@ -74,21 +74,33 @@ if ( ! function_exists( 'ee_script_loader' ) ) :
 	}
 endif;
 
+if ( ! function_exists( '_ee_the_lazy_image' ) ) :
+	function _ee_the_lazy_image( $url, $width, $height ) {
+		return sprintf(
+			ee_is_jacapps()
+				? '<img src="%s" width="%s" height="%s">'
+				: '<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s"></div>',
+			esc_attr( $url ),
+			esc_attr( $width ),
+			esc_attr( $height )
+		);
+	}
+endif;
+
 if ( ! function_exists( 'ee_the_lazy_image' ) ) :
 	function ee_the_lazy_image( $image_id, $echo = true ) {
 		$html = '';
-		if ( $image_id ) {
+		if ( ! empty( $image_id ) ) {
 			if ( ee_is_jacapps() ) {
-				$html = sprintf( '<img src="%s" width="800" height="500">', bbgi_get_image_url( $image_id, 800, 500 ) );
+				$width = 800;
+				$height = 500;
+				$url = bbgi_get_image_url( $image_id, $width, $height );
+
+				$html = _ee_the_lazy_image( $url, $width, $height );
 			} else {
 				$img = wp_get_attachment_image_src( $image_id, 'original' );
 				if ( ! empty( $img ) ) {
-					$html = sprintf(
-						'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s"></div>',
-						esc_attr( $img[0] ),
-						esc_attr( $img[1] ),
-						esc_attr( $img[2] )
-					);
+					$html = _ee_the_lazy_image( $img[0], $img[1], $img[2] );
 				}
 			}
 		}
@@ -105,12 +117,29 @@ if ( ! function_exists( 'ee_the_lazy_thumbnail' ) ) :
 	function ee_the_lazy_thumbnail( $post = null ) {
 		$post = get_post( $post );
 
-		$thumbnail_id = get_post_thumbnail_id( $post );
-		$thumbnail_id = apply_filters( 'ee_post_thumbnail_id', $thumbnail_id, $post );
+		if ( ! empty( $post->picture ) ) {
+			$url = $post->picture['url'];
+			$parts = parse_url( $url );
+			if ( $parts['host'] == 'resize.bbgi.com' ) {
+				$query = array();
+				parse_str( $parts['query'], $query );
+				if ( ! empty( $query['url'] ) ) {
+					$url = $query['url'];
+				}
+			}
 
-		$html = ee_the_lazy_image( $thumbnail_id, false );
+			$width = intval( $post->picture['width'] );
+			$height = intval( $post->picture['height'] );
 
-		echo apply_filters( 'post_thumbnail_html', $html, $post->ID, $thumbnail_id );
+			echo _ee_the_lazy_image( $url, $width, $height );
+		} else {
+			$thumbnail_id = get_post_thumbnail_id( $post );
+			$thumbnail_id = apply_filters( 'ee_post_thumbnail_id', $thumbnail_id, $post );
+
+			$html = ee_the_lazy_image( $thumbnail_id, false );
+
+			echo apply_filters( 'post_thumbnail_html', $html, $post->ID, $thumbnail_id );
+		}
 	}
 endif;
 
