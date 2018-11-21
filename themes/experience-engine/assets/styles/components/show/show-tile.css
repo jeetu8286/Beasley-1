@@ -10,7 +10,7 @@
     }
 
     & .show-time {
-        font-size: 16px;
+        font-size: 1rem;
         color: var(--global-font-secondary);
         font-weight: 500;
     }
