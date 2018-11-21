@@ -1,15 +1,18 @@
-<?php get_header(); ?>
+<?php
 
-<div>
-	<?php while ( have_posts() ) : ?>
-		<?php the_post(); ?>
-		<?php get_template_part( 'partials/tile', get_post_type() ); ?>
-	<?php endwhile; ?>
+get_header();
 
-	<div>
-		<?php previous_posts_link(); ?>
-		<?php next_posts_link(); ?>
-	</div>
-</div>
+if ( ee_is_first_page() ) :
+	get_search_form();
+endif;
 
-<?php get_footer(); ?>
+echo '<div class="archive-tiles">';
+	while ( have_posts() ) :
+		the_post();
+		get_template_part( 'partials/tile', get_post_type() );
+	endwhile;
+echo '</div>';
+
+ee_load_more();
+
+get_footer();

@@ -32,7 +32,11 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 add_action( 'wp_loaded', function() {
 	$modules = array(
+		new \Bbgi\Site(),
 		new \Bbgi\Seo(),
+		new \Bbgi\Settings(),
+		new \Bbgi\Media\Video(),
+		new \Bbgi\Image\Attributes(),
 	);
 
 	if ( current_theme_supports( 'secondstreet' ) ) {
@@ -46,7 +50,7 @@ add_action( 'wp_loaded', function() {
 	foreach ( $modules as $module ) {
 		$module->register();
 	}
-} );
+}, 0 );
 
 // Allows overriding options with constants
 add_filter( 'configure_smtp__options', function( $options ) {

@@ -4,6 +4,7 @@ add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts' );
 
 add_filter( 'wp_audio_shortcode_library', '__return_false' );
 add_filter( 'script_loader_tag', 'ee_script_loader', 10, 3 );
+add_filter( 'tribe_events_assets_should_enqueue_frontend', '__return_false' );
 
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
@@ -31,6 +32,12 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_script_add_data( 'google-webfont', 'noscript', '<link href="//fonts.googleapis.com/css?family=Libre+Franklin:300,400,500,600,700" rel="stylesheet">' );
 
 		/**
+		 * Polyfills
+		 */
+		wp_register_script( 'es6-promise', '//cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js', null, null );
+		wp_script_add_data( 'es6-promise', 'conditional', 'lte IE 11' );
+
+		/**
 		 * Player scripts
 		 */
 		wp_register_script( 'embedly-player.js', '//cdn.embed.ly/player-0.1.0.min.js', null, null, true );
@@ -42,14 +49,8 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		/**
 		 * Application script
 		 */
-		wp_register_script( 'ee-app-vendors', "{$base}/bundle/vendors-app.js", null, GREATERMEDIA_VERSION, true );
-		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'ee-app-vendors' ), GREATERMEDIA_VERSION, true );
-		wp_localize_script( 'ee-app', 'bbgiconfig', array(
-			'firebase'   => apply_filters( 'firebase_settings', array() ),
-			'livePlayer' => array(
-				'streams' => function_exists( 'gmr_streams_get_public_streams' ) ? gmr_streams_get_public_streams() : array(),
-			),
-		) );
+		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'embedly-player.js', 'td-sdk', 'es6-promise' ), GREATERMEDIA_VERSION, true );
+		wp_localize_script( 'ee-app', 'bbgiconfig', apply_filters( 'bbgiconfig', array() ) );
 	}
 endif;
 
@@ -73,18 +74,26 @@ if ( ! function_exists( 'ee_script_loader' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_the_lazy_image' ) ) :
-	function ee_the_lazy_image( $image_id, $aspect = false ) {
+	function ee_the_lazy_image( $image_id ) {
+		if ( ! $image_id ) {
+			return;
+		}
+
+		if ( ee_is_jacapps() ) {
+			printf( '<img src="%s" width="800" height="500">', bbgi_get_image_url( $image_id, 800, 500 ) );
+			return;
+		}
+
 		$img = wp_get_attachment_image_src( $image_id, 'original' );
 		if ( empty( $img ) ) {
 			return;
 		}
 
 		printf(
-			'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s" data-aspect="%s"></div>',
+			'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s"></div>',
 			esc_attr( $img[0] ),
 			esc_attr( $img[1] ),
-			esc_attr( $img[2] ),
-			! empty( $aspect ) ? esc_attr( $aspect ) : 16 / 10
+			esc_attr( $img[2] )
 		);
 	}
 endif;
@@ -92,9 +101,10 @@ endif;
 if ( ! function_exists( 'ee_the_lazy_thumbnail' ) ) :
 	function ee_the_lazy_thumbnail( $post = null ) {
 		$post = get_post( $post );
-		if ( has_post_thumbnail( $post ) ) {
-			$thumbnail_id = get_post_thumbnail_id( $post );
-			ee_the_lazy_image( $thumbnail_id );
-		}
+
+		$thumbnail_id = get_post_thumbnail_id( $post );
+		$thumbnail_id = apply_filters( 'ee_post_thumbnail_id', $thumbnail_id, $post );
+
+		ee_the_lazy_image( $thumbnail_id );
 	}
 endif;

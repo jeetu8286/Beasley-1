@@ -42,13 +42,25 @@ const getLazyImageParams = ( element ) => {
 		src: dataset.src,
 		width: dataset.width,
 		height: dataset.height,
-		aspect: dataset.aspect,
 	};
 };
 
 const getLoadMoreParams = ( element ) => ( {
 	link: element.getAttribute( 'href' ),
 } );
+
+const getLiveStreamVideo = ( element ) => {
+	const attrs = { adTagUrl: element.dataset.adTag };
+
+	const video = element.getElementsByTagName( 'video' )[0];
+	if ( video ) {
+		attrs.id = video.getAttribute( 'id' );
+		attrs.poster = video.getAttribute( 'poster' );
+		attrs.src = video.dataset.src;
+	}
+
+	return attrs;
+};
 
 const processEmbeds = ( container, type, selector, callback ) => {
 	const embeds = [];
@@ -60,6 +72,8 @@ const processEmbeds = ( container, type, selector, callback ) => {
 		const placeholder = document.createElement( 'div' );
 
 		placeholder.setAttribute( 'id', `__cd-${++embedsIndex}` );
+		placeholder.classList.add( 'placeholder' );
+		placeholder.classList.add( `placeholder-${type}` );
 
 		embeds.push( {
 			type,
@@ -89,6 +103,7 @@ export const getStateFromContent = ( container ) => {
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
 			...processEmbeds( container, 'share', '.share-buttons' ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
+			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideo ),
 		];
 
 		// MUST follow after embeds processing

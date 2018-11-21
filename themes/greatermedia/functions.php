@@ -39,12 +39,9 @@ include_once __DIR__ . '/vendor/autoload.php';
 
 require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
 require_once __DIR__ . '/includes/site-options/class-gmr-site-options.php';
-require_once __DIR__ . '/includes/site-options/class-gmr-site-options-helper-functions.php';
-require_once __DIR__ . '/includes/site-options/class-gmr-site-member-text.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
-require_once __DIR__ . '/includes/image-attributes/loader.php';
 require_once __DIR__ . '/includes/category-options.php';
 require_once __DIR__ . '/includes/class-favicon.php';
 require_once __DIR__ . '/includes/iframe-embed.php';
@@ -141,12 +138,11 @@ function greatermedia_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 	$baseurl = untrailingslashit( get_template_directory_uri() );
 
-	wp_register_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
+	wp_enqueue_script( 'imasdk', '//imasdk.googleapis.com/js/sdkloader/ima3.js', null, null );
+	wp_enqueue_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
 
 	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
-	wp_localize_script( 'greatermedia', 'platformConfig', array(
-		'firebase' => apply_filters( 'firebase_settings', array() ),
-	) );
+	wp_localize_script( 'greatermedia', 'platformConfig', apply_filters( 'bbgiconfig', array() ) );
 
 	/**
 	 * Insert the global Simpli.fi retargeting script tag.
@@ -159,7 +155,7 @@ function greatermedia_scripts_styles() {
 	wp_enqueue_script( 'gmedia_keywords-autocomplete-script' );
 	wp_enqueue_script( 'omny' );
 
-	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', array(), null );
+	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', null, null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
 	wp_enqueue_style( 'gmr-gallery' );
 
@@ -177,6 +173,15 @@ add_action( 'get_footer', function () {
  	wp_dequeue_style( 'yarppRelatedCss' );
  	wp_dequeue_style( 'yarpp-thumbnails-yarpp-thumbnail' );
 } );
+
+/**
+ * Helper function for use in conditionals related to content display and the News/Sports theme
+ *
+ * @return bool
+ */
+function is_news_site() {
+	return (bool) filter_var( get_option( 'gmr_newssite' ), FILTER_VALIDATE_BOOLEAN );
+}
 
 /**
  * Register Navigation Menus
@@ -1100,31 +1105,6 @@ function greatermedia_update_image_attributes( $attributes ) {
 add_filter( 'wp_get_attachment_image_attributes', 'greatermedia_update_image_attributes' );
 
 remove_filter( 'the_content', 'wp_make_content_images_responsive' );
-
-/**
- * Adds an image node to each RSS item that has a feature image.
- */
-add_action( 'rss2_item', 'greatermedia_add_mrss_node_to_rss' );
-
-function greatermedia_add_mrss_node_to_rss() {
-	global $post;
-
-	if ( has_post_thumbnail( $post->ID ) ):
-		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'original' );
-		if ( ! empty( $thumbnail[0] ) ) { ?>
-			<media:thumbnail url="<?php echo esc_attr( $thumbnail[0] ); ?>"  width="<?php echo esc_attr( $thumbnail[1] ); ?>"  height="<?php echo esc_attr( $thumbnail[2] ); ?>" /><?php
-		}
-	endif;
-}
-
-add_action( 'rss2_ns', 'greatermedia_add_mrss_ns_to_rss' );
-/**
- * Add required ns
- */
-function greatermedia_add_mrss_ns_to_rss() {
-	?> xmlns:media="http://search.yahoo.com/mrss/" <?php
-}
-
 
 add_action( 'admin_init', 'greatermedia_wpseo_save_compare_data', 10, 0 );
 /**

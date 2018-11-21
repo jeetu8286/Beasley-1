@@ -48,7 +48,9 @@ function omny_init() {
 }
 
 function omny_render_embed( $matches, $attr, $url ) {
-	$embed = wp_cache_get( $url, 'omny' );
+	$key = apply_filters( 'omny_embed_key', $url, $matches, $attr );
+
+	$embed = wp_cache_get( $key, 'omny' );
 	if ( empty( $embed ) ) {
 		$embed = '';
 		$response = wp_remote_get( 'https://omny.fm/oembed?url=' . urlencode( $url ) );
@@ -66,7 +68,7 @@ function omny_render_embed( $matches, $attr, $url ) {
 					$embed = str_replace( '<iframe ', $replace, $body['html'] );
 					$embed = apply_filters( 'omny_embed_html', $embed, $body );
 
-					wp_cache_set( $url, $embed, 'omny', HOUR_IN_SECONDS );
+					wp_cache_set( $key, $embed, 'omny', HOUR_IN_SECONDS );
 				}
 			}
 		}
@@ -88,7 +90,7 @@ function omny_register_scheduled_events() {
 
 function omny_register_settings( $group, $page ) {
 	add_settings_section( 'omny_settings', 'Omny Studio', '__return_false', $page );
-	add_settings_field( 'omny_token', 'Access Token', 'beasley_input_field', $page, 'omny_settings', 'name=omny_token' );
+	add_settings_field( 'omny_token', 'Access Token', 'bbgi_input_field', $page, 'omny_settings', 'name=omny_token' );
 
 	register_setting( $group, 'omny_token', 'sanitize_text_field' );
 }
@@ -193,15 +195,9 @@ function omny_run_import_episodes( $args = array(), $assoc_args = array() ) {
 
 		$post_id = wp_insert_post( $args, true );
 		if ( ! is_wp_error( $post_id ) ) {
-			$post_ids[] = $post_id;
-			// omny_import_clip_image( $clip['ImageUrl'], $post_id );
+			set_post_thumbnail( $post_id, get_post_thumbnail_id( $clip['PodcastId'] ) );
 			$is_wp_cli && \WP_CLI::success( sprintf( 'Imported %s (%s) episode...', $clip['Title'], $clip['Id'] ) );
 		}
-	}
-
-	// make sure we don't have thumbnail ids
-	foreach ( $post_ids as $post_id ) {
-		delete_post_meta( $post_id, '_thumbnail_id' );
 	}
 
 	update_option( 'omny_last_import_finished', time(), 'no' );
@@ -348,7 +344,7 @@ function omny_get_episode_audio_url( $url, $post ) {
 
 add_action( 'init', 'omny_init' );
 add_action( 'admin_init', 'omny_register_scheduled_events' );
-add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
+add_action( 'bbgi_register_settings', 'omny_register_settings', 5, 2 );
 add_action( 'omny_start_import_episodes', 'omny_start_import_episodes' );
 add_action( 'omny_run_import_episodes', 'omny_run_import_episodes' );
 add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts', 1 );

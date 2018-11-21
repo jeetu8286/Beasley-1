@@ -693,7 +693,7 @@ function fpmrss_fetch_post_content( $postargs, $post, $feed_id ) {
 	$fields = array( 'post_content', 'post_excerpt', 'post_title' );
 	foreach ( $fields as $field ) {
 		if ( ! empty( $postargs[ $field ] ) ) {
-			$postargs[ $field ] = wp_kses_post( htmlspecialchars_decode( $postargs[ $field ] ) );
+			$postargs[ $field ] = htmlspecialchars_decode( $postargs[ $field ] );
 		}
 	}
 

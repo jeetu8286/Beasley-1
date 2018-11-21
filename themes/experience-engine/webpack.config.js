@@ -1,12 +1,16 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
 
 const coreConfig = ( options = {} ) => ( {
 	output: {
 		path: path.resolve( __dirname, 'bundle' ),
+		filename: '[name].js',
+		chunkFilename: '[name].js',
+		publicPath: '/wp-content/themes/experience-engine/bundle/',
 	},
 	module: {
 		rules: [
@@ -30,6 +34,7 @@ const coreConfig = ( options = {} ) => ( {
 					options: {
 						cacheDirectory: true,
 						presets: ['@babel/preset-react', '@babel/preset-env'],
+						plugins: ['@babel/plugin-syntax-dynamic-import'],
 					},
 				},
 			},
@@ -76,13 +81,25 @@ const coreConfig = ( options = {} ) => ( {
 	},
 	plugins: [
 		new MiniCssExtractPlugin(),
+
+		new CopyWebpackPlugin( [
+			// video.js
+			'node_modules/video.js/dist/video-js.min.css',
+			'node_modules/video.js/dist/video.min.js',
+
+			// videojs-contrib-quality-levels & videojs-hls-quality-selector
+			'node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js',
+			'node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js',
+
+			// videojs-contrib-ads & videojs-ima
+			'node_modules/videojs-contrib-ads/dist/videojs-contrib-ads.css',
+			'node_modules/videojs-contrib-ads/dist/videojs-contrib-ads.min.js',
+			'node_modules/videojs-ima/dist/videojs.ima.css',
+			'node_modules/videojs-ima/dist/videojs.ima.min.js',
+		] ),
 	],
 	optimization: {
 		noEmitOnErrors: true,
-		splitChunks: {
-			chunks: 'all',
-			automaticNameDelimiter: '-',
-		},
 	},
 } );
 

@@ -1,6 +1,4 @@
-<div style="margin-bottom: 20px">
-	<div style="max-width: 300px">
-		<a href="<?php the_permalink(); ?>"><?php ee_the_lazy_thumbnail(); ?></a>
-	</div>
-	<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+	<?php get_template_part( 'partials/tile/thumbnail' ); ?>
+	<?php get_template_part( 'partials/tile/title' ); ?>
 </div>
