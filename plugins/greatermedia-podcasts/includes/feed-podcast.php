@@ -180,7 +180,17 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>'; ?
 		// Episode duration
 		$duration = get_post_meta( $episode_id, 'duration' , true );
 		if ( empty( $duration ) ) {
-			$duration = '0:00';
+			$duration = get_post_meta( $episode_id, 'omny-duration', true );
+			if ( ! empty( $duration ) ) {
+				$duration = date( 'H:i:s', $duration );
+				if ( substr( $duration, 0, 3 ) == '00:' ) {
+					$duration = substr( $duration, 3 );
+				}
+			}
+
+			if ( empty( $duration ) ) {
+				$duration = '0:00';
+			}
 		}
 
 		// File size
