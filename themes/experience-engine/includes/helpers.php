@@ -95,6 +95,16 @@ if ( ! function_exists( 'ee_the_subtitle' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_the_share_buttons' ) ) :
+	function ee_the_share_buttons( $url = null ) {
+		$attr = filter_var( $url, FILTER_VALIDATE_URL )
+			? ' data-url="' . esc_attr( $url ) . '"'
+			: '';
+
+		echo '<div class="share-buttons"', $attr, '></div>';
+	}
+endif;
+
 if ( ! function_exists( 'ee_update_the_category_list' ) ) :
 	function ee_update_the_category_list( $categories, $post_id ) {
 		$post = get_post( $post_id );
