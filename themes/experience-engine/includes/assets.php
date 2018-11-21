@@ -74,27 +74,29 @@ if ( ! function_exists( 'ee_script_loader' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_the_lazy_image' ) ) :
-	function ee_the_lazy_image( $image_id ) {
-		if ( ! $image_id ) {
-			return;
+	function ee_the_lazy_image( $image_id, $echo = true ) {
+		$html = '';
+		if ( $image_id ) {
+			if ( ee_is_jacapps() ) {
+				$html = sprintf( '<img src="%s" width="800" height="500">', bbgi_get_image_url( $image_id, 800, 500 ) );
+			} else {
+				$img = wp_get_attachment_image_src( $image_id, 'original' );
+				if ( ! empty( $img ) ) {
+					$html = sprintf(
+						'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s"></div>',
+						esc_attr( $img[0] ),
+						esc_attr( $img[1] ),
+						esc_attr( $img[2] )
+					);
+				}
+			}
 		}
 
-		if ( ee_is_jacapps() ) {
-			printf( '<img src="%s" width="800" height="500">', bbgi_get_image_url( $image_id, 800, 500 ) );
-			return;
+		if ( $echo ) {
+			echo $html;
 		}
 
-		$img = wp_get_attachment_image_src( $image_id, 'original' );
-		if ( empty( $img ) ) {
-			return;
-		}
-
-		printf(
-			'<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s"></div>',
-			esc_attr( $img[0] ),
-			esc_attr( $img[1] ),
-			esc_attr( $img[2] )
-		);
+		return $html;
 	}
 endif;
 
@@ -105,6 +107,8 @@ if ( ! function_exists( 'ee_the_lazy_thumbnail' ) ) :
 		$thumbnail_id = get_post_thumbnail_id( $post );
 		$thumbnail_id = apply_filters( 'ee_post_thumbnail_id', $thumbnail_id, $post );
 
-		ee_the_lazy_image( $thumbnail_id );
+		$html = ee_the_lazy_image( $thumbnail_id, false );
+
+		echo apply_filters( 'post_thumbnail_html', $html, $post->ID, $thumbnail_id );
 	}
 endif;
