@@ -20,28 +20,36 @@ class GMPFeed {
 	}
 
 	public static function get_file_info( $file = false ) {
-		$info = array(
-			'size'      => 0,
+		$default = array(
+			'size'      => 1,
 			'mime-type' => 'audio/mpeg',
 		);
 
 		if ( $file ) {
-			$response = wp_remote_head( $file );
-			if ( ! is_wp_error( $response ) ) {
-				$redirect = wp_remote_retrieve_header( $response, 'location' );
-				if ( ! empty( $redirect ) ) {
-					$response = wp_remote_head( $redirect );
+			$cached = wp_cache_get( $file, 'podcast' );
+			if ( ! $cached ) {
+				$response = wp_remote_head( $file );
+				if ( ! is_wp_error( $response ) ) {
+					$redirect = wp_remote_retrieve_header( $response, 'location' );
+					if ( ! empty( $redirect ) ) {
+						$response = wp_remote_head( $redirect );
+					}
+
+					$default['size'] = intval( wp_remote_retrieve_header( $response, 'content-length' ) );
+					$default['mime-type'] = wp_remote_retrieve_header( $response, 'content-type' );
+					if ( ! in_array( $default['mime-type'], wp_get_mime_types() ) ) {
+						$default['mime-type'] = 'audio/mpeg';
+					}
 				}
 
-				$info['size'] = intval( wp_remote_retrieve_header( $response, 'content-length' ) );
-				$info['mime-type'] = wp_remote_retrieve_header( $response, 'content-type' );
-				if ( ! in_array( $info['mime-type'], wp_get_mime_types() ) ) {
-					$info['mime-type'] = 'audio/mpeg';
-				}
+				$cached = $default;
+				wp_cache_set( $file, $default, 'podcast' );
 			}
+
+			return $cached;
 		}
 
-		return $info;
+		return $default;
 	}
 
 	public static function add_mrss_node_to_rss() {
