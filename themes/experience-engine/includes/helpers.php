@@ -98,12 +98,16 @@ if ( ! function_exists( 'ee_the_subtitle' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_the_share_buttons' ) ) :
-	function ee_the_share_buttons( $url = null ) {
-		$attr = filter_var( $url, FILTER_VALIDATE_URL )
+	function ee_the_share_buttons( $url = null, $title = null ) {
+		$url = filter_var( $url, FILTER_VALIDATE_URL )
 			? ' data-url="' . esc_attr( $url ) . '"'
 			: '';
 
-		echo '<div class="share-buttons"', $attr, '></div>';
+		$title = ! empty( $title )
+			? ' data-title="' . esc_attr( trim( $title ) ) . '"'
+			: '';
+
+		echo '<div class="share-buttons"', $url, $title, '></div>';
 	}
 endif;
 
