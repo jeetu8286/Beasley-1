@@ -23,6 +23,7 @@ add_action( 'wp_ajax_fvideos_import_embed', 'fvideos_import_oembed' );
 add_action( 'plugins_loaded', 'fvideos_load_textdomain' );
 
 add_filter( 'post_thumbnail_html', 'fvideos_post_thumbnail_video', 10, 3 );
+add_filter( 'post_class', 'fvideos_update_post_classes', 10, 3 );
 
 function fvideos_load_textdomain() {
 	load_plugin_textdomain( 'fvideos', false, basename( dirname( __FILE__ ) ) . '/languages' );
@@ -39,14 +40,30 @@ function fvideos_enqueue_scripts() {
 }
 
 function fvideos_post_thumbnail_video( $html, $post_id, $thumbnail_id ) {
-	if ( is_singular() ) {
+	$show_video = is_singular();
+	$show_video = apply_filters( 'fvideos_show_video', $show_video, $post_id, $thumbnail_id );
+	if ( $show_video ) {
 		$embed = get_post_meta( $thumbnail_id, 'embed', true );
 		if ( ! empty( $embed ) && ! empty( $embed['html'] ) ) {
-			return sprintf( '<div class="fvideos">%s</div>', $embed['html'] );
+			$html = sprintf( '<div class="fvideos">%s</div>', $embed['html'] );
+			$html = apply_filters( 'fvideos_video_html', $html, $embed, $post_id, $thumbnail_id );
 		}
 	}
 
 	return $html;
+}
+
+function fvideos_update_post_classes( $classes, $class, $post_id ) {
+	$thumbnail_id = get_post_thumbnail_id( $post_id );
+	$thumbnail_id = apply_filters( 'fvideos_post_thumbnail_id', $thumbnail_id, $post_id );
+	if ( ! empty( $thumbnail_id ) ) {
+		$embed = get_post_meta( $thumbnail_id, 'embed', true );
+		if ( ! empty( $embed ) && ! empty( $embed['html'] ) ) {
+			$classes[] = 'has-featured-video';
+		}
+	}
+
+	return $classes;
 }
 
 function fvideos_print_media_templates() {

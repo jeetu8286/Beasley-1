@@ -4,6 +4,7 @@ add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts' );
 
 add_filter( 'wp_audio_shortcode_library', '__return_false' );
 add_filter( 'script_loader_tag', 'ee_script_loader', 10, 3 );
+add_filter( 'fvideos_show_video', 'ee_fvideos_show_video', 10, 2 );
 add_filter( 'tribe_events_assets_should_enqueue_frontend', '__return_false' );
 
 remove_action('wp_head', 'print_emoji_detection_script', 7);
@@ -110,5 +111,14 @@ if ( ! function_exists( 'ee_the_lazy_thumbnail' ) ) :
 		$html = ee_the_lazy_image( $thumbnail_id, false );
 
 		echo apply_filters( 'post_thumbnail_html', $html, $post->ID, $thumbnail_id );
+	}
+endif;
+
+if ( ! function_exists( 'ee_fvideos_show_video' ) ) :
+	function ee_fvideos_show_video( $show, $post_id ) {
+		$queried = get_queried_object();
+		$post = get_post( $post_id );
+
+		return is_a( $post, '\WP_Post' ) && is_a( $queried, '\WP_Post' ) && $post->post_type == $queried->post_type;
 	}
 endif;
