@@ -10,6 +10,8 @@
 
 		& svg {
 			fill: var(--brand-primary);
+			width: 22px;
+			height: 31px;
 		}
 	}
 
@@ -37,6 +39,13 @@
 		& .date {
 			font-size: .778rem;
 			font-weight: 100;
+			padding-left: 1.444rem;
+		}
+
+		& .download {
+			color: var(--brand-primary);
+			display: inline;
+			font-size: .778rem;
 			padding-left: 1.444rem;
 		}
 	}
