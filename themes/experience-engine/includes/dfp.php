@@ -1,20 +1,14 @@
 <?php
 
-add_action( 'bbgi_register_settings', 'ee_register_dfp_settings', 10, 2 );
+add_filter( 'bbgiconfig', 'ee_update_dfp_bbgiconfig', 50 );
 
-if ( ! function_exists( 'ee_register_dfp_settings' ) ) :
-	function ee_register_dfp_settings( $group, $page ) {
-		add_settings_section( 'beasley_dfp_global_targeting_settings', 'DFP Global Targeting', '__return_false', $page );
-
-		$settings = array(
-			'dfp_targeting_market' => 'Market Targeting Value',
-			'dfp_targeting_genre'  => 'Genre Targeting Value',
-			'dfp_targeting_ctest'  => 'CTest Targeting Value',
+if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
+	function ee_update_dfp_bbgiconfig( $config ) {
+		$config['dfp'] = array(
+			'marked' => strtolower( ee_get_publisher_information( 'location' ) ),
+			'genre'  => strtolower( implode( ',', ee_get_publisher_information( 'genre' ) ) ),
 		);
 
-		foreach ( $settings as $key => $label ) {
-			register_setting( $group, $key, 'sanitize_text_field' );
-			add_settings_field( $key, $label, 'bbgi_input_field', $page, 'beasley_dfp_global_targeting_settings', 'name=' . $key );
-		}
+		return $config;
 	}
 endif;
