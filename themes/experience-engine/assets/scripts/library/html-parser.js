@@ -62,7 +62,7 @@ function getLoadMoreParams( element ) {
 	};
 }
 
-function getLiveStreamVideo( element ) {
+function getLiveStreamVideoParams( element ) {
 	const attrs = { adTagUrl: element.dataset.adTag };
 
 	const video = element.getElementsByTagName( 'video' )[0];
@@ -73,6 +73,16 @@ function getLiveStreamVideo( element ) {
 	}
 
 	return attrs;
+}
+
+function getDfpParams( element ) {
+	const { dataset } = element;
+
+	return {
+		unitId: dataset.unitId,
+		size: dataset.size,
+		tag: dataset.tag,
+	};
 }
 
 function processEmbeds( container, type, selector, callback ) {
@@ -117,7 +127,8 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
 			...processEmbeds( container, 'share', '.share-buttons', getShareParams ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
-			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideo ),
+			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),
+			...processEmbeds( container, 'dfp', '.dfp-slot', getDfpParams ),
 		];
 
 		// extract <script> tags
