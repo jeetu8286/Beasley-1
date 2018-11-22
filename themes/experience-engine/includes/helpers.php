@@ -101,6 +101,12 @@ if ( ! function_exists( 'ee_the_subtitle' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_the_have_no_posts' ) ) :
+	function ee_the_have_no_posts( $message = 'No items found' ) {
+		echo '<h4>', esc_html( $message ), '</h4>';
+	}
+endif;
+
 if ( ! function_exists( 'ee_update_the_category_list' ) ) :
 	function ee_update_the_category_list( $categories, $post_id ) {
 		$post = get_post( $post_id );

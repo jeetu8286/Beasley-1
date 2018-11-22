@@ -7,4 +7,6 @@ if ( $query->have_posts() ) :
 	</div><?php
 
 	ee_load_more( $query );
+else :
+	ee_the_have_no_posts();
 endif;
