@@ -18,6 +18,8 @@
 				</span>
 			<?php endif; ?>
 
+			<?php get_template_part( 'partials/episode/download' ); ?>
+
 			<span class="date"><?php ee_the_date(); ?></span>
 		</p>
 		<?php get_template_part( 'partials/tile/title' ); ?>
