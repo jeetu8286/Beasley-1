@@ -154,12 +154,7 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 					echo '</div>';
 				echo '</div>';
 			elseif ( $feed['type'] == 'ad' ) :
-				printf(
-					'<div class="dfp-slot" data-unit-id="%s" data-size="%s" data-tag="%s"></div>',
-					esc_attr( $feed['adUnitId'] ),
-					esc_attr( $feed['adSize'] ),
-					esc_attr( $feed['adTag'] )
-				);
+				ee_dfp_slot( 'dfp_ad_inlist_infinite' );
 			endif;
 		endforeach;
 

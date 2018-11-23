@@ -1,6 +1,6 @@
 <div class="ad -footer -centered">
 	<div class="wrapper">
 		<p class="ad-title">Advertisement</p>
-		<img src="https://placehold.it/970x250" alt="Leaderboard ad placeholder">
+		<?php ee_dfp_slot( 'dfp_ad_leaderboard_pos2' ); ?>
 	</div>
 </div>

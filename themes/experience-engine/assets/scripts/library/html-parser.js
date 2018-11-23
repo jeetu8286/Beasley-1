@@ -79,9 +79,9 @@ function getDfpParams( element ) {
 	const { dataset } = element;
 
 	return {
+		network: dataset.network,
 		unitId: dataset.unitId,
-		size: dataset.size,
-		tag: dataset.tag,
+		unitName: dataset.unitName,
 	};
 }
 
