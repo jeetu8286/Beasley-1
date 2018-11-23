@@ -12,6 +12,10 @@ const coreConfig = ( options = {} ) => ( {
 		chunkFilename: '[name].js',
 		publicPath: '/wp-content/themes/experience-engine/bundle/',
 	},
+	externals: {
+		bbgiconfig: 'bbgiconfig',
+		googletag: 'googletag',
+	},
 	module: {
 		rules: [
 			{

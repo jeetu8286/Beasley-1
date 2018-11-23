@@ -1,17 +1,18 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import bbgiconfig from 'bbgiconfig';
+import googletag from 'googletag';
+
 class Dfp extends PureComponent {
 
 	componentDidMount() {
 		const self = this;
 		const { placeholder, network, unitId, unitName } = self.props;
-		const { googletag, bbgiconfig } = window;
-		const { dfp } = bbgiconfig;
-		const { sizes } = dfp;
 
 		googletag.cmd.push( () => {
-			const slot = googletag.defineSlot( `/${network}/${unitId}`, sizes[unitName], placeholder );
+			const size = bbgiconfig.dfp.sizes[unitName];
+			const slot = googletag.defineSlot( `/${network}/${unitId}`, size, placeholder );
 
 			let sizeMapping = false;
 			if ( 'dfp_ad_leaderboard_pos1' === unitName ) {
@@ -42,7 +43,6 @@ class Dfp extends PureComponent {
 	componentWillUnmount() {
 		const { slot } = this;
 		if ( slot ) {
-			const { googletag } = window;
 			googletag.destroySlots( [slot] );
 		}
 	}
