@@ -1,17 +1,15 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import bbgiconfig from 'bbgiconfig';
-import googletag from 'googletag';
-
 class Dfp extends PureComponent {
 
 	componentDidMount() {
 		const self = this;
 		const { placeholder, network, unitId, unitName, targeting } = self.props;
+		const { googletag } = window;
 
 		googletag.cmd.push( () => {
-			const size = bbgiconfig.dfp.sizes[unitName];
+			const size = window.bbgiconfig.dfp.sizes[unitName];
 			const slot = googletag.defineSlot( `/${network}/${unitId}`, size, placeholder );
 
 			let sizeMapping = false;
@@ -47,6 +45,7 @@ class Dfp extends PureComponent {
 	componentWillUnmount() {
 		const { slot } = this;
 		if ( slot ) {
+			const { googletag } = window;
 			googletag.destroySlots( [slot] );
 		}
 	}

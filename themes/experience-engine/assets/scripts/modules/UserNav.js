@@ -7,7 +7,6 @@ import md5 from 'md5';
 
 import 'firebase/auth';
 
-import bbgiconfig from 'bbgiconfig';
 import { showSignInModal, showSignUpModal } from '../redux/actions/modal';
 
 class UserNav extends Component {
@@ -29,7 +28,7 @@ class UserNav extends Component {
 	}
 
 	componentDidMount() {
-		const { firebase: config } = bbgiconfig;
+		const { firebase: config } = window.bbgiconfig;
 
 		if ( config.projectId ) {
 			firebase.initializeApp( config );
@@ -100,7 +99,7 @@ class UserNav extends Component {
 	}
 
 	render() {
-		const { firebase: config } = bbgiconfig;
+		const { firebase: config } = window.bbgiconfig;
 
 		if ( !config.projectId ) {
 			return false;

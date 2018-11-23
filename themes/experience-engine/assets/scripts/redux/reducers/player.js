@@ -1,5 +1,3 @@
-import bbgiconfig from 'bbgiconfig';
-
 import { getStorage } from '../../library/local-storage';
 import {
 	ACTION_INIT_TDPLAYER,
@@ -24,7 +22,7 @@ import {
 } from '../actions/player';
 
 const localStorage = getStorage( 'liveplayer' );
-const { streams } = bbgiconfig || {};
+const { streams } = window.bbgiconfig || {};
 
 let tdplayer = null;
 let mp3player = null;

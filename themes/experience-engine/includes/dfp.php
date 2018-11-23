@@ -134,7 +134,7 @@ googletag.cmd.push(function() {
 	googletag.pubads().enableSingleRequest();
 	googletag.pubads().collapseEmptyDivs(true);
 
-	for (var i = 0, pairs = bbgiconfig.dfp.global || []; i < pairs.length; i++ ) {
+	for (var i = 0, pairs = bbgiconfig.dfp.global || []; i < pairs.length; i++) {
 		googletag.pubads().setTargeting(pairs[i][0], pairs[i][1]);
 	}
 

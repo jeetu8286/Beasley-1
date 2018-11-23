@@ -54,14 +54,29 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		/**
 		 * Application script
 		 */
+$bbgiconfig = <<<EOL
+window.bbgiconfig = {};
+try {
+	window.bbgiconfig = JSON.parse( document.body.dataset.bbgiconfig );
+} catch( err ) {
+	// do nothing
+}
+EOL;
+
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'googletag', 'embedly-player.js', 'td-sdk', 'es6-promise' ), GREATERMEDIA_VERSION, true );
-		wp_localize_script( 'ee-app', 'bbgiconfig', apply_filters( 'bbgiconfig', array() ) );
+		wp_add_inline_script( 'ee-app', $bbgiconfig, 'before' );
 
 		/**
 		 * Deregister useless scripts
 		 */
 		wp_dequeue_script( 'elasticpress-facets' );
 		wp_dequeue_style( 'elasticpress-facets' );
+	}
+endif;
+
+if ( ! function_exists( 'ee_the_bbgiconfig_attribute' ) ) :
+	function ee_the_bbgiconfig_attribute() {
+		printf( ' data-bbgiconfig="%s"', esc_attr( json_encode( apply_filters( 'bbgiconfig', array() ) ) ) );
 	}
 endif;
 

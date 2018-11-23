@@ -135,6 +135,7 @@ export function getStateFromContent( container ) {
 
 	if ( container ) {
 		state.embeds = [
+			...processEmbeds( container, 'dfp', '.dfp-slot', getDfpParams ),
 			...processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
 			...processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
 			...processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
@@ -142,7 +143,6 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'share', '.share-buttons', getShareParams ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
 			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),
-			...processEmbeds( container, 'dfp', '.dfp-slot', getDfpParams ),
 		];
 
 		// extract <script> tags
