@@ -2,6 +2,7 @@
 
 add_action( 'wp_enqueue_scripts', 'ee_enqueue_dfp_scripts', 50 );
 add_action( 'bbgi_register_settings', 'ee_register_dfp_settings', 10, 2 );
+add_action( 'dfp_tag', 'ee_dfp_slot', 10, 3 );
 
 add_filter( 'bbgiconfig', 'ee_update_dfp_bbgiconfig', 50 );
 
@@ -146,16 +147,32 @@ EOL;
 endif;
 
 if ( ! function_exists( 'ee_dfp_slot' ) ) :
-	function ee_dfp_slot( $unit_name ) {
+	function ee_dfp_slot( $slot, $sizes = false, $targeting = array() ) {
 		$network = get_option( 'dfp_network_code' );
-		$unit_id = get_option( $unit_name );
-		if ( ! empty( $network ) && ! empty( $unit_id ) ) {
-			printf(
-				'<div class="dfp-slot" data-network="%s" data-unit-id="%s" data-unit-name="%s"></div>',
-				esc_attr( $network ),
-				esc_attr( $unit_id ),
-				esc_attr( $unit_name )
-			);
+		$unit_id = get_option( $slot );
+		if ( empty( $network ) || empty( $unit_id ) ) {
+			return;
 		}
+
+		$remnant_slots = array(
+			'dfp_ad_leaderboard_pos1',
+			'dfp_ad_leaderboard_pos2',
+		);
+
+		if ( ! is_array( $targeting ) ) {
+			$targeting = array();
+		}
+
+		if ( in_array( $slot, $remnant_slots ) ) {
+			$targeting[] = array( 'remnant', 'yes' );
+		}
+
+		printf(
+			'<div class="dfp-slot" data-network="%s" data-unit-id="%s" data-unit-name="%s" data-targeting="%s"></div>',
+			esc_attr( $network ),
+			esc_attr( $unit_id ),
+			esc_attr( $slot ),
+			esc_attr( json_encode( $targeting ) )
+		);
 	}
 endif;

@@ -154,7 +154,7 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 					echo '</div>';
 				echo '</div>';
 			elseif ( $feed['type'] == 'ad' ) :
-				ee_dfp_slot( 'dfp_ad_inlist_infinite' );
+				do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' );
 			endif;
 		endforeach;
 

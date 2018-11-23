@@ -77,11 +77,25 @@ function getLiveStreamVideoParams( element ) {
 
 function getDfpParams( element ) {
 	const { dataset } = element;
+	const { targeting } = dataset;
+
+	let keyvalues = [];
+
+	try {
+		if ( 'string' === typeof targeting && targeting ) {
+			keyvalues = JSON.parse( targeting );
+		} else if ( Array.isArray( targeting ) ) {
+			keyvalues = targeting;
+		}
+	} catch ( err ) {
+		// do nothing
+	}
 
 	return {
 		network: dataset.network,
 		unitId: dataset.unitId,
 		unitName: dataset.unitName,
+		targeting: keyvalues,
 	};
 }
 

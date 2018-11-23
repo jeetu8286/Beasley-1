@@ -8,7 +8,7 @@ class Dfp extends PureComponent {
 
 	componentDidMount() {
 		const self = this;
-		const { placeholder, network, unitId, unitName } = self.props;
+		const { placeholder, network, unitId, unitName, targeting } = self.props;
 
 		googletag.cmd.push( () => {
 			const size = bbgiconfig.dfp.sizes[unitName];
@@ -31,6 +31,10 @@ class Dfp extends PureComponent {
 
 			if ( sizeMapping ) {
 				slot.defineSizeMapping( sizeMapping );
+			}
+
+			for ( let i = 0; i < targeting.length; i++ ) {
+				slot.setTargeting( targeting[i][0], targeting[i][1] );
 			}
 
 			slot.addService( googletag.pubads() );
@@ -58,6 +62,11 @@ Dfp.propTypes = {
 	network: PropTypes.string.isRequired,
 	unitId: PropTypes.string.isRequired,
 	unitName: PropTypes.string.isRequired,
+	targeting: PropTypes.arrayOf( PropTypes.array ),
+};
+
+Dfp.defaultProps = {
+	targeting: [],
 };
 
 export default Dfp;
