@@ -27,7 +27,7 @@ if ( ! function_exists( 'ee_register_dfp_settings' ) ) :
 		$settings = apply_filters( 'beasley-dfp-unit-codes-settings', $settings );
 
 		foreach ( $settings as $key => $label ) {
-			register_setting( $group, $key, 'sanitize_text_field' );
+			register_setting( $group, $key, 'trim' );
 			add_settings_field( $key, $label, 'bbgi_input_field', $page, 'beasley_dfp_unit_codes', 'name=' . $key );
 		}
 	}
@@ -42,9 +42,16 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'dfp_ad_playersponsorship' => array( 'fluid' ),
 		);
 
+		$player = array(
+			'network'  => get_option( 'dfp_network_code' ),
+			'unitId'   => get_option( 'dfp_ad_playersponsorship' ),
+			'unitName' => 'dfp_ad_playersponsorship',
+		);
+
 		$config['dfp'] = array(
 			'global' => ee_get_dfp_global_targeting(),
 			'sizes'  => $sizes,
+			'player' => $player,
 		);
 
 		return $config;
@@ -140,7 +147,7 @@ endif;
 
 if ( ! function_exists( 'ee_dfp_slot' ) ) :
 	function ee_dfp_slot( $unit_name ) {
-		$network = trim( get_option( 'dfp_network_code' ) );
+		$network = get_option( 'dfp_network_code' );
 		$unit_id = get_option( $unit_name );
 		if ( ! empty( $network ) && ! empty( $unit_id ) ) {
 			printf(
