@@ -25,6 +25,11 @@ class Dfp extends PureComponent {
 					.addSize( [729, 200], [728, 90] )
 					.addSize( [0, 0], [[320, 100], [320, 50]] )
 					.build();
+			} else if ( 'dfp_ad_right_rail_pos1' === unitName ) {
+				sizeMapping = googletag.sizeMapping()
+					.addSize( [1060, 200], [[300, 600], [300, 250]] )
+					.addSize( [0, 0], [] )
+					.build();
 			}
 
 			if ( sizeMapping ) {

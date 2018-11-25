@@ -15,19 +15,14 @@ if ( ! function_exists( 'ee_register_dfp_settings' ) ) :
 		register_setting( $group, 'dfp_network_code', 'sanitize_text_field' );
 		add_settings_field( 'dfp_network_code', 'Network Code', 'bbgi_input_field', $page, 'beasley_dfp_settings', 'name=dfp_network_code' );
 
-		$settings = array(
+		$settings = apply_filters( 'beasley-dfp-unit-codes-settings', array(
 			'dfp_ad_leaderboard_pos1'  => 'Header Leaderboard',
 			'dfp_ad_leaderboard_pos2'  => 'Footer Leaderboard',
 			'dfp_ad_inlist_infinite'   => 'In List (infinite)',
 			'dfp_ad_playersponsorship' => 'Player Sponsorship',
 			'dfp_ad_interstitial'      => 'Out-of-Page',
-		);
-
-		/**
-		 * Filter dfp setting section titles.
-		 *
-		 */
-		$settings = apply_filters( 'beasley-dfp-unit-codes-settings', $settings );
+			'dfp_ad_right_rail_pos1'   => 'Right Rail',
+		) );
 
 		foreach ( $settings as $key => $label ) {
 			register_setting( $group, $key, 'trim' );
@@ -47,6 +42,7 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'dfp_ad_leaderboard_pos2'  => $advanced,
 			'dfp_ad_inlist_infinite'   => $advanced_with_fluid,
 			'dfp_ad_playersponsorship' => $fluid,
+			'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
 		);
 
 		$player = array(
@@ -183,6 +179,7 @@ if ( ! function_exists( 'ee_dfp_slot' ) ) :
 			'dfp_ad_leaderboard_pos1',
 			'dfp_ad_leaderboard_pos2',
 			'dfp_ad_inlist_infinite',
+			'dfp_ad_right_rail_pos1',
 		);
 
 		if ( ! is_array( $targeting ) ) {
