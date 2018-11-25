@@ -13,17 +13,17 @@ class Dfp extends PureComponent {
 			const slot = googletag.defineSlot( `/${network}/${unitId}`, size, placeholder );
 
 			let sizeMapping = false;
-			if ( 'dfp_ad_leaderboard_pos1' === unitName ) {
+			if ( 'dfp_ad_leaderboard_pos1' === unitName || 'dfp_ad_inlist_infinite' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
-					.addSize( [1024, 200], [[970, 66], [970, 90], [728, 90]] )
-					.addSize( [768, 200], [728, 90] )
-					.addSize( [0, 0], [[320, 50], [320, 100]] )
+					.addSize( [970, 200], ['fluid', [970, 250], [970, 90], [728, 90]] )
+					.addSize( [729, 200], ['fluid', [728, 90]] )
+					.addSize( [0, 0], ['fluid', [320, 100], [320, 50]] )
 					.build();
 			} else if ( 'dfp_ad_leaderboard_pos2' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
-					.addSize( [1024, 200], [[970, 90], [728, 90]] )
-					.addSize( [768, 200], [728, 90] )
-					.addSize( [0, 0], [[320, 50], [320, 100]] )
+					.addSize( [970, 200], [[970, 250], [970, 90], [728, 90]] )
+					.addSize( [729, 200], [728, 90] )
+					.addSize( [0, 0], [[320, 100], [320, 50]] )
 					.build();
 			}
 

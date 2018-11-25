@@ -3,6 +3,7 @@
 add_action( 'wp_enqueue_scripts', 'ee_enqueue_dfp_scripts', 50 );
 add_action( 'bbgi_register_settings', 'ee_register_dfp_settings', 10, 2 );
 add_action( 'dfp_tag', 'ee_dfp_slot', 10, 3 );
+add_action( 'wp_footer', 'ee_display_dfp_outofpage', 100 );
 
 add_filter( 'bbgiconfig', 'ee_update_dfp_bbgiconfig', 50 );
 
@@ -19,6 +20,7 @@ if ( ! function_exists( 'ee_register_dfp_settings' ) ) :
 			'dfp_ad_leaderboard_pos2'  => 'Footer Leaderboard',
 			'dfp_ad_inlist_infinite'   => 'In List (infinite)',
 			'dfp_ad_playersponsorship' => 'Player Sponsorship',
+			'dfp_ad_interstitial'      => 'Out-of-Page',
 		);
 
 		/**
@@ -36,11 +38,15 @@ endif;
 
 if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 	function ee_update_dfp_bbgiconfig( $config ) {
+		$fluid = array( 'fluid' );
+		$advanced = array( array( 970, 250 ), array( 970, 90 ), array( 728, 90 ), array( 320, 100 ), array( 320, 50 ) );
+		$advanced_with_fluid = array_merge( $fluid, $advanced );
+
 		$sizes = array(
-			'dfp_ad_leaderboard_pos1'  => array( array( 728, 90 ), array( 970, 90 ), array( 970, 66 ), array( 320, 50 ), array( 320, 100 ) ),
-			'dfp_ad_leaderboard_pos2'  => array( array( 728, 90 ), array( 970, 90 ), array( 320, 50 ), array( 320, 100 ) ),
-			'dfp_ad_inlist_infinite'   => array( array( 300, 250 ) ),
-			'dfp_ad_playersponsorship' => array( 'fluid' ),
+			'dfp_ad_leaderboard_pos1'  => $advanced_with_fluid,
+			'dfp_ad_leaderboard_pos2'  => $advanced,
+			'dfp_ad_inlist_infinite'   => $advanced_with_fluid,
+			'dfp_ad_playersponsorship' => $fluid,
 		);
 
 		$player = array(
@@ -126,11 +132,30 @@ endif;
 
 if ( ! function_exists( 'ee_enqueue_dfp_scripts' ) ) :
 	function ee_enqueue_dfp_scripts() {
+		$network_id = trim( get_option( 'dfp_network_code' ) );
+		if ( empty( $network_id ) ) {
+			return;
+		}
+
+		$size_mapping = 'googletag.sizeMapping().addSize([970, 200], [[1, 1]]).addSize([0, 0], []).build()';
+
+		$dfp_ad_interstitial = trim( get_option( 'dfp_ad_interstitial' ) );
+		if ( ! empty( $dfp_ad_interstitial ) ) {
+			$dfp_ad_interstitial = sprintf(
+				"googletag.defineOutOfPageSlot('/%s/%s', 'div-gpt-ad-1484200509775-3').defineSizeMapping(%s).addService(googletag.pubads());",
+				esc_js( $network_id ),
+				esc_js( $dfp_ad_interstitial ),
+				esc_js( $size_mapping )
+			);
+		}
+
 		$script = <<<EOL
 var googletag = googletag || {};
 googletag.cmd = googletag.cmd || [];
 
 googletag.cmd.push(function() {
+	{$dfp_ad_interstitial}
+
 	googletag.pubads().enableSingleRequest();
 	googletag.pubads().collapseEmptyDivs(true);
 
@@ -157,6 +182,7 @@ if ( ! function_exists( 'ee_dfp_slot' ) ) :
 		$remnant_slots = array(
 			'dfp_ad_leaderboard_pos1',
 			'dfp_ad_leaderboard_pos2',
+			'dfp_ad_inlist_infinite',
 		);
 
 		if ( ! is_array( $targeting ) ) {
@@ -174,5 +200,21 @@ if ( ! function_exists( 'ee_dfp_slot' ) ) :
 			esc_attr( $slot ),
 			esc_attr( json_encode( $targeting ) )
 		);
+	}
+endif;
+
+if ( ! function_exists( 'ee_display_dfp_outofpage' ) ) :
+	function ee_display_dfp_outofpage() {
+		$network_id = trim( get_option( 'dfp_network_code' ) );
+		if ( empty( $network_id ) ) {
+			return;
+		}
+
+		$dfp_ad_interstitial = get_option( 'dfp_ad_interstitial' );
+		if ( ! empty( $dfp_ad_interstitial ) ) :
+			?><div id="div-gpt-ad-1484200509775-3" style="height:0;overflow:hidden;width:0;">
+				<script type="text/javascript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-1484200509775-3'); });</script>
+			</div><?php
+		endif;
 	}
 endif;

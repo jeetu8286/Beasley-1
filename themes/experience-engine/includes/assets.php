@@ -48,7 +48,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'td-sdk', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
 		wp_script_add_data( 'td-sdk', 'async', true );
 
-		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, true );
+		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, false );
 		wp_script_add_data( 'googletag', 'async', true );
 
 		/**
