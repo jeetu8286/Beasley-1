@@ -3,7 +3,60 @@ import PropTypes from 'prop-types';
 
 class Dfp extends PureComponent {
 
+	constructor( props ) {
+		super( props );
+
+		const self = this;
+
+		self.slot = false;
+		self.interval = false;
+
+		self.onVisibilityChange = self.handleVisibilityChange.bind( self );
+		self.refreshSlot = self.refreshSlot.bind( self );
+	}
+
 	componentDidMount() {
+		const self = this;
+
+		self.registerSlot();
+		if ( 'dfp_ad_right_rail_pos1' === self.props.unitName ) {
+			self.startInterval();
+			document.addEventListener( 'visibilitychange', self.onVisibilityChange );
+		}
+	}
+
+	componentWillUnmount() {
+		const self = this;
+
+		self.destroySlot();
+		if ( 'dfp_ad_right_rail_pos1' === self.props.unitName ) {
+			self.stopInterval();
+			document.removeEventListener( 'visibilitychange', self.onVisibilityChange );
+		}
+	}
+
+	handleVisibilityChange() {
+		const self = this;
+
+		if ( 'hidden' === document.visibilityState ) {
+			self.stopInterval();
+		} else if ( !self.interval ) {
+			self.startInterval();
+		}
+	}
+
+	startInterval() {
+		const self = this;
+		self.interval = setInterval( self.refreshSlot, 20000 ); // 20 sec
+	}
+
+	stopInterval() {
+		const self = this;
+		clearInterval( self.interval );
+		self.interval = false;
+	}
+
+	registerSlot() {
 		const self = this;
 		const { placeholder, network, unitId, unitName, targeting } = self.props;
 		const { googletag } = window;
@@ -47,7 +100,16 @@ class Dfp extends PureComponent {
 		} );
 	}
 
-	componentWillUnmount() {
+	refreshSlot() {
+		const { slot } = this;
+		const { googletag } = window;
+
+		if ( slot ) {
+			googletag.pubads().refresh( [slot] );
+		}
+	}
+
+	destroySlot() {
 		const { slot } = this;
 		if ( slot ) {
 			const { googletag } = window;
