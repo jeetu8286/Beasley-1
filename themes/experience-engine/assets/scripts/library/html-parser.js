@@ -161,10 +161,30 @@ export function getStateFromContent( container ) {
 		// add in-content dfp ad slots on a single article page
 		const elements = container.querySelectorAll( '.incontent-ads' );
 		for ( let i = 0; i < elements.length; i++ ) {
+			const map = new Map();
+			let counts = 0;
+
 			const element = elements[i];
 			const { children } = element;
 			for ( let j = 0; j < children.length; j++ ) {
-				// do nothing for now
+				const child = children[j];
+				switch ( child.nodeName.toUpperCase() ) {
+					case 'P':
+					case 'UL':
+					case 'OL':
+					case 'BLOCKQUOTE':
+						counts++;
+						if ( 2 === counts ) {
+							map.set( child, 'in-content-pos1' );
+						} else if ( 2  < counts && 0 === ( counts - 2 ) % 6 ) {
+							map.set( child, 'in-content-pos2' );
+						}
+						break;
+				}
+			}
+
+			if ( 2 > counts ) {
+				map.set( children[ children.length ], 'in-content-pos1' );
 			}
 		}
 
