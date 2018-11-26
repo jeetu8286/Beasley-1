@@ -1,9 +1,9 @@
 <?php
 
-get_header(); ?>
+get_header();
 
-<?php if ( ee_is_first_page() ): ?>
-	<div class="archive-title content-wrap">
+if ( ee_is_first_page() ):
+	?><div class="archive-title content-wrap">
 		<?php if ( is_post_type_archive( 'podcast' ) ): ?>
 			<svg xmlns="http://www.w3.org/2000/svg" width="26" height="29" aria-labelledby="podcast-icon-title podcast-icon-desc">
 				<title id="podcast-icon-title">
@@ -27,16 +27,20 @@ get_header(); ?>
 			</svg>
 		<?php endif; ?>
 		<?php the_archive_title( '<h1>', '</h1>' ); ?>
-	</div>
-<?php endif; ?>
+	</div><?php
+endif;
 
-<div class="archive-tiles -grid content-wrap">
-	<?php while ( have_posts() ) :
-		the_post();
-		get_template_part( 'partials/tile', get_post_type() );
-	endwhile; ?>
-</div>
+if ( have_posts() ) :
+	?><div class="archive-tiles -grid content-wrap"><?php
+		while ( have_posts() ) :
+			the_post();
+			get_template_part( 'partials/tile', get_post_type() );
+		endwhile;
+	?></div><?php
 
-<?php ee_load_more();
+	ee_load_more();
+else :
+	ee_the_have_no_posts();
+endif;
 
 get_footer();
