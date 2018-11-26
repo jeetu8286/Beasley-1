@@ -43,5 +43,6 @@
 @import 'components/loading';
 @import 'components/lazy-image';
 @import 'components/videojs';
+@import 'components/load-more-button';
 
 @import 'utilities/display';
