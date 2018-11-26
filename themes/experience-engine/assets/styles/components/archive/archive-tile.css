@@ -1,5 +1,6 @@
 .archive-tiles {
-	padding-bottom: 3.555rem;
+	margin-bottom: 1.775rem;
+	padding-bottom: 1.775rem;
 
 	& [class*="-title"] {
 		& a {
@@ -38,9 +39,31 @@
 
 	&.-carousel {
 		flex-wrap: nowrap;
+		left: 0;
 		overflow: auto;
 		padding-right: 4rem;
-		width: calc(1071px + 4rem);
+		position: relative;
+		right: -1rem;
+		width: calc(100% + 1rem);
+
+		@media (min-width: 1373px) {
+			width: calc(100% + 4rem);
+			right: -4rem;
+		}
+
+		& > div {
+			flex: 1 0 calc(50% - 1.5rem);
+			max-width: calc(50% - 1.5rem);
+
+			@media (--min-large-viewport) {
+				flex: 0 1 calc(25% - 1.5rem);
+				max-width: calc(25% - 1.5rem);
+			}
+		}
+
+		& [class*="-tile"] {
+			padding-bottom: 0;
+		}
 
 		& .placeholder-audio {
 			position: absolute;
@@ -57,8 +80,13 @@
 
 	&.-large {
 		& > div {
-			flex: 1 0 calc(50% - 1.5rem);
-			max-width: calc(50% - 1.5rem);
+			flex: 1 0 calc(100% - 1.5rem);
+			max-width: calc(100% - 1.5rem);
+
+			@media (--min-large-viewport) {
+				flex: 1 0 calc(50% - 1.5rem);
+				max-width: calc(50% - 1.5rem);
+			}
 		}
 	}
 }
