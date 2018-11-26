@@ -152,11 +152,12 @@ googletag.cmd = googletag.cmd || [];
 googletag.cmd.push(function() {
 	{$dfp_ad_interstitial}
 
-	googletag.pubads().enableSingleRequest();
 	googletag.pubads().collapseEmptyDivs(true);
 
-	for (var i = 0, pairs = bbgiconfig.dfp.global || []; i < pairs.length; i++) {
-		googletag.pubads().setTargeting(pairs[i][0], pairs[i][1]);
+	if (window.bbgiconfig && window.bbgiconfig.dfp) {
+		for (var i = 0, pairs = window.bbgiconfig.dfp.global || []; i < pairs.length; i++) {
+			googletag.pubads().setTargeting(pairs[i][0], pairs[i][1]);
+		}
 	}
 
 	googletag.enableServices();
