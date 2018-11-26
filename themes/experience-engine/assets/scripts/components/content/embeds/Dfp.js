@@ -59,11 +59,13 @@ class Dfp extends PureComponent {
 	registerSlot() {
 		const self = this;
 		const { placeholder, network, unitId, unitName, targeting } = self.props;
-		const { googletag } = window;
+		const { googletag, bbgiconfig } = window;
 
 		googletag.cmd.push( () => {
-			const size = window.bbgiconfig.dfp.sizes[unitName];
-			const slot = googletag.defineSlot( `/${network}/${unitId}`, size, placeholder );
+			const size = bbgiconfig.dfp.sizes[unitName];
+			const slot = googletag
+				.defineSlot( `/${network}/${unitId}`, size, placeholder )
+				.addService( googletag.pubads() );
 
 			let sizeMapping = false;
 			if ( 'dfp_ad_leaderboard_pos1' === unitName || 'dfp_ad_inlist_infinite' === unitName ) {
@@ -93,7 +95,6 @@ class Dfp extends PureComponent {
 				slot.setTargeting( targeting[i][0], targeting[i][1] );
 			}
 
-			slot.addService( googletag.pubads() );
 			googletag.display( slot );
 
 			self.slot = slot;
