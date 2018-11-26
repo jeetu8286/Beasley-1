@@ -12,13 +12,47 @@
 		align-items: flex-start;
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: space-between;
 
 		& > div {
-			flex: 0 1 calc(25% - 1.5rem);
-			max-width: calc(25% - 1.5rem);
+			flex: 0 1 100%;
 
-			&:not(:last-child) {
-				margin-right: 1.5rem;
+			@media (--min-medium-viewport) {
+				flex: 0 1 calc(50% - 1.5rem);
+				&.-full-width {
+					flex: 0 1 100%;
+				}
+			}
+
+			&:nth-child(odd) {
+				@media (--min-medium-viewport) {
+					padding-right: .75rem;
+				}
+			}
+
+			&:nth-child(even) {
+				@media (--min-medium-viewport) {
+					padding-left: .75rem;
+				}
+			}
+
+			&.-horizontal {
+				align-items: flex-start;
+				display: flex;
+				justify-content: space-between;
+				padding-left: 0;
+
+				& .post-thumbnail {
+					flex: 0 1 30%;
+				}
+
+				& .post-meta {
+					flex: 0 1 calc(70% - 3rem);
+				}
+
+				& .post-title h3 {
+					margin: .875rem 0;
+				}
 			}
 		}
 
