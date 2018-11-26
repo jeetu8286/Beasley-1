@@ -12,6 +12,7 @@ import Progress from '../components/player/Progress';
 import RecentSongs from '../components/player/RecentSongs';
 import Offline from '../components/player/Offline';
 import Contacts from '../components/player/Contacts';
+import Sponsor from '../components/player/Sponsor';
 
 import * as actions from '../redux/actions/player';
 
@@ -98,15 +99,12 @@ class LivePlayer extends Component {
 			play,
 			pause,
 			resume,
-			publisher,
 		} = props;
 
 		let notification = false;
 		if ( !online ) {
 			notification = <Offline />;
 		}
-
-		const { address, email, phone } = publisher;
 
 		const children = (
 			<Fragment>
@@ -126,11 +124,12 @@ class LivePlayer extends Component {
 					<Info />
 					<Progress />
 					<Volume />
+					<Sponsor />
 				</div>
 
 				<Stations />
 				<RecentSongs />
-				<Contacts address={address || ''} email={email || ''} phone={phone || ''} />
+				<Contacts />
 			</Fragment>
 		);
 
@@ -144,26 +143,28 @@ LivePlayer.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
-	publisher: PropTypes.shape( {} ).isRequired,
 	initPlayer: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ( { player } ) => ( {
-	station: player.station,
-	status: player.status,
-	adPlayback: player.adPlayback,
-	adSynced: player.adSynced,
-	publisher: player.publisher || {},
-} );
+function mapStateToProps( { player } ) {
+	return {
+		station: player.station,
+		status: player.status,
+		adPlayback: player.adPlayback,
+		adSynced: player.adSynced,
+	};
+}
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
-	initPlayer: actions.initTdPlayer,
-	play: actions.playStation,
-	pause: actions.pause,
-	resume: actions.resume,
-}, dispatch );
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( {
+		initPlayer: actions.initTdPlayer,
+		play: actions.playStation,
+		pause: actions.pause,
+		resume: actions.resume,
+	}, dispatch );
+}
 
 export default connect( mapStateToProps, mapDispatchToProps )( LivePlayer );

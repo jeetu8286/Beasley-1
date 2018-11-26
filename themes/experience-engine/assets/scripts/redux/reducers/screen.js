@@ -1,29 +1,75 @@
 import NProgress from 'nprogress';
 
-import * as actions from '../actions/screen';
+import { loadAssets, unloadScripts } from '../../library/dom';
+import {
+	ACTION_INIT_PAGE,
+	ACTION_LOADING_PARTIAL,
+	ACTION_LOADING_PAGE,
+	ACTION_LOADED_PAGE,
+	ACTION_LOADED_PARTIAL,
+	ACTION_LOAD_ERROR,
+} from '../actions/screen';
 
 export const DEFAULT_STATE = {
+	scripts: {},
 	embeds: [],
 	content: '',
 	partials: {},
 	error: '',
 };
 
-const reducer = ( state = {}, action = {} ) => {
+function manageScripts( load, unload ) {
+	// remove scripts loaded on the previous page
+	unloadScripts( Object.keys( unload ) );
+
+	// a workaround to make sure Facebook embeds work properly
+	delete window.FB;
+	window.FB = null;
+
+	// load scripts for the new page
+	loadAssets( Object.keys( load ) );
+}
+
+function manageBbgiConfig() {
+	let newconfig = {};
+
+	try {
+		newconfig = JSON.parse( document.body.dataset.bbgiconfig );
+
+		const { googletag } = window;
+		const { dfp } = newconfig;
+
+		if ( dfp && Array.isArray( dfp.global ) ) {
+			googletag.pubads().clearTargeting();
+			for ( let i = 0, pairs = dfp.global; i < pairs.length; i++ ) {
+				googletag.pubads().setTargeting( pairs[i][0], pairs[i][1] );
+			}
+		}
+	} catch ( err ) {
+		// do nothing
+	}
+
+	window.bbgiconfig = newconfig;
+}
+
+export default function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
-		case actions.ACTION_INIT_PAGE:
+		case ACTION_INIT_PAGE:
+			manageScripts( action.scripts, state.scripts );
+
 			return {
 				...state,
 				embeds: action.embeds,
 				content: action.content,
+				scripts: action.scripts,
 			};
 
-		case actions.ACTION_LOADING_PARTIAL:
-		case actions.ACTION_LOADING_PAGE:
+		case ACTION_LOADING_PARTIAL:
+		case ACTION_LOADING_PAGE:
 			NProgress.start();
 			break;
 
-		case actions.ACTION_LOADED_PAGE: {
+		case ACTION_LOADED_PAGE: {
 			const { document: pageDocument } = action;
 			if ( pageDocument ) {
 				const barId = 'wpadminbar';
@@ -37,21 +83,26 @@ const reducer = ( state = {}, action = {} ) => {
 			}
 
 			NProgress.done();
+			manageScripts( action.scripts, state.scripts );
+			manageBbgiConfig();
 
 			return {
 				...state,
+				scripts: action.scripts,
 				embeds: action.embeds,
 				content: action.content,
-				error: action.error,
+				error: '',
 				partials: {},
 			};
 		}
 
-		case actions.ACTION_LOADED_PARTIAL:
+		case ACTION_LOADED_PARTIAL:
 			NProgress.done();
+			manageBbgiConfig();
+
 			return {
 				...state,
-				error: action.error,
+				error: '',
 				partials: {
 					...state.partials,
 					[action.placeholder]: {
@@ -61,12 +112,16 @@ const reducer = ( state = {}, action = {} ) => {
 				},
 			};
 
+		case ACTION_LOAD_ERROR:
+			return {
+				...state,
+				error: action.error,
+			};
+
 		default:
 			// do nothing
 			break;
 	}
 
 	return state;
-};
-
-export default reducer;
+}
