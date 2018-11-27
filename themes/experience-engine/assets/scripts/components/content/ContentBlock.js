@@ -21,10 +21,10 @@ const mapping = {
 	dfp: Dfp,
 };
 
-const ContentBlock = ( { content, embeds } ) => {
+function ContentBlock( { content, embeds, partial } ) {
 	const portal = ReactDOM.createPortal(
 		<div dangerouslySetInnerHTML={{ __html: content }} />,
-		document.getElementById( 'content' )
+		document.getElementById( partial ? 'inner-content' : 'content' )
 	);
 
 	const embedComponents = embeds.map( ( embed ) => {
@@ -50,11 +50,16 @@ const ContentBlock = ( { content, embeds } ) => {
 			{embedComponents}
 		</Fragment>
 	);
-};
+}
 
 ContentBlock.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
+	partial: PropTypes.bool,
+};
+
+ContentBlock.defaultProps = {
+	partial: false,
 };
 
 export default ContentBlock;
