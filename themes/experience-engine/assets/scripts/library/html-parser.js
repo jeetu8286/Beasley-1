@@ -1,6 +1,8 @@
+import { removeElement } from './dom';
+
 let embedsIndex = 0;
 
-const getSecondStreetEmbedParams = ( element ) => {
+function getSecondStreetEmbedParams( element ) {
 	const { dataset } = element;
 
 	return {
@@ -9,9 +11,9 @@ const getSecondStreetEmbedParams = ( element ) => {
 		opguid: dataset.opguid,
 		routing: dataset.routing,
 	};
-};
+}
 
-const getAudioEmbedParams = ( element ) => {
+function getAudioEmbedParams( element ) {
 	const sources = {};
 	const tags = element.getElementsByTagName( 'source' );
 	for ( let i  = 0, len = tags.length; i < len; i++ ) {
@@ -22,9 +24,9 @@ const getAudioEmbedParams = ( element ) => {
 		src: element.getAttribute( 'src' ) || '',
 		sources,
 	};
-};
+}
 
-const getOmnyEmbedParams = ( element ) => {
+function getOmnyEmbedParams( element ) {
 	const { dataset } = element;
 
 	return {
@@ -33,23 +35,35 @@ const getOmnyEmbedParams = ( element ) => {
 		author: dataset.author,
 		omny: true,
 	};
-};
+}
 
-const getLazyImageParams = ( element ) => {
+function getLazyImageParams( element ) {
 	const { dataset } = element;
 
 	return {
 		src: dataset.src,
 		width: dataset.width,
 		height: dataset.height,
+		alt: dataset.alt,
 	};
-};
+}
 
-const getLoadMoreParams = ( element ) => ( {
-	link: element.getAttribute( 'href' ),
-} );
+function getShareParams( element ) {
+	const { dataset } = element;
 
-const getLiveStreamVideo = ( element ) => {
+	return {
+		url: dataset.url,
+		title: dataset.title,
+	};
+}
+
+function getLoadMoreParams( element ) {
+	return {
+		link: element.getAttribute( 'href' ),
+	};
+}
+
+function getLiveStreamVideoParams( element ) {
 	const attrs = { adTagUrl: element.dataset.adTag };
 
 	const video = element.getElementsByTagName( 'video' )[0];
@@ -60,9 +74,33 @@ const getLiveStreamVideo = ( element ) => {
 	}
 
 	return attrs;
-};
+}
 
-const processEmbeds = ( container, type, selector, callback ) => {
+function getDfpParams( element ) {
+	const { dataset } = element;
+	const { targeting } = dataset;
+
+	let keyvalues = [];
+
+	try {
+		if ( 'string' === typeof targeting && targeting ) {
+			keyvalues = JSON.parse( targeting );
+		} else if ( Array.isArray( targeting ) ) {
+			keyvalues = targeting;
+		}
+	} catch ( err ) {
+		// do nothing
+	}
+
+	return {
+		network: dataset.network,
+		unitId: dataset.unitId,
+		unitName: dataset.unitName,
+		targeting: keyvalues,
+	};
+}
+
+function processEmbeds( container, type, selector, callback ) {
 	const embeds = [];
 
 	const elements = container.querySelectorAll( selector );
@@ -87,33 +125,48 @@ const processEmbeds = ( container, type, selector, callback ) => {
 	}
 
 	return embeds;
-};
+}
 
-export const getStateFromContent = ( container ) => {
+export function getStateFromContent( container ) {
 	const state = {
+		scripts: {},
 		embeds: [],
 		content: '',
 	};
 
 	if ( container ) {
 		state.embeds = [
+			...processEmbeds( container, 'dfp', '.dfp-slot', getDfpParams ),
 			...processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
 			...processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
 			...processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
-			...processEmbeds( container, 'share', '.share-buttons' ),
+			...processEmbeds( container, 'share', '.share-buttons', getShareParams ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
-			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideo ),
+			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),
 		];
+
+		// extract <script> tags
+		const scripts = container.getElementsByTagName( 'script' );
+		for ( let i = 0, len = scripts.length; i < len; i++ ) {
+			const element = scripts[i];
+			if ( element.src ) {
+				state.scripts[element.src] = element.outerHTML;
+			}
+		}
+
+		while ( scripts.length ) {
+			removeElement( scripts[0] );
+		}
 
 		// MUST follow after embeds processing
 		state.content = container.innerHTML;
 	}
 
 	return state;
-};
+}
 
-export const parseHtml = ( html ) => {
+export function parseHtml( html ) {
 	const parser = new DOMParser();
 
 	const pageDocument = parser.parseFromString( html, 'text/html' );
@@ -123,7 +176,7 @@ export const parseHtml = ( html ) => {
 	state.document = pageDocument;
 
 	return state;
-};
+}
 
 export default {
 	getStateFromContent,

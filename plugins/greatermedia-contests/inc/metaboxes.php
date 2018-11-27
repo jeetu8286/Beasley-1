@@ -196,6 +196,7 @@ class GreaterMediaContestsMetaboxes {
 		);
 
 		add_meta_box( 'gallery', 'Gallery', array( $this, 'gallery_meta_box' ), GMR_CONTEST_CPT, 'side' );
+
 	}
 
 	public function contest_win_metabox( WP_Post $post ) {
