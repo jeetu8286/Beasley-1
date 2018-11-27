@@ -7,16 +7,18 @@ if ( ee_is_first_page() ):
 endif;
 
 if ( have_posts() ) :
-	?><div class="archive-tiles -grid content-wrap"><?php
+	echo '<div class="archive-tiles -grid content-wrap">';
 		while ( have_posts() ) :
 			the_post();
 			get_template_part( 'partials/tile', get_post_type() );
 		endwhile;
-	?></div><?php
+	echo '</div>';
 
 	ee_load_more();
 else :
-	ee_the_have_no_posts();
+	echo '<div class="content-wrap">';
+		ee_the_have_no_posts();
+	echo '</div>';
 endif;
 
 get_footer();
