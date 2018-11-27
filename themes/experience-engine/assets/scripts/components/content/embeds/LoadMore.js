@@ -38,9 +38,11 @@ class LoadMore extends PureComponent {
 		const label = loading ? <div className="loading" /> : 'Load More';
 
 		return (
-			<button className="load-more" onClick={self.onLoadClick}>
-				{label}
-			</button>
+			<div className="load-more-wrapper content-wrap">
+				<button className="load-more" onClick={self.onLoadClick}>
+					{label}
+				</button>
+			</div>
 		);
 	}
 

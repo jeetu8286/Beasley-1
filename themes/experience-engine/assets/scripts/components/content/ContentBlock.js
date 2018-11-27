@@ -34,11 +34,7 @@ function ContentBlock( { content, embeds, partial } ) {
 		let component = mapping[type] || false;
 		if ( component ) {
 			component = React.createElement( component, params );
-			component = (
-				<DelayedComponent key={placeholder} placeholder={placeholder}>
-					{component}
-				</DelayedComponent>
-			);
+			component = React.createElement( DelayedComponent, { key: placeholder, placeholder }, component );
 		}
 
 		return component;
