@@ -48,6 +48,14 @@ echo '<ul class="gallery-listicle">';
 					echo '<h4>', esc_html( $attribution ), '</h4>';
 				endif;
 
+				if ( $sponsored_image != $image->ID ) :
+					if ( ! get_field( 'hide_download_link', $current_gallery ) ) :
+						echo '<p>';
+							echo '<a href="', esc_url( wp_get_attachment_image_url( $image->ID, 'full' ) ), '" class="-download" download target="_blank" rel="noopener">download</a>';
+						echo '</p>';
+					endif;
+				endif;
+
 				echo '<p>', get_the_excerpt( $image ), '</p>';
 			echo '</div>';
 
