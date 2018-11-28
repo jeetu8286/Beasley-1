@@ -1,7 +1,7 @@
 .podcast-tile,
 .show-tile,
 .contest-tile {
-    align-items: center;
+	align-items: center;
 	display: flex;
 	flex-wrap: wrap;
 
@@ -59,9 +59,9 @@
 			right: 0;
 			top: 0;
 		}
-    }
-    
-    & .post-title {
+	}
+
+	& .post-title {
 		& a {
 			color: var(--global-font-primary);
 		}
