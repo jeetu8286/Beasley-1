@@ -26,7 +26,7 @@ $ads_interval = filter_var( get_field( 'images_per_ad', $current_gallery ), FILT
 	'default'   => 3,
 ) ) );
 
-$current_gallery_url = untrailingslashit( get_permalink( $current_gallery->ID ) );
+$current_gallery_url = trailingslashit( get_permalink( $current_gallery->ID ) );
 $current_image_slug = get_query_var( 'view' );
 
 echo '<ul class="gallery-listicle">';
@@ -57,7 +57,11 @@ echo '<ul class="gallery-listicle">';
 					endif;
 
 					if ( ! get_field( 'hide_social_share', $current_gallery ) ) :
-						ee_the_share_buttons( $current_gallery_url . '/view/' . urlencode( $image->post_name ) . '/', $title );
+						$url = get_field( 'share_photos', $current_gallery )
+							? $current_gallery_url . 'view/' . urlencode( $image->post_name ) . '/'
+							: $current_gallery_url;
+
+						ee_the_share_buttons( $url, $title );
 					endif;
 				endif;
 
