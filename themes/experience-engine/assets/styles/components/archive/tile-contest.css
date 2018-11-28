@@ -1,7 +1,7 @@
 .single-show {
 	& .archive-tiles {
 		& .type-contest h3::after {
-			content: url(../images/contests.svg);
+			content: url("../../../images/contests.svg#square" param(--color blue));
 			/* background-image: url("contests.svg#trophy"); */
 			content: 'contest';
 		}
