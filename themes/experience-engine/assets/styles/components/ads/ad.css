@@ -31,3 +31,8 @@
 		}
 	}
 }
+
+.placeholder-dfp {
+	display: flex;
+	justify-content: center;
+}

@@ -2,15 +2,23 @@
 
 if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 	function ee_homepage_feeds() {
-		$feeds_count = 0;
-
+		$feeds = array();
 		foreach ( bbgi_ee_get_publisher_feeds_with_content() as $feed ) {
-			// do nothing for the following feeds
 			if ( ! empty( $feed['id'] ) && ( $feed['id'] == 'feedback' || $feed['id'] == 'utilities' ) ) {
 				continue;
 			}
 
 			if ( ! in_array( $feed['type'], array( 'events', 'contests', 'news', 'video', 'podcast' ) ) ) {
+				continue;
+			}
+
+			$feeds[] = $feed;
+		}
+
+		$count = count( $feeds );
+		for ( $index = 1; $index <= $count; $index++ ) {
+			$feed = $feeds[ $index - 1 ];
+			if ( empty( $feed['content'] ) || ! is_array( $feed['content'] ) ) {
 				continue;
 			}
 
@@ -32,11 +40,11 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 				echo '</div>';
 			echo '</div>';
 
-			$feeds_count++;
-
 			// below first two ribbons, then after 5th ribbon and every 3 ribbons thereafter.
-			if ( ( $feeds_count == 2 ) || ( $feeds_count > 2 && ( $feeds_count - 2 ) % 3 == 0 ) ) {
-				do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' );
+			if ( $index < $count ) {
+				if ( ( $index == 2 ) || ( $index > 2 && ( $index - 2 ) % 3 == 0 ) ) {
+					do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' );
+				}
 			}
 		}
 
