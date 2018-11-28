@@ -68,9 +68,9 @@ const coreConfig = ( options = {} ) => ( {
 
 								return [
 									require( 'postcss-import' )( importOptions ),
+									require( 'postcss-preset-env' )( envOptions ),
 									require( 'postcss-custom-media' )(),
 									require( 'postcss-svg' )(),
-									require( 'postcss-preset-env' )( envOptions ),
 									...( plugins || [] ),
 								];
 							},
