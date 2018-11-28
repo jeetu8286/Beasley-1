@@ -6,12 +6,13 @@
 	<?php get_template_part( 'partials/show/header' ); ?>
 	<h1><?php the_title(); ?></h1>
 
-	<div>
+	<div class="content-wrap">
 		<div>
 			<?php get_template_part( 'partials/content/meta' ); ?>
 			<?php get_template_part( 'partials/featured-media' ); ?>
 
 			<?php the_content(); ?>
+			<?php get_template_part( 'partials/gallery/listicle' ); ?>
 
 			<?php get_template_part( 'partials/content/categories' ); ?>
 			<?php get_template_part( 'partials/content/tags' ); ?>
