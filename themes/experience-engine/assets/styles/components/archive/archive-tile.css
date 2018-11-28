@@ -38,11 +38,13 @@
 			&.-horizontal {
 				align-items: flex-start;
 				display: flex;
-				justify-content: space-between;
 				padding-left: 0;
 
 				& .post-thumbnail {
-					flex: 0 1 30%;
+					@media (--min-medium-viewport) {
+						flex: 0 1 30%;
+						margin-right: 2.444rem;
+					}
 				}
 
 				& .post-meta {
