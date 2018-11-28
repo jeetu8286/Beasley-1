@@ -1,10 +1,8 @@
 .single-show {
 	& .archive-tiles {
 		& .type-contest h3::after {
-			content: url("../../../images/contests.svg#square" param(--color blue));
-			/* background-image: url("contests.svg#trophy"); */
+			background-image: url("../../../images/contests.svg" param(--color, var(--brand-primary)));
 			content: 'contest';
 		}
 	}
 }
-/* assets\styles\components\archive\contests.svg */
