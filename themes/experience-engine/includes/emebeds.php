@@ -1,6 +1,7 @@
 <?php
 
 add_filter( 'embed_oembed_html', 'ee_update_embed_oembed_html', 10, 4 );
+add_filter( 'fvideos_video_html', 'ee_update_fvideos_video_html', 10, 2 );
 
 if ( ! function_exists( 'ee_update_embed_oembed_html' ) ) :
 	function ee_update_embed_oembed_html( $html, $url, $attr, $post_ID ) {
@@ -16,16 +17,28 @@ if ( ! function_exists( 'ee_update_embed_oembed_html' ) ) :
 				$html = preg_replace( '#<script.*?>.*?</script>#i', '<script src="' . esc_attr( $fb_connect ) . '"></script>', $html );
 			}
 		} elseif ( $data->provider_name == 'YouTube' ) {
-			$html = sprintf(
-				'<div class="youtube" data-title="%s" data-thumbnail="%s" data-html="%s"></div>',
-				esc_attr( $data->title ),
-				esc_attr( $data->thumbnail_url ),
-				esc_attr( $data->html )
-			);
+			$html = ee_oembed_youtube_html( $data );
 		}
 
-//		var_dump( $data );
-
 		return $html;
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_fvideos_video_html' ) ) :
+	function ee_update_fvideos_video_html( $html, $data ) {
+		return ee_oembed_youtube_html( $data );
+	}
+endif;
+
+if ( ! function_exists( 'ee_oembed_youtube_html' ) ) :
+	function ee_oembed_youtube_html( $data ) {
+		$data = (object) $data;
+
+		return sprintf(
+			'<div class="youtube" data-title="%s" data-thumbnail="%s" data-html="%s"></div>',
+			esc_attr( $data->title ),
+			esc_attr( $data->thumbnail_url ),
+			esc_attr( $data->html )
+		);
 	}
 endif;
