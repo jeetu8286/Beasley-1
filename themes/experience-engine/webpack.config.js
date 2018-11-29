@@ -83,6 +83,9 @@ const coreConfig = ( options = {} ) => ( {
 		new MiniCssExtractPlugin(),
 
 		new CopyWebpackPlugin( [
+			// core-js
+			'node_modules/core-js/client/core.min.js',
+			
 			// Perfume.js
 			'node_modules/perfume.js/dist/perfume.umd.min.js',
 
