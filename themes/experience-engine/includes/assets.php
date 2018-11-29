@@ -14,8 +14,10 @@ remove_action( 'admin_print_styles', 'print_emoji_styles' );
 
 if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 	function ee_enqueue_front_scripts() {
+		$is_script_debug = defined( 'SCRIPT_DEBUG' ) && filter_var( SCRIPT_DEBUG, FILTER_VALIDATE_BOOLEAN );
+
 		$base = untrailingslashit( get_template_directory_uri() );
-		$min = defined( 'SCRIPT_DEBUG' ) && filter_var( SCRIPT_DEBUG, FILTER_VALIDATE_BOOLEAN ) ? '' : '.min';
+		$min = $is_script_debug ? '' : '.min';
 
 		wp_enqueue_style( 'ee-app', "{$base}/bundle/app.css", null, GREATERMEDIA_VERSION );
 
@@ -50,6 +52,18 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 
 		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, true ); // must be loaded in the footer
 		wp_script_add_data( 'googletag', 'async', true );
+
+		if ( $is_script_debug ) {
+			$perfume = array(
+				'firstPaint'           => true,
+				'firstContentfulPaint' => true,
+				'firstInputDelay'      => true,
+			);
+
+			// @see: https://zizzamia.github.io/perfume/
+			wp_enqueue_script( 'perfume', "{$base}/bundle/perfume.umd.min.js", null, null, false );
+			wp_add_inline_script( 'perfume', 'var perfumeInfo = new Perfume(' . json_encode( $perfume ) . ')', 'after' );
+		}
 
 		/**
 		 * Application script
