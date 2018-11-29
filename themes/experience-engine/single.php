@@ -7,7 +7,7 @@
 	<h1><?php the_title(); ?></h1>
 
 	<div>
-		<div>
+		<div class="content-wrap">
 			<div>
 				<span><?php the_author_meta( 'display_name' ); ?></span>
 				<span><?php ee_the_date(); ?></span>
