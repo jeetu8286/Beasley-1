@@ -52,5 +52,6 @@
 @import 'components/lazy-image';
 @import 'components/videojs';
 @import 'components/load-more-button';
+@import 'components/social-share';
 
 @import 'utilities/display';
