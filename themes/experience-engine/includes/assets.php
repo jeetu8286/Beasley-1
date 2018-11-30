@@ -1,6 +1,7 @@
 <?php
 
 add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts', 20 );
+add_action( 'wp_head', 'ee_load_polyfills', 0 );
 
 add_filter( 'wp_audio_shortcode_library', '__return_false' );
 add_filter( 'script_loader_tag', 'ee_script_loader', 10, 3 );
@@ -34,12 +35,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_add_inline_script( 'google-webfont', 'var WebFontConfig = ' . wp_json_encode( $webfont ), 'before' );
 		wp_script_add_data( 'google-webfont', 'async', true );
 		wp_script_add_data( 'google-webfont', 'noscript', '<link href="//fonts.googleapis.com/css?family=Libre+Franklin:300,400,500,600,700" rel="stylesheet">' );
-
-		/**
-		 * Polyfills
-		 */
-		wp_register_script( 'es6-promise', "{$base}/bundle/core.min.js", null, null );
-		wp_script_add_data( 'es6-promise', 'conditional', 'lte IE 11' );
 
 		/**
 		 * External libraries
@@ -77,7 +72,7 @@ try {
 }
 EOL;
 
-		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'googletag', 'embedly-player.js', 'td-sdk', 'es6-promise' ), GREATERMEDIA_VERSION, true );
+		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", array( 'googletag', 'embedly-player.js', 'td-sdk' ), GREATERMEDIA_VERSION, true );
 		wp_add_inline_script( 'ee-app', $bbgiconfig, 'before' );
 
 		/**
@@ -88,10 +83,28 @@ EOL;
 	}
 endif;
 
+if ( ! function_exists( 'ee_load_polyfills' ) ) :
+	function ee_load_polyfills() {
+		$base = untrailingslashit( get_template_directory_uri() );
+
+		?><script id="polyfills">
+			(function() {
+				if (!Array.prototype.find) {
+					var s = document.createElement('script');
+					s.src = '<?php echo $base; ?>/bundle/core.min.js';
+					var p = document.getElementById('polyfills')
+					p.parentNode.replaceChild(s, p);
+				}
+			})();
+		</script><?php
+	}
+endif;
+
 if ( ! function_exists( 'ee_the_bbgiconfig_attribute' ) ) :
 	function ee_the_bbgiconfig_attribute() {
 		$theme = get_theme_mod( 'ee_theme_version', '-dark' );
 		$theme = sanitize_html_class( $theme );
+
 		$themeData = array (
 			'theme' => $theme,
 			'brand' => array (
@@ -100,7 +113,12 @@ if ( ! function_exists( 'ee_the_bbgiconfig_attribute' ) ) :
 				'tertiary'  => '#ffffff',
 			),
 		);
-		printf( ' data-bbgiconfig="%s"', esc_attr( json_encode( apply_filters( 'bbgiconfig', array( 'themeData' => $themeData ) ) ) ) );
+
+		$config = array(
+			'themeData' => $themeData,
+		);
+
+		printf( ' data-bbgiconfig="%s"', esc_attr( json_encode( apply_filters( 'bbgiconfig', $config ) ) ) );
 	}
 endif;
 
