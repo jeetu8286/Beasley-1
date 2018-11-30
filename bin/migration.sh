@@ -11,19 +11,20 @@ for site in $(wp site list --field=url)
 	while read -r key value
 	do
 		echo " Importing Key: '$key' with Value : '$value'"
-		wp option update "$key" "$value"
+		wp option update "$key" "$value" --url="$site"
 	done < $INPUT
 	IFS=$OLDIFS
 
-	gmr_site_logo=$( wp option get gmr_site_logo )
-	wp theme mod set custom_logo  "$gmr_site_logo"
+	gmr_site_logo=$( wp option get gmr_site_logo --url="$site" )
+
+	wp theme mod set custom_logo  "$gmr_site_logo" --url="$site"
 
 	# Activate them
-	wp theme activate experience-engine
+	wp theme activate experience-engine --url="$site"
 
 	# Set menu menus to their locations.
-	wp menu location assign ee-primary primary-nav
-	wp menu location assign ee-about about-nav
-	wp menu location assign ee-connect connect-nav
+	wp menu location assign ee-primary primary-nav --url="$site"
+	wp menu location assign ee-about about-nav --url="$site"
+	wp menu location assign ee-connect connect-nav --url="$site"
 
 done
