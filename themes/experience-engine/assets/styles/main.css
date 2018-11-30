@@ -5,6 +5,7 @@
 @import 'base/typography';
 @import 'base/buttons';
 @import 'base/container';
+@import 'base/post-thumbnail';
 
 @import 'components/section/section-header';
 
@@ -19,9 +20,8 @@
 @import 'components/archive/archive-tile';
 @import 'components/archive/archive-post-tile';
 @import 'components/archive/tile-episode';
-@import 'components/archive/tile-gmr_gallery';
 
-@import 'components/player/preroll';
+@import 'components/player/ads';
 @import 'components/player/controls';
 @import 'components/player/live-player';
 
@@ -31,6 +31,10 @@
 @import 'components/show/show-information';
 @import 'components/show/show-navigation';
 @import 'components/show/show-tile';
+
+@import 'components/share/share';
+
+@import 'components/gallery/listicle';
 
 @import 'components/contest/contest-tile';
 
@@ -49,6 +53,5 @@
 @import 'components/lazy-image';
 @import 'components/videojs';
 @import 'components/load-more-button';
-@import 'components/dfp';
 
 @import 'utilities/display';

@@ -38,7 +38,6 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 		$fluid = array( 'fluid' );
 		$advanced = array( array( 970, 250 ), array( 970, 90 ), array( 728, 90 ), array( 320, 100 ), array( 320, 50 ) );
 		$advanced_with_fluid = array_merge( $fluid, $advanced );
-		$small = array( array( 300, 250 ) );
 
 		$sizes = array(
 			'dfp_ad_leaderboard_pos1'  => $advanced_with_fluid,
@@ -46,8 +45,8 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'dfp_ad_inlist_infinite'   => $advanced_with_fluid,
 			'dfp_ad_playersponsorship' => $fluid,
 			'dfp_ad_right_rail_pos1'   => array( array( 300, 600 ), array( 300, 250 ) ),
-			'dfp_ad_incontent_pos1'    => $small,
-			'dfp_ad_incontent_pos2'    => $small,
+			'dfp_ad_incontent_pos1'    => array( array( 1, 1 ), array( 300, 250 ) ),
+			'dfp_ad_incontent_pos2'    => array( array( 300, 250 ) ),
 		);
 
 		$player = array(
@@ -75,11 +74,17 @@ if ( ! function_exists( 'ee_get_dfp_global_targeting' ) ) :
 				? untrailingslashit( current( explode( '?', $_SERVER['REQUEST_URI'], 2 ) ) ) // strip query part and trailing slash of the current uri
 				: 'home';
 
+			$genre = ee_get_publisher_information( 'genre' );
+			$genre = is_array( $genre ) ? trim( strtolower( implode( ',', $genre ) ) ) : '';
+
+			$market = ee_get_publisher_information( 'location' );
+			$market = is_string( $market ) ? trim( strtolower( $market ) ) : '';
+
 			$targeting = array(
 				array( 'cdomain', parse_url( home_url( '/' ), PHP_URL_HOST ) ),
 				array( 'cpage', $cpage ),
-				array( 'genre', trim( strtolower( implode( ',', ee_get_publisher_information( 'genre' ) ) ) ) ),
-				array( 'market', trim( strtolower( ee_get_publisher_information( 'location' ) ) ) ),
+				array( 'genre', $genre ),
+				array( 'market', $market ),
 			);
 
 			if ( is_singular() ) {

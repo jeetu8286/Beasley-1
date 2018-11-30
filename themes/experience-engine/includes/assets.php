@@ -36,7 +36,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		/**
 		 * Polyfills
 		 */
-		wp_register_script( 'es6-promise', '//cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js', null, null );
+		wp_register_script( 'es6-promise', "{$base}/bundle/core.min.js", null, null );
 		wp_script_add_data( 'es6-promise', 'conditional', 'lte IE 11' );
 
 		/**
@@ -76,7 +76,17 @@ endif;
 
 if ( ! function_exists( 'ee_the_bbgiconfig_attribute' ) ) :
 	function ee_the_bbgiconfig_attribute() {
-		printf( ' data-bbgiconfig="%s"', esc_attr( json_encode( apply_filters( 'bbgiconfig', array() ) ) ) );
+		$theme = get_theme_mod( 'ee_theme_version', '-dark' );
+		$theme = sanitize_html_class( $theme );
+		$themeData = array (
+			'theme' => $theme,
+			'brand' => array (
+				'primary'   => '#ff0000',
+				'secondary' => '#ffe964',
+				'tertiary'  => '#ffffff',
+			),
+		);
+		printf( ' data-bbgiconfig="%s"', esc_attr( json_encode( apply_filters( 'bbgiconfig', array( 'themeData' => $themeData ) ) ) ) );
 	}
 endif;
 

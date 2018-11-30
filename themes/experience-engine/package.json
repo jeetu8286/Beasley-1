@@ -15,7 +15,9 @@
 		"babel-eslint": "^10.0.1",
 		"babel-loader": "^8.0.4",
 		"copy-webpack-plugin": "^4.6.0",
+		"core-js": "^2.5.7",
 		"css-loader": "^1.0.1",
+		"css-vars-ponyfill": "^1.15.3",
 		"cssnano": "^4.1.7",
 		"eslint": "^5.9.0",
 		"eslint-loader": "^2.1.1",
@@ -42,7 +44,7 @@
 		"videojs-contrib-quality-levels": "^2.0.9",
 		"videojs-hls-quality-selector": "0.0.8",
 		"videojs-ima": "^1.5.1",
-		"webpack": "^4.26.0",
+		"webpack": "^4.26.1",
 		"webpack-bundle-analyzer": "^3.0.3",
 		"webpack-cli": "^3.1.2"
 	},
