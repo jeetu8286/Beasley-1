@@ -39,6 +39,7 @@ add_action( 'wp_loaded', function() {
 		new \Bbgi\Shortcodes(),
 		new \Bbgi\Media\Video(),
 		new \Bbgi\Image\Attributes(),
+		new \Bbgi\Image\ThumbnailColumn(),
 		new \Bbgi\Integration\Google(),
 	);
 

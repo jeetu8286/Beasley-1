@@ -35,8 +35,6 @@ add_theme_support( 'firebase' );
 add_theme_support( 'legacy-live-player' );
 add_theme_support( 'html5', array( 'search-form' ) );
 
-include_once __DIR__ . '/vendor/autoload.php';
-
 require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
 require_once __DIR__ . '/includes/site-options/class-gmr-site-options.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
