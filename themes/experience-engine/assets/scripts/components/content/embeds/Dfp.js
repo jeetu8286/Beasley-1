@@ -130,7 +130,10 @@ class Dfp extends PureComponent {
 		const { slot } = this;
 		if ( slot ) {
 			const { googletag } = window;
-			googletag.destroySlots( [slot] );
+
+			googletag.cmd.push( () => {
+				googletag.destroySlots( [slot] );
+			} );
 		}
 	}
 
