@@ -1,4 +1,6 @@
 .home {
+	& .cta,
+	& .countdown,
 	& .ribon {
 		margin: 0 auto;
 		max-width: 1071px;
@@ -43,5 +45,30 @@
 
 	& .type-post {
 		width: 400px;
+	}
+
+	& .cta {
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: contain;
+		padding-top: calc((9 / 25) * 100%);
+		position: relative;
+	}
+
+	& .cta-content {
+		left: 50%;
+		position: absolute;
+		text-align: center;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	& .cta-title {
+		font-size: 2rem;
+	}
+
+	& .cta-button {
+		display: inline-block;
+		padding: .5rem 1rem;
 	}
 }
