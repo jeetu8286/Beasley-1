@@ -78,6 +78,7 @@
 	& .countdown-timer {
 		display: flex;
 		justify-content: center;
+		margin-bottom: 2rem;
 
 		& .time {
 			background-color: var(--global-mine-shaft);

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Dfp from './Dfp';
+
 const SECOND_IN_MILLISECONDS = 1000;
 const MINUTE_IN_MILLISECONDS = SECOND_IN_MILLISECONDS * 60;
 const HOUR_IN_MILLISECONDS = MINUTE_IN_MILLISECONDS * 60;
@@ -56,6 +58,21 @@ class Countdown extends Component {
 		return remaining;
 	}
 
+	getSponsor() {
+		const { network, unitId, unitName } = window.bbgiconfig.dfp.countdown;
+		const { placeholder } = this.props;
+
+		const params = {
+			id: `${placeholder}-adunit`,
+			className: 'countdown-sponsor',
+		};
+
+		// we use createElement to make sure we don't add empty spaces here, thus DFP can properly collapse it when nothing to show here
+		return React.createElement( 'div', params, [
+			<Dfp key="sponsor" placeholder={params.id} network={network} unitId={unitId} unitName={unitName} />,
+		] );
+	}
+
 	render() {
 		const self = this;
 		const { payload } = self.props;
@@ -90,13 +107,18 @@ class Countdown extends Component {
 		return (
 			<div className="countdown" style={blockStyle}>
 				<div className="countdown-content">
-					<h4 className="countdown-title">{titleText}</h4>
+					<h4 className="countdown-title">
+						{titleText}
+					</h4>
+
 					<div className="countdown-timer">
 						<div className="time" title="Days">{( '0' + days ).slice( -2 )}</div>
 						<div className="time" title="Hours">{( '0' + hours ).slice( -2 )}</div>
 						<div className="time" title="Minutes">{( '0' + minutes ).slice( -2 )}</div>
 						<div className="time" title="Seconds">{( '0' + seconds ).slice( -2 )}</div>
 					</div>
+
+					{self.getSponsor()}
 				</div>
 			</div>
 		);
@@ -105,6 +127,7 @@ class Countdown extends Component {
 }
 
 Countdown.propTypes = {
+	placeholder: PropTypes.string.isRequired,
 	payload: PropTypes.oneOfType( [PropTypes.bool, PropTypes.object] ),
 };
 
