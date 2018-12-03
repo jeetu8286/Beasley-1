@@ -4,11 +4,12 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 	function ee_homepage_feeds() {
 		$feeds = array();
 		$supported_types = array(
-			'events'   => 'ee_render_standard_homepage_feed',
-			'contests' => 'ee_render_standard_homepage_feed',
-			'news'     => 'ee_render_standard_homepage_feed',
-			'video'    => 'ee_render_standard_homepage_feed',
-			'podcast'  => 'ee_render_standard_homepage_feed',
+			'events'   => 'ee_render_homepage_standard_feed',
+			'contests' => 'ee_render_homepage_standard_feed',
+			'news'     => 'ee_render_homepage_standard_feed',
+			'video'    => 'ee_render_homepage_standard_feed',
+			'podcast'  => 'ee_render_homepage_standard_feed',
+			'cta'      => 'ee_render_homepage_cta_feed',
 		);
 
 		foreach ( bbgi_ee_get_publisher_feeds_with_content() as $feed ) {
@@ -33,8 +34,8 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'ee_render_standard_homepage_feed' ) ) :
-	function ee_render_standard_homepage_feed( $feed, $feeds_count ) {
+if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
+	function ee_render_homepage_standard_feed( $feed, $feeds_count ) {
 		static $index = 1;
 
 		echo '<div class="ribon">';
@@ -63,6 +64,21 @@ if ( ! function_exists( 'ee_render_standard_homepage_feed' ) ) :
 		}
 
 		$index++;
+	}
+endif;
+
+if ( ! function_exists( 'ee_render_homepage_cta_feed' ) ) :
+	function ee_render_homepage_cta_feed( $feed ) {
+		foreach ( $feed['content'] as $item ) {
+			$type = explode( '-', $item['contentType'] );
+			if ( $type[0] == 'cta' || $type[0] == 'countdown' ) {
+				printf(
+					'<div class="%s" data-payload="%s"></div>',
+					esc_attr( $type[0] ),
+					esc_attr( json_encode( $item ) )
+				);
+			}
+		}
 	}
 endif;
 
