@@ -32,6 +32,12 @@ if ( ! function_exists( 'ee_rest_api_init' ) ) :
 			'callback' => 'ee_rest_get_user',
 			'args'     => $authorization,
 		) );
+
+		register_rest_route( $namespace, 'feeds-content', array(
+			'methods'  => \WP_REST_Server::CREATABLE,
+			'callback' => 'ee_rest_get_feeds_content',
+			'args'     => $authorization,
+		) );
 	}
 endif;
 
@@ -71,5 +77,41 @@ if ( ! function_exists( 'ee_rest_get_user' ) ) :
 		}
 
 		return rest_ensure_response( $response );
+	}
+endif;
+
+if ( ! function_exists( 'ee_rest_get_feeds_content' ) ) :
+	function ee_rest_get_feeds_content( $request ) {
+		$publisher = get_option( 'ee_publisher' );
+		if ( empty( $publisher ) ) {
+			return new \WP_Error( 404, 'Not Found' );
+		}
+
+		$request = rest_ensure_request( $request );
+		$authorization = $request->get_param( 'authorization' );
+
+		$path = sprintf(
+			'experience/channels/%s/feeds/content/?authorization=%s',
+			urlencode( $publisher ),
+			urlencode( $authorization )
+		);
+
+		$response = _bbgi_ee_request( $path );
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		if ( wp_remote_retrieve_response_code( $response ) != 200 ) {
+			return new \WP_Error( 401, 'Authorization failed' );
+		}
+
+		$response = wp_remote_retrieve_body( $response );
+		$response = json_decode( $response, true );
+
+		ob_start();
+		ee_homepage_feeds( $response );
+		$html = ob_get_clean();
+
+		return rest_ensure_response( array( 'html' => $html ) );
 	}
 endif;
