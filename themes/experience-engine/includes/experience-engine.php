@@ -308,10 +308,7 @@ if ( ! function_exists( 'ee_rest_api_init' ) ) :
 		register_rest_route( 'experience_engine/v1', '/purge-cache/', array(
 			'methods'  => 'GET',
 			'callback' => function () {
-				$cache_index = get_option( 'ee_cache_index', 0 );
-				$cache_index ++;
-				update_option( 'ee_cache_index', $cache_index, 'no' );
-
+				update_option( 'ee_cache_index', time(), 'no' );
 				return rest_ensure_response( 'Cache Flushed' );
 			},
 		) );
