@@ -1,8 +1,8 @@
 <?php
 
 if ( ! function_exists( 'ee_homepage_feeds' ) ) :
-	function ee_homepage_feeds() {
-		$feeds = array();
+	function ee_homepage_feeds( $feeds ) {
+		$supported_feeds = array();
 		$supported_types = array(
 			'events'   => 'ee_render_homepage_standard_feed',
 			'contests' => 'ee_render_homepage_standard_feed',
@@ -12,19 +12,19 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 			'cta'      => 'ee_render_homepage_cta_feed',
 		);
 
-		foreach ( bbgi_ee_get_publisher_feeds_with_content() as $feed ) {
+		foreach ( $feeds as $feed ) {
 			if ( ! empty( $feed['id'] ) && ( $feed['id'] == 'feedback' || $feed['id'] == 'utilities' ) ) {
 				continue;
 			}
 
 			if ( isset( $supported_types[ $feed['type'] ] ) ) {
-				$feeds[] = $feed;
+				$supported_feeds[] = $feed;
 			}
 		}
 
-		$count = count( $feeds );
+		$count = count( $supported_feeds );
 		for ( $i = 0; $i < $count; $i++ ) {
-			$feed = $feeds[ $i ];
+			$feed = $supported_feeds[ $i ];
 			if ( ! empty( $feed['content'] ) && is_array( $feed['content'] ) ) {
 				call_user_func( $supported_types[ $feed['type'] ], $feed, $count );
 			}
@@ -99,7 +99,7 @@ if ( ! function_exists( 'ee_setup_post_from_feed_item' ) ) :
 		$post->ID = 0;
 		$post->post_title = $item['title'];
 		$post->post_status = 'publish';
-		$post->post_type = ee_is_network_domain( $item['link'] ) ? $post_type : 'external';
+		$post->post_type = ee_is_network_domain( $item['link'] ) || $post_type == 'episode' ? $post_type : 'external';
 		$post->post_content = $item['excerpt'];
 		$post->post_excerpt = $item['excerpt'];
 		$post->post_date = $post->post_date_gmt = $post->post_modified = $post->post_modified_gmt = date( 'Y:m:d H:i:s', strtotime( $item['publishedAt'] ) );
