@@ -14,6 +14,7 @@
 			fill: var(--brand-primary);
 			height: 45px;
 			max-height: none;
+			width: 57px;
 		}
 	}
 
@@ -129,22 +130,25 @@
 
 		& > * {
 			flex: 0 1 100%;
+			min-width: 117px;
 			padding: 0 0 1rem;
+			text-align: center;
 
 			@media (--min-small-viewport) {
 				flex: 0 1 auto;
 			}
-		}
 
-		& > *:not(:first-child) {
-			@media (--min-small-viewport) {
-				padding-left: 2.78rem;
+			&:last-child {
+				@media (--min-small-viewport) {
+					padding-left: 4rem;
+				}
 			}
 		}
 
 		& .duration {
+			color: var(--global-dove-gray);
+			font-family: var(--global-font-family-secondary);
 			font-weight: 600;
-			width: 117px;
 
 			@media (--min-small-viewport) {
 				text-align: center;
@@ -152,6 +156,8 @@
 		}
 
 		& .btn {
+			font-family: var(--global-font-family-secondary);
+			font-weight: 600;
 			text-align: left;
 
 			@media (--min-small-viewport) {
