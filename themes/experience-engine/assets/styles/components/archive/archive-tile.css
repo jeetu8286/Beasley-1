@@ -199,10 +199,10 @@
 
 .single-podcast {
 	& #inner-content {
-		&  > .podcast {
+		& > .podcast {
 			& .episode-tile:first-child {
 				& .episode-meta::before {
-					color: #5fa5d8;
+					color: var(--brand-secondary);
 					content: "Latest";
 					font-style: italic;
 					font-size: .833rem;
