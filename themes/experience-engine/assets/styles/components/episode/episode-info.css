@@ -62,7 +62,6 @@
 			float: left;
 
 			&:not(:first-child) {
-
 				@media (--min-small-viewport) {
 					padding-left: 1rem;
 				}
@@ -83,9 +82,14 @@
 		}
 
 		& > div {
+			display: flex;
+			flex: 0 1 100%;
+			justify-content: center;
 			padding-bottom: 1.72rem;
 
 			@media (--min-small-viewport) {
+				display: block;
+				flex-basis: auto;
 				padding-bottom: 0;
 			}
 		}
@@ -123,9 +127,10 @@
 		display: flex;
 		flex-wrap: wrap;
 		font-size: .833rem;
+		justify-content: space-between;
 
-		@media (--min-small-viewport) {
-			flex-wrap: nowrap;
+		@media (--min-medium-viewport) {
+			justify-content: flex-start;
 		}
 
 		& > * {
@@ -139,7 +144,7 @@
 			}
 
 			&:last-child {
-				@media (--min-small-viewport) {
+				@media (--min-large-viewport) {
 					padding-left: 4rem;
 				}
 			}
@@ -149,25 +154,25 @@
 			color: var(--global-dove-gray);
 			font-family: var(--global-font-family-secondary);
 			font-weight: 600;
-
-			@media (--min-small-viewport) {
-				text-align: center;
-			}
 		}
 
 		& .btn {
 			font-family: var(--global-font-family-secondary);
 			font-weight: 600;
-			text-align: left;
-
-			@media (--min-small-viewport) {
-				text-align: center;
-			}
 		}
 
 		& .date {
 			color: #8f8f8f;
 			font-size: .778rem;
+		}
+
+		& .share {
+			justify-content: center;
+			flex-wrap: wrap;
+
+			& .facebook {
+				margin-left: 0;
+			}
 		}
 	}
 }
