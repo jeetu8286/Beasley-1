@@ -6,9 +6,9 @@
 
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php get_template_part( 'partials/show/header' ); ?>
-	<h1><?php the_title(); ?></h1>
-
 	<div class="content-wrap">
+		<h1><?php the_title(); ?></h1>
+
 		<div>
 			<?php get_template_part( 'partials/content/meta' ); ?>
 			<?php get_template_part( 'partials/featured-media' ); ?>
