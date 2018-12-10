@@ -51,7 +51,7 @@ class EmbedVideo extends PureComponent {
 
 		return (
 			<div className="lazy-video">
-				<a href={src} title={title} aria-label={`Play ${title}`} onClick={self.onPlayClick}>
+				<a href={src} aria-label={`Play ${title}`} onClick={self.onPlayClick}>
 					<picture>
 						{webp}
 						<img src={thumbnail} alt={title} />
