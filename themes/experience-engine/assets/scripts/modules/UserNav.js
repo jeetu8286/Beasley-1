@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import md5 from 'md5';
-
-import 'firebase/auth';
 
 import { showSignInModal, showSignUpModal } from '../redux/actions/modal';
 

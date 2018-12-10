@@ -12,6 +12,9 @@ const coreConfig = ( options = {} ) => ( {
 		chunkFilename: '[name].js',
 		publicPath: '/wp-content/themes/experience-engine/bundle/',
 	},
+	externals: {
+		firebase: 'firebase',
+	},
 	module: {
 		rules: [
 			{
@@ -85,7 +88,7 @@ const coreConfig = ( options = {} ) => ( {
 		new CopyWebpackPlugin( [
 			// core-js
 			'node_modules/core-js/client/core.min.js',
-			
+
 			// Perfume.js
 			'node_modules/perfume.js/dist/perfume.umd.min.js',
 
