@@ -27,14 +27,12 @@ if ( ! function_exists( 'ee_update_embed_oembed_html' ) ) :
 		}
 
 		// we need to make sure that wpautop filter doesn't mess everything up here, so we need to inject embed code later
-		$priority = 150;
 		$placeholder = '<div><!-- ' . sha1( $html ) . ' --></div>';
-		$replace_filter = function( $content ) use ( $replace_filter, $placeholder, $html, $priority ) {
-			remove_filter( 'the_content', $replace_filter, $priority );
+		$replace_filter = function( $content ) use ( $placeholder, $html ) {
 			return str_replace( $placeholder, $html, $content );
 		};
 
-		add_filter( 'the_content', $replace_filter, $priority );
+		add_filter( 'the_content', $replace_filter, 150 );
 
 		return $placeholder;
 	}
