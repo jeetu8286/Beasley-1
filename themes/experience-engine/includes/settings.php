@@ -1,5 +1,6 @@
 <?php
 
+add_action( 'customize_register', 'ee_register_customizer' );
 add_action( 'bbgi_register_settings', 'ee_register_settings', 1, 2 );
 
 if ( ! function_exists( 'ee_register_settings' ) ) :
@@ -50,8 +51,7 @@ if ( ! function_exists( 'ee_render_publisher_select' ) ) :
 	function ee_render_publisher_select( $args ) {
 		$publishers = bbgi_ee_get_publisher_list();
 
-		?>
-		<select name="<?php echo esc_attr( $args['name'] ); ?>">
+		?><select name="<?php echo esc_attr( $args['name'] ); ?>">
 			<option value="">—</option>
 			<?php foreach ( $publishers as $publisher ): ?>
 				<option
@@ -60,7 +60,36 @@ if ( ! function_exists( 'ee_render_publisher_select' ) ) :
 					<?php echo esc_html( $publisher['title'] ); ?>
 				</option>
 			<?php endforeach; ?>
-		</select>
-		<?php
+		</select><?php
 	}
 endif;
+
+if ( ! function_exists( 'ee_register_customizer' ) ) :
+	function ee_register_customizer( $wp_customize ) {
+		$wp_customize->add_section( 'beasley_theme_options', array(
+			'title'       => 'Theme Options',
+			'priority'    => 1,
+			'capability'  => 'edit_theme_options',
+			'description' => 'Select the theme version',
+		) );
+
+		$wp_customize->add_setting( 'ee_theme_version', array(
+			'default'    => '-dark',
+			'type'       => 'theme_mod',
+			'capability' => 'edit_theme_options',
+			'transport'  => 'refresh',
+		) );
+
+		$wp_customize->add_control( 'ee_theme_version', array(
+			'type'    => 'radio',
+			'label'   => 'Theme Version',
+			'section' => 'beasley_theme_options',
+			'choices' => array(
+				'-light' => 'Light',
+				'-dark'  => 'Dark',
+			),
+		) );
+	}
+endif;
+
+

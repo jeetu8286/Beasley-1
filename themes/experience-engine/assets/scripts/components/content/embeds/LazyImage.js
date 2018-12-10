@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 
+import { isInViewport } from '../../../library/dom';
+
 class LazyImage extends PureComponent {
 
 	constructor( props ) {
@@ -31,7 +33,7 @@ class LazyImage extends PureComponent {
 		self.container = document.getElementById( placeholder );
 		self.updateDimensions();
 
-		window.addEventListener( 'scroll', self.onScroll );
+		window.addEventListener( 'scroll', self.onScroll, true );
 		window.addEventListener( 'resize', self.onResize );
 	}
 
@@ -51,7 +53,7 @@ class LazyImage extends PureComponent {
 
 	removeListeners() {
 		const self = this;
-		window.removeEventListener( 'scroll', self.onScroll );
+		window.removeEventListener( 'scroll', self.onScroll, true );
 		window.removeEventListener( 'resize', self.onResize );
 	}
 
@@ -66,7 +68,6 @@ class LazyImage extends PureComponent {
 	updateDimensions() {
 		const self = this;
 		const { container } = self;
-		const { aspect } = self.props;
 
 		let parent = container;
 		while ( parent && 1 > parent.offsetHeight ) {
@@ -74,15 +75,12 @@ class LazyImage extends PureComponent {
 		}
 
 		const { offsetWidth } = container;
-		const containerWidth = offsetWidth;
-
 		const { offsetHeight } = parent;
-		let containerHeight = offsetWidth / aspect;
-		if ( containerHeight > offsetHeight ) {
-			containerHeight = offsetHeight;
-		}
 
-		self.setState( { containerWidth, containerHeight } );
+		self.setState( {
+			containerWidth: offsetWidth,
+			containerHeight: offsetHeight,
+		} );
 	}
 
 	loadImage() {
@@ -90,7 +88,7 @@ class LazyImage extends PureComponent {
 
 		// do nothing if the image is not in the viewport or close to it
 		const { containerWidth, containerHeight } = self.state;
-		if ( !self.isInViewport( containerWidth, containerHeight ) ) {
+		if ( !isInViewport( self.container, containerWidth, containerHeight ) ) {
 			return;
 		}
 
@@ -113,21 +111,11 @@ class LazyImage extends PureComponent {
 		};
 	}
 
-	isInViewport( containerWidth, containerHeight ) {
-		const bounding = this.container.getBoundingClientRect();
-		const { top, left, bottom, right } = bounding;
-
-		const { documentElement } = document;
-		const innerHeight = ( window.innerHeight || documentElement.clientHeight ) + containerHeight;
-		const innerWidth = ( window.innerWidth || documentElement.clientWidth ) + containerWidth;
-
-		return -containerHeight <= top && -containerWidth <= left && bottom <= innerHeight && right <= innerWidth;
-	}
-
 	render() {
 		const self = this;
 		const { container } = self;
 		const { image } = self.state;
+		const { alt } = self.props;
 
 		if ( !container ) {
 			return false;
@@ -143,7 +131,7 @@ class LazyImage extends PureComponent {
 		}
 
 		return (
-			<div className="lazy-image" ref={self.boxRef} style={styles}>
+			<div className="lazy-image" ref={self.boxRef} style={styles} role="img" aria-label={alt}>
 				{loader}
 			</div>
 		);
@@ -156,7 +144,7 @@ LazyImage.propTypes = {
 	src: PropTypes.string.isRequired,
 	width: PropTypes.string.isRequired,
 	height: PropTypes.string.isRequired,
-	aspect: PropTypes.string.isRequired,
+	alt: PropTypes.string.isRequired,
 };
 
 export default LazyImage;

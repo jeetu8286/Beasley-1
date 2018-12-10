@@ -1,6 +1,6 @@
 <?php
 
-add_filter( 'bbgiconfig', 'ee_update_bbgiconfig' );
+add_filter( 'bbgiconfig', 'ee_update_api_bbgiconfig', 50 );
 
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
 	function ee_has_publisher_information( $meta ) {
@@ -58,29 +58,40 @@ if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'ee_update_bbgiconfig' ) ) :
-	function ee_update_bbgiconfig( $config ) {
-		$publishers = bbgi_ee_get_publisher_list();
-		$publisher_id = get_option( 'ee_publisher' );
-
+if ( ! function_exists( 'ee_update_api_bbgiconfig' ) ) :
+	function ee_update_api_bbgiconfig( $config ) {
 		$publishers_map = array();
-		$current_publisher = array();
-		foreach ( $publishers as $publisher ) {
+		foreach ( bbgi_ee_get_publisher_list() as $publisher ) {
 			$publishers_map[ $publisher['id'] ] = $publisher['title'];
-			if ( $publisher['id'] == $publisher_id ) {
-				$current_publisher['phone'] = $publisher['phone'];
-				$current_publisher['address'] = $publisher['address'];
-				$current_publisher['email'] = $publisher['email'];
-				$current_publisher['picture'] = $publisher['picture'];
-			}
 		}
 
 		$config['publishers'] = $publishers_map;
 		$config['locations'] = bbgi_ee_get_locations();
 		$config['genres'] = bbgi_ee_get_genres();
-		$config['publisher'] = $current_publisher;
+
+		$config['streams'] = array();
+		$feeds = bbgi_ee_get_publisher_feeds_with_content();
+		$channels = wp_list_filter( $feeds, array( 'type' => 'stream' ) );
+		foreach ( $channels as $channel ) {
+			foreach ( $channel['content'] as $stream ) {
+				$config['streams'][] = $stream;
+			}
+		}
 
 		return $config;
+	}
+endif;
+
+if ( ! function_exists( '_bbgi_ee_request' ) ) :
+	function _bbgi_ee_request( $path, $args = array() ) {
+		$args['headers'] = array( 'Content-Type' => 'application/json' );
+		if ( empty( $args['method'] ) ) {
+			$args['method'] = 'GET';
+		}
+
+		$host = untrailingslashit( EE_API_HOST ) . '/v1/' . $path;
+
+		return wp_remote_request( $host, $args );
 	}
 endif;
 
@@ -94,22 +105,14 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 	 * @param string $path Site URL to retrieve.
 	 * @param array $args Optional. Request arguments. Default empty array.
 	 *
-	 * @return WP_Error|array The response or WP_Error on failure.
+	 * @return \WP_Error|array The response or WP_Error on failure.
 	 */
 	function bbgi_ee_request( $path, $args = array() ) {
-		$response = wp_cache_get( $path, 'experience_engine_api' );
+		$cache_index = get_option( 'ee_cache_index', 0 );
+		$response    = wp_cache_get( $path, "experience_engine_api-{$cache_index}" );
+
 		if ( empty( $response ) ) {
-			if ( empty( $args['method'] ) ) {
-				$args['method'] = 'GET';
-			}
-
-			//Add the API Header
-			$args['headers'] = array(
-				'Content-Type' => 'application/json',
-			);
-
-			$host    = trailingslashit( EE_API_HOST ) . "/v1/{$path}";
-			$request = wp_remote_request( $host, $args );
+			$request = _bbgi_ee_request( $path, $args );
 			if ( is_wp_error( $request ) ) {
 				return $request;
 			}
@@ -123,7 +126,7 @@ if ( ! function_exists( 'bbgi_ee_request' ) ) :
 			$response   = json_decode( wp_remote_retrieve_body( $request ), true );
 			$cache_time = bbgi_ee_get_request_cache_time( $request );
 			if ( $cache_time ) {
-				wp_cache_set( $path, $response, 'experience_engine_api', $cache_time );
+				wp_cache_set( $path, $response, "experience_engine_api-{$cache_index}", $cache_time );
 			}
 		}
 
@@ -170,10 +173,14 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_list' ) ) :
 	 * @return array Contains list of publishers.
 	 */
 	function bbgi_ee_get_publisher_list() {
-		return bbgi_ee_request( 'publishers' );
+		$publishers = bbgi_ee_request( 'publishers' );
+		if ( is_wp_error( $publishers ) ) {
+			$publishers = array();
+		}
+
+		return $publishers;
 	}
 endif;
-
 
 if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
 	/**
@@ -187,8 +194,12 @@ if ( ! function_exists( 'bbgi_ee_get_publisher' ) ) :
 		}
 
 		$data = false;
-		if ( $publisher ) {
+		if ( ! empty( $publisher ) ) {
 			$data = bbgi_ee_request( "publishers/{$publisher}" );
+			if ( is_wp_error( $data ) ) {
+				$data = array();
+			}
+
 			if ( is_array( $data ) && count( $data ) == 1 && is_array( $data[0] ) ) {
 				$data = $data[0];
 			}
@@ -209,7 +220,33 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feeds' ) ) :
 			$publisher = get_option( 'ee_publisher' );
 		}
 
-		return bbgi_ee_request( "publishers/{$publisher}/feeds/" );
+		$data = array();
+		if ( ! empty( $publisher ) ) {
+			$data = bbgi_ee_request( "publishers/{$publisher}/feeds/" );
+			if ( is_wp_error( $data ) ) {
+				$data = array();
+			}
+		}
+
+		return $data;
+	}
+endif;
+
+if ( ! function_exists( 'bbgi_ee_get_publisher_feeds_with_content' ) ) :
+	function bbgi_ee_get_publisher_feeds_with_content( $publisher = null ) {
+		if ( empty( $publisher ) ) {
+			$publisher = get_option( 'ee_publisher' );
+		}
+
+		$data = array();
+		if ( ! empty( $publisher ) ) {
+			$data = bbgi_ee_request( "experience/channels/{$publisher}/feeds/content/" );
+			if ( is_wp_error( $data ) ) {
+				$data = array();
+			}
+		}
+
+		return $data;
 	}
 endif;
 
@@ -224,7 +261,15 @@ if ( ! function_exists( 'bbgi_ee_get_publisher_feed' ) ) :
 			$publisher = get_option( 'ee_publisher' );
 		}
 
-		return bbgi_ee_request( "publishers/{$publisher}/feeds/{$feed}" );
+		$data = array();
+		if ( ! empty( $data ) ) {
+			$data = bbgi_ee_request( "publishers/{$publisher}/feeds/{$feed}" );
+			if ( is_wp_error( $data ) ) {
+				$data = array();
+			}
+		}
+
+		return $data;
 	}
 endif;
 
@@ -235,7 +280,12 @@ if ( ! function_exists( 'bbgi_ee_get_locations' ) ) :
 	 * @return array Containing locations.
 	 */
 	function bbgi_ee_get_locations() {
-		return bbgi_ee_request( 'locations' );
+		$locations = bbgi_ee_request( 'locations' );
+		if ( is_wp_error( $locations ) ) {
+			$locations = array();
+		}
+
+		return $locations;
 	}
 endif;
 
@@ -246,6 +296,11 @@ if ( ! function_exists( 'bbgi_ee_get_genres' ) ) :
 	 * @return array Containing genres.
 	 */
 	function bbgi_ee_get_genres() {
-		return bbgi_ee_request( 'genres' );
+		$genres = bbgi_ee_request( 'genres' );
+		if ( is_wp_error( $genres ) ) {
+			$genres = array();
+		}
+
+		return $genres;
 	}
 endif;

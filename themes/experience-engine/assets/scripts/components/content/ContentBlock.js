@@ -9,6 +9,10 @@ import LazyImage from './embeds/LazyImage';
 import Share from './embeds/Share';
 import LoadMore from './embeds/LoadMore';
 import Video from './embeds/Video';
+import EmbedVideo from './embeds/EmbedVideo';
+import Dfp from './embeds/Dfp';
+import Cta from './embeds/Cta';
+import Countdown from './embeds/Countdown';
 
 const mapping = {
 	secondstreet: SecondStreetEmbed,
@@ -17,12 +21,16 @@ const mapping = {
 	share: Share,
 	loadmore: LoadMore,
 	video: Video,
+	embedvideo: EmbedVideo,
+	dfp: Dfp,
+	cta: Cta,
+	countdown: Countdown,
 };
 
-const ContentBlock = ( { content, embeds } ) => {
+function ContentBlock( { content, embeds, partial } ) {
 	const portal = ReactDOM.createPortal(
 		<div dangerouslySetInnerHTML={{ __html: content }} />,
-		document.getElementById( 'content' )
+		document.getElementById( partial ? 'inner-content' : 'content' )
 	);
 
 	const embedComponents = embeds.map( ( embed ) => {
@@ -32,11 +40,7 @@ const ContentBlock = ( { content, embeds } ) => {
 		let component = mapping[type] || false;
 		if ( component ) {
 			component = React.createElement( component, params );
-			component = (
-				<DelayedComponent key={placeholder} placeholder={placeholder}>
-					{component}
-				</DelayedComponent>
-			);
+			component = React.createElement( DelayedComponent, { key: placeholder, placeholder }, component );
 		}
 
 		return component;
@@ -48,11 +52,16 @@ const ContentBlock = ( { content, embeds } ) => {
 			{embedComponents}
 		</Fragment>
 	);
-};
+}
 
 ContentBlock.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
+	partial: PropTypes.bool,
+};
+
+ContentBlock.defaultProps = {
+	partial: false,
 };
 
 export default ContentBlock;
