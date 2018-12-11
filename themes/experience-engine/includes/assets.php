@@ -53,6 +53,8 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'firebase-auth', '//www.gstatic.com/firebasejs/5.7.0/firebase-auth.js', array( 'firebase-app' ), null, true );
 		wp_register_script( 'firebase-database', '//www.gstatic.com/firebasejs/5.7.0/firebase-database.js', array( 'firebase-app' ), null, true );
 
+		wp_register_script( 'intersection-observer', '//polyfill.io/v2/polyfill.min.js?features=IntersectionObserver', null, null, true );
+
 		if ( $is_script_debug ) {
 			$perfume = array(
 				'firstPaint'           => true,
@@ -84,6 +86,7 @@ EOL;
 			'googletag',
 			'embedly-player.js',
 			'td-sdk',
+			'intersection-observer',
 		);
 
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", $deps, GREATERMEDIA_VERSION, true );
