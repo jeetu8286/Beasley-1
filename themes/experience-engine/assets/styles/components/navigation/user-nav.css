@@ -9,7 +9,7 @@
     padding: 1.1rem;
     position: fixed;
 	top: calc(100% - 176px);
-    z-index: 5;
+    z-index: 10;
 
     & .user-nav-image {
         align-self: center;

@@ -83,6 +83,7 @@
 	& .modal-close {
 		position: absolute;
 		right: 2rem;
+		width: auto;
 	}
 
 	& .modal-content {
@@ -96,7 +97,7 @@
 		width: calc(100% - 2.5rem);
 
 		@media(--min-medium-viewport) {
-			width: auto;
+			width: 100%;
 		}
 
 	}

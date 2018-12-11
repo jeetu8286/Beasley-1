@@ -64,15 +64,35 @@ class SignIn extends PureComponent {
 				<form className="modal-form -form-sign-in" onSubmit={self.onFormSubmit}>
 					<div className="modal-form-group">
 						<label className="modal-form-label" htmlFor="user-email">Email</label>
-						<input className="modal-form-field" type="email" id="user-email" name="email" value={email} onChange={self.onFieldChange} placeholder="Your email address" />
+						<input 
+							className="modal-form-field"
+							type="email" id="user-email"
+							name="email" value={email}
+							onChange={self.onFieldChange}
+							placeholder="Your email address" 
+						/>
 					</div>
 					<div className="modal-form-group">
 						<label className="modal-form-label" htmlFor="user-password">Password</label>
-						<input className="modal-form-field" type="password" id="user-password" name="password" value={password} onChange={self.onFieldChange} placeholder="Your password" />
+						<input
+							className="modal-form-field"
+							type="password"
+							id="user-password"
+							name="password"
+							value={password}
+							onChange={self.onFieldChange}
+							placeholder="Your password" 
+						/>
 					</div>
 					<div className="modal-form-actions">
 						<button className="button -sign-in" type="submit">Sign In</button>
-						<button className="button -forgot-password" type="button" onClick={self.onRestoreClick}>Forgot Password</button>
+						<button 
+							className="button -forgot-password"
+							type="button"
+							onClick={self.onRestoreClick}
+						>
+							Forgot Password
+						</button>
 					</div>
 				</form>
 				<h5 className="section-head">
