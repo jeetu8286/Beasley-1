@@ -144,6 +144,8 @@ if ( ! function_exists( 'ee_get_gallery_html' ) ) :
 
 		ob_start();
 
+		add_filter( '_ee_the_lazy_image', 'ee_update_gallery_lazy_image_html' );
+
 		echo '<ul class="gallery-listicle">';
 
 		foreach ( $images as $index => $image ) {
@@ -166,6 +168,14 @@ if ( ! function_exists( 'ee_get_gallery_html' ) ) :
 
 		echo '</ul>';
 
+		remove_filter( '_ee_the_lazy_image', 'ee_update_gallery_lazy_image_html' );
+
 		return ob_get_clean();
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_gallery_lazy_image_html' ) ) :
+	function ee_update_gallery_lazy_image_html( $html ) {
+		return str_replace( '<div ', '<div data-tracking="1" ', $html );
 	}
 endif;
