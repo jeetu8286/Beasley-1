@@ -183,6 +183,11 @@ endif;
 
 if ( ! function_exists( 'ee_update_incontent_gallery' ) ) :
 	function ee_update_incontent_gallery( $html, $gallery, $ids ) {
+		// do not render gallery if it has been called before <body> tag
+		if ( ! did_action( 'beasley_after_body' ) ) {
+			return '<!-- -->';
+		}
+
 		$html = ee_get_gallery_html( $gallery, $ids );
 
 		// we need to to inject embed code later
