@@ -48,6 +48,15 @@ export function loadPage( url ) {
 			dispatch( { type: ACTION_LOADED_PAGE, ...parsed } );
 
 			window.scrollTo( 0, 0 );
+
+			const { ga } = window;
+			if ( ga ) {
+				ga( 'send', {
+					hitType: 'pageview',
+					title: pageDocument.title,
+					location: url,
+				} );
+			}
 		}
 
 		fetch( url )
