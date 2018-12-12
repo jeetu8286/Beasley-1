@@ -144,7 +144,12 @@ if ( ! function_exists( 'ee_get_gallery_html' ) ) :
 
 		ob_start();
 
-		add_filter( '_ee_the_lazy_image', 'ee_update_gallery_lazy_image_html' );
+		$gallery_url = trailingslashit( get_permalink( $gallery->ID ) );
+		$tracking = function( $html ) use ( $gallery_url ) {
+			return str_replace( '<div ', '<div data-tracking="' . esc_attr( $gallery_url ) . '" ', $html );
+		};
+
+		add_filter( '_ee_the_lazy_image', $tracking );
 
 		echo '<ul class="gallery-listicle">';
 
@@ -168,14 +173,8 @@ if ( ! function_exists( 'ee_get_gallery_html' ) ) :
 
 		echo '</ul>';
 
-		remove_filter( '_ee_the_lazy_image', 'ee_update_gallery_lazy_image_html' );
+		remove_filter( '_ee_the_lazy_image', $tracking );
 
 		return ob_get_clean();
-	}
-endif;
-
-if ( ! function_exists( 'ee_update_gallery_lazy_image_html' ) ) :
-	function ee_update_gallery_lazy_image_html( $html ) {
-		return str_replace( '<div ', '<div data-tracking="1" ', $html );
 	}
 endif;
