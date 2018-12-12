@@ -9,7 +9,6 @@ add_filter( 'script_loader_tag', 'ee_script_loader', 10, 3 );
 add_filter( 'fvideos_show_video', 'ee_fvideos_show_video', 10, 2 );
 add_filter( 'tribe_events_assets_should_enqueue_frontend', '__return_false' );
 
-remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 remove_action( 'wp_print_styles', 'print_emoji_styles' );
 remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 remove_action( 'admin_print_styles', 'print_emoji_styles' );
@@ -22,6 +21,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		$min = $is_script_debug ? '' : '.min';
 
 		wp_enqueue_style( 'ee-app', "{$base}/bundle/app.css", null, GREATERMEDIA_VERSION );
+		wp_enqueue_style( 'swiper', "https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css", null, GREATERMEDIA_VERSION );
 
 		/**
 		 * Google WebFont scripts
@@ -54,6 +54,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'firebase-database', '//www.gstatic.com/firebasejs/5.7.0/firebase-database.js', array( 'firebase-app' ), null, true );
 
 		wp_register_script( 'intersection-observer', '//polyfill.io/v2/polyfill.min.js?features=IntersectionObserver', null, null, true );
+		wp_register_script( 'swiper', 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js', null, null, true );
 
 		if ( $is_script_debug ) {
 			$perfume = array(
@@ -87,6 +88,7 @@ EOL;
 			'embedly-player.js',
 			'td-sdk',
 			'intersection-observer',
+			'swiper',
 		);
 
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", $deps, GREATERMEDIA_VERSION, true );
