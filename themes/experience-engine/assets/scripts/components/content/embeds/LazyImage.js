@@ -63,9 +63,6 @@ class LazyImage extends PureComponent {
 		// disable intersection tracking
 		self.context.unobserve( self.container );
 
-		// set temporary low quality image
-		self.setState( { image: self.getImageUrl( 5 ) } );
-
 		// load image and update state
 		const imageSrc = self.getImageUrl();
 		const imageLoader = new Image();
