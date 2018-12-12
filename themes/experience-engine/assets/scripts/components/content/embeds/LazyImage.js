@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import IntersectionObserverContext from '../../../context/intersection-observer';
+import { pageview } from '../../../library/google-analytics';
 
 class LazyImage extends PureComponent {
 
@@ -9,8 +10,12 @@ class LazyImage extends PureComponent {
 		super( props );
 
 		const self = this;
+
+		self.loading = false;
 		self.boxRef = React.createRef();
 		self.state = { image: '' };
+
+		self.onIntersectionChange = self.handleIntersectionChange.bind( self );
 	}
 
 	componentDidMount() {
@@ -18,11 +23,29 @@ class LazyImage extends PureComponent {
 		const { placeholder } = self.props;
 
 		self.container = document.getElementById( placeholder );
-		self.context.observe( self.container, self.loadImage.bind( self ) );
+		self.context.observe( self.container, self.onIntersectionChange );
 	}
 
 	componentWillUnmount() {
 		this.context.unobserve( this.container );
+	}
+
+	handleIntersectionChange() {
+		const self = this;
+		const { tracking } = self.props;
+
+		// disable intersection observing if we don't need to track image views
+		if ( !tracking ) {
+			self.context.unobserve( self.container );
+		} else {
+			pageview( document.title, tracking );
+		}
+
+		// load image
+		if ( !self.loading ) {
+			self.loading = true;
+			self.loadImage();
+		}
 	}
 
 	getDimensions() {
@@ -43,18 +66,25 @@ class LazyImage extends PureComponent {
 		};
 	}
 
-	loadImage() {
+	getImageUrl( quality = null ) {
 		const self = this;
-
-		self.context.unobserve( self.container );
-
-		// build image URL
 		const { src, width, height } = self.props;
 		const { containerWidth, containerHeight } = self.getDimensions();
 		const anchor = width > height ? 'middlecenter' : 'leftop';
-		const imageSrc = `${src.split( '?' )[0]}?maxwidth=${containerWidth}&maxheight=${containerHeight}&anchor=${anchor}`;
+
+		let imageSrc = `${src.split( '?' )[0]}?maxwidth=${containerWidth}&maxheight=${containerHeight}&anchor=${anchor}`;
+		if ( 0 < quality ) {
+			imageSrc += `&quality=${quality}`;
+		}
+
+		return imageSrc;
+	}
+
+	loadImage() {
+		const self = this;
 
 		// load image and update state
+		const imageSrc = self.getImageUrl();
 		const imageLoader = new Image();
 		imageLoader.src = imageSrc;
 		imageLoader.onload = () => {
@@ -94,6 +124,11 @@ LazyImage.propTypes = {
 	width: PropTypes.string.isRequired,
 	height: PropTypes.string.isRequired,
 	alt: PropTypes.string.isRequired,
+	tracking: PropTypes.string,
+};
+
+LazyImage.defaultProps = {
+	tracking: '',
 };
 
 LazyImage.contextType = IntersectionObserverContext;
