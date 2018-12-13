@@ -67,6 +67,9 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 			if ( ( $index == 2 ) || ( $index > 2 && ( $index - 2 ) % 3 == 0 ) ) {
 				do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' );
 			}
+			if ( $index === 3 ) {
+				get_template_part( 'partials/content/liveCta' );
+			}
 		}
 
 		$index++;
