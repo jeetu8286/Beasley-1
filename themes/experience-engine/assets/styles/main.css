@@ -21,6 +21,8 @@
 @import 'components/archive/archive-post-tile';
 @import 'components/archive/tile-episode';
 
+@import 'components/content/live-cta';
+
 @import 'components/search/search-header';
 
 @import 'components/player/ads';
