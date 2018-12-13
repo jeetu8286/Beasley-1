@@ -21,7 +21,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		$min = $is_script_debug ? '' : '.min';
 
 		wp_enqueue_style( 'ee-app', "{$base}/bundle/app.css", null, GREATERMEDIA_VERSION );
-		wp_enqueue_style( 'swiper', "https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css", null, GREATERMEDIA_VERSION );
 
 		/**
 		 * Google WebFont scripts
@@ -54,7 +53,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'firebase-database', '//www.gstatic.com/firebasejs/5.7.0/firebase-database.js', array( 'firebase-app' ), null, true );
 
 		wp_register_script( 'intersection-observer', '//polyfill.io/v2/polyfill.min.js?features=IntersectionObserver', null, null, true );
-		wp_register_script( 'swiper', 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js', null, null, true );
 
 		if ( $is_script_debug ) {
 			$perfume = array(
@@ -88,7 +86,6 @@ EOL;
 			'embedly-player.js',
 			'td-sdk',
 			'intersection-observer',
-			'swiper',
 		);
 
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", $deps, GREATERMEDIA_VERSION, true );
