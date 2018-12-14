@@ -199,17 +199,28 @@ class ExperienceEngine extends \Bbgi\Module {
 		return $genres;
 	}
 
-	public function get_ad_slot() {
-		$data = array();
-		$publisher = $this->_get_publisher_key();
-		if ( ! empty( $publisher ) ) {
-			$data = $this->do_request( "experience/channels/{$publisher}/ads/" );
-			if ( is_wp_error( $data ) ) {
-				$data = array();
+	public function get_ad_slot_unit_id( $slot ) {
+		static $data = null;
+
+		if ( is_null( $data ) ) {
+			$publisher = $this->_get_publisher_key();
+			if ( ! empty( $publisher ) ) {
+				$data = $this->do_request( "experience/channels/{$publisher}/ads/" );
+				if ( is_wp_error( $data ) ) {
+					$data = array();
+				}
 			}
 		}
 
-		return $data;
+		if ( is_array( $data ) && ! empty( $data ) ) {
+			foreach ( $data as $config ) {
+				if ( $config['region'] == $slot ) {
+					return sprintf( '/%s/%s', $config['publisherId'], $config['adUnitId'] );
+				}
+			}
+		}
+
+		return '';
 	}
 
 }
