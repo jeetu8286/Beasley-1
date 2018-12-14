@@ -42,6 +42,7 @@ class LiveCta extends PureComponent {
 					</button>
 				</div>
 				<div className="action">
+					{/* @TODO :: @eugene - I'm not sure why in the world this happens, but on initial click of the play button, nothing happens, but if you start the live player from the gloabal live player component, it duplicates the whole component, and then allows control of the live player. :headdesk: */}
 					<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
 					<p>Play Live</p>
 				</div>
