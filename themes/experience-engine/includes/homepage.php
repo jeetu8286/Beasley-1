@@ -70,6 +70,9 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 			if ( $index === 3 ) {
 				get_template_part( 'partials/content/liveCta' );
 			}
+			if ( $index === 4 ) {
+				get_template_part( 'partials/content/feedCta' );
+			}
 		}
 
 		$index++;
