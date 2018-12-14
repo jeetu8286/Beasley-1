@@ -59,6 +59,7 @@ class ModalDispatcher extends Component {
 
 	componentWillUnmount() {
 		document.removeEventListener( 'mousedown', this.handleClickOutside, false );
+		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
 	render() {
@@ -99,6 +100,8 @@ ModalDispatcher.propTypes = {
 	modal: PropTypes.string,
 	payload: PropTypes.shape( {} ),
 	close: PropTypes.func.isRequired,
+	activateTrap: PropTypes.func,
+	deactivateTrap: PropTypes.func
 };
 
 ModalDispatcher.defaultProps = {

@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"@10up/eslint-config": "^1.0.8",
+		"@10up/react-focus-trap-hoc": "^1.0.1",
 		"@babel/core": "^7.1.6",
 		"@babel/plugin-syntax-dynamic-import": "^7.0.0",
 		"@babel/preset-env": "^7.1.6",
@@ -104,8 +105,5 @@
 		"iOS > 9",
 		"Samsung >= 5",
 		"not dead"
-	],
-	"devDependencies": {
-		"@10up/react-focus-trap-hoc": "^1.0.1"
-	}
+	]
 }

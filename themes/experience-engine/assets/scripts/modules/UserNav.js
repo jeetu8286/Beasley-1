@@ -79,7 +79,7 @@ class UserNav extends Component {
 					<button className="user-nav-button" type="button" onClick={this.onSignOut}>Log Out</button>
 				</div>
 				<div className="user-nav-image">
-					<img src={photo} width="30" height="30" alt={displayName} />
+					<img src={photo} alt={displayName} />
 				</div>
 			</Fragment>
 		);

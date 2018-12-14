@@ -151,9 +151,9 @@
 	position: relative;
 
 	@media screen and (min-height: 680px) and (min-width: 831px) {
-        position: fixed;
+		position: fixed;
 		top: 32px;
-    }
+	}
 
 	& .primary-sidebar-inside {
 		position: relative;
