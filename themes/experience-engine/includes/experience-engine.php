@@ -14,10 +14,7 @@ if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 		static $publisher_info = null;
 
 		if ( is_null( $publisher_info ) ) {
-			$publisher = get_option( 'ee_publisher' );
-			if ( ! empty( $publisher ) ) {
-				$publisher_info = \Bbgi\Module::get( 'experience-engine' )->get_publisher( $publisher );
-			}
+			$publisher_info = \Bbgi\Module::get( 'experience-engine' )->get_publisher();
 		}
 
 		// temporarily return # for itunes_app and play_app

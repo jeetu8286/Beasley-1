@@ -52,6 +52,33 @@ class ExperienceEngine extends \Bbgi\Module {
 		</table><?php
 	}
 
+	protected function _get_request_cache_time( $request ) {
+		$response_headers = wp_remote_retrieve_headers( $request );
+		if ( empty( $response_headers['cache-control'] ) ) {
+			return 0;
+		}
+
+		$cache_control = explode( ',', $response_headers['cache-control'] );
+		$cache_time    = 0;
+		foreach ( $cache_control as $control_string ) {
+			$control_string = strtolower( trim( $control_string ) );
+			$parts = explode( '=', $control_string );
+
+			if ( $parts[0] == 's-maxage' ) {
+				$cache_time = end( $parts );
+				break;
+			} elseif ( $parts[0] == 'max-age' ) {
+				$cache_time = end( $parts );
+			}
+		}
+
+		return absint( $cache_time );
+	}
+
+	protected function _get_publisher_key() {
+		return get_option( 'ee_publisher' );
+	}
+
 	public function send_request( $path, $args = array() ) {
 		$args['headers'] = array( 'Content-Type' => 'application/json' );
 		if ( empty( $args['method'] ) ) {
@@ -89,29 +116,6 @@ class ExperienceEngine extends \Bbgi\Module {
 		return $response;
 	}
 
-	protected function _get_request_cache_time( $request ) {
-		$response_headers = wp_remote_retrieve_headers( $request );
-		if ( empty( $response_headers['cache-control'] ) ) {
-			return 0;
-		}
-
-		$cache_control = explode( ',', $response_headers['cache-control'] );
-		$cache_time    = 0;
-		foreach ( $cache_control as $control_string ) {
-			$control_string = strtolower( trim( $control_string ) );
-			$parts = explode( '=', $control_string );
-
-			if ( $parts[0] == 's-maxage' ) {
-				$cache_time = end( $parts );
-				break;
-			} elseif ( $parts[0] == 'max-age' ) {
-				$cache_time = end( $parts );
-			}
-		}
-
-		return absint( $cache_time );
-	}
-
 	public function get_publisher_list() {
 		$publishers = $this->do_request( 'publishers' );
 		if ( is_wp_error( $publishers ) ) {
@@ -121,12 +125,9 @@ class ExperienceEngine extends \Bbgi\Module {
 		return $publishers;
 	}
 
-	public function get_publisher( $publisher = null ) {
-		if ( empty( $publisher ) ) {
-			$publisher = get_option( 'ee_publisher' );
-		}
-
+	public function get_publisher() {
 		$data = false;
+		$publisher = $this->_get_publisher_key();
 		if ( ! empty( $publisher ) ) {
 			$data = $this->do_request( "publishers/{$publisher}" );
 			if ( is_wp_error( $data ) ) {
@@ -141,12 +142,9 @@ class ExperienceEngine extends \Bbgi\Module {
 		return $data;
 	}
 
-	public function get_publisher_feeds( $publisher = null ) {
-		if ( empty( $publisher ) ) {
-			$publisher = get_option( 'ee_publisher' );
-		}
-
+	public function get_publisher_feeds() {
 		$data = array();
+		$publisher = $this->_get_publisher_key();
 		if ( ! empty( $publisher ) ) {
 			$data = $this->do_request( "publishers/{$publisher}/feeds/" );
 			if ( is_wp_error( $data ) ) {
@@ -157,12 +155,9 @@ class ExperienceEngine extends \Bbgi\Module {
 		return $data;
 	}
 
-	public function get_publisher_feeds_with_content( $publisher = null ) {
-		if ( empty( $publisher ) ) {
-			$publisher = get_option( 'ee_publisher' );
-		}
-
+	public function get_publisher_feeds_with_content() {
 		$data = array();
+		$publisher = $this->_get_publisher_key();
 		if ( ! empty( $publisher ) ) {
 			$data = $this->do_request( "experience/channels/{$publisher}/feeds/content/" );
 			if ( is_wp_error( $data ) ) {
@@ -173,12 +168,9 @@ class ExperienceEngine extends \Bbgi\Module {
 		return $data;
 	}
 
-	public function get_publisher_feed( $feed, $publisher = null ) {
-		if ( empty( $publisher ) ) {
-			$publisher = get_option( 'ee_publisher' );
-		}
-
+	public function get_publisher_feed( $feed ) {
 		$data = array();
+		$publisher = $this->_get_publisher_key();
 		if ( ! empty( $data ) ) {
 			$data = $this->do_request( "publishers/{$publisher}/feeds/{$feed}" );
 			if ( is_wp_error( $data ) ) {
@@ -205,6 +197,19 @@ class ExperienceEngine extends \Bbgi\Module {
 		}
 
 		return $genres;
+	}
+
+	public function get_ad_slot() {
+		$data = array();
+		$publisher = $this->_get_publisher_key();
+		if ( ! empty( $publisher ) ) {
+			$data = $this->do_request( "experience/channels/{$publisher}/ads/" );
+			if ( is_wp_error( $data ) ) {
+				$data = array();
+			}
+		}
+
+		return $data;
 	}
 
 }
