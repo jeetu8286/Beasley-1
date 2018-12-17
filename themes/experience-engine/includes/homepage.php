@@ -10,6 +10,7 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 			'video'    => 'ee_render_homepage_standard_feed',
 			'podcast'  => 'ee_render_homepage_standard_feed',
 			'cta'      => 'ee_render_homepage_cta_feed',
+			'stream'   => 'ee_render_homepage_stream',
 		);
 
 		foreach ( $feeds as $feed ) {
@@ -69,6 +70,10 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 			}
 		}
 
+		if ( $index == 4 ) {
+			echo '<div class="discovery-cta"></div>';
+		}
+
 		$index++;
 	}
 endif;
@@ -84,6 +89,17 @@ if ( ! function_exists( 'ee_render_homepage_cta_feed' ) ) :
 					esc_attr( json_encode( $item ) )
 				);
 			}
+		}
+	}
+endif;
+
+if ( ! function_exists( 'ee_render_homepage_stream' ) ) :
+	function ee_render_homepage_stream( $feed ) {
+		foreach ( $feed['content'] as $item ) {
+			printf(
+				'<div class="stream-cta" data-payload="%s"></div>',
+				esc_attr( json_encode( $item ) )
+			);
 		}
 	}
 endif;
