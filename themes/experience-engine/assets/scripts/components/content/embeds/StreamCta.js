@@ -6,7 +6,7 @@ import Controls from '../../player/Controls';
 
 import * as actions from '../../../redux/actions/player';
 
-function StreamCta( { audio, status, play, pause, resume, payload } ) {
+function StreamCta( { audio, station, status, play, pause, resume, payload } ) {
 	const { title, subtitle, picture, stream_call_letters: stream } = payload;
 
 	const styles = {};
@@ -14,9 +14,9 @@ function StreamCta( { audio, status, play, pause, resume, payload } ) {
 		styles.backgroundImage = `url("${picture.large.url}")`;
 	}
 
-	const playerStatus = audio && audio.length
-		? actions.STATUSES.LIVE_STOP
-		: status;
+	const playerStatus = !audio && stream === station
+		? status
+		: actions.STATUSES.LIVE_STOP;
 
 	return (
 		<div className="content-wrap" style={styles}>
@@ -42,6 +42,7 @@ function StreamCta( { audio, status, play, pause, resume, payload } ) {
 
 StreamCta.propTypes = {
 	audio: PropTypes.string.isRequired,
+	station: PropTypes.string.isRequired,
 	payload: PropTypes.oneOfType( [PropTypes.bool, PropTypes.object] ),
 	status: PropTypes.string.isRequired,
 	play: PropTypes.func.isRequired,
@@ -57,6 +58,7 @@ function mapStateToProps( { player } ) {
 	return {
 		audio: player.audio,
 		status: player.status,
+		station: player.station,
 	};
 }
 
