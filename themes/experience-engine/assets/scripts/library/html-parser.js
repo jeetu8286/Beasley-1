@@ -97,14 +97,13 @@ function getDfpParams( { dataset } ) {
 	}
 
 	return {
-		network: dataset.network,
 		unitId: dataset.unitId,
 		unitName: dataset.unitName,
 		targeting: keyvalues,
 	};
 }
 
-function getCtaParams( { dataset } ) {
+function getPayloadParams( { dataset } ) {
 	const { payload } = dataset;
 	const params = {};
 
@@ -166,8 +165,10 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
 			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),
 			...processEmbeds( container, 'embedvideo', '.youtube', getEmbedVideoParams ),
-			...processEmbeds( container, 'cta', '.cta', getCtaParams ),
-			...processEmbeds( container, 'countdown', '.countdown', getCtaParams ),
+			...processEmbeds( container, 'cta', '.cta', getPayloadParams ),
+			...processEmbeds( container, 'countdown', '.countdown', getPayloadParams ),
+			...processEmbeds( container, 'streamcta', '.stream-cta', getPayloadParams ),
+			...processEmbeds( container, 'discovery', '.discovery-cta', getPayloadParams ),
 		];
 
 		// extract <script> tags

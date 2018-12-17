@@ -16,31 +16,26 @@ class ModalDispatcher extends Component {
 	constructor(){
 		super();
 
-		this.state = {
-			currentModal: ''
-		};
-
 		this.modalRef = React.createRef();
 		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind( this );
 		this.handleClickOutside = this.handleClickOutside.bind( this );
 	}
 
 	componentDidMount(){
+	
+		document.addEventListener( 'mousedown', this.handleClickOutside, false );
+		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
+		
+	}
+
+	componentDidUpdate() {
 		const { modal } = this.props;
 
-		this.setState( {
-			currentModal: modal
-		} );
-
-		if( 'CLOSED' !== this.state.currentModal ) {
+		if( 'CLOSED' !== modal ) {
 			this.props.activateTrap();
 		} else {
 			this.props.deactivateTrap();
 		}
-
-		document.addEventListener( 'mousedown', this.handleClickOutside, false );
-		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
-		
 	}
 
 	handleClickOutside( e ) {
@@ -102,8 +97,8 @@ ModalDispatcher.propTypes = {
 	modal: PropTypes.string,
 	payload: PropTypes.shape( {} ),
 	close: PropTypes.func.isRequired,
-	activateTrap: PropTypes.func,
-	deactivateTrap: PropTypes.func
+	activateTrap: PropTypes.func.isRequired,
+	deactivateTrap: PropTypes.func.isRequired
 };
 
 ModalDispatcher.defaultProps = {
