@@ -10,6 +10,7 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 			'video'    => 'ee_render_homepage_standard_feed',
 			'podcast'  => 'ee_render_homepage_standard_feed',
 			'cta'      => 'ee_render_homepage_cta_feed',
+			'stream'   => 'ee_render_homepage_stream',
 		);
 
 		foreach ( $feeds as $feed ) {
@@ -67,9 +68,6 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 			if ( ( $index == 2 ) || ( $index > 2 && ( $index - 2 ) % 3 == 0 ) ) {
 				do_action( 'dfp_tag', 'dfp_ad_inlist_infinite' );
 			}
-			if ( $index === 3 ) {
-				get_template_part( 'partials/content/liveCta' );
-			}
 			if ( $index === 4 ) {
 				get_template_part( 'partials/content/feedCta' );
 			}
@@ -90,6 +88,17 @@ if ( ! function_exists( 'ee_render_homepage_cta_feed' ) ) :
 					esc_attr( json_encode( $item ) )
 				);
 			}
+		}
+	}
+endif;
+
+if ( ! function_exists( 'ee_render_homepage_stream' ) ) :
+	function ee_render_homepage_stream( $feed ) {
+		foreach ( $feed['content'] as $item ) {
+			printf(
+				'<div class="stream-cta" data-payload="%s"></div>',
+				esc_attr( json_encode( $item ) )
+			);
 		}
 	}
 endif;

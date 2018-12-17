@@ -13,7 +13,6 @@ import LivePlayer from './modules/LivePlayer';
 import PrimaryNav from './modules/PrimaryNav';
 import UserNav from './modules/UserNav';
 import SearchForm from './modules/SearchForm';
-import LiveCta from './modules/LiveCta';
 import FeedCta from './modules/FeedCta';
 
 import '../styles/main.css';
@@ -61,7 +60,6 @@ class Application extends PureComponent {
 				<LivePlayer />
 				<PrimaryNav />
 				<UserNav />
-				<LiveCta />
 				<FeedCta />
 				<SearchForm />
 			</IntersectionObserverContext.Provider>
