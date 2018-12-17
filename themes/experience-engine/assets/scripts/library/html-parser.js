@@ -169,6 +169,7 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'cta', '.cta', getPayloadParams ),
 			...processEmbeds( container, 'countdown', '.countdown', getPayloadParams ),
 			...processEmbeds( container, 'streamcta', '.stream-cta', getPayloadParams ),
+			...processEmbeds( container, 'discovery', '.discovery-cta', getPayloadParams ),
 		];
 
 		// extract <script> tags

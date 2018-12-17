@@ -13,6 +13,7 @@ import Dfp from './embeds/Dfp';
 import Cta from './embeds/Cta';
 import Countdown from './embeds/Countdown';
 import StreamCta from './embeds/StreamCta';
+import Discovery from './embeds/Discovery';
 
 const mapping = {
 	secondstreet: SecondStreetEmbed,
@@ -26,6 +27,7 @@ const mapping = {
 	cta: Cta,
 	countdown: Countdown,
 	streamcta: StreamCta,
+	discovery: Discovery,
 };
 
 class ContentBlock extends Component {
