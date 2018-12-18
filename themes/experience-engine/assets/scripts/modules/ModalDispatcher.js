@@ -8,9 +8,6 @@ import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL, RESTORE_MODAL } from '../redux/a
 import SignInModal from '../components/modals/SignIn';
 import SignUpModal from '../components/modals/SignUp';
 import RestoreModal from '../components/modals/RestorePassword';
-
-import trapHOC from '@10up/react-focus-trap-hoc';
-
 class ModalDispatcher extends Component {
 
 	constructor(){
@@ -26,16 +23,6 @@ class ModalDispatcher extends Component {
 		document.addEventListener( 'mousedown', this.handleClickOutside, false );
 		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
 		
-	}
-
-	componentDidUpdate() {
-		const { modal } = this.props;
-
-		if( 'CLOSED' !== modal ) {
-			this.props.activateTrap();
-		} else {
-			this.props.deactivateTrap();
-		}
 	}
 
 	handleClickOutside( e ) {
@@ -97,8 +84,6 @@ ModalDispatcher.propTypes = {
 	modal: PropTypes.string,
 	payload: PropTypes.shape( {} ),
 	close: PropTypes.func.isRequired,
-	activateTrap: PropTypes.func.isRequired,
-	deactivateTrap: PropTypes.func.isRequired
 };
 
 ModalDispatcher.defaultProps = {
@@ -110,4 +95,4 @@ const mapStateToProps = ( { modal } ) => ( { ...modal } );
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( { close: hideModal }, dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( trapHOC()( ModalDispatcher ) );
+export default connect( mapStateToProps, mapDispatchToProps )( ModalDispatcher );
