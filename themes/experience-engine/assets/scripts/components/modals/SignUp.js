@@ -35,7 +35,7 @@ class SignUp extends PureComponent {
 
 	handleFormSubmit( e ) {
 		const self = this;
-		const { email, password, firstname, lastname } = self.state;
+		const { email, password, firstname, lastname, zip, gender, bday } = self.state;
 		const auth = firebase.auth();
 
 		const emailAddress = email.trim().toLowerCase();
@@ -47,7 +47,24 @@ class SignUp extends PureComponent {
 		e.preventDefault();
 
 		auth.createUserWithEmailAndPassword( emailAddress, password )
-			.then( response => response.user.updateProfile( userData ) )
+			.then( ( response ) => {
+				const { user } = response;
+
+				user.getIdToken()
+					.then( ( token ) => fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}`, {
+						method: 'PUT',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify( {
+							zipcode: zip,
+							gender: 'female' === gender ? 'M' : 'F',
+							dateofbirth: bday,
+							email,
+						} ),
+					} ) )
+					.catch( () => {} );
+
+				user.updateProfile( userData );
+			} )
 			.then( () => self.props.close() )
 			.catch( error => self.setState( { error: error.message } ) );
 	}

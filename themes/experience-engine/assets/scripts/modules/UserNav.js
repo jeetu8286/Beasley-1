@@ -38,6 +38,16 @@ class UserNav extends Component {
 	}
 
 	handleAuthStateChanged( user ) {
+		if ( user ) {
+			user.getIdToken()
+				//.then( token => fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}` ) )
+				//.then( response => response.text() )
+				.then( data => {
+					console.log( data );
+				} )
+				.catch( err => console.log( err ) );
+		}
+
 		this.setState( { loading: false, user } );
 	}
 
@@ -97,7 +107,6 @@ class UserNav extends Component {
 
 	render() {
 		const { firebase: config } = window.bbgiconfig;
-
 		if ( !config.projectId ) {
 			return false;
 		}
