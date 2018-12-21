@@ -1,6 +1,6 @@
 .user-nav {
     background-color: var(--global-theme-secondary);
-    border-top: 1px solid #E8E8E8;
+    border-top: 1px solid var(--global-theme-font-tertiary);
     justify-content: space-between;
     padding: 1.1rem 0;
     z-index: 10;
@@ -22,10 +22,11 @@
 
     & .user-nav-image {
         align-self: center;
+
         & img {
             border-radius: 50%;
-            width: 30px;
             height: 30px;
+            width: 30px;
         }
     }
 
@@ -59,6 +60,7 @@
 
             & svg {
                 display: inline-block;
+                fill: var(--global-theme-font-primary);
                 height: 18px;
                 margin-right: .5rem;
                 width: 16px;
