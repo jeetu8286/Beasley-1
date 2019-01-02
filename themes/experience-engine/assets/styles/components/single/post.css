@@ -21,17 +21,17 @@
     }
 
     & .description {
-		grid-column: 1;
-        width: 100%;
+    	grid-column: 1;
+    	width: 100%;
 
         @media(--min-medium-viewport) {
-            width: auto;
+        	width: auto;
         }
 
-		& p {
-			line-height: 1.6;
-		}
-	}
+        & p {
+        	line-height: 1.6;
+        }
+    }
 
     & .post-tags {
         display: flex;
