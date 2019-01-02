@@ -1,10 +1,12 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import trapHOC from '@10up/react-focus-trap-hoc';
 
 import Header from './elements/Header';
 import Alert from './elements/Alert';
-import trapHOC from '@10up/react-focus-trap-hoc';
+
+import { saveUser } from '../../library/experience-engine';
 
 class CompleteSignup extends PureComponent {
 
@@ -46,20 +48,7 @@ class CompleteSignup extends PureComponent {
 
 		if ( user && token ) {
 			const { email } = user;
-			const params = {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify( {
-					zipcode: zip,
-					gender: 'male' === gender ? 'M' : 'F',
-					dateofbirth: bday,
-					email,
-				} ),
-			};
-
-			fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}`, params )
-				.then( close )
-				.catch( error => console.error( error ) ); // eslint-disabel-line no-console
+			saveUser( email, zip, gender, bday, token ).then( close );
 		}
 	}
 

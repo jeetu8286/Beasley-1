@@ -6,6 +6,7 @@
 export const ACTION_SET_USER = 'production' === process.env.NODE_ENV ? 'u0' : 'SET_USER';
 export const ACTION_SET_TOKEN = 'production' === process.env.NODE_ENV ? 'u1' : 'SET_TOKEN';
 export const ACTION_RESET_USER = 'production' === process.env.NODE_ENV ? 'u2' : 'RESET_USER';
+export const ACTION_SUPPRESS_USER_CHECK = 'production' === process.env.NODE_ENV ? 'u3' : 'SUPPRESS_USER_CHECK';
 
 export function setUser( user ) {
 	return {
@@ -25,8 +26,13 @@ export function resetUser() {
 	return { type: ACTION_RESET_USER };
 }
 
+export function suppressUserCheck() {
+	return { type: ACTION_SUPPRESS_USER_CHECK };
+}
+
 export default {
 	setUser,
 	setToken,
 	resetUser,
+	suppressUserCheck,
 };

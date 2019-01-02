@@ -24,6 +24,7 @@ class UserNav extends Component {
 		self.onSignIn = self.handleSignIn.bind( self );
 		self.onSignUp = self.handleSignUp.bind( self );
 		self.onSignOut = self.handleSignOut.bind( self );
+		self.onIdToken = self.handleIdToken.bind( self );
 	}
 
 	componentDidMount() {
@@ -42,24 +43,29 @@ class UserNav extends Component {
 
 		if ( user ) {
 			self.props.setUser( user );
-
-			user.getIdToken()
-				.then( ( token ) => {
-					self.props.setToken( token );
-					return fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}` );
-				} )
-				.then( response => response.json() )
-				.then( json => {
-					if ( 'user information has not been set' === json.Error ) {
-						self.props.showCompleteSignup();
-					}
-				} )
-				.catch( data => console.error( data ) ); // eslint-disable-line no-console
+			user.getIdToken().then( self.onIdToken ).catch( data => console.error( data ) ); // eslint-disable-line no-console
 		} else {
 			self.props.resetUser();
 		}
 
 		self.setState( { loading: false } );
+	}
+
+	handleIdToken( token ) {
+		const self = this;
+		const { suppressUserCheck } = self.props;
+
+		self.props.setToken( token );
+
+		if ( !suppressUserCheck ) {
+			return fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}` )
+				.then( response => response.json() )
+				.then( json => {
+					if ( 'user information has not been set' === json.Error ) {
+						self.props.showCompleteSignup();
+					}
+				} );
+		}
 	}
 
 	handleSignIn() {
@@ -157,10 +163,14 @@ UserNav.propTypes = {
 	setToken: PropTypes.func.isRequired,
 	resetUser: PropTypes.func.isRequired,
 	user: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ).isRequired,
+	suppressUserCheck: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps( { auth } ) {
-	return { user: auth.user || false };
+	return {
+		user: auth.user || false,
+		suppressUserCheck: auth.suppressUserCheck,
+	};
 }
 
 function mapDispatchToProps( dispatch ) {
