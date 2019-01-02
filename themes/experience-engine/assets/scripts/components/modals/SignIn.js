@@ -9,6 +9,7 @@ import { showRestoreModal } from '../../redux/actions/modal';
 import Header from './elements/Header';
 import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
+import trapHOC from '@10up/react-focus-trap-hoc';
 
 class SignIn extends PureComponent {
 
@@ -26,6 +27,14 @@ class SignIn extends PureComponent {
 		self.onFieldChange = self.handleFieldChange.bind( self );
 		self.onFormSubmit = self.handleFormSubmit.bind( self );
 		self.onRestoreClick = self.handleRestoreClick.bind( self );
+	}
+
+	componentDidMount() {
+		this.props.activateTrap();
+	}
+
+	componentWillUnmount() {
+		this.props.deactivateTrap();
 	}
 
 	handleFieldChange( e ) {
@@ -55,25 +64,49 @@ class SignIn extends PureComponent {
 
 		return (
 			<Fragment>
-				<Header>Sign In</Header>
+				<Header>
+					<h3>Sign In</h3>
+				</Header>
 
 				<Alert message={message} />
 
-				<form onSubmit={self.onFormSubmit}>
-					<div>
-						<label htmlFor="user-email">Email</label>
-						<input type="email" id="user-email" name="email" value={email} onChange={self.onFieldChange} />
+				<form className="modal-form -form-sign-in" onSubmit={self.onFormSubmit}>
+					<div className="modal-form-group">
+						<label className="modal-form-label" htmlFor="user-email">Email</label>
+						<input 
+							className="modal-form-field"
+							type="email" id="user-email"
+							name="email" value={email}
+							onChange={self.onFieldChange}
+							placeholder="Your email address" 
+						/>
 					</div>
-					<div>
-						<label htmlFor="user-password">Password</label>
-						<input type="password" id="user-password" name="password" value={password} onChange={self.onFieldChange} />
+					<div className="modal-form-group">
+						<label className="modal-form-label" htmlFor="user-password">Password</label>
+						<input
+							className="modal-form-field"
+							type="password"
+							id="user-password"
+							name="password"
+							value={password}
+							onChange={self.onFieldChange}
+							placeholder="Your password" 
+						/>
 					</div>
-					<div>
-						<button type="submit">Sign In</button>
-						<button type="button" onClick={self.onRestoreClick}>Forgot Password</button>
+					<div className="modal-form-actions">
+						<button className="button -sign-in" type="submit">Sign In</button>
+						<button 
+							className="button -forgot-password"
+							type="button"
+							onClick={self.onRestoreClick}
+						>
+							Forgot Password
+						</button>
 					</div>
 				</form>
-
+				<h5 className="section-head">
+					<span>Or sign in with</span>
+				</h5>
 				<OAuthButtons />
 			</Fragment>
 		);
@@ -84,8 +117,10 @@ class SignIn extends PureComponent {
 SignIn.propTypes = {
 	restore: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
+	activateTrap: PropTypes.func.isRequired,
+	deactivateTrap: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = ( dispatch ) => bindActionCreators( { restore: showRestoreModal }, dispatch );
 
-export default connect( null, mapDispatchToProps )( SignIn );
+export default connect( null, mapDispatchToProps )( trapHOC()( SignIn ) );
