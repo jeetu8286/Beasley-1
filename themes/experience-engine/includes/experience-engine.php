@@ -85,7 +85,6 @@ endif;
 
 if ( ! function_exists( 'ee_feeds_content_html' ) ) :
 	function ee_feeds_content_html( $html, $response ) {
-		error_log( var_export( $response, true ) );
 		ob_start();
 		ee_homepage_feeds( $response );
 		return ob_get_clean();
