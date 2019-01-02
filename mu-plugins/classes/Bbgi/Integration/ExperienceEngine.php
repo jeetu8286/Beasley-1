@@ -298,7 +298,7 @@ class ExperienceEngine extends \Bbgi\Module {
 		$response = json_decode( $response, true );
 
 		return rest_ensure_response( array(
-			'html' => apply_filters( 'ee_feeds_content_html', $response ),
+			'html' => apply_filters( 'ee_feeds_content_html', '', $response ),
 		) );
 	}
 

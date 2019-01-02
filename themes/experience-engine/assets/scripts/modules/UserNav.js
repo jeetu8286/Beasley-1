@@ -63,6 +63,13 @@ class UserNav extends Component {
 				.then( json => {
 					if ( 'user information has not been set' === json.Error ) {
 						self.props.showCompleteSignup();
+					} else if ( document.body.classList.contains( 'home' ) ) {
+						return fetch( `${window.bbgiconfig.wpapi}feeds-content?authorization=${encodeURIComponent( token )}`, { method: 'POST' } )
+							.then( response => response.json() )
+							.then( ( json ) => {
+								// @todo: replace with proper handling of the homepage
+								console.log( json );
+							} );
 					}
 				} );
 		}
