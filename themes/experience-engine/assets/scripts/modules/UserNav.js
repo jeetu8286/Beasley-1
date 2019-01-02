@@ -7,6 +7,7 @@ import firebase from 'firebase';
 import md5 from 'md5';
 
 import { showSignInModal, showSignUpModal, showCompleteSignupModal } from '../redux/actions/modal';
+import { setUser, setToken, resetUser } from '../redux/actions/auth';
 
 class UserNav extends Component {
 
@@ -17,7 +18,6 @@ class UserNav extends Component {
 
 		self.state = {
 			loading: true,
-			user: null,
 		};
 
 		self.onAuthStateChanged = self.handleAuthStateChanged.bind( self );
@@ -41,8 +41,13 @@ class UserNav extends Component {
 		const self = this;
 
 		if ( user ) {
+			self.props.setUser( user );
+
 			user.getIdToken()
-				.then( token => fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}` ) )
+				.then( ( token ) => {
+					self.props.setToken( token );
+					return fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}` );
+				} )
 				.then( response => response.json() )
 				.then( json => {
 					if ( 'user information has not been set' === json.Error ) {
@@ -50,9 +55,11 @@ class UserNav extends Component {
 					}
 				} )
 				.catch( data => console.error( data ) ); // eslint-disable-line no-console
+		} else {
+			self.props.resetUser();
 		}
 
-		self.setState( { loading: false, user } );
+		self.setState( { loading: false } );
 	}
 
 	handleSignIn() {
@@ -71,16 +78,11 @@ class UserNav extends Component {
 		return <div className="loading" />;
 	}
 
-	renderSignedInState() {
-		const { currentUser } = firebase.auth();
-		if ( !currentUser ) {
-			return false;
-		}
-
-		const displayName = currentUser.displayName || currentUser.email;
-		let photo = currentUser.photoURL;
+	renderSignedInState( user ) {
+		const displayName = user.displayName || user.email;
+		let photo = user.photoURL;
 		if ( !photo || !photo.length ) {
-			photo = `//www.gravatar.com/avatar/${md5( currentUser.email )}.jpg?s=100`;
+			photo = `//www.gravatar.com/avatar/${md5( user.email )}.jpg?s=100`;
 		}
 
 		return (
@@ -129,14 +131,15 @@ class UserNav extends Component {
 		}
 
 		const self = this;
-		const { loading, user } = self.state;
+		const { loading } = self.state;
+		const { user } = self.props;
 		const container = document.getElementById( 'user-nav' );
 
 		let component = false;
 		if ( loading ) {
 			component = self.renderLoadingState();
 		} else if ( user ) {
-			component = self.renderSignedInState();
+			component = self.renderSignedInState( user );
 		} else {
 			component = self.renderSignedOutState();
 		}
@@ -150,14 +153,25 @@ UserNav.propTypes = {
 	showSignIn: PropTypes.func.isRequired,
 	showSignUp: PropTypes.func.isRequired,
 	showCompleteSignup: PropTypes.func.isRequired,
+	setUser: PropTypes.func.isRequired,
+	setToken: PropTypes.func.isRequired,
+	resetUser: PropTypes.func.isRequired,
+	user: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ),
 };
+
+function mapStateToProps( { auth } ) {
+	return { user: auth.user || false };
+}
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
 		showSignIn: showSignInModal,
 		showSignUp: showSignUpModal,
 		showCompleteSignup: showCompleteSignupModal,
+		setUser,
+		resetUser,
+		setToken,
 	}, dispatch );
 }
 
-export default connect( null, mapDispatchToProps )( UserNav );
+export default connect( mapStateToProps, mapDispatchToProps )( UserNav );
