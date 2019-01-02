@@ -2,7 +2,7 @@ import { ACTION_SET_USER, ACTION_SET_TOKEN, ACTION_RESET_USER } from '../actions
 
 export const DEFAULT_STATE = {
 	user: null,
-	token: null,
+	token: '',
 };
 
 function reducer( state = {}, action = {} ) {

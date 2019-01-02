@@ -145,7 +145,7 @@ class SignUp extends PureComponent {
 
 SignUp.propTypes = {
 	activateTrap: PropTypes.func.isRequired,
-	deactivateTrap: PropTypes.func.isRequired
+	deactivateTrap: PropTypes.func.isRequired,
 };
 
 export default trapHOC()( SignUp );

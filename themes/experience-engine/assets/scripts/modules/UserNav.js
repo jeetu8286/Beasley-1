@@ -156,7 +156,7 @@ UserNav.propTypes = {
 	setUser: PropTypes.func.isRequired,
 	setToken: PropTypes.func.isRequired,
 	resetUser: PropTypes.func.isRequired,
-	user: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ),
+	user: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ).isRequired,
 };
 
 function mapStateToProps( { auth } ) {

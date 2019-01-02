@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Header from './elements/Header';
 import Alert from './elements/Alert';
@@ -37,7 +38,29 @@ class CompleteSignup extends PureComponent {
 	}
 
 	handleFormSubmit( e ) {
+		const self = this;
+		const { zip, gender, bday } = self.state;
+		const { user, token, close } = self.props;
+
 		e.preventDefault();
+
+		if ( user && token ) {
+			const { email } = user;
+			const params = {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify( {
+					zipcode: zip,
+					gender: 'male' === gender ? 'M' : 'F',
+					dateofbirth: bday,
+					email,
+				} ),
+			};
+
+			fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}`, params )
+				.then( close )
+				.catch( error => console.error( error ) ); // eslint-disabel-line no-console
+		}
 	}
 
 	render() {
@@ -83,8 +106,18 @@ class CompleteSignup extends PureComponent {
 }
 
 CompleteSignup.propTypes = {
+	close: PropTypes.func.isRequired,
 	activateTrap: PropTypes.func.isRequired,
-	deactivateTrap: PropTypes.func.isRequired
+	deactivateTrap: PropTypes.func.isRequired,
+	user: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ).isRequired,
+	token: PropTypes.string.isRequired,
 };
 
-export default trapHOC()( CompleteSignup );
+function mapStateToProps( { auth } ) {
+	return {
+		user: auth.user || false,
+		token: auth.token,
+	};
+}
+
+export default connect( mapStateToProps )( trapHOC()( CompleteSignup ) );
