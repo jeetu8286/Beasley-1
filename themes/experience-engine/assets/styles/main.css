@@ -38,6 +38,8 @@
 @import 'components/show/show-navigation';
 @import 'components/show/show-tile';
 
+@import 'components/single/posts';
+
 @import 'components/share/share';
 
 @import 'components/gallery/listicle';
