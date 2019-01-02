@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import firebase from 'firebase';
 import md5 from 'md5';
 
-import { showSignInModal, showSignUpModal } from '../redux/actions/modal';
+import { showSignInModal, showSignUpModal, showCompleteSignupModal } from '../redux/actions/modal';
 
 class UserNav extends Component {
 
@@ -38,19 +38,21 @@ class UserNav extends Component {
 	}
 
 	handleAuthStateChanged( user ) {
+		const self = this;
+
 		if ( user ) {
 			user.getIdToken()
 				.then( token => fetch( `${window.bbgiconfig.eeapi}user?authorization=${encodeURIComponent( token )}` ) )
 				.then( response => response.json() )
 				.then( json => {
 					if ( 'user information has not been set' === json.Error ) {
-						console.log( '@todo: show user complete signup modal.' );
+						self.props.showCompleteSignup();
 					}
 				} )
 				.catch( data => console.error( data ) ); // eslint-disable-line no-console
 		}
 
-		this.setState( { loading: false, user } );
+		self.setState( { loading: false, user } );
 	}
 
 	handleSignIn() {
@@ -147,12 +149,14 @@ class UserNav extends Component {
 UserNav.propTypes = {
 	showSignIn: PropTypes.func.isRequired,
 	showSignUp: PropTypes.func.isRequired,
+	showCompleteSignup: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
 		showSignIn: showSignInModal,
 		showSignUp: showSignUpModal,
+		showCompleteSignup: showCompleteSignupModal,
 	}, dispatch );
 }
 

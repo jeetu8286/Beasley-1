@@ -3,40 +3,28 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL, RESTORE_MODAL } from '../redux/actions/modal';
+import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL, RESTORE_MODAL, COMPLETE_SIGNUP_MODAL } from '../redux/actions/modal';
 
 import SignInModal from '../components/modals/SignIn';
 import SignUpModal from '../components/modals/SignUp';
 import RestoreModal from '../components/modals/RestorePassword';
+import CompleteSignup from '../components/modals/CompleteSignup';
+
 class ModalDispatcher extends Component {
 
-	constructor(){
+	constructor() {
 		super();
 
-		this.modalRef = React.createRef();
-		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind( this );
-		this.handleClickOutside = this.handleClickOutside.bind( this );
+		const self = this;
+		self.modalRef = React.createRef();
+
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
+		self.handleClickOutside = self.handleClickOutside.bind( self );
 	}
 
-	componentDidMount(){
-	
+	componentDidMount() {
 		document.addEventListener( 'mousedown', this.handleClickOutside, false );
 		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
-		
-	}
-
-	handleClickOutside( e ) {
-		if( this.modalRef.current && this.modalRef.current.contains( e.target ) ) {
-			return;
-		}
-
-		this.props.close();
-	}
-
-	handleEscapeKeyDown( e ) {
-		if( 27 === e.keyCode ) {
-			this.props.close();
-		}
 	}
 
 	componentWillUnmount() {
@@ -44,8 +32,20 @@ class ModalDispatcher extends Component {
 		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
-	render() {
+	handleClickOutside( e ) {
+		const self = this;
+		if ( !self.modalRef.current || !self.modalRef.current.contains( e.target ) ) {
+			self.props.close();
+		}
+	}
 
+	handleEscapeKeyDown( e ) {
+		if ( 27 === e.keyCode ) {
+			this.props.close();
+		}
+	}
+
+	render() {
 		const { modal, payload, close } = this.props;
 		let component = false;
 
@@ -58,6 +58,9 @@ class ModalDispatcher extends Component {
 				break;
 			case RESTORE_MODAL:
 				component = <RestoreModal close={close} {...payload} />;
+				break;
+			case COMPLETE_SIGNUP_MODAL:
+				component = <CompleteSignup close={close} {...payload } />;
 				break;
 			default:
 				return false;
@@ -91,8 +94,12 @@ ModalDispatcher.defaultProps = {
 	payload: {},
 };
 
-const mapStateToProps = ( { modal } ) => ( { ...modal } );
+function mapStateToProps( { modal } ) {
+	return { ...modal };
+}
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( { close: hideModal }, dispatch );
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( { close: hideModal }, dispatch );
+}
 
 export default connect( mapStateToProps, mapDispatchToProps )( ModalDispatcher );
