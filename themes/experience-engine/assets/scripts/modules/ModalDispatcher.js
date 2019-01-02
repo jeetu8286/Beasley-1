@@ -34,7 +34,10 @@ class ModalDispatcher extends Component {
 
 	handleClickOutside( e ) {
 		const self = this;
-		if ( !self.modalRef.current || !self.modalRef.current.contains( e.target ) ) {
+		const { modal } = self.props;
+		const { current: ref } = self.modalRef;
+
+		if ( 'CLOSED' !== modal && ( !ref || !ref.contains( e.target ) ) ) {
 			self.props.close();
 		}
 	}
@@ -46,7 +49,8 @@ class ModalDispatcher extends Component {
 	}
 
 	render() {
-		const { modal, payload, close } = this.props;
+		const self = this;
+		const { modal, payload, close } = self.props;
 		let component = false;
 
 		switch( modal ) {
@@ -68,7 +72,7 @@ class ModalDispatcher extends Component {
 
 		return(
 			<div className={`modal ${( modal || '' ).toLowerCase()}`}>
-				<div ref={this.modalRef} className="modal-content">
+				<div ref={self.modalRef} className="modal-content">
 					<button type="button" className="button modal-close" aria-label="Close Modal" onClick={close}>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.982 212.982" aria-labelledby="close-modal-title close-modal-desc" width="13" height="13">
 							<title id="close-modal-title">Close Modal</title>
