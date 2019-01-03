@@ -1,11 +1,22 @@
 .modal.discover-modal {
+	background-color: transparent;
+
 	& .modal-content {
 		height: calc(100% - 84px);
 		left: 190px;
 		max-width: none;
+		padding-top: 0;
 		top: 0;
 		transform: translate(0);
 		width: calc(100% - 190px);
+	}
+
+	& .modal-header {
+		font-style: italic;
+	}
+
+	& .search-field {
+		border-bottom: none;
 	}
 
 	& .filters {
@@ -13,7 +24,7 @@
 		box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08), 0px 1px 0px rgba(0, 0, 0, 0.1),
 			inset 0px 1px 2px rgba(255, 255, 255, 0.08);
 		display: flex;
-		margin: 0 -2rem;
+		margin: 0 -2rem 2.945rem;
 		padding: 1.778rem 2rem;
 
 		& .select {
