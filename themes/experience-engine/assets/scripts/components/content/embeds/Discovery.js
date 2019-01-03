@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import Discover from '../../modals/Discover';
 import { showDiscoverModal } from '../../../redux/actions/modal';
 
 class Discovery extends PureComponent {
@@ -263,7 +262,6 @@ class Discovery extends PureComponent {
 						/>
 					</svg>
 
-					{/* @TODO :: Button needs associated method to add station to users 'subscribed' list */}
 					<button className="btn" onClick={this.handleClick}>
 						Customize Your Feed
 					</button>
