@@ -50,6 +50,9 @@ class ModalDispatcher extends Component {
 
 	render() {
 		const { modal, payload, close } = this.props;
+		const adTopOffset = document.querySelector( '.ad.-leaderboard' ).offsetHeight;
+		const inlineOffset = 'DISCOVER-MODAL' === modal ? `${adTopOffset}px` : '';
+
 		let component = false;
 
 		switch ( modal ) {
@@ -71,7 +74,11 @@ class ModalDispatcher extends Component {
 
 		return (
 			<div className={`modal ${( modal || '' ).toLowerCase()}`}>
-				<div ref={this.modalRef} className="modal-content">
+				<div
+					ref={this.modalRef}
+					className="modal-content"
+					style={{ top: inlineOffset }}
+				>
 					<button
 						type="button"
 						className="button modal-close"
