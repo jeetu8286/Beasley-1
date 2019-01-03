@@ -24,14 +24,18 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 		}
 
 		$count = count( $supported_feeds );
-		for ( $i = 0; $i < $count; $i++ ) {
-			$feed = $supported_feeds[ $i ];
-			if ( ! empty( $feed['content'] ) && is_array( $feed['content'] ) ) {
-				call_user_func( $supported_types[ $feed['type'] ], $feed, $count );
+		if ( $count > 0 ) {
+			for ( $i = 0; $i < $count; $i++ ) {
+				$feed = $supported_feeds[ $i ];
+				if ( ! empty( $feed['content'] ) && is_array( $feed['content'] ) ) {
+					call_user_func( $supported_types[ $feed['type'] ], $feed, $count );
+				}
 			}
-		}
 
-		wp_reset_postdata();
+			wp_reset_postdata();
+		} else {
+			ee_render_discovery_cta();
+		}
 	}
 endif;
 
@@ -71,10 +75,16 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 		}
 
 		if ( $index == 4 ) {
-			echo '<div class="discovery-cta"></div>';
+			ee_render_discovery_cta();
 		}
 
 		$index++;
+	}
+endif;
+
+if ( ! function_exists( 'ee_render_discovery_cta' ) ) :
+	function ee_render_discovery_cta() {
+		echo '<div class="discovery-cta"></div>';
 	}
 endif;
 
