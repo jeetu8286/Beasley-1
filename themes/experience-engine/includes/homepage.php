@@ -154,7 +154,9 @@ if ( ! function_exists( 'ee_get_post_by_link' ) ) :
 		$key = 'ee:post-by-link:' . $link;
 		$post_id = wp_cache_get( $key );
 		if ( $post_id === false ) {
-			$wp = new \WP();
+			// @todo: find a better way to get post by its link
+
+			/*$wp = new \WP();
 			$query = new \WP_Query();
 
 			$url = $_SERVER['REQUEST_URI'];
@@ -170,7 +172,7 @@ if ( ! function_exists( 'ee_get_post_by_link' ) ) :
 			$_SERVER['REQUEST_URI'] = $url;
 
 			$post_id = current( $ids );
-			wp_cache_set( $key, $post_id );
+			wp_cache_set( $key, $post_id );*/
 		}
 
 		if ( ! empty( $post_id ) ) {

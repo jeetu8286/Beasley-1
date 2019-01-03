@@ -261,7 +261,12 @@ class ExperienceEngine extends \Bbgi\Module {
 		register_rest_route( $namespace, 'feeds-content', array(
 			'methods'  => \WP_REST_Server::CREATABLE,
 			'callback' => $this( 'rest_get_feeds_content' ),
-			'args'     => $authorization,
+			'args'     => array_merge( $authorization, array(
+				'format' => array(
+					'type'     => 'string',
+					'required' => false,
+				),
+			) ),
 		) );
 	}
 
@@ -297,8 +302,16 @@ class ExperienceEngine extends \Bbgi\Module {
 		$response = wp_remote_retrieve_body( $response );
 		$response = json_decode( $response, true );
 
+		$data = apply_filters( 'ee_feeds_content_html', '', $response );
+		if ( $request->get_param( 'format' ) == 'raw' ) {
+			// @todo: find a better way to send html data
+			header( 'content-type: text/html' );
+			echo $data;
+			exit;
+		}
+
 		return rest_ensure_response( array(
-			'html' => apply_filters( 'ee_feeds_content_html', '', $response ),
+			'html' => $data,
 		) );
 	}
 

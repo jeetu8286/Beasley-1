@@ -86,7 +86,11 @@ endif;
 if ( ! function_exists( 'ee_feeds_content_html' ) ) :
 	function ee_feeds_content_html( $html, $response ) {
 		ob_start();
+
+		get_header();
 		ee_homepage_feeds( $response );
+		get_footer();
+
 		return ob_get_clean();
 	}
 endif;
