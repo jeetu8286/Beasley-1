@@ -3,14 +3,20 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { hideModal, SIGNIN_MODAL, SIGNUP_MODAL, RESTORE_MODAL } from '../redux/actions/modal';
+import {
+	hideModal,
+	SIGNIN_MODAL,
+	SIGNUP_MODAL,
+	RESTORE_MODAL,
+	DISCOVER_MODAL,
+} from '../redux/actions/modal';
 
 import SignInModal from '../components/modals/SignIn';
 import SignUpModal from '../components/modals/SignUp';
 import RestoreModal from '../components/modals/RestorePassword';
+import DiscoverModal from '../components/modals/Discover';
 class ModalDispatcher extends Component {
-
-	constructor(){
+	constructor() {
 		super();
 
 		this.modalRef = React.createRef();
@@ -18,15 +24,13 @@ class ModalDispatcher extends Component {
 		this.handleClickOutside = this.handleClickOutside.bind( this );
 	}
 
-	componentDidMount(){
-	
+	componentDidMount() {
 		document.addEventListener( 'mousedown', this.handleClickOutside, false );
 		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
-		
 	}
 
 	handleClickOutside( e ) {
-		if( this.modalRef.current && this.modalRef.current.contains( e.target ) ) {
+		if ( this.modalRef.current && this.modalRef.current.contains( e.target ) ) {
 			return;
 		}
 
@@ -34,7 +38,7 @@ class ModalDispatcher extends Component {
 	}
 
 	handleEscapeKeyDown( e ) {
-		if( 27 === e.keyCode ) {
+		if ( 27 === e.keyCode ) {
 			this.props.close();
 		}
 	}
@@ -45,11 +49,10 @@ class ModalDispatcher extends Component {
 	}
 
 	render() {
-
 		const { modal, payload, close } = this.props;
 		let component = false;
 
-		switch( modal ) {
+		switch ( modal ) {
 			case SIGNIN_MODAL:
 				component = <SignInModal close={close} {...payload} />;
 				break;
@@ -59,18 +62,38 @@ class ModalDispatcher extends Component {
 			case RESTORE_MODAL:
 				component = <RestoreModal close={close} {...payload} />;
 				break;
+			case DISCOVER_MODAL:
+				component = <DiscoverModal close={close} {...payload} />;
+				break;
 			default:
 				return false;
 		}
 
-		return(
+		return (
 			<div className={`modal ${( modal || '' ).toLowerCase()}`}>
 				<div ref={this.modalRef} className="modal-content">
-					<button type="button" className="button modal-close" aria-label="Close Modal" onClick={close}>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.982 212.982" aria-labelledby="close-modal-title close-modal-desc" width="13" height="13">
+					<button
+						type="button"
+						className="button modal-close"
+						aria-label="Close Modal"
+						onClick={close}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 212.982 212.982"
+							aria-labelledby="close-modal-title close-modal-desc"
+							width="13"
+							height="13"
+						>
 							<title id="close-modal-title">Close Modal</title>
-							<desc id="close-modal-desc">Checkmark indicating modal close</desc>
-							<path d="M131.804 106.491l75.936-75.936c6.99-6.99 6.99-18.323 0-25.312-6.99-6.99-18.322-6.99-25.312 0L106.491 81.18 30.554 5.242c-6.99-6.99-18.322-6.99-25.312 0-6.989 6.99-6.989 18.323 0 25.312l75.937 75.936-75.937 75.937c-6.989 6.99-6.989 18.323 0 25.312 6.99 6.99 18.322 6.99 25.312 0l75.937-75.937 75.937 75.937c6.989 6.99 18.322 6.99 25.312 0 6.99-6.99 6.99-18.322 0-25.312l-75.936-75.936z" fillRule="evenodd" clipRule="evenodd"/>
+							<desc id="close-modal-desc">
+								Checkmark indicating modal close
+							</desc>
+							<path
+								d="M131.804 106.491l75.936-75.936c6.99-6.99 6.99-18.323 0-25.312-6.99-6.99-18.322-6.99-25.312 0L106.491 81.18 30.554 5.242c-6.99-6.99-18.322-6.99-25.312 0-6.989 6.99-6.989 18.323 0 25.312l75.937 75.936-75.937 75.937c-6.989 6.99-6.989 18.323 0 25.312 6.99 6.99 18.322 6.99 25.312 0l75.937-75.937 75.937 75.937c6.989 6.99 18.322 6.99 25.312 0 6.99-6.99 6.99-18.322 0-25.312l-75.936-75.936z"
+								fillRule="evenodd"
+								clipRule="evenodd"
+							/>
 						</svg>
 					</button>
 					{component}
@@ -93,6 +116,10 @@ ModalDispatcher.defaultProps = {
 
 const mapStateToProps = ( { modal } ) => ( { ...modal } );
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( { close: hideModal }, dispatch );
+const mapDispatchToProps = dispatch =>
+	bindActionCreators( { close: hideModal }, dispatch );
 
-export default connect( mapStateToProps, mapDispatchToProps )( ModalDispatcher );
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)( ModalDispatcher );
