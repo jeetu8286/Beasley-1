@@ -11,6 +11,7 @@ class Dfp extends \Bbgi\Module {
 	 */
 	public function register() {
 		add_action( 'wp_loaded', $this( 'register_metabox' ), 20 );
+		add_filter( 'dfp_single_targeting', $this( 'update_single_targeting' ) );
 	}
 
 	/**
@@ -58,6 +59,24 @@ class Dfp extends \Bbgi\Module {
 			'active'                => 1,
 			'description'           => '',
 		) );
+	}
+
+	/**
+	 * Updates single slot targeting.
+	 *
+	 * @access public
+	 * @param array $targeting
+	 * @return array
+	 */
+	public function update_single_targeting( $targeting ) {
+		if ( is_single() ) {
+			$field = get_field( 'sensitive_content', get_queried_object_id() );
+			if ( filter_var( $field, FILTER_VALIDATE_BOOLEAN ) ) {
+				$targeting[] = array( 'sensitive', 'yes' );
+			}
+		}
+
+		return $targeting;
 	}
 
 }
