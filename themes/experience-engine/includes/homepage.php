@@ -24,14 +24,18 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 		}
 
 		$count = count( $supported_feeds );
-		for ( $i = 0; $i < $count; $i++ ) {
-			$feed = $supported_feeds[ $i ];
-			if ( ! empty( $feed['content'] ) && is_array( $feed['content'] ) ) {
-				call_user_func( $supported_types[ $feed['type'] ], $feed, $count );
+		if ( $count > 0 ) {
+			for ( $i = 0; $i < $count; $i++ ) {
+				$feed = $supported_feeds[ $i ];
+				if ( ! empty( $feed['content'] ) && is_array( $feed['content'] ) ) {
+					call_user_func( $supported_types[ $feed['type'] ], $feed, $count );
+				}
 			}
-		}
 
-		wp_reset_postdata();
+			wp_reset_postdata();
+		} else {
+			ee_render_discovery_cta();
+		}
 	}
 endif;
 
@@ -71,10 +75,16 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 		}
 
 		if ( $index == 4 ) {
-			echo '<div class="discovery-cta"></div>';
+			ee_render_discovery_cta();
 		}
 
 		$index++;
+	}
+endif;
+
+if ( ! function_exists( 'ee_render_discovery_cta' ) ) :
+	function ee_render_discovery_cta() {
+		echo '<div class="discovery-cta"></div>';
 	}
 endif;
 
@@ -106,41 +116,136 @@ endif;
 
 if ( ! function_exists( 'ee_setup_post_from_feed_item' ) ) :
 	function ee_setup_post_from_feed_item( $item, $feed ) {
-		$post_type = 'post';
-		if ( $feed['type'] == 'contest' ) {
-			$post_type = 'contest';
-		} elseif ( $feed['type'] == 'podcast' ) {
-			$post_type = 'episode';
-		} elseif ( $feed['type'] == 'events' ) {
-			$post_type = 'tribe_events';
+		$post = false;
+		switch ( $feed['type'] ) {
+			case 'podcast':
+				$post = ee_get_post_by_omny_audio( $item['media']['url'] );
+				break;
+			default:
+				$post = ee_get_post_by_link( $item['link'] );
+				break;
 		}
 
-		$post = new \stdClass();
-		$post->filter = 'raw';
+		if ( ! is_a( $post, '\WP_Post' ) ) {
+			$post_type = 'post';
+			if ( $feed['type'] == 'contest' ) {
+				$post_type = 'contest';
+			} elseif ( $feed['type'] == 'podcast' ) {
+				$post_type = 'episode';
+				error_log( var_export( $item, true ) );
+			} elseif ( $feed['type'] == 'events' ) {
+				$post_type = 'tribe_events';
+			}
 
-		$post->ID = 0;
-		$post->post_title = $item['title'];
-		$post->post_status = 'publish';
-		$post->post_type = ee_is_network_domain( $item['link'] ) || $post_type == 'episode' ? $post_type : 'external';
-		$post->post_content = $item['excerpt'];
-		$post->post_excerpt = $item['excerpt'];
-		$post->post_date = $post->post_date_gmt = $post->post_modified = $post->post_modified_gmt = date( 'Y:m:d H:i:s', strtotime( $item['publishedAt'] ) );
+			$post = new \stdClass();
+			$post->filter = 'raw';
 
-		$post->id = $item['id'];
-		$post->link = $item['link'];
+			$post->ID = 0;
+			$post->post_title = $item['title'];
+			$post->post_status = 'publish';
+			$post->post_type = ee_is_network_domain( $item['link'] ) || $post_type == 'episode' ? $post_type : 'external';
+			$post->post_content = $item['excerpt'];
+			$post->post_excerpt = $item['excerpt'];
+			$post->post_date = $post->post_date_gmt = $post->post_modified = $post->post_modified_gmt = date( 'Y:m:d H:i:s', strtotime( $item['publishedAt'] ) );
 
-		if ( ! empty( $item['picture']['large'] ) ) {
-			$post->picture = $item['picture']['large'];
+			$post->id = $item['id'];
+			$post->link = $item['link'];
+
+			if ( ! empty( $item['picture']['large'] ) ) {
+				$post->picture = $item['picture']['large'];
+			}
+
+			if ( ! empty( $item['media'] ) ) {
+				$post->media = $item['media'];
+			}
+
+			$post = new \WP_Post( $post );
 		}
 
-		if ( ! empty( $item['media'] ) ) {
-			$post->media = $item['media'];
-		}
-
-		$post = new \WP_Post( $post );
 		setup_postdata( $post );
 		$GLOBALS['post'] = $post;
 
 		return $post;
+	}
+endif;
+
+if ( ! function_exists( 'ee_get_post_by_omny_audio' ) ) :
+	function ee_get_post_by_omny_audio( $audio ) {
+		global $wpdb;
+
+		$audio = explode( '?', $audio );
+		$audio = current( $audio );
+
+		$key = 'ee:post-by-audio:' . $audio;
+		$post_id = wp_cache_get( $key );
+		if ( $post_id === false ) {
+			$audio = esc_sql( $audio );
+
+			$post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'omny-audio-url' AND meta_value LIKE '{$audio}%'" );
+			$post_id = intval( $post_id );
+
+			wp_cache_set( $key, $post_id, DAY_IN_SECONDS );
+		}
+
+		if ( $post_id > 0 ) {
+			$post = get_post( $post_id );
+			if ( is_a( $post, '\WP_Post' ) ) {
+				return $post;
+			}
+		}
+
+		return false;
+	}
+endif;
+
+if ( ! function_exists( 'ee_get_post_by_link' ) ) :
+	function ee_get_post_by_link( $link ) {
+		global $wp_rewrite;
+
+		$request = parse_url( $link );
+		if ( $request['host'] != parse_url( home_url(), PHP_URL_HOST ) ) {
+			return false;
+		}
+
+		$key = 'ee:post-by-link:' . $link;
+		$post_id = wp_cache_get( $key );
+		if ( $post_id === false ) {
+			$request_path = trim( $request['path'], '/' );
+
+			$rewrite = $wp_rewrite->wp_rewrite_rules();
+			foreach ( $rewrite as $match => $query ) {
+				if ( preg_match( "#^{$match}#", $request_path, $matches ) || preg_match( "#^{$match}#", urldecode( $request_path ), $matches ) ) {
+					$query = parse_url( $query, PHP_URL_QUERY );
+					$query = addslashes( \WP_MatchesMapRegex::apply( $query, $matches ) );
+
+					parse_str( $query, $query_vars );
+					if ( ! emptY( $query_vars ) ) {
+						$query = new \WP_Query();
+						$posts = $query->query( array_merge( $query_vars, array(
+							'ignore_sticky_posts' => true,
+							'posts_per_page'      => 1,
+							'fields'              => 'ids',
+						) ) );
+
+						if ( ! empty( $posts ) ) {
+							$post_id = current( $posts );
+						}
+						break;
+					}
+				}
+			}
+
+			$post_id = intval( $post_id );
+			wp_cache_set( $key, $post_id, HOUR_IN_SECONDS );
+		}
+
+		if ( ! empty( $post_id ) ) {
+			$post = get_post( $post_id );
+			if ( is_a( $post, '\WP_Post' ) ) {
+				return $post;
+			}
+		}
+
+		return false;
 	}
 endif;

@@ -74,7 +74,6 @@ class ContentDispatcher extends Component {
 			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css',
 		];
 
-
 		if ( carousels.length ) {
 			loadAssets( scripts, styles )
 				.then( self.handleSliders.bind( self ) )
@@ -116,6 +115,8 @@ class ContentDispatcher extends Component {
 
 	handleClick( e ) {
 		const self = this;
+		const { load, token } = self.props;
+
 		const { target } = e;
 		let linkNode = target;
 
@@ -154,8 +155,20 @@ class ContentDispatcher extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// fetch next page
-		self.props.load( link );
+		// load user homepage if token is not empty and the next page is a homepage
+		// otherwise just load the next page
+		if ( `${origin}/` === link.split( /[?#]/ )[0] && token.length ) {
+			load( link, {
+				fetchUrlOverride: `${window.bbgiconfig.wpapi}feeds-content`,
+				fetchParams: {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					body: `format=raw&authorization=${encodeURIComponent( token )}`,
+				},
+			} );
+		} else {
+			load( link );
+		}
 	}
 
 	handlePageChange( event ) {
@@ -177,7 +190,8 @@ class ContentDispatcher extends Component {
 		}
 
 		blocks.push(
-			<ContentBlock key={window.location.href} content={content} embeds={embeds} />,
+			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
+			<ContentBlock key={`${window.location.href}-${content.length}`} content={content} embeds={embeds} />,
 		);
 
 		Object.keys( partials ).forEach( ( key ) => {
@@ -190,6 +204,7 @@ class ContentDispatcher extends Component {
 }
 
 ContentDispatcher.propTypes = {
+	token: PropTypes.string.isRequired,
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
 	partials: PropTypes.shape( {} ).isRequired,
@@ -198,11 +213,12 @@ ContentDispatcher.propTypes = {
 	update: PropTypes.func.isRequired,
 };
 
-function mapStateToProps( { screen } ) {
+function mapStateToProps( { screen, auth } ) {
 	return {
 		content: screen.content,
 		embeds: screen.embeds,
 		partials: screen.partials,
+		token: auth.token,
 	};
 }
 

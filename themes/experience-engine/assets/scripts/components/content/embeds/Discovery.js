@@ -1,18 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function Discovery() {
+import LazyImage from './LazyImage';
+
+function Discovery( { placeholder } ) {
 	const { bbgiconfig } = window;
-	const { publisher } = bbgiconfig;
-	const { picture, title } = publisher;
+	const { publisher, theme } = bbgiconfig || {};
+	const { title } = publisher || {};
+	const { logo } = theme || {};
 
-	const logo = picture && picture.url
-		? <img src={picture.url} alt={title} />
-		: false;
+	let logoImage = false;
+	if ( logo && logo.url ) {
+		const id = `${placeholder}-image`;
+		const { url, width, height } = logo;
+
+		logoImage = (
+			<div id={id} className="image">
+				<LazyImage placeholder={id} src={url} width={`${width}`} height={`${height}`} alt={title} />
+			</div>
+		);
+	}
 
 	return (
 		<div className="content-wrap">
 			<div className="meta">
-				{logo}
+				{logoImage}
 
 				<div className="copy">
 					<h3>Personalize your feed</h3>
@@ -60,5 +72,9 @@ function Discovery() {
 		</div>
 	);
 }
+
+Discovery.propTypes = {
+	placeholder: PropTypes.string.isRequired,
+};
 
 export default Discovery;
