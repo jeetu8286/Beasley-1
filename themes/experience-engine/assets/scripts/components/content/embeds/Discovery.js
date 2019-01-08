@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import LazyImage from './LazyImage';
 
-import { showDiscoverModal } from '../../../redux/actions/modal';
+import { showSignInModal, showDiscoverModal } from '../../../redux/actions/modal';
 
 class Discovery extends PureComponent {
 
@@ -17,7 +17,14 @@ class Discovery extends PureComponent {
 	}
 
 	handleClick() {
-		this.props.showDiscover();
+		const self = this;
+		const { signedIn, showDiscover, showSignin } = self.props;
+
+		if ( signedIn ) {
+			showDiscover();
+		} else {
+			showSignin();
+		}
 	}
 
 	render() {
@@ -93,12 +100,25 @@ class Discovery extends PureComponent {
 }
 
 Discovery.propTypes = {
+	signedIn: PropTypes.bool.isRequired,
 	placeholder: PropTypes.string.isRequired,
 	showDiscover: PropTypes.func.isRequired,
+	showSignin: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( { showDiscover: showDiscoverModal }, dispatch );
+function mapStateToProps( { auth } ) {
+	return {
+		signedIn: !!auth.user,
+	};
 }
 
-export default connect( null, mapDispatchToProps )( Discovery );
+function mapDispatchToProps( dispatch ) {
+	const actions = {
+		showSignin: showSignInModal,
+		showDiscover: showDiscoverModal,
+	};
+
+	return bindActionCreators( actions, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( Discovery );

@@ -47,7 +47,7 @@ class ModalDispatcher extends Component {
 		const { modal } = self.props;
 		const { current: ref } = self.modalRef;
 
-		if ( 'CLOSED' !== modal && ( !ref || !ref.contains( e.target ) ) ) {
+		if ( 'CLOSED' !== modal && ( !ref || !ref.contains || !ref.contains( e.target ) ) ) {
 			self.props.close();
 		}
 	}
