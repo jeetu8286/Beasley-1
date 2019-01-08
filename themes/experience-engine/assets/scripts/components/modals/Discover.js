@@ -19,6 +19,8 @@ class Discover extends PureComponent {
 			filters: '',
 			error: '',
 		};
+
+		self.onFilterChange = self.handleFilterChange.bind( self );
 	}
 
 	componentDidMount() {
@@ -38,6 +40,10 @@ class Discover extends PureComponent {
 		window.scroll( 0, self.scrollYPos );
 	}
 
+	handleFilterChange( filters ) {
+		// @todo: pull feeds based on filters
+	}
+
 	render() {
 		const self = this;
 		const { error } = self.state;
@@ -46,7 +52,7 @@ class Discover extends PureComponent {
 		return (
 			<Fragment>
 				<CloseButton close={close} />
-				<DiscoveryFilters />
+				<DiscoveryFilters onChange={self.onFilterChange} />
 
 				<Header>
 					<h2>Discover</h2>

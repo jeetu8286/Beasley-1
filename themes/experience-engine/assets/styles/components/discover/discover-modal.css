@@ -10,6 +10,8 @@
 
 	& .modal-header {
 		font-style: italic;
+		padding-left: 2rem;
+		padding-right: 2rem;
 	}
 
 	& .modal-close {
