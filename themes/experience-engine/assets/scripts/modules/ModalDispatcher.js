@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -12,17 +13,17 @@ import {
 	DISCOVER_MODAL,
 } from '../redux/actions/modal';
 
+import CloseButton from '../components/modals/elements/Close';
 import SignInModal from '../components/modals/SignIn';
 import SignUpModal from '../components/modals/SignUp';
 import RestoreModal from '../components/modals/RestorePassword';
 import DiscoverModal from '../components/modals/Discover';
 import CompleteSignup from '../components/modals/CompleteSignup';
 
-
 class ModalDispatcher extends Component {
 
-	constructor() {
-		super();
+	constructor( props ) {
+		super( props );
 
 		const self = this;
 		self.modalRef = React.createRef();
@@ -60,8 +61,6 @@ class ModalDispatcher extends Component {
 	render() {
 		const self = this;
 		const { modal, payload, close } = self.props;
-		const adTopOffset = document.querySelector( '.ad.-leaderboard' ).offsetHeight;
-		const inlineOffset = 'DISCOVER-MODAL' === modal ? `${adTopOffset}px` : '';
 
 		let component = false;
 
@@ -76,8 +75,8 @@ class ModalDispatcher extends Component {
 				component = <RestoreModal close={close} {...payload} />;
 				break;
 			case DISCOVER_MODAL:
-				component = <DiscoverModal close={close} {...payload} />;
-				break;
+				component = <DiscoverModal close={close} ref={self.modalRef} {...payload} />;
+				return ReactDOM.createPortal( component, document.getElementById( 'inner-content' ) );
 			case COMPLETE_SIGNUP_MODAL:
 				component = <CompleteSignup close={close} {...payload } />;
 				break;
@@ -87,20 +86,8 @@ class ModalDispatcher extends Component {
 
 		return (
 			<div className={`modal ${( modal || '' ).toLowerCase()}`}>
-				<div ref={self.modalRef} className="modal-content" style={{ top: inlineOffset }}>
-					<button type="button" className="button modal-close" aria-label="Close Modal" onClick={close}>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.982 212.982" aria-labelledby="close-modal-title close-modal-desc" width="13" height="13">
-							<title id="close-modal-title">Close Modal</title>
-							<desc id="close-modal-desc">
-								Checkmark indicating modal close
-							</desc>
-							<path
-								d="M131.804 106.491l75.936-75.936c6.99-6.99 6.99-18.323 0-25.312-6.99-6.99-18.322-6.99-25.312 0L106.491 81.18 30.554 5.242c-6.99-6.99-18.322-6.99-25.312 0-6.989 6.99-6.989 18.323 0 25.312l75.937 75.936-75.937 75.937c-6.989 6.99-6.989 18.323 0 25.312 6.99 6.99 18.322 6.99 25.312 0l75.937-75.937 75.937 75.937c6.989 6.99 18.322 6.99 25.312 0 6.99-6.99 6.99-18.322 0-25.312l-75.936-75.936z"
-								fillRule="evenodd"
-								clipRule="evenodd"
-							/>
-						</svg>
-					</button>
+				<div ref={self.modalRef} className="modal-content">
+					<CloseButton close={close} />
 					{component}
 				</div>
 			</div>
@@ -115,7 +102,7 @@ ModalDispatcher.propTypes = {
 };
 
 ModalDispatcher.defaultProps = {
-	modal: '',
+	modal: 'CLOSED',
 	payload: {},
 };
 
