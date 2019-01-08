@@ -1,5 +1,6 @@
 /* Grid Fallbacks */
-.episode-content {
+
+.entry-content {
 	display: flex;
 	flex-wrap: wrap;
 
@@ -28,7 +29,7 @@
 }
 /* End Grid Fallbacks */
 
-.episode-content {
+.entry-content {
 	& .episodes,
 	& > .archive-tiles,
 	& > .podcast-tiles {
@@ -70,4 +71,45 @@
 		grid-column: 2;
 		grid-row: 1 / -1;
 	}
+}
+
+.post-tags {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+
+    & .post-tag-label {
+        color: var(--global-theme-primary);
+        font-weight: 600;
+        font-size: 1rem;
+        flex: 0 1 auto;
+        text-transform: uppercase;
+    }
+
+    & .post-tag-items {
+        color: var(--global-theme-font-secondary);
+        font-size: 1rem;
+        flex: 0 1 auto;
+        text-transform: capitalize;
+        width: calc(90% - 2rem);
+    }
+
+    & a {
+        color: inherit;
+        margin-left: .250rem;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+.post-thumbnail-wrapper {
+	margin-bottom: 2rem;
+}
+
+.post-thumbnail-caption {
+	color: var(--global-theme-font-secondary);
+	font-size: .875rem;
+	margin: .5rem 0 0 0;
 }
