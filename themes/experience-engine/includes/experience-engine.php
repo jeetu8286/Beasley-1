@@ -1,6 +1,7 @@
 <?php
 
 add_filter( 'bbgiconfig', 'ee_update_api_bbgiconfig', 50 );
+add_filter( 'ee_feeds_content_html', 'ee_homepage_feeds_content_html', 10, 2 );
 
 if ( ! function_exists( 'ee_has_publisher_information' ) ) :
 	function ee_has_publisher_information( $meta ) {
@@ -15,11 +16,6 @@ if ( ! function_exists( 'ee_get_publisher_information' ) ) :
 
 		if ( is_null( $publisher_info ) ) {
 			$publisher_info = \Bbgi\Module::get( 'experience-engine' )->get_publisher();
-		}
-
-		// temporarily return # for itunes_app and play_app
-		if ( $meta == 'itunes_app' || $meta == 'play_app' ) {
-			return '#';
 		}
 
 		if ( empty( $publisher_info ) || empty( $publisher_info[ $meta ] ) ) {
@@ -84,5 +80,22 @@ if ( ! function_exists( 'ee_update_api_bbgiconfig' ) ) :
 		}
 
 		return $config;
+	}
+endif;
+
+if ( ! function_exists( 'ee_homepage_feeds_content_html' ) ) :
+	function ee_homepage_feeds_content_html( $html, $response ) {
+		global $wp_query;
+
+		// we need to make sure that WP things that this page is homepage
+		$wp_query->is_home = true;
+
+		ob_start();
+
+		get_header();
+		ee_homepage_feeds( $response );
+		get_footer();
+
+		return ob_get_clean();
 	}
 endif;

@@ -8,6 +8,7 @@ import {
 	SIGNIN_MODAL,
 	SIGNUP_MODAL,
 	RESTORE_MODAL,
+	COMPLETE_SIGNUP_MODAL,
 	DISCOVER_MODAL,
 } from '../redux/actions/modal';
 
@@ -15,13 +16,19 @@ import SignInModal from '../components/modals/SignIn';
 import SignUpModal from '../components/modals/SignUp';
 import RestoreModal from '../components/modals/RestorePassword';
 import DiscoverModal from '../components/modals/Discover';
+import CompleteSignup from '../components/modals/CompleteSignup';
+
+
 class ModalDispatcher extends Component {
+
 	constructor() {
 		super();
 
-		this.modalRef = React.createRef();
-		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind( this );
-		this.handleClickOutside = this.handleClickOutside.bind( this );
+		const self = this;
+		self.modalRef = React.createRef();
+
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
+		self.handleClickOutside = self.handleClickOutside.bind( self );
 	}
 
 	componentDidMount() {
@@ -29,12 +36,19 @@ class ModalDispatcher extends Component {
 		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
-	handleClickOutside( e ) {
-		if ( this.modalRef.current && this.modalRef.current.contains( e.target ) ) {
-			return;
-		}
+	componentWillUnmount() {
+		document.removeEventListener( 'mousedown', this.handleClickOutside, false );
+		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
+	}
 
-		this.props.close();
+	handleClickOutside( e ) {
+		const self = this;
+		const { modal } = self.props;
+		const { current: ref } = self.modalRef;
+
+		if ( 'CLOSED' !== modal && ( !ref || !ref.contains( e.target ) ) ) {
+			self.props.close();
+		}
 	}
 
 	handleEscapeKeyDown( e ) {
@@ -43,13 +57,9 @@ class ModalDispatcher extends Component {
 		}
 	}
 
-	componentWillUnmount() {
-		document.removeEventListener( 'mousedown', this.handleClickOutside, false );
-		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
-	}
-
 	render() {
-		const { modal, payload, close } = this.props;
+		const self = this;
+		const { modal, payload, close } = self.props;
 		const adTopOffset = document.querySelector( '.ad.-leaderboard' ).offsetHeight;
 		const inlineOffset = 'DISCOVER-MODAL' === modal ? `${adTopOffset}px` : '';
 
@@ -68,30 +78,18 @@ class ModalDispatcher extends Component {
 			case DISCOVER_MODAL:
 				component = <DiscoverModal close={close} {...payload} />;
 				break;
+			case COMPLETE_SIGNUP_MODAL:
+				component = <CompleteSignup close={close} {...payload } />;
+				break;
 			default:
 				return false;
 		}
 
 		return (
 			<div className={`modal ${( modal || '' ).toLowerCase()}`}>
-				<div
-					ref={this.modalRef}
-					className="modal-content"
-					style={{ top: inlineOffset }}
-				>
-					<button
-						type="button"
-						className="button modal-close"
-						aria-label="Close Modal"
-						onClick={close}
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 212.982 212.982"
-							aria-labelledby="close-modal-title close-modal-desc"
-							width="13"
-							height="13"
-						>
+				<div ref={self.modalRef} className="modal-content" style={{ top: inlineOffset }}>
+					<button type="button" className="button modal-close" aria-label="Close Modal" onClick={close}>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.982 212.982" aria-labelledby="close-modal-title close-modal-desc" width="13" height="13">
 							<title id="close-modal-title">Close Modal</title>
 							<desc id="close-modal-desc">
 								Checkmark indicating modal close
@@ -121,12 +119,12 @@ ModalDispatcher.defaultProps = {
 	payload: {},
 };
 
-const mapStateToProps = ( { modal } ) => ( { ...modal } );
+function mapStateToProps( { modal } ) {
+	return { ...modal };
+}
 
-const mapDispatchToProps = dispatch =>
-	bindActionCreators( { close: hideModal }, dispatch );
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( { close: hideModal }, dispatch );
+}
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)( ModalDispatcher );
+export default connect( mapStateToProps, mapDispatchToProps )( ModalDispatcher );
