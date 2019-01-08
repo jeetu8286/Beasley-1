@@ -1,12 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import trapHOC from '@10up/react-focus-trap-hoc';
 
 import Header from './elements/Header';
 import Alert from './elements/Alert';
 import CloseButton from './elements/Close';
-
-import DiscoveryFilters from '../../modules/DiscoveryFilters';
+import DiscoveryFilters from './discovery/Filters';
 
 class Discover extends PureComponent {
 
@@ -45,7 +44,7 @@ class Discover extends PureComponent {
 		const { close } = self.props;
 
 		return (
-			<div className="discover-modal">
+			<Fragment>
 				<CloseButton close={close} />
 				<DiscoveryFilters />
 
@@ -54,7 +53,7 @@ class Discover extends PureComponent {
 				</Header>
 
 				<Alert message={error} />
-			</div>
+			</Fragment>
 		);
 	}
 

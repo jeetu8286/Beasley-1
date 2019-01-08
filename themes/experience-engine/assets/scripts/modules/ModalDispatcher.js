@@ -47,7 +47,7 @@ class ModalDispatcher extends Component {
 		const { modal } = self.props;
 		const { current: ref } = self.modalRef;
 
-		if ( 'CLOSED' !== modal && ( !ref || !ref.contains || !ref.contains( e.target ) ) ) {
+		if ( 'CLOSED' !== modal && DISCOVER_MODAL !== modal && ( !ref || !ref.contains( e.target ) ) ) {
 			self.props.close();
 		}
 	}
@@ -75,7 +75,12 @@ class ModalDispatcher extends Component {
 				component = <RestoreModal close={close} {...payload} />;
 				break;
 			case DISCOVER_MODAL:
-				component = <DiscoverModal close={close} ref={self.modalRef} {...payload} />;
+				component = (
+					<div className="discover-modal" ref={self.modalRef}>
+						<DiscoverModal close={close} {...payload} />
+					</div>
+				);
+
 				return ReactDOM.createPortal( component, document.getElementById( 'inner-content' ) );
 			case COMPLETE_SIGNUP_MODAL:
 				component = <CompleteSignup close={close} {...payload } />;
