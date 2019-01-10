@@ -21,6 +21,7 @@ class Discover extends PureComponent {
 
 		self.scrollYPos = 0;
 		self.state = {
+			loading: true,
 			error: '',
 			feeds: [],
 		};
@@ -51,19 +52,26 @@ class Discover extends PureComponent {
 
 		discovery( window.bbgiconfig.publisher.id, token, filters )
 			.then( response => response.json() )
-			.then( feeds => self.setState( { feeds } ) );
+			.then( feeds => self.setState( { feeds, loading: false } ) );
 	}
 
 	render() {
 		const self = this;
-		const { error, feeds } = self.state;
+		const { error, feeds, loading } = self.state;
 		const { close } = self.props;
 
-		const items = feeds.map( item => (
-			<FeedItem key={item.id} id={item.id} title={item.title} picture={item.picture} type={item.type}>
-				{item.title}
-			</FeedItem>
-		) );
+		let items = <div className="loading" />;
+		if ( !loading ) {
+			if ( 0 < feeds.length ) {
+				items = feeds.map( item => (
+					<FeedItem key={item.id} id={item.id} title={item.title} picture={item.picture} type={item.type}>
+						{item.title}
+					</FeedItem>
+				) );
+			} else {
+				items = <i>No feeds found...</i>;
+			}
+		}
 
 		return (
 			<Fragment>
