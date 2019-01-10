@@ -1,6 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import trapHOC from '@10up/react-focus-trap-hoc';
 
 import Header from './elements/Header';
@@ -34,12 +33,11 @@ class Discover extends PureComponent {
 
 	componentDidMount() {
 		const self = this;
-		const { token } = self.props;
 
 		self.props.activateTrap();
 		self.handleFilterChange();
 
-		getFeeds( window.bbgiconfig.publisher.id, token ).then( ( feeds ) => {
+		getFeeds().then( ( feeds ) => {
 			feeds.forEach( feed => self.feeds.add( feed.id ) );
 		} );
 
@@ -55,17 +53,13 @@ class Discover extends PureComponent {
 	}
 
 	handleFilterChange( filters = {} ) {
-		const self = this;
-		const { token } = self.props;
-
-		discovery( window.bbgiconfig.publisher.id, token, filters )
+		discovery( filters )
 			.then( response => response.json() )
-			.then( feeds => self.setState( { feeds, loading: false } ) );
+			.then( feeds => this.setState( { feeds, loading: false } ) );
 	}
 
 	handleAdd( id ) {
 		const self = this;
-		const { token } = self.props;
 
 		if ( self.feeds.has( id ) ) {
 			return;
@@ -81,7 +75,7 @@ class Discover extends PureComponent {
 			} );
 		} );
 
-		modifyFeeds( window.bbgiconfig.publisher.id, token, feedsArray );
+		modifyFeeds( feedsArray );
 	}
 
 	render() {
@@ -128,13 +122,6 @@ Discover.propTypes = {
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
-	token: PropTypes.string.isRequired,
 };
 
-function mapStateToProps( { auth } ) {
-	return {
-		token: auth.token,
-	};
-}
-
-export default connect( mapStateToProps )( trapHOC()( Discover ) );
+export default trapHOC()( Discover );
