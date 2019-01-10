@@ -14,7 +14,7 @@ class Feed extends Component {
 			loading: false,
 		};
 
-		self.onAdd = self.handleAdd.bind( self );
+		self.handleAdd = self.handleAdd.bind( self );
 	}
 
 	handleAdd() {
@@ -22,6 +22,7 @@ class Feed extends Component {
 		const { id } = self.props;
 
 		self.setState( { loading: true } );
+		self.props.onAdd( id );
 	}
 
 	render() {
@@ -37,7 +38,7 @@ class Feed extends Component {
 
 		const button = loading
 			? <div className="loading" />
-			: <button onClick={self.onAdd}>Add Feed</button>;
+			: <button onClick={self.handleAdd}>Add Feed</button>;
 
 		return (
 			<div className={`${type} post-tile`}>
@@ -63,6 +64,7 @@ Feed.propTypes = {
 	title: PropTypes.string.isRequired,
 	picture: PropTypes.shape( {} ),
 	type: PropTypes.string.isRequired,
+	onAdd: PropTypes.func.isRequired,
 };
 
 Feed.defaultProps = {

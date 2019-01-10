@@ -10,7 +10,7 @@ import CloseButton from './elements/Close';
 import FeedItem from './discovery/Feed';
 import DiscoveryFilters from './discovery/Filters';
 
-import { discovery } from '../../library/experience-engine';
+import { discovery, getFeeds, modifyFeeds } from '../../library/experience-engine';
 
 class Discover extends PureComponent {
 
@@ -20,6 +20,8 @@ class Discover extends PureComponent {
 		const self = this;
 
 		self.scrollYPos = 0;
+		self.feeds = new Set();
+
 		self.state = {
 			loading: true,
 			error: '',
@@ -27,13 +29,19 @@ class Discover extends PureComponent {
 		};
 
 		self.onFilterChange = self.handleFilterChange.bind( self );
+		self.onAdd = self.handleAdd.bind( self );
 	}
 
 	componentDidMount() {
 		const self = this;
+		const { token } = self.props;
 
 		self.props.activateTrap();
 		self.handleFilterChange();
+
+		getFeeds( window.bbgiconfig.publisher.id, token ).then( ( feeds ) => {
+			feeds.forEach( feed => self.feeds.add( feed.id ) );
+		} );
 
 		self.scrollYPos = window.pageYOffset;
 		window.scroll( 0, 0 );
@@ -55,6 +63,27 @@ class Discover extends PureComponent {
 			.then( feeds => self.setState( { feeds, loading: false } ) );
 	}
 
+	handleAdd( id ) {
+		const self = this;
+		const { token } = self.props;
+
+		if ( self.feeds.has( id ) ) {
+			return;
+		}
+
+		self.feeds.add( id );
+
+		const feedsArray = [];
+		self.feeds.forEach( ( feed ) => {
+			feedsArray.push( {
+				id: feed,
+				sortorder: feedsArray.length + 1,
+			} );
+		} );
+
+		modifyFeeds( window.bbgiconfig.publisher.id, token, feedsArray );
+	}
+
 	render() {
 		const self = this;
 		const { error, feeds, loading } = self.state;
@@ -64,7 +93,7 @@ class Discover extends PureComponent {
 		if ( !loading ) {
 			if ( 0 < feeds.length ) {
 				items = feeds.map( item => (
-					<FeedItem key={item.id} id={item.id} title={item.title} picture={item.picture} type={item.type}>
+					<FeedItem key={item.id} id={item.id} title={item.title} picture={item.picture} type={item.type} onAdd={self.onAdd}>
 						{item.title}
 					</FeedItem>
 				) );

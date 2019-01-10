@@ -42,8 +42,30 @@ export function discovery( channel, token, filters ) {
 	} );
 }
 
+export function getFeeds( channel, token ) {
+	return fetch( __api`experience/channels/${channel}/feeds/?authorization=${token}` )
+		.then( response => response.json() )
+		.catch( ( error ) => {
+			console.error( error ); // eslint-disable-line no-console
+		} );
+}
+
+export function modifyFeeds( channel, token, feeds ) {
+	const params = {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify( feeds ),
+	};
+
+	return fetch( __api`experience/channels/${channel}/feeds/?authorization=${token}`, params ).catch( ( error ) => {
+		console.error( error ); // eslint-disable-line no-console
+	} );
+}
+
 export default {
 	saveUser,
 	getUser,
 	discovery,
+	getFeeds,
+	modifyFeeds,
 };
