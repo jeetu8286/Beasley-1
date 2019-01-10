@@ -77,10 +77,19 @@ export function modifyFeeds( feeds ) {
 		.then( token => fetch( __api`experience/channels/${channel}/feeds/?authorization=${token}`, params ) );
 }
 
+export function deleteFeed( feedId ) {
+	const channel = getChannel();
+	const params = { method: 'DELETE' };
+
+	return getToken()
+		.then( token => fetch( __api`experience/channels/${channel}/feeds/${feedId}/?authorization=${token}`, params ) );
+}
+
 export default {
 	saveUser,
 	getUser,
 	discovery,
 	getFeeds,
 	modifyFeeds,
+	deleteFeed,
 };

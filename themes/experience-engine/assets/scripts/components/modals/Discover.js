@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import trapHOC from '@10up/react-focus-trap-hoc';
 
@@ -9,9 +9,9 @@ import CloseButton from './elements/Close';
 import FeedItem from './discovery/Feed';
 import DiscoveryFilters from './discovery/Filters';
 
-import { discovery, getFeeds, modifyFeeds } from '../../library/experience-engine';
+import { discovery, getFeeds, modifyFeeds, deleteFeed } from '../../library/experience-engine';
 
-class Discover extends PureComponent {
+class Discover extends Component {
 
 	constructor( props ) {
 		super( props );
@@ -19,27 +19,34 @@ class Discover extends PureComponent {
 		const self = this;
 
 		self.scrollYPos = 0;
-		self.feeds = new Set();
 
 		self.state = {
 			loading: true,
 			error: '',
-			feeds: [],
+			filteredFeeds: [],
+			selectedFeeds: {},
 		};
 
 		self.onFilterChange = self.handleFilterChange.bind( self );
 		self.onAdd = self.handleAdd.bind( self );
+		self.onRemove = self.handleRemove.bind( self );
 	}
 
 	componentDidMount() {
 		const self = this;
 
+		getFeeds().then( ( items ) => {
+			const selectedFeeds = {};
+
+			items.forEach( ( item ) => {
+				selectedFeeds[item.id] = item.id;
+			} );
+
+			self.setState( { selectedFeeds } );
+		} );
+
 		self.props.activateTrap();
 		self.handleFilterChange();
-
-		getFeeds().then( ( feeds ) => {
-			feeds.forEach( feed => self.feeds.add( feed.id ) );
-		} );
 
 		self.scrollYPos = window.pageYOffset;
 		window.scroll( 0, 0 );
@@ -55,42 +62,64 @@ class Discover extends PureComponent {
 	handleFilterChange( filters = {} ) {
 		discovery( filters )
 			.then( response => response.json() )
-			.then( feeds => this.setState( { feeds, loading: false } ) );
+			.then( feeds => {
+				this.setState( {
+					filteredFeeds: feeds,
+					loading: false,
+				} );
+			} );
 	}
 
 	handleAdd( id ) {
 		const self = this;
+		const selectedFeeds = { ...self.state.selectedFeeds };
 
-		if ( self.feeds.has( id ) ) {
+		if ( selectedFeeds[id] ) {
 			return;
 		}
 
-		self.feeds.add( id );
+		selectedFeeds[id] = id;
 
 		const feedsArray = [];
-		self.feeds.forEach( ( feed ) => {
+		Object.keys( selectedFeeds ).forEach( ( feed ) => {
 			feedsArray.push( {
 				id: feed,
 				sortorder: feedsArray.length + 1,
 			} );
 		} );
 
-		modifyFeeds( feedsArray );
+		modifyFeeds( feedsArray ).then( () => {
+			this.setState( { selectedFeeds } );
+		} );
+	}
+
+	handleRemove( id ) {
+		const self = this;
+		const selectedFeeds = { ...self.state.selectedFeeds };
+
+		if ( !selectedFeeds[id] ) {
+			return;
+		}
+
+		delete selectedFeeds[id];
+
+		deleteFeed( id ).then( () => {
+			this.setState( { selectedFeeds } );
+		} );
 	}
 
 	render() {
 		const self = this;
-		const { error, feeds, loading } = self.state;
+		const { error, filteredFeeds, selectedFeeds, loading } = self.state;
 		const { close } = self.props;
 
 		let items = <div className="loading" />;
 		if ( !loading ) {
-			if ( 0 < feeds.length ) {
-				items = feeds.map( item => (
-					<FeedItem key={item.id} id={item.id} title={item.title} picture={item.picture} type={item.type} onAdd={self.onAdd}>
-						{item.title}
-					</FeedItem>
-				) );
+			if ( 0 < filteredFeeds.length ) {
+				items = filteredFeeds.map( ( item ) => {
+					const { id, title, picture, type } = item;
+					return <FeedItem key={id} id={id} title={title} picture={picture} type={type} onAdd={self.onAdd} onRemove={self.onRemove} added={!!selectedFeeds[item.id]} />;
+				} );
 			} else {
 				items = <i>No feeds found...</i>;
 			}
