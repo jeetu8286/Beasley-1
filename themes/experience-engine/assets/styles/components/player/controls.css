@@ -64,6 +64,7 @@
 		max-width: 89px;
 		width: 100%;
 		height: 100%;
+		position: relative;
 	}
 
 	& .controls-sponsor {
@@ -74,6 +75,16 @@
 
 		& button {
 			display: flex;
+
+			& svg rect {
+				transition: fill 300ms ease-in-out;
+			}
+
+			&:hover {
+				& svg rect {
+					fill: var(--brand-primary)
+				}
+			}
 		}
 
 		& .controls-recent-songs {
@@ -82,10 +93,40 @@
 	}
 
 	& .controls-volume {
+		display: flex;
 		height: 22px;
+		position: relative;
+
+		& button:hover {
+			& svg path {
+				transition: fill 300ms ease-in-out,
+							stroke 300ms ease-in-out;
+			}
+
+			& svg path[fill] {
+				fill: var(--brand-primary);
+			}
+			& svg path[stroke] {
+				stroke: var(--brand-primary);
+			}
+		}
+
+		& button:focus {
+			outline: 0;
+		}
 		
 		& .controls-volume-slider {
-			display: none;
+			visibility: hidden;
+			opacity: 0;
+			position: absolute;
+			left: 3rem;
+			transition: visibility 250ms ease-in-out,
+						opacity 250ms ease-in-out;
+
+			&.-volume-visible {
+				visibility: visible;
+				opacity: 1;
+			}
 		}
 	}
 
@@ -93,6 +134,7 @@
 		max-width: 215px;
 		width: 100%;
 		height: 100%;
+		position: relative;
 
 		& button {
 			background: transparent;

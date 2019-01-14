@@ -34,9 +34,9 @@ class Contacts extends PureComponent {
 			contacts = (
 				<div className="live-player-modal">
 					<img src={image} alt={title} />
-					<a href={`tel:${phone}`}>{phone}</a>
-					<a href={`mailto:${email}`}>{email}</a>
-					<span>{address}</span>
+					<p><a href={`tel:${phone}`}>{phone}</a></p>
+					<p><a href={`mailto:${email}`}>{email}</a></p>
+					<address>{address}</address>
 				</div>
 			);
 		}
