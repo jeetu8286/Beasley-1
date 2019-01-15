@@ -322,13 +322,15 @@ class Video extends \Beasley\Module {
 				'env'                     => 'vp',
 				'gdfp_req'                => '1',
 				'unviewed_position_start' => '1',
-				'output'                  => 'xml_vmap1',
+				'output'                  => 'vast',
+				'gdfp_req'                => '1',
 				'correlator'              => '',
-				'ad_rule'                 => '1',
+				'ad_rule'                 => '0',
+				'sz'                      => '920x508',
 				'cmsid'                   => urlencode( $event_id ),
 				'vid'                     => urlencode( $video_id ),
-				'iu'                      => urlencode( "/{$network_id}/{$tagUrl}" ),
-			), 'http://pubads.g.doubleclick.net/gampad/ads' );
+				'iu'                      => "/{$network_id}/{$tagUrl}",
+			), 'https://pubads.g.doubleclick.net/gampad/live/ads' );
 		}
 
 		return add_query_arg( 'cust_params', $cust_params, $tagUrl );
