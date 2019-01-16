@@ -28,13 +28,13 @@ endif;
 
 if ( ! function_exists( 'ee_switch_to_original_blog' ) ) :
 	function ee_switch_to_original_blog( $query ) {
-		global $ee_blog_id;
+		global $ee_blog_id, $wpdb;
 
 		remove_action( 'pre_get_posts', 'ee_switch_to_original_blog' );
 		add_filter( 'posts_pre_query', 'ee_restore_current_blog' );
 
 		if ( $query->is_main_query() && ! empty( $ee_blog_id ) ) {
-			switch_to_blog( $ee_blog_id );
+			$wpdb->set_blog_id( $ee_blog_id );
 		}
 	}
 endif;
