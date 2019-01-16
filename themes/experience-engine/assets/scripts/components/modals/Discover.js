@@ -131,7 +131,6 @@ class Discover extends Component {
 
 		return (
 			<Fragment>
-				{/* <CloseButton close={self.onClose} /> */}
 				<DiscoveryFilters onChange={self.onFilterChange} />
 
 				<div className="content-wrap">
