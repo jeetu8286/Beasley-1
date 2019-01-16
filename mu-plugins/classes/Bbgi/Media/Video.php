@@ -307,9 +307,11 @@ class Video extends \Bbgi\Module {
 			$cust_params[] = 'livestreamvideoid=' . urlencode( $video_id );
 		}
 
-		foreach ( greatermedia_get_global_targeting() as $targeting ) {
-			if ( is_array( $targeting ) && count( $targeting ) == 2 ) {
-				$cust_params[] = sprintf( '%s=%s', $targeting[0], urlencode( $targeting[1] ) );
+		if ( function_exists( 'greatermedia_get_global_targeting' ) ) {
+			foreach ( greatermedia_get_global_targeting() as $targeting ) {
+				if ( is_array( $targeting ) && count( $targeting ) == 2 ) {
+					$cust_params[] = sprintf( '%s=%s', $targeting[0], urlencode( $targeting[1] ) );
+				}
 			}
 		}
 
