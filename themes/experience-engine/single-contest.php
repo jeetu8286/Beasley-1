@@ -4,13 +4,20 @@
 
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php get_template_part( 'partials/show/header' ); ?>
-	<div class="content-wrap">
-		<h1><?php the_title(); ?></h1>
 
-		<div>
+	<header class="post-info">
+		<h1>
+			<?php the_title(); ?>
+		</h1>
+
+		<div class="post-meta">
 			<?php get_template_part( 'partials/content/meta' ); ?>
-			<?php get_template_part( 'partials/featured-media' ); ?>
+		</div>
+	</header>
 
+	<div class="entry-content content-wrap">
+		<div class="description">
+			<?php get_template_part( 'partials/featured-media' ); ?>
 			<?php the_content(); ?>
 
 			<?php if ( ( $contest_prize = trim( get_post_meta( get_the_ID(), 'prizes-desc', true ) ) ) ) : ?>
