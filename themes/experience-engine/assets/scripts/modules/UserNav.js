@@ -14,6 +14,10 @@ import { loadPage, hideSplashScreen } from '../redux/actions/screen';
 
 class UserNav extends Component {
 
+	static isHomepage() {
+		return document.body.classList.contains( 'home' );
+	}
+
 	constructor( props ) {
 		super( props );
 
@@ -46,6 +50,10 @@ class UserNav extends Component {
 
 		if ( user ) {
 			self.props.setUser( user );
+			if ( ! UserNav.isHomepage() ) {
+				self.props.hideSplashScreen();
+			}
+
 			user.getIdToken()
 				.then( self.onIdToken )
 				.catch( data => console.error( data ) ); // eslint-disable-line no-console
@@ -65,7 +73,7 @@ class UserNav extends Component {
 			return getUser().then( json => {
 				if ( 'user information has not been set' === json.Error ) {
 					self.props.showCompleteSignup();
-				} else if ( document.body.classList.contains( 'home' ) ) {
+				} else if ( UserNav.isHomepage() ) {
 					self.props.loadPage( `${window.bbgiconfig.wpapi}feeds-content`, {
 						suppressHistory: true,
 						fetchParams: {
