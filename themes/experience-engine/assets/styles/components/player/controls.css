@@ -1,7 +1,8 @@
 .controls {
-	display: flex;
 	background-color: var(--global-theme-secondary);
-	box-shadow: inset 0px -2px 2px rgba(0, 0, 0, 0.2), inset 0px 2px 0px rgba(255, 255, 255, 0.25);
+	box-shadow: inset 0px -2px 2px rgba(0, 0, 0, 0.2), 
+				inset 0px 2px 0px rgba(255, 255, 255, 0.25);
+	display: flex;
 	min-height: 84px;
 	position: relative;
 
@@ -35,9 +36,9 @@
 
 		&:last-child {
 			@media(--max-medium-viewport) {
+				max-width: 50px;
 				order: 3;
 				width: 100%;
-				max-width: 50px;
 			}
 		}
 
@@ -45,9 +46,9 @@
 			background: transparent;
 			border: 0;
 			cursor: pointer;
+			height: 100%;
 			padding: 0;
 			width: 100%;
-			height: 100%;
 		}
 
 		&.-centered {
@@ -58,10 +59,10 @@
 	}
 
 	& .controls-info {
-		width: 100%;
-		font-size: 1rem;
 		color: var(--global-theme-font-primary);
-
+		font-size: 1rem;
+		width: 100%;
+		
 		& strong {
 			font-weight: 600;
 			margin-right: .5rem;
@@ -72,32 +73,32 @@
 			color: var(--brand-primary);
 			font-size: .738rem;
 			font-weight: 500;
-			padding: .1rem .25rem;
-			text-transform: uppercase;
 			letter-spacing: 0.01em;
 			line-height: 1.2;
+			padding: .1rem .25rem;
+			text-transform: uppercase;
 		}
 
 		& p {
-			display: flex;
 			align-items: center;
+			display: flex;
 			margin-bottom: 0;
 			white-space: nowrap;
 		}
 	}
 
 	& .controls-contact {
-		max-width: 89px;
-		width: 100%;
 		height: 100%;
+		max-width: 89px;
 		position: relative;
+		width: 100%;
 	}
 
 	& .controls-sponsor {
 		display: none;
 
 		@media(--min-medium-viewport) {
-			display: block !important;
+			display: block !important; /* Overrding ad */
 		}
 	}
 
@@ -111,8 +112,8 @@
 			}
 
 			& svg rect {
-				transition: fill 300ms ease-in-out;
 				fill: var(--global-theme-font-primary);
+				transition: fill 300ms ease-in-out;
 			}
 
 			&:hover {
@@ -168,29 +169,28 @@
 		}
 		
 		& .controls-volume-slider {
-			visibility: hidden;
+			left: 3rem;
 			opacity: 0;
 			position: absolute;
-			left: 3rem;
-			top: -0.5rem;
 			transition: visibility 250ms ease-in-out,
 						opacity 250ms ease-in-out;
+			top: -0.5rem;
+			visibility: hidden;
 			width: 82px;
 
 			&.-volume-visible {
-				visibility: visible;
 				opacity: 1;
+				visibility: visible;
 			}
 		}
 	}
 
 	& .controls-station {
-		max-width: 215px;
-		width: 100%;
-		height: 100%;
-		position: relative;
-
 		display: none;
+		height: 100%;
+		max-width: 215px;
+		position: relative;
+		width: 100%;
 
 		@media(--min-medium-viewport) {
 			display: block;
@@ -199,13 +199,13 @@
 		& button {
 			background: transparent;
 			color: var(--global-theme-font-primary);
-			font-weight: 600;
-			text-transform: uppercase;
 			font-size: 1rem;
+			font-weight: 600;
 			transition: color 300ms ease-in-out;
+			text-transform: uppercase;
 
 			&:hover {
-				color: #000;
+				color: var(--global-black);
 			}
 
 			& svg {
@@ -216,10 +216,10 @@
 				
 				&:after {
 					content: '/';
+					color: var(--brand-tertiary);
 					display: inline;
-					padding: 0 .5rem;
-					color: #4898D3;
 					font-weight: 600;
+					padding: 0 .5rem;
 				}
 			}
 		}

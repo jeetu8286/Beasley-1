@@ -33,11 +33,11 @@ iframe[src^="https://omny.fm"] {
 	bottom: 18%;
 	box-shadow: inset 0px -2px 2px rgba(0, 0, 0, 0.2), 
 				inset 0px 2px 0px rgba(255, 255, 255, 0.25);
+	padding: 2rem;
 	position: fixed;
 	right: 1%;
 	width: 299px;
 	z-index: 100;
-	padding: 2rem;
 
 	& p {
 		margin-bottom: 1rem;
