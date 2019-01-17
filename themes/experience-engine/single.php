@@ -2,26 +2,34 @@
 
 <?php the_post(); ?>
 
-<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<div id="post-<?php the_ID(); ?>" <?php post_class( 'single' ); ?>>
 	<?php get_template_part( 'partials/show/header' ); ?>
-	<?php the_category(); ?>
-	<h1><?php the_title(); ?></h1>
 
-	<div>
-		<div>
-			<div>
-				<span><?php the_author_meta( 'display_name' ); ?></span>
-				<span><?php ee_the_date(); ?></span>
-				<?php get_template_part( 'partials/share' ); ?>
+	<header class="post-info">
+		<h1>
+			<?php the_title(); ?>
+		</h1>
+
+		<?php if( is_singular( 'post' ) ) : ?>
+			<div class="post-meta">
+				<?php get_template_part( 'partials/content/meta' ); ?>
 			</div>
+		<?php endif; ?>
+	</header>
 
+	<div class="entry-content content-wrap">
+		<div class="description">
 			<?php get_template_part( 'partials/featured-media' ); ?>
+			<?php ee_the_content_with_ads(); ?>
 
-			<?php the_content(); ?>
-
-			<div>
-				<?php the_tags( '<span>Tags</span>' ); ?>
-			</div>
+			<?php if( is_singular( 'post' ) ) : ?>
+				<div class="profile">
+					<?php echo get_the_author_meta( 'description' ); ?>
+				</div>
+			<?php endif; ?>
+				
+			<?php get_template_part( 'partials/content/categories' ); ?>
+			<?php get_template_part( 'partials/content/tags' ); ?>
 		</div>
 
 		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>

@@ -35,8 +35,6 @@ add_theme_support( 'firebase' );
 add_theme_support( 'legacy-live-player' );
 add_theme_support( 'html5', array( 'search-form' ) );
 
-include_once __DIR__ . '/vendor/autoload.php';
-
 require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
 require_once __DIR__ . '/includes/site-options/class-gmr-site-options.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
@@ -44,12 +42,10 @@ require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
 require_once __DIR__ . '/includes/category-options.php';
 require_once __DIR__ . '/includes/class-favicon.php';
-require_once __DIR__ . '/includes/iframe-embed.php';
 require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php';
 require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
 require_once __DIR__ . '/includes/class-gm-tinymce.php';
 require_once __DIR__ . '/includes/dfp.php';
-require_once __DIR__ . '/includes/shortcodes.php';
 require_once __DIR__ . '/includes/class-wp-widget-triton-song-history.php';
 require_once __DIR__ . '/includes/class-wp-widget-recent-contests.php';
 require_once __DIR__ . '/includes/futuri.php';
@@ -140,6 +136,7 @@ function greatermedia_scripts_styles() {
 
 	wp_enqueue_script( 'imasdk', '//imasdk.googleapis.com/js/sdkloader/ima3.js', null, null );
 	wp_enqueue_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
+	wp_enqueue_script( 'iframe-resizer', '//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.min.js', null, null );
 
 	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
 	wp_localize_script( 'greatermedia', 'platformConfig', apply_filters( 'bbgiconfig', array() ) );
@@ -1222,3 +1219,27 @@ function beasley_suppress_empty_search( $where, \WP_Query $query ) {
 	return $where;
 }
 add_filter( 'posts_where', 'beasley_suppress_empty_search', 10, 2 );
+
+function beasley_google_onload_code() {
+	$onload = <<<EOL
+document.addEventListener("DOMContentLoaded", function() {
+	jQuery( document ).on( 'pjax:end', function () {
+		ga( 'set', 'location', window.location.href );
+		ga( 'send', 'pageview' );
+	} );
+
+	var \$body = jQuery( 'body' );
+
+	\$body.on( 'inlineAudioPlaying.gmr', function () {
+		ga( 'send', 'event', 'audio', 'Inline audio playing' );
+	} );
+
+	\$body.on( 'liveStreamPlaying.gmr', function () {
+		ga( 'send', 'event', 'audio', 'Live stream playing' );
+	} );
+});
+EOL;
+
+	return $onload;
+}
+add_filter( 'bbgi_google_onload_code', 'beasley_google_onload_code' );

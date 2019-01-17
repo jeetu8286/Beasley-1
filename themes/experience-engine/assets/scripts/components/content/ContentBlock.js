@@ -1,14 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-import DelayedComponent from './DelayedEmbed';
 import AudioEmbed from './embeds/Audio';
 import SecondStreetEmbed from './embeds/SecondStreet';
 import LazyImage from './embeds/LazyImage';
 import Share from './embeds/Share';
 import LoadMore from './embeds/LoadMore';
 import Video from './embeds/Video';
+import EmbedVideo from './embeds/EmbedVideo';
+import Dfp from './embeds/Dfp';
+import Cta from './embeds/Cta';
+import Countdown from './embeds/Countdown';
+import StreamCta from './embeds/StreamCta';
+import Discovery from './embeds/Discovery';
 
 const mapping = {
 	secondstreet: SecondStreetEmbed,
@@ -17,42 +22,77 @@ const mapping = {
 	share: Share,
 	loadmore: LoadMore,
 	video: Video,
+	embedvideo: EmbedVideo,
+	dfp: Dfp,
+	cta: Cta,
+	countdown: Countdown,
+	streamcta: StreamCta,
+	discovery: Discovery,
 };
 
-const ContentBlock = ( { content, embeds } ) => {
-	const portal = ReactDOM.createPortal(
-		<div dangerouslySetInnerHTML={{ __html: content }} />,
-		document.getElementById( 'content' )
-	);
+class ContentBlock extends Component {
 
-	const embedComponents = embeds.map( ( embed ) => {
+	static createEmbed( embed ) {
 		const { type, params } = embed;
 		const { placeholder } = params;
 
-		let component = mapping[type] || false;
-		if ( component ) {
-			component = React.createElement( component, params );
-			component = (
-				<DelayedComponent key={placeholder} placeholder={placeholder}>
-					{component}
-				</DelayedComponent>
-			);
+		const component = mapping[type] || false;
+		if ( !component ) {
+			return false;
 		}
 
-		return component;
-	} );
+		const container = document.getElementById( placeholder );
+		if ( !container ) {
+			return false;
+		}
 
-	return (
-		<Fragment>
-			{portal}
-			{embedComponents}
-		</Fragment>
-	);
-};
+		return ReactDOM.createPortal(
+			React.createElement( component, params ),
+			container,
+		);
+	}
+
+	constructor( props ) {
+		super( props );
+
+		const self = this;
+		self.state = { ready: false };
+	}
+
+	componentDidMount() {
+		this.setState( { ready: true } );
+	}
+
+	render() {
+		const self = this;
+		const { content, embeds, partial } = self.props;
+		const { ready } = self.state;
+
+		const portal = ReactDOM.createPortal(
+			<div dangerouslySetInnerHTML={{ __html: content }} />,
+			document.getElementById( partial ? 'inner-content' : 'content' )
+		);
+
+		const embedComponents = ready ? embeds.map( ContentBlock.createEmbed ) : false;
+
+		return (
+			<Fragment>
+				{portal}
+				{embedComponents}
+			</Fragment>
+		);
+	}
+
+}
 
 ContentBlock.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
+	partial: PropTypes.bool,
+};
+
+ContentBlock.defaultProps = {
+	partial: false,
 };
 
 export default ContentBlock;

@@ -1,8 +1,10 @@
 import React, { PureComponent, Fragment } from 'react';
-import firebase from 'firebase/app';
+import PropTypes from 'prop-types';
+import firebase from 'firebase';
 
 import Header from './elements/Header';
 import Alert from './elements/Alert';
+import trapHOC from '@10up/react-focus-trap-hoc';
 
 class RestorePassword extends PureComponent {
 
@@ -19,6 +21,14 @@ class RestorePassword extends PureComponent {
 
 		self.onFieldChange = self.handleFieldChange.bind( self );
 		self.onFormSubmit = self.handleFormSubmit.bind( self );
+	}
+
+	componentDidMount() {
+		this.props.activateTrap();
+	}
+
+	componentWillUnmount() {
+		this.props.deactivateTrap();
 	}
 
 	handleFieldChange( e ) {
@@ -50,21 +60,39 @@ class RestorePassword extends PureComponent {
 
 	render() {
 		const self = this;
-		const { email, message, success } = self.state;
+		const {
+			email,
+			message,
+			success
+		} = self.state;
 
 		return (
 			<Fragment>
-				<Header>Restore Password</Header>
+				<Header>
+					<h3>Restore Password</h3>
+				</Header>
 
 				<Alert message={message} type={success ? 'info' : 'error'} />
 
-				<form onSubmit={self.onFormSubmit}>
-					<div>
-						<label htmlFor="user-email">Email</label>
-						<input type="email" id="user-email" name="email" value={email} onChange={self.onFieldChange} />
+				<form className="modal-form" onSubmit={self.onFormSubmit}>
+					<div className="modal-form-group">
+						<label className="modal-form-label" htmlFor="user-email">
+							Email
+						</label>
+						<input
+							className="modal-form-field"
+							type="email"
+							id="user-email"
+							name="email"
+							value={email}
+							onChange={self.onFieldChange}
+							placeholder="yourname@yourddomain.com"
+						/>
 					</div>
-					<div>
-						<button type="submit">Restore</button>
+					<div className="modal-form-actions">
+						<button className="button -sign-in" type="submit">
+							Restore
+						</button>
 					</div>
 				</form>
 			</Fragment>
@@ -73,4 +101,9 @@ class RestorePassword extends PureComponent {
 
 }
 
-export default RestorePassword;
+RestorePassword.propTypes = {
+	activateTrap: PropTypes.func.isRequired,
+	deactivateTrap: PropTypes.func.isRequired,
+};
+
+export default trapHOC()( RestorePassword );

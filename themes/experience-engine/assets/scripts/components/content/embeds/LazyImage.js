@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
+
+import IntersectionObserverContext from '../../../context/intersection-observer';
+import { pageview } from '../../../library/google-analytics';
 
 class LazyImage extends PureComponent {
 
@@ -9,19 +11,11 @@ class LazyImage extends PureComponent {
 
 		const self = this;
 
+		self.loading = false;
 		self.boxRef = React.createRef();
-		self.state = {
-			containerWidth: 0,
-			containerHeight: 0,
-			image: '',
-		};
+		self.state = { image: '' };
 
-		self.updateDimensions = self.updateDimensions.bind( self );
-		self.loadImage = self.loadImage.bind( self );
-		self.loadImageDebounced = debounce( self.loadImage, 500 );
-
-		self.onResize = self.handleResize.bind( self );
-		self.onScroll = self.handleScroll.bind( self );
+		self.onIntersectionChange = self.handleIntersectionChange.bind( self );
 	}
 
 	componentDidMount() {
@@ -29,41 +23,33 @@ class LazyImage extends PureComponent {
 		const { placeholder } = self.props;
 
 		self.container = document.getElementById( placeholder );
-		self.updateDimensions();
-
-		window.addEventListener( 'scroll', self.onScroll );
-		window.addEventListener( 'resize', self.onResize );
+		self.context.observe( self.container, self.onIntersectionChange );
 	}
 
 	componentWillUnmount() {
-		this.removeListeners();
+		this.context.unobserve( this.container );
 	}
 
-	componentDidUpdate( prevProps, prevState ) {
+	handleIntersectionChange() {
 		const self = this;
-		const { containerWidth, containerHeight } = self.state;
+		const { tracking } = self.props;
 
-		if ( containerWidth !== prevState.containerWidth || containerHeight !== prevState.containerHeight ) {
-			// load image when container size has changed
-			this.loadImageDebounced();
+		// disable intersection observing
+		self.context.unobserve( self.container );
+
+		// track virtual page view if it's needed
+		if ( tracking ) {
+			pageview( document.title, tracking );
+		}
+
+		// load image
+		if ( !self.loading ) {
+			self.loading = true;
+			self.loadImage();
 		}
 	}
 
-	removeListeners() {
-		const self = this;
-		window.removeEventListener( 'scroll', self.onScroll );
-		window.removeEventListener( 'resize', self.onResize );
-	}
-
-	handleResize() {
-		window.requestAnimationFrame( this.updateDimensions );
-	}
-
-	handleScroll() {
-		window.requestAnimationFrame( this.loadImage );
-	}
-
-	updateDimensions() {
+	getDimensions() {
 		const self = this;
 		const { container } = self;
 
@@ -75,30 +61,31 @@ class LazyImage extends PureComponent {
 		const { offsetWidth } = container;
 		const { offsetHeight } = parent;
 
-		self.setState( {
+		return {
 			containerWidth: offsetWidth,
 			containerHeight: offsetHeight,
-		} );
+		};
+	}
+
+	getImageUrl( quality = null ) {
+		const self = this;
+		const { src, width, height } = self.props;
+		const { containerWidth, containerHeight } = self.getDimensions();
+		const anchor = width > height ? 'middlecenter' : 'leftop';
+
+		let imageSrc = `${src.split( '?' )[0]}?maxwidth=${containerWidth}&maxheight=${containerHeight}&anchor=${anchor}`;
+		if ( 0 < quality ) {
+			imageSrc += `&quality=${quality}`;
+		}
+
+		return imageSrc;
 	}
 
 	loadImage() {
 		const self = this;
 
-		// do nothing if the image is not in the viewport or close to it
-		const { containerWidth, containerHeight } = self.state;
-		if ( !self.isInViewport( containerWidth, containerHeight ) ) {
-			return;
-		}
-
-		// we don't need event listeners because image will be loaded
-		self.removeListeners();
-
-		// build image URL
-		const { src, width, height } = self.props;
-		const anchor = width > height ? 'middlecenter' : 'leftop';
-		const imageSrc = `${src.split( '?' )[0]}?maxwidth=${containerWidth}&maxheight=${containerHeight}&anchor=${anchor}`;
-
 		// load image and update state
+		const imageSrc = self.getImageUrl();
 		const imageLoader = new Image();
 		imageLoader.src = imageSrc;
 		imageLoader.onload = () => {
@@ -109,25 +96,10 @@ class LazyImage extends PureComponent {
 		};
 	}
 
-	isInViewport( containerWidth, containerHeight ) {
-		const bounding = this.container.getBoundingClientRect();
-		const { top, left, bottom, right } = bounding;
-
-		const { documentElement } = document;
-		const innerHeight = ( window.innerHeight || documentElement.clientHeight ) + containerHeight;
-		const innerWidth = ( window.innerWidth || documentElement.clientWidth ) + containerWidth;
-
-		return -containerHeight <= top && -containerWidth <= left && bottom <= innerHeight && right <= innerWidth;
-	}
-
 	render() {
 		const self = this;
-		const { container } = self;
 		const { image } = self.state;
-
-		if ( !container ) {
-			return false;
-		}
+		const { alt } = self.props;
 
 		const styles = {};
 
@@ -139,7 +111,7 @@ class LazyImage extends PureComponent {
 		}
 
 		return (
-			<div className="lazy-image" ref={self.boxRef} style={styles}>
+			<div className="lazy-image" ref={self.boxRef} style={styles} role="img" aria-label={alt}>
 				{loader}
 			</div>
 		);
@@ -152,6 +124,14 @@ LazyImage.propTypes = {
 	src: PropTypes.string.isRequired,
 	width: PropTypes.string.isRequired,
 	height: PropTypes.string.isRequired,
+	alt: PropTypes.string.isRequired,
+	tracking: PropTypes.string,
 };
+
+LazyImage.defaultProps = {
+	tracking: '',
+};
+
+LazyImage.contextType = IntersectionObserverContext;
 
 export default LazyImage;

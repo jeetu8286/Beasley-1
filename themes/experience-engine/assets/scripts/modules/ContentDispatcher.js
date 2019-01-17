@@ -1,10 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import firebase from 'firebase';
 
 import ContentBlock from '../components/content/ContentBlock';
 import { initPage, loadPage, updatePage } from '../redux/actions/screen';
+import { loadAssets, unloadScripts } from '../library/dom';
 
 const specialPages = [
 	'/wp-admin/',
@@ -20,6 +22,8 @@ class ContentDispatcher extends Component {
 		const self = this;
 		self.onClick = self.handleClick.bind( self );
 		self.onPageChange = self.handlePageChange.bind( self );
+		self.handleSliders = self.handleSliders.bind( self );
+		self.handleSliderLoad = self.handleSliderLoad.bind( self );
 	}
 
 	componentDidMount() {
@@ -35,6 +39,23 @@ class ContentDispatcher extends Component {
 
 		// load current page into the state
 		self.props.init();
+		self.handleSliderLoad();
+	}
+
+	componentDidUpdate() {
+		const self = this;
+		const element = document.querySelector( '.scroll-to' );
+		if ( element ) {
+			let top = element.offsetTop;
+
+			const wpadminbar = document.querySelector( '#wpadminbar' );
+			if ( wpadminbar ) {
+				top -= wpadminbar.offsetHeight;
+			}
+
+			setTimeout( () => window.scrollTo( 0, top ), 500 );
+		}
+		self.handleSliderLoad();
 	}
 
 	componentWillUnmount() {
@@ -42,8 +63,61 @@ class ContentDispatcher extends Component {
 		window.removeEventListener( 'popstate', this.onPageChange );
 	}
 
+	handleSliderLoad() {
+		const self = this;
+		const carousels = document.querySelectorAll( '.swiper-container' );
+
+		const scripts = [
+			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js',
+		];
+
+		const styles = [
+			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css',
+		];
+
+		if ( carousels.length ) {
+			loadAssets( scripts, styles )
+				.then( self.handleSliders.bind( self ) )
+				.catch( error => console.error( error ) ); // eslint-disable-line no-console
+		} else {
+			unloadScripts( scripts );
+			unloadScripts( styles );
+		}
+	}
+
+	handleSliders() {
+		const carousels = document.querySelectorAll( '.swiper-container' );
+
+		if ( carousels ) {
+			for ( let i = 0, len = carousels.length; i < len; i++ ) {
+				const count = carousels[i].classList.contains( '-large' ) ? 2.2 : 4.2;
+
+				new Swiper(carousels[i], { // eslint-disable-line
+					slidesPerView: count,
+					spaceBetween: 36,
+					freeMode: true,
+					breakpoints: {
+						900: {
+							slidesPerView: 2.2,
+						},
+						480: {
+							slidesPerView: 1.2,
+							spaceBetween: 27,
+						}
+					},
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+				} );
+			}
+		}
+	}
+
 	handleClick( e ) {
 		const self = this;
+		const { load } = self.props;
+
 		const { target } = e;
 		let linkNode = target;
 
@@ -82,8 +156,28 @@ class ContentDispatcher extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// fetch next page
-		self.props.load( link );
+		// load user homepage if token is not empty and the next page is a homepage
+		// otherwise just load the next page
+		const auth = firebase.auth();
+		if ( `${origin}/` === link.split( /[?#]/ )[0] && auth.currentUser ) {
+			auth.currentUser
+				.getIdToken()
+				.then( token => {
+					load( link, {
+						fetchUrlOverride: `${window.bbgiconfig.wpapi}feeds-content`,
+						fetchParams: {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							body: `format=raw&authorization=${encodeURIComponent( token )}`,
+						},
+					} );
+				} )
+				.catch( () => {
+					load( link );
+				} );
+		} else {
+			load( link );
+		}
 	}
 
 	handlePageChange( event ) {
@@ -98,22 +192,22 @@ class ContentDispatcher extends Component {
 
 	render() {
 		const { content, embeds, partials } = this.props;
+		const blocks = [];
 
 		if ( !content || !content.length ) {
 			return false;
 		}
 
-		const extraBlocks = [];
+		blocks.push(
+			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
+			<ContentBlock key={`${window.location.href}-${content.length}`} content={content} embeds={embeds} />,
+		);
+
 		Object.keys( partials ).forEach( ( key ) => {
-			extraBlocks.push( <ContentBlock key={key} {...partials[key]} /> );
+			blocks.push( <ContentBlock key={key} {...partials[key]} partial /> );
 		} );
 
-		return (
-			<Fragment>
-				<ContentBlock content={content} embeds={embeds} />
-				{extraBlocks}
-			</Fragment>
-		);
+		return blocks;
 	}
 
 }
@@ -127,16 +221,20 @@ ContentDispatcher.propTypes = {
 	update: PropTypes.func.isRequired,
 };
 
-const mapStateToProps= ( { screen } ) => ( {
-	content: screen.content,
-	embeds: screen.embeds,
-	partials: screen.partials,
-} );
+function mapStateToProps( { screen } ) {
+	return {
+		content: screen.content,
+		embeds: screen.embeds,
+		partials: screen.partials,
+	};
+}
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
-	init: initPage,
-	load: loadPage,
-	update: updatePage,
-}, dispatch );
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( {
+		init: initPage,
+		load: loadPage,
+		update: updatePage,
+	}, dispatch );
+}
 
 export default connect( mapStateToProps, mapDispatchToProps )( ContentDispatcher );

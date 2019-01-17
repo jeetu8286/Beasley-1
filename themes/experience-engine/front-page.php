@@ -1,12 +1,9 @@
-<?php get_header(); ?>
+<?php
 
-<div>
-	<?php while ( have_posts() ) : ?>
-		<?php the_post(); ?>
-		<?php get_template_part( 'partials/tile', get_post_type() ); ?>
-	<?php endwhile; ?>
+get_header();
 
-	<?php ee_load_more(); ?>
-</div>
+$ee = \Bbgi\Module::get( 'experience-engine' );
+$feeds = $ee->get_publisher_feeds_with_content();
+ee_homepage_feeds( $feeds );
 
-<?php get_footer(); ?>
+get_footer();
