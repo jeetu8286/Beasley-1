@@ -28,13 +28,13 @@ endif;
 
 if ( ! function_exists( 'ee_switch_to_original_blog' ) ) :
 	function ee_switch_to_original_blog( $query ) {
-		global $ee_blog_id, $wpdb;
+		global $ee_blog_id;
 
 		remove_action( 'pre_get_posts', 'ee_switch_to_original_blog' );
 		add_filter( 'posts_pre_query', 'ee_restore_current_blog' );
 
 		if ( $query->is_main_query() && ! empty( $ee_blog_id ) ) {
-			$wpdb->set_blog_id( $ee_blog_id );
+			switch_to_blog( $ee_blog_id );
 		}
 	}
 endif;
@@ -44,5 +44,14 @@ if ( ! function_exists( 'ee_restore_current_blog' ) ) :
 		remove_filter( 'posts_pre_query', 'ee_restore_current_blog' );
 		restore_current_blog();
 		return $value;
+	}
+endif;
+
+if ( ! function_exists( 'ee_switch_to_article_blog' ) ) :
+	function ee_switch_to_article_blog() {
+		global $ee_blog_id;
+		if ( $ee_blog_id ) {
+			switch_to_blog( $ee_blog_id );
+		}
 	}
 endif;
