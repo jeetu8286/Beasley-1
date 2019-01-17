@@ -82,6 +82,11 @@ function reducer( state = {}, action = {} ) {
 			return { ...state, url: action.url };
 
 		case ACTION_LOADED_PAGE: {
+			// do not accept action if user goes to another page before current page is loaded
+			if ( state.url !== action.url ) {
+				return;
+			}
+
 			const { document: pageDocument } = action;
 			if ( pageDocument ) {
 				const barId = 'wpadminbar';
@@ -110,6 +115,11 @@ function reducer( state = {}, action = {} ) {
 		}
 
 		case ACTION_LOADED_PARTIAL: {
+			// do not accept action if user goes to another page before current page is loaded
+			if ( state.url !== action.url ) {
+				return;
+			}
+
 			const { document: pageDocument } = action;
 
 			NProgress.done();
