@@ -1,6 +1,6 @@
 <?php
 /**
- * WMTR functions and definitions
+ * FoxSports functions and definitions
  *
  * When using a child theme (see http://codex.wordpress.org/Theme_Development and
  * http://codex.wordpress.org/Child_Themes), you can override certain functions
@@ -8,7 +8,7 @@
  * functions.php file. The child theme's functions.php file is included before the parent
  * theme's file, so the child theme functions would be used.
  *
- * @package WMTR
+ * @package FoxSports
  * @since 0.1.0
  */
 
@@ -17,11 +17,11 @@
  *
  * @since 0.1.0
  */
-function wmtr_scripts_styles() {
+function foxsports_scripts_styles() {
 	$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 	wp_dequeue_style( 'greatermedia' );
 	wp_deregister_style( 'greatermedia' );
-	wp_enqueue_style( 'wmtr', get_stylesheet_directory_uri() . "/assets/css/wmtr{$postfix}.css", array(), GREATERMEDIA_VERSION );
+	wp_enqueue_style( 'foxsports', get_stylesheet_directory_uri() . "/assets/css/foxsports{$postfix}.css", array(), GREATERMEDIA_VERSION );
 }
-add_action( 'wp_enqueue_scripts', 'wmtr_scripts_styles', 20 );
+add_action( 'wp_enqueue_scripts', 'foxsports_scripts_styles', 20 );
