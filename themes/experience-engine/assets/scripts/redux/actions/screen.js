@@ -50,7 +50,7 @@ export function loadPage( url, options = {} ) {
 				document.body.className = pageDocument.body.className;
 			}
 
-			dispatch( { type: ACTION_LOADED_PAGE, ...parsed } );
+			dispatch( { type: ACTION_LOADED_PAGE, url, ...parsed } );
 			window.scrollTo( 0, 0 );
 		}
 
@@ -81,7 +81,7 @@ export function loadPartialPage( url, placeholder ) {
 
 		function onSuccess( data ) {
 			const parsed = parseHtml( data, '#inner-content' );
-			dispatch( { type: ACTION_LOADED_PARTIAL, ...parsed, placeholder } );
+			dispatch( { type: ACTION_LOADED_PARTIAL, url, ...parsed, placeholder } );
 			pageview( parsed.document.title, url );
 		}
 

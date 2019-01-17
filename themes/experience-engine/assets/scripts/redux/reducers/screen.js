@@ -12,6 +12,7 @@ import {
 } from '../actions/screen';
 
 export const DEFAULT_STATE = {
+	url: false,
 	scripts: {},
 	embeds: [],
 	content: '',
@@ -63,7 +64,7 @@ function hideSplashScreen() {
 	}, 2000 );
 }
 
-export default function reducer( state = {}, action = {} ) {
+function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 		case ACTION_INIT_PAGE:
 			manageScripts( action.scripts, state.scripts );
@@ -78,7 +79,7 @@ export default function reducer( state = {}, action = {} ) {
 		case ACTION_LOADING_PARTIAL:
 		case ACTION_LOADING_PAGE:
 			NProgress.start();
-			break;
+			return { ...state, url: action.url };
 
 		case ACTION_LOADED_PAGE: {
 			const { document: pageDocument } = action;
@@ -142,3 +143,5 @@ export default function reducer( state = {}, action = {} ) {
 
 	return state;
 }
+
+export default reducer;
