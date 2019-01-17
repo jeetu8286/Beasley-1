@@ -18,7 +18,7 @@ $custom_logo_id = get_theme_mod( 'custom_logo' );
 			z-index: 999999;
 		}
 
-		#splash-screen > div {
+		.splash-screen-logo {
 			position: absolute;
 			left: 50%;
 			top: 50%;
@@ -33,5 +33,5 @@ $custom_logo_id = get_theme_mod( 'custom_logo' );
 			<?php endif; ?>
 		}
 	</style>
-	<div></div>
+	<div class="splash-screen-logo"></div>
 </div>

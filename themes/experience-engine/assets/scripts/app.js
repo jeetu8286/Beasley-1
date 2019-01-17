@@ -24,13 +24,6 @@ class Application extends PureComponent {
 		this.observer = new Observable();
 	}
 
-	componentDidMount() {
-		const splashScreen = document.getElementById( 'splash-screen' );
-		if ( splashScreen ) {
-			splashScreen.parentNode.removeChild( splashScreen );
-		}
-	}
-
 	render() {
 		return (
 			<Fragment>

@@ -8,6 +8,7 @@ import {
 	ACTION_LOADED_PAGE,
 	ACTION_LOADED_PARTIAL,
 	ACTION_LOAD_ERROR,
+	ACTION_HIDE_SPLASH_SCREEN,
 } from '../actions/screen';
 
 export const DEFAULT_STATE = {
@@ -16,6 +17,7 @@ export const DEFAULT_STATE = {
 	content: '',
 	partials: {},
 	error: '',
+	splashScreen: true,
 };
 
 function manageScripts( load, unload ) {
@@ -52,6 +54,15 @@ function manageBbgiConfig( pageDocument ) {
 	window.bbgiconfig = newconfig;
 }
 
+function hideSplashScreen() {
+	setTimeout( () => {
+		const splashScreen = document.getElementById( 'splash-screen' );
+		if ( splashScreen ) {
+			splashScreen.parentNode.removeChild( splashScreen );
+		}
+	}, 2000 );
+}
+
 export default function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 		case ACTION_INIT_PAGE:
@@ -85,6 +96,7 @@ export default function reducer( state = {}, action = {} ) {
 			NProgress.done();
 			manageScripts( action.scripts, state.scripts );
 			manageBbgiConfig( pageDocument );
+			hideSplashScreen();
 
 			return {
 				...state,
@@ -101,6 +113,7 @@ export default function reducer( state = {}, action = {} ) {
 
 			NProgress.done();
 			manageBbgiConfig( pageDocument );
+			hideSplashScreen();
 
 			return {
 				...state,
@@ -116,10 +129,11 @@ export default function reducer( state = {}, action = {} ) {
 		}
 
 		case ACTION_LOAD_ERROR:
-			return {
-				...state,
-				error: action.error,
-			};
+			return { ...state, error: action.error };
+	
+		case ACTION_HIDE_SPLASH_SCREEN:
+			hideSplashScreen();
+			return { ...state, splashScreen: false };
 
 		default:
 			// do nothing
