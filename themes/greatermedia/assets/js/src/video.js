@@ -35,7 +35,11 @@
 				adTagUrl += '&description_url=' + encodeURIComponent( window.location.href );
 			}
 
-			player.ima( { id: id, adTagUrl: adTagUrl } );
+			player.ima( {
+				id: id,
+				adTagUrl: adTagUrl,
+				showCountdown: true
+			} );
 
 			var wrapper = document.getElementById( id );
 			if ( wrapper ) {
