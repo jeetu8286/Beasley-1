@@ -7,6 +7,8 @@ if ( ! function_exists( 'ee_register_settings' ) ) :
 	function ee_register_settings( $group, $page ) {
 		add_settings_section( 'ee_site_settings', 'Station Settings', '__return_false', $page );
 
+		add_settings_field( 'gmr_site_logo', 'Site Logo', 'bbgi_image_field', $page, 'ee_site_settings', 'name=gmr_site_logo' );
+
 		add_settings_field( 'ee_newsletter_signup_page', 'Newsletter Signup Page', 'wp_dropdown_pages', $page, 'ee_site_settings', array(
 			'name'              => 'ee_newsletter_signup_page',
 			'selected'          => get_option( 'ee_newsletter_signup_page' ),
@@ -19,6 +21,7 @@ if ( ! function_exists( 'ee_register_settings' ) ) :
 			'selected' => get_option( 'ee_publisher' ),
 		) );
 
+		register_setting( $group, 'gmr_site_logo', 'intval' );
 		register_setting( $group, 'ee_newsletter_signup_page', 'intval' );
 		register_setting( $group, 'ee_publisher', 'sanitize_text_field' );
 	}
