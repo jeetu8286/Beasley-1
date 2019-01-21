@@ -112,7 +112,7 @@ if ( ! function_exists( 'ee_get_css_colors' ) ) :
 			'--brand-tertiary'  => '#ffffff',
 		];
 
-		if ( get_theme_mod( 'ee_theme_version', '-dark' ) == '-dark' ) {
+		if ( get_option( 'ee_theme_version', '-dark' ) == '-dark' ) {
 			$vars['--global-theme-primary'] = '#1a1a1a';
 			$vars['--global-theme-secondary'] = '#282828';
 			$vars['--global-theme-font-primary'] = 'var(--global-white)';

@@ -24,6 +24,28 @@ function bbgi_input_field( $args = array() ) {
 	}
 }
 
+function bbgi_select_field( $args ) {
+	$args = wp_parse_args( $args, array(
+		'name'    => '',
+		'default' => '',
+		'class'   => 'regular-text',
+		'desc'    => '',
+		'options' => array(),
+	) );
+
+	$value = get_option( $args['name'], $args['default'] );
+
+	printf( '<select name="%s" class="%s">', esc_attr( $args['name'] ), esc_attr( $args['class'] ) );
+		foreach ( $args['options'] as $key => $label ) :
+			printf( '<option value="%s"%s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), esc_html( $label ) );
+		endforeach;
+	print( '</select>' );
+
+	if ( ! empty( $args['desc'] ) ) {
+		printf( '<p class="description">%s</p>', esc_html( $args['desc'] ) );
+	}
+}
+
 function bbgi_image_field( $args ) {
 	static $js_rendered = false;
 
