@@ -335,15 +335,15 @@
         },
         {
             "name": "wpackagist-plugin/advanced-custom-fields",
-            "version": "5.7.9",
+            "version": "5.7.10",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/advanced-custom-fields/",
-                "reference": "tags/5.7.9"
+                "reference": "tags/5.7.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields.5.7.9.zip",
+                "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields.5.7.10.zip",
                 "reference": null,
                 "shasum": null
             },
