@@ -119,7 +119,7 @@ class Discover extends Component {
 	handleClose() {
 		const self = this;
 
-		if ( self.needReload &&	 document.body.classList.contains( 'home' ) ) {
+		if ( self.needReload && document.body.classList.contains( 'home' ) ) {
 			const auth = firebase.auth();
 
 			auth.currentUser.getIdToken().then( ( token ) => {
