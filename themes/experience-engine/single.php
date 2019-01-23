@@ -36,10 +36,12 @@ the_post();
 		</div>
 
 		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
-	</div>
-
-	<?php get_template_part( 'partials/related-articles' ); ?>
-</div><?php
+	</div><?php
+	
+	if ( ! ms_is_switched() ) :
+		get_template_part( 'partials/related-articles' );	
+	endif;
+?></div><?php
 
 restore_current_blog();
 get_footer();
