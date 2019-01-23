@@ -26,10 +26,6 @@ include __DIR__ . '/gmr-fallback-thumbnails/gmr-fallback-thumbnails.php';
 include __DIR__ . '/gmr-mobile-homepage-curation/gmr-mobile-homepage-curation.php';
 include __DIR__ . '/advanced-custom-fields/acf.php';
 
-if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	include __DIR__ . '/cli/cli.php';
-}
-
 add_action( 'wp_loaded', function() {
 	$modules = array(
 		new \Bbgi\Seo(),
