@@ -11,7 +11,7 @@ class AddToFavorites extends PureComponent {
 		const self = this;
 
 		self.state = {
-			loading: true,
+			hidden: true,
 		};
 
 		self.onAddClick = self.handleAddClick.bind( self );
@@ -25,21 +25,24 @@ class AddToFavorites extends PureComponent {
 		}
 
 		searchKeywords( keyword )
-			.then( ( json ) => {
-				console.log( json );
+			.then( ( feeds ) => {
+				self.setState( {
+					hidden: ! Array.isArray( feeds ) || !feeds.length,
+					feeds,
+				} );
 			} )
 			.catch( () => ( {} ) );
 	}
 
 	handleAddClick() {
-		console.log( 'adding' );
+		console.log( 'adding', this.state.feeds );
 	}
 
 	render() {
 		const self = this;
 
-		const { loading } = self.state;
-		if ( loading ) {
+		const { hidden } = self.state;
+		if ( hidden ) {
 			return false;
 		}
 
