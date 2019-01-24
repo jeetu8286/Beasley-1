@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
+import { searchKeywords } from '../../../library/experience-engine';
 
 class AddToFavorites extends PureComponent {
 
@@ -7,7 +9,26 @@ class AddToFavorites extends PureComponent {
 		super( props );
 
 		const self = this;
+
+		self.state = {
+			loading: true,
+		};
+
 		self.onAddClick = self.handleAddClick.bind( self );
+	}
+
+	componentDidMount() {
+		const self = this;
+		const { keyword } = self.props;
+		if ( !keyword ) {
+			return;
+		}
+
+		searchKeywords( keyword )
+			.then( ( json ) => {
+				console.log( json );
+			} )
+			.catch( () => ( {} ) );
 	}
 
 	handleAddClick() {
@@ -16,6 +37,11 @@ class AddToFavorites extends PureComponent {
 
 	render() {
 		const self = this;
+
+		const { loading } = self.state;
+		if ( loading ) {
+			return false;
+		}
 
 		return (
 			<button className="btn -empty -nobor -icon" onClick={self.onAddClick}>
@@ -28,5 +54,13 @@ class AddToFavorites extends PureComponent {
 	}
 
 }
+
+AddToFavorites.propTypes = {
+	keyword: PropTypes.string,
+};
+
+AddToFavorites.defaultProps = {
+	keyword: '',
+};
 
 export default AddToFavorites;

@@ -191,7 +191,7 @@ if ( ! function_exists( 'ee_get_related_articles' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_add_to_favorites' ) ) :
-	function ee_add_to_favorites() {
-		echo '<div class="add-to-favorites"></div>';
+	function ee_add_to_favorites( $keyword ) {
+		echo '<div class="add-to-favorites" data-keyword="', esc_attr( $keyword ), '"></div>';
 	}
 endif;
