@@ -12,7 +12,9 @@ import CloseButton from './elements/Close';
 import FeedItem from './discovery/Feed';
 import DiscoveryFilters from './discovery/Filters';
 
-import { discovery, getFeeds, modifyFeeds, deleteFeed } from '../../library/experience-engine';
+import { discovery } from '../../library/experience-engine';
+
+import { modifyUserFeeds, deleteUserFeed } from '../../redux/actions/auth';
 import { loadPage } from '../../redux/actions/screen';
 
 class Discover extends Component {
@@ -29,7 +31,6 @@ class Discover extends Component {
 			loading: true,
 			error: '',
 			filteredFeeds: [],
-			selectedFeeds: {},
 		};
 
 		self.onFilterChange = self.handleFilterChange.bind( self );
@@ -40,16 +41,6 @@ class Discover extends Component {
 
 	componentDidMount() {
 		const self = this;
-
-		getFeeds().then( ( items ) => {
-			const selectedFeeds = {};
-
-			items.forEach( ( item ) => {
-				selectedFeeds[item.id] = item.id;
-			} );
-
-			self.setState( { selectedFeeds } );
-		} );
 
 		self.props.activateTrap();
 		self.handleFilterChange();
@@ -76,44 +67,34 @@ class Discover extends Component {
 			} );
 	}
 
+	hasFeed( id ) {
+		return !!this.props.selectedFeeds.find( item => item.id === id );
+	}
+
 	handleAdd( id ) {
 		const self = this;
-		const selectedFeeds = { ...self.state.selectedFeeds };
+		const feedsArray = [];
 
-		if ( selectedFeeds[id] ) {
+		if ( self.hasFeed( id ) ) {
 			return;
 		}
 
-		selectedFeeds[id] = id;
-
-		const feedsArray = [];
-		Object.keys( selectedFeeds ).forEach( ( feed ) => {
-			feedsArray.push( {
-				id: feed,
-				sortorder: feedsArray.length + 1,
-			} );
+		self.props.selectedFeeds.forEach( ( { id } ) => {
+			feedsArray.push( { id, sortorder: feedsArray.length + 1 } );
 		} );
 
-		modifyFeeds( feedsArray ).then( () => {
-			self.needReload = true;
-			self.setState( { selectedFeeds } );
-		} );
+		feedsArray.push( { id, sortorder: feedsArray.length + 1 } );
+
+		self.needReload = true;
+		self.props.modifyUserFeeds( feedsArray );
 	}
 
 	handleRemove( id ) {
 		const self = this;
-		const selectedFeeds = { ...self.state.selectedFeeds };
-
-		if ( !selectedFeeds[id] ) {
-			return;
-		}
-
-		delete selectedFeeds[id];
-
-		deleteFeed( id ).then( () => {
+		if ( self.hasFeed( id ) ) {
 			self.needReload = true;
-			self.setState( { selectedFeeds } );
-		} );
+			self.props.deleteUserFeed( id );
+		}
 	}
 
 	handleClose() {
@@ -139,14 +120,25 @@ class Discover extends Component {
 
 	render() {
 		const self = this;
-		const { error, filteredFeeds, selectedFeeds, loading } = self.state;
+		const { error, filteredFeeds, loading } = self.state;
 
 		let items = <div className="loading" />;
 		if ( !loading ) {
 			if ( 0 < filteredFeeds.length ) {
 				items = filteredFeeds.map( ( item ) => {
 					const { id, title, picture, type } = item;
-					return <FeedItem key={id} id={id} title={title} picture={picture} type={type} onAdd={self.onAdd} onRemove={self.onRemove} added={!!selectedFeeds[item.id]} />;
+
+					return (
+						<FeedItem 
+							key={id}
+							id={id}
+							title={title}
+							picture={picture}
+							type={type}
+							onAdd={self.onAdd}
+							onRemove={self.onRemove}
+							added={self.hasFeed( item.id )} />
+					);
 				} );
 			} else {
 				items = <i>No feeds found...</i>;
@@ -176,13 +168,25 @@ class Discover extends Component {
 }
 
 Discover.propTypes = {
+	selectedFeeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
+	loadPage: PropTypes.func.isRequired,
+	modifyUserFeeds: PropTypes.func.isRequired,
+	deleteUserFeed: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( { loadPage }, dispatch );
+function mapStateToProps( { auth } ) {
+	return { selectedFeeds: auth.feeds };
 }
 
-export default connect( null, mapDispatchToProps )( trapHOC()( Discover ) );
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( {
+		loadPage,
+		modifyUserFeeds,
+		deleteUserFeed,
+	}, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( trapHOC()( Discover ) );

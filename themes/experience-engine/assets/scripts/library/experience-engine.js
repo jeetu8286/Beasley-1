@@ -7,12 +7,17 @@ function getChannel() {
 	return channel || '';
 }
 
-function getToken() {
-	return firebase
-		.auth()
-		.currentUser
-		.getIdToken()
-		.catch( error => console.error( error ) ); // eslint-disable-line no-console
+function getToken( token = null ) {
+	if ( token ) {
+		return Promise.resolve( token );
+	}
+
+	const auth = firebase.auth();
+	if ( !auth.currentUser ) {
+		return Promise.reject();
+	}
+
+	return auth.currentUser.getIdToken().catch( error => console.error( error ) ); // eslint-disable-line no-console
 }
 
 function __api( strings, ...params ) {
@@ -57,10 +62,10 @@ export function discovery( filters ) {
 		.then( token => fetch( __api`discovery/?media_type=${type}&genre=${genre}&location=${location}&brand=${brand}&keyword=${keyword}&channel=${channel}&authorization=${token}` ) );
 }
 
-export function getFeeds() {
+export function getFeeds( jwt = null ) {
 	const channel = getChannel();
 
-	return getToken()
+	return getToken( jwt )
 		.then( token => fetch( __api`experience/channels/${channel}/feeds/?authorization=${token}` ) )
 		.then( response => response.json() );
 }
@@ -85,6 +90,11 @@ export function deleteFeed( feedId ) {
 		.then( token => fetch( __api`experience/channels/${channel}/feeds/${feedId}/?authorization=${token}`, params ) );
 }
 
+export function searchKeywords( keyword ) {
+	return fetch( __api`experience/channels/${getChannel()}/keywords/${keyword}/` )
+		.then( response => response.json() );
+}
+
 export default {
 	saveUser,
 	getUser,
@@ -92,4 +102,5 @@ export default {
 	getFeeds,
 	modifyFeeds,
 	deleteFeed,
+	searchKeywords,
 };
