@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2ed3da573ed42477c418391ceb34c10",
+    "content-hash": "3240fb1fcb3a79574a579433a3044e0b",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -474,26 +474,6 @@
             "homepage": "https://wordpress.org/plugins/feed-pull/"
         },
         {
-            "name": "wpackagist-plugin/ooyala-video-browser",
-            "version": "3.0.0",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/ooyala-video-browser/",
-                "reference": "tags/3.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/ooyala-video-browser.3.0.0.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/ooyala-video-browser/"
-        },
-        {
             "name": "wpackagist-plugin/public-post-preview",
             "version": "2.8.0",
             "source": {
@@ -595,15 +575,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.7.3",
+            "version": "4.7.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.7.3"
+                "reference": "tags/4.7.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.7.3.zip",
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.7.4.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -635,15 +615,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "9.4",
+            "version": "9.5",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/9.4"
+                "reference": "tags/9.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.9.4.zip",
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.9.5.zip",
                 "reference": null,
                 "shasum": null
             },
