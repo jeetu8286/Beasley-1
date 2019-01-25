@@ -1,6 +1,7 @@
 <?php
 
-add_action( 'wp_head', 'ee_switch_to_original_blog_for_seo', 0 );
+add_action( 'wpseo_head', 'ee_switch_to_original_blog_for_seo', -PHP_INT_MAX );
+
 add_filter( 'do_parse_request', 'ee_check_domain_in_request_url' );
 
 if ( ! function_exists( 'ee_check_domain_in_request_url' ) ) :
@@ -39,9 +40,9 @@ endif;
 
 if ( ! function_exists( 'ee_switch_to_original_blog_for_seo' ) ) :
 	function ee_switch_to_original_blog_for_seo() {
-		remove_action( 'wp_head', 'ee_switch_to_original_blog_for_seo', 0 );
+		remove_action( 'wpseo_head', 'ee_switch_to_original_blog_for_seo', -PHP_INT_MAX );
 		if ( is_singular() ) {
-			add_action( 'wp_head', 'ee_restore_current_blog', 2 );
+			add_action( 'wpseo_head', 'ee_restore_current_blog', PHP_INT_MAX );
 			ee_switch_to_article_blog();
 		}
 	}
@@ -50,7 +51,7 @@ endif;
 if ( ! function_exists( 'ee_restore_current_blog' ) ) :
 	function ee_restore_current_blog( $value ) {
 		remove_filter( 'posts_pre_query', 'ee_restore_current_blog' );
-		remove_action( 'wp_head', 'ee_restore_current_blog', 2 );
+		remove_action( 'wpseo_head', 'ee_restore_current_blog', PHP_INT_MAX );
 
 		restore_current_blog();
 
