@@ -43,7 +43,7 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 	function ee_render_homepage_standard_feed( $feed, $feeds_count ) {
 		static $index = 1;
 		$size = $index === 1 ? '-large' : '-small';
-		echo '<div class="content-wrap">';
+		echo '<div class="content-wrap" draggable>';
 			if ( ! empty( $feed['title'] ) ) {
 				if ( $index <= 1 ) {
 					ee_the_subtitle( $feed['title'] );
