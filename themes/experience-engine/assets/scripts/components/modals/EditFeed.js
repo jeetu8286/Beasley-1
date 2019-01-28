@@ -61,6 +61,13 @@ class EditFeed extends PureComponent {
 		}
 
 		modifyFeeds( newfeeds );
+
+		const container = document.getElementById( 'inner-container' );
+		if ( container ) {
+			for ( let i = 0; i < container.childNodes.length; i++ ) {
+				console.log( container.childNodes[i] );
+			}
+		}
 	}
 
 	handleMoveToTopClick() {
