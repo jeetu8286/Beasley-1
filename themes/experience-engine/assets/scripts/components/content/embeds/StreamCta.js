@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import AddToFavorites from './AddToFavorites';
+import EditFeed from './EditFeed';
 import Controls from '../../player/Controls';
 
 import * as actions from '../../../redux/actions/player';
@@ -26,6 +27,7 @@ function StreamCta( { audio, station, status, play, pause, resume, payload } ) {
 				<h4>{title}</h4>
 				<h2>{subtitle}</h2>
 				<AddToFavorites feedId={id} classes="-icon" addLabel="Subscribe" removeLabel="Unsubscribe" showIcon={false} />
+				<EditFeed feed={id} title={title} />
 			</div>
 
 			<div className="action">

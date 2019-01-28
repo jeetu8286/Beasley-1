@@ -127,6 +127,7 @@ class EditFeed extends PureComponent {
 
 EditFeed.propTypes = {
 	feed: PropTypes.string.isRequired,
+	feeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
 	title: PropTypes.string,
 	close: PropTypes.func.isRequired,
 	activateTrap: PropTypes.func.isRequired,

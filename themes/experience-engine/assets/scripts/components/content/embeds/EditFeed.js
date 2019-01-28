@@ -5,7 +5,12 @@ import { bindActionCreators } from 'redux';
 
 import { showEditFeedModal } from '../../../redux/actions/modal';
 
-function EditFeed( { loggedIn, showModal, feed, title } ) {
+function EditFeed( { loggedIn, showModal, feed, title, feeds } ) {
+	const hasFeed = feeds.find( item => item.id === feed );
+	if ( !hasFeed ) {
+		return false;
+	}
+
 	return loggedIn 
 		? <button onClick={() => showModal( { feed, title } )}>Edit Feed</button>
 		: false;
@@ -14,6 +19,7 @@ function EditFeed( { loggedIn, showModal, feed, title } ) {
 EditFeed.propTypes = {
 	loggedIn: PropTypes.bool.isRequired,
 	feed: PropTypes.string.isRequired,
+	feeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
 	title: PropTypes.string,
 	showModal: PropTypes.func.isRequired,
 };
@@ -25,6 +31,7 @@ EditFeed.defaultProps = {
 function mapStateToProps( { auth } ) {
 	return {
 		loggedIn: !!auth.user,
+		feeds: auth.feeds,
 	};
 }
 
