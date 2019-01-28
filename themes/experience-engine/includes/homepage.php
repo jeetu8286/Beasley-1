@@ -39,11 +39,19 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_edit_feed_button' ) ) :
+	function ee_edit_feed_button( $feed_id ) {
+		echo '<div class="edit-feed" data-feed="', esc_attr( $feed_id ), '"></div>';
+	}
+endif;
+
 if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 	function ee_render_homepage_standard_feed( $feed, $feeds_count ) {
 		static $index = 1;
 		$size = $index === 1 ? '-large' : '-small';
-		echo '<div class="content-wrap" draggable>';
+		echo '<div class="content-wrap">';
+			ee_edit_feed_button( $feed['id'] );
+
 			if ( ! empty( $feed['title'] ) ) {
 				if ( $index <= 1 ) {
 					ee_the_subtitle( $feed['title'] );

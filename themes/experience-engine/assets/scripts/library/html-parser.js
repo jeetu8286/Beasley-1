@@ -37,20 +37,14 @@ function getOmnyEmbedParams( element ) {
 	};
 }
 
-function getLazyImageParams( { dataset } ) {
-	return {
-		src: dataset.src,
-		width: dataset.width,
-		height: dataset.height,
-		alt: dataset.alt,
-		tracking: dataset.tracking,
-	};
-}
+function getDatasetParams( ...list ) {
+	return ( { dataset } ) => {
+		const params = {};
+		for ( let i = 0, len = list.length; i < len; i++ ) {
+			params[list[i]] = dataset[list[i]];
+		}
 
-function getShareParams( { dataset } ) {
-	return {
-		url: dataset.url,
-		title: dataset.title,
+		return params;
 	};
 }
 
@@ -71,14 +65,6 @@ function getLiveStreamVideoParams( element ) {
 	}
 
 	return attrs;
-}
-
-function getEmbedVideoParams( { dataset } ) {
-	return {
-		title: dataset.title,
-		thumbnail: dataset.thumbnail,
-		html: dataset.html,
-	};
 }
 
 function getDfpParams( { dataset } ) {
@@ -118,12 +104,6 @@ function getPayloadParams( { dataset } ) {
 	}
 
 	return params;
-}
-
-function getFavoritesParams( { dataset } ) {
-	return {
-		keyword: dataset.keyword,
-	};
 }
 
 function processEmbeds( container, type, selector, callback ) {
@@ -166,16 +146,17 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
 			...processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
 			...processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
-			...processEmbeds( container, 'lazyimage', '.lazy-image', getLazyImageParams ),
-			...processEmbeds( container, 'share', '.share-buttons', getShareParams ),
+			...processEmbeds( container, 'lazyimage', '.lazy-image', getDatasetParams( 'src', 'width', 'height', 'alt', 'tracking' ) ),
+			...processEmbeds( container, 'share', '.share-buttons', getDatasetParams( 'url', 'title' ) ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
 			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),
-			...processEmbeds( container, 'embedvideo', '.youtube', getEmbedVideoParams ),
+			...processEmbeds( container, 'embedvideo', '.youtube', getDatasetParams( 'title', 'thumbnail', 'html' ) ),
 			...processEmbeds( container, 'cta', '.cta', getPayloadParams ),
 			...processEmbeds( container, 'countdown', '.countdown', getPayloadParams ),
 			...processEmbeds( container, 'streamcta', '.stream-cta', getPayloadParams ),
 			...processEmbeds( container, 'discovery', '.discovery-cta', getPayloadParams ),
-			...processEmbeds( container, 'favorites', '.add-to-favorites', getFavoritesParams ),
+			...processEmbeds( container, 'favorites', '.add-to-favorites', getDatasetParams( 'keyword' ) ),
+			...processEmbeds( container, 'editfeed', '.edit-feed', getDatasetParams( 'feed' ) ),
 		];
 
 		// extract <script> tags
