@@ -54,7 +54,7 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 	function ee_render_homepage_standard_feed( $feed, $feeds_count ) {
 		static $index = 1;
 		$size = $index === 1 ? '-large' : '-small';
-		echo '<div class="content-wrap">';
+		echo '<div id="', esc_attr( $feed['id'] ), '-feed" class="content-wrap">';
 			ee_edit_feed_button( $feed );
 
 			if ( ! empty( $feed['title'] ) ) {

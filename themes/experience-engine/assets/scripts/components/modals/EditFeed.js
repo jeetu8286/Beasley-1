@@ -1,8 +1,12 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import trapHOC from '@10up/react-focus-trap-hoc';
 
 import Header from './elements/Header';
+
+import { deleteUserFeed } from '../../redux/actions/auth';
 
 class EditFeed extends PureComponent {
 
@@ -35,7 +39,17 @@ class EditFeed extends PureComponent {
 	}
 
 	handleDeleteClick() {
-		console.log( 'delete' );
+		const self = this;
+		const { close, deleteFeed, feed } = self.props;
+
+		deleteFeed( feed );
+
+		const container = document.getElementById( `${feed}-feed` );
+		if ( container ) {
+			container.classList.add( '-hidden' );
+		}
+
+		close();
 	}
 
 	handleMoveDownClick() {
@@ -81,12 +95,24 @@ class EditFeed extends PureComponent {
 EditFeed.propTypes = {
 	feed: PropTypes.string.isRequired,
 	title: PropTypes.string,
+	close: PropTypes.func.isRequired,
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
+	deleteFeed: PropTypes.func.isRequired,
 };
 
 EditFeed.defaultProps = {
 	title: '',
 };
 
-export default trapHOC()( EditFeed );
+function mapStateToProps() {
+	return {};
+}
+
+function mapDispatchToProps( dispatch ) {
+	return bindActionCreators( {
+		deleteFeed: deleteUserFeed,
+	}, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( trapHOC()( EditFeed ) );
