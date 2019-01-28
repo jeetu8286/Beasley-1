@@ -9,8 +9,20 @@ import Controls from '../../player/Controls';
 
 import * as actions from '../../../redux/actions/player';
 
-function StreamCta( { audio, station, status, play, pause, resume, payload } ) {
-	const { id, title, subtitle, picture, stream_call_letters: stream } = payload;
+function StreamCta( props ) {
+	const {
+		audio,
+		station,
+		status,
+		play,
+		pause,
+		resume,
+		id,
+		title,
+		subtitle,
+		picture,
+		stream_call_letters: stream,
+	} = props;
 
 	const styles = {};
 	if ( picture && picture.large && picture.large.url ) {
@@ -41,15 +53,19 @@ function StreamCta( { audio, station, status, play, pause, resume, payload } ) {
 StreamCta.propTypes = {
 	audio: PropTypes.string.isRequired,
 	station: PropTypes.string.isRequired,
-	payload: PropTypes.oneOfType( [PropTypes.bool, PropTypes.object] ),
 	status: PropTypes.string.isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
+	id: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired,
+	subtitle: PropTypes.string.isRequired,
+	picture: PropTypes.shape( {} ),
+	'stream_call_letters': PropTypes.string.isRequired,
 };
 
 StreamCta.defaultProps = {
-	payload: false,
+	picture: {},
 };
 
 function mapStateToProps( { player } ) {

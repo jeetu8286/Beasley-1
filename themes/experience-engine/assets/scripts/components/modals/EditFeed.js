@@ -77,7 +77,7 @@ class EditFeed extends PureComponent {
 
 		deleteFeed( feed );
 
-		const container = document.getElementById( `${feed}-feed` );
+		const container = document.getElementById( feed );
 		if ( container ) {
 			container.classList.add( '-hidden' );
 		}

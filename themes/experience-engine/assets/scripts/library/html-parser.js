@@ -89,21 +89,23 @@ function getDfpParams( { dataset } ) {
 	};
 }
 
-function getPayloadParams( { dataset } ) {
-	const { payload } = dataset;
-	const params = {};
+function getPayloadParams( flattern = false ) {
+	return ( { dataset } ) => {
+		const { payload } = dataset;
+		const params = {};
 
-	try {
-		if ( 'string' === typeof payload && payload ) {
-			params.payload = JSON.parse( payload );
-		} else if ( 'object' === typeof payload ) {
-			params.payload = payload;
+		try {
+			if ( 'string' === typeof payload && payload ) {
+				params.payload = JSON.parse( payload );
+			} else if ( 'object' === typeof payload ) {
+				params.payload = payload;
+			}
+		} catch( err ) {
+			// do nothing
 		}
-	} catch( err ) {
-		// do nothing
-	}
 
-	return params;
+		return flattern ? params.payload : params;
+	};
 }
 
 function processEmbeds( container, type, selector, callback ) {
@@ -115,7 +117,7 @@ function processEmbeds( container, type, selector, callback ) {
 		const extraAttributes = callback ? callback( element ) : {};
 		const placeholder = document.createElement( 'div' );
 
-		placeholder.setAttribute( 'id', `__cd-${++embedsIndex}` );
+		placeholder.setAttribute( 'id', extraAttributes.id || `__cd-${++embedsIndex}` );
 		placeholder.classList.add( 'placeholder' );
 		placeholder.classList.add( `placeholder-${type}` );
 
@@ -151,10 +153,10 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
 			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),
 			...processEmbeds( container, 'embedvideo', '.youtube', getDatasetParams( 'title', 'thumbnail', 'html' ) ),
-			...processEmbeds( container, 'cta', '.cta', getPayloadParams ),
-			...processEmbeds( container, 'countdown', '.countdown', getPayloadParams ),
-			...processEmbeds( container, 'streamcta', '.stream-cta', getPayloadParams ),
-			...processEmbeds( container, 'discovery', '.discovery-cta', getPayloadParams ),
+			...processEmbeds( container, 'cta', '.cta', getPayloadParams() ),
+			...processEmbeds( container, 'countdown', '.countdown', getPayloadParams() ),
+			...processEmbeds( container, 'streamcta', '.stream-cta', getPayloadParams( true ) ),
+			...processEmbeds( container, 'discovery', '.discovery-cta', getPayloadParams() ),
 			...processEmbeds( container, 'favorites', '.add-to-favorites', getDatasetParams( 'keyword' ) ),
 			...processEmbeds( container, 'editfeed', '.edit-feed', getDatasetParams( 'feed', 'title' ) ),
 		];
