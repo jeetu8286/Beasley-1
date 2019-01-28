@@ -44,7 +44,7 @@ class EditFeed extends PureComponent {
 
 	reorderFeeds( shift ) {
 		const self = this;
-		const { feed, feeds, modifyUserFeeds } = self.props;
+		const { feed, feeds, modifyFeeds } = self.props;
 		const newfeeds = [];
 
 		for ( let i = 0, len = feeds.length; i < len; i++ ) {
@@ -60,7 +60,7 @@ class EditFeed extends PureComponent {
 			newfeeds[i].sortorder = i + 1;
 		}
 
-		modifyUserFeeds( newfeeds );
+		modifyFeeds( newfeeds );
 	}
 
 	handleMoveToTopClick() {
@@ -132,6 +132,7 @@ EditFeed.propTypes = {
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 	deleteFeed: PropTypes.func.isRequired,
+	modifyFeeds: PropTypes.func.isRequired,
 };
 
 EditFeed.defaultProps = {

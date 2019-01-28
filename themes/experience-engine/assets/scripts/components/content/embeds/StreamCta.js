@@ -25,7 +25,7 @@ function StreamCta( { audio, station, status, play, pause, resume, payload } ) {
 			<div className="meta">
 				<h4>{title}</h4>
 				<h2>{subtitle}</h2>
-				<AddToFavorites feedId={id} classes="-icon" addLabel="Subscribe" removeLabel="Unsubscribe" />
+				<AddToFavorites feedId={id} classes="-icon" addLabel="Subscribe" removeLabel="Unsubscribe" showIcon={false} />
 			</div>
 
 			<div className="action">
