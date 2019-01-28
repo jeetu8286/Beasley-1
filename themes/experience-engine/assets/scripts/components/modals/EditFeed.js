@@ -6,9 +6,21 @@ import trapHOC from '@10up/react-focus-trap-hoc';
 
 import Header from './elements/Header';
 
-import { deleteUserFeed } from '../../redux/actions/auth';
+import { modifyUserFeeds, deleteUserFeed } from '../../redux/actions/auth';
 
 class EditFeed extends PureComponent {
+
+	static sortFeeds( a, b ) {
+		if ( a.sortorder > b.sortorder ) {
+			return 1;
+		}
+
+		if ( a.sortorder < b.sortorder ) {
+			return -1;
+		}
+
+		return 0;
+	}
 
 	constructor( props ) {
 		super( props );
@@ -30,44 +42,33 @@ class EditFeed extends PureComponent {
 		this.props.deactivateTrap();
 	}
 
-	reorderFeeds() {
-
-	}
-
-	handleMoveToTopClick() {
-		console.log( 'move-to-top' );
-	}
-
-	handleMoveUpClick() {
+	reorderFeeds( shift ) {
 		const self = this;
-		const { feed, feeds } = self.props;
-
+		const { feed, feeds, modifyUserFeeds } = self.props;
 		const newfeeds = [];
 
 		for ( let i = 0, len = feeds.length; i < len; i++ ) {
 			const item = feeds[i];
 			newfeeds.push( {
 				id: item.id,
-				sortorder: item.sortorder * 10 - ( item.id === feed ? 15 : 0 ),
+				sortorder: i * 10 - ( item.id === feed ? shift : 0 ),
 			} );
 		}
 
-		newfeeds.sort( ( a, b ) => {
-			if ( a.sortorder > b.sortorder ) {
-				return -1;
-			}
+		newfeeds.sort( EditFeed.sortFeeds );
+		for ( let i = 0, len = newfeeds.length; i < len; i ++ ) {
+			newfeeds[i].sortorder = i + 1;
+		}
 
-			if ( a.sortorder < b.sortorder ) {
-				return 1;
-			}
+		modifyUserFeeds( newfeeds );
+	}
 
-			return 0;
-		} );
+	handleMoveToTopClick() {
+		this.reorderFeeds( 1000000 );
+	}
 
-		console.log( feeds );
-		console.log( newfeeds );
-
-		// this.reorderFeeds();
+	handleMoveUpClick() {
+		this.reorderFeeds( 15 );
 	}
 
 	handleDeleteClick() {
@@ -85,11 +86,11 @@ class EditFeed extends PureComponent {
 	}
 
 	handleMoveDownClick() {
-		console.log( 'move-down' );
+		this.reorderFeeds( -15 );
 	}
 
 	handleMoveToBottomClick() {
-		console.log( 'move-to-bottom' );
+		this.reorderFeeds( -1000000 );
 	}
 
 	render() {
@@ -138,14 +139,21 @@ EditFeed.defaultProps = {
 };
 
 function mapStateToProps( { auth } ) {
-	return {
-		feeds: auth.feeds,
-	};
+	const { feeds } = auth;
+	const items = [];
+	for ( let i = 0, len = feeds.length; i < len; i++ ) {
+		items.push( Object.assign( {}, feeds[i] ) );
+	}
+
+	items.sort( EditFeed.sortFeeds );
+
+	return { feeds: items };
 }
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
 		deleteFeed: deleteUserFeed,
+		modifyFeeds: modifyUserFeeds,
 	}, dispatch );
 }
 
