@@ -156,7 +156,7 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'streamcta', '.stream-cta', getPayloadParams ),
 			...processEmbeds( container, 'discovery', '.discovery-cta', getPayloadParams ),
 			...processEmbeds( container, 'favorites', '.add-to-favorites', getDatasetParams( 'keyword' ) ),
-			...processEmbeds( container, 'editfeed', '.edit-feed', getDatasetParams( 'feed' ) ),
+			...processEmbeds( container, 'editfeed', '.edit-feed', getDatasetParams( 'feed', 'title' ) ),
 		];
 
 		// extract <script> tags

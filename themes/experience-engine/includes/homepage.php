@@ -40,8 +40,13 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_edit_feed_button' ) ) :
-	function ee_edit_feed_button( $feed_id ) {
-		echo '<div class="edit-feed" data-feed="', esc_attr( $feed_id ), '"></div>';
+	function ee_edit_feed_button( $feed ) {
+		$title = '';
+		if ( ! empty( $feed['title'] ) ) {
+			$title = $feed['title'];
+		}
+
+		echo '<div class="edit-feed" data-feed="', esc_attr( $feed['id'] ), '" data-title="', esc_attr( $title ), '"></div>';
 	}
 endif;
 
@@ -50,7 +55,7 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 		static $index = 1;
 		$size = $index === 1 ? '-large' : '-small';
 		echo '<div class="content-wrap">';
-			ee_edit_feed_button( $feed['id'] );
+			ee_edit_feed_button( $feed );
 
 			if ( ! empty( $feed['title'] ) ) {
 				if ( $index <= 1 ) {
