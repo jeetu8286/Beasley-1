@@ -30,12 +30,44 @@ class EditFeed extends PureComponent {
 		this.props.deactivateTrap();
 	}
 
+	reorderFeeds() {
+
+	}
+
 	handleMoveToTopClick() {
 		console.log( 'move-to-top' );
 	}
 
 	handleMoveUpClick() {
-		console.log( 'move-up' );
+		const self = this;
+		const { feed, feeds } = self.props;
+
+		const newfeeds = [];
+
+		for ( let i = 0, len = feeds.length; i < len; i++ ) {
+			const item = feeds[i];
+			newfeeds.push( {
+				id: item.id,
+				sortorder: item.sortorder * 10 - ( item.id === feed ? 15 : 0 ),
+			} );
+		}
+
+		newfeeds.sort( ( a, b ) => {
+			if ( a.sortorder > b.sortorder ) {
+				return -1;
+			}
+
+			if ( a.sortorder < b.sortorder ) {
+				return 1;
+			}
+
+			return 0;
+		} );
+
+		console.log( feeds );
+		console.log( newfeeds );
+
+		// this.reorderFeeds();
 	}
 
 	handleDeleteClick() {
@@ -105,8 +137,10 @@ EditFeed.defaultProps = {
 	title: '',
 };
 
-function mapStateToProps() {
-	return {};
+function mapStateToProps( { auth } ) {
+	return {
+		feeds: auth.feeds,
+	};
 }
 
 function mapDispatchToProps( dispatch ) {
