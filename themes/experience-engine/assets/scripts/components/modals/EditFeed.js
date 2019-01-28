@@ -22,6 +22,16 @@ class EditFeed extends PureComponent {
 		return 0;
 	}
 
+	static getFeedsHash( feeds ) {
+		const feedsHash = {};
+
+		for ( let i = 0, len = feeds.length; i < len; i++ ) {
+			feedsHash[feeds[i].id] = i + 1;
+		}
+
+		return feedsHash;
+	}
+
 	constructor( props ) {
 		super( props );
 
@@ -35,18 +45,22 @@ class EditFeed extends PureComponent {
 	}
 
 	componentDidMount() {
-		this.props.activateTrap();
+		const self = this;
+		self.props.activateTrap();
+
+		const feeds = self.shiftFeeds( 0 );
+		const feedsHash = EditFeed.getFeedsHash( feeds );
+		self.updateOrders( feedsHash, true );
 	}
 
 	componentWillUnmount() {
 		this.props.deactivateTrap();
 	}
 
-	reorderFeeds( shift ) {
+	shiftFeeds( shift ) {
 		const self = this;
-		const { feed, feeds, modifyFeeds } = self.props;
+		const { feed, feeds } = self.props;
 		const newfeeds = [];
-		const feedsHash = {};
 
 		for ( let i = 0, len = feeds.length; i < len; i++ ) {
 			const item = feeds[i];
@@ -58,31 +72,36 @@ class EditFeed extends PureComponent {
 
 		newfeeds.sort( EditFeed.sortFeeds );
 		for ( let i = 0, len = newfeeds.length; i < len; i++ ) {
-			feedsHash[newfeeds[i].id] = newfeeds[i].sortorder = i + 1;
+			newfeeds[i].sortorder = i + 1;
 		}
 
-		modifyFeeds( newfeeds );
+		return newfeeds;
+	}
 
+	updateOrders( feedsHash, orderOthers ) {
 		const container = document.getElementById( 'inner-content' );
 		if ( container ) {
 			for ( let i = 0, index = 0; i < container.childNodes.length; i++ ) {
 				const child = container.childNodes[i];
-				if ( child && child.id && feedsHash[child.id] ) {
-					if ( ++index !== feedsHash[child.id] ) {
-						const replaceId = Object.keys( feedsHash ).find( key => feedsHash[key] === index );
-						const replace = document.getElementById( replaceId );
-						const temp = document.createElement( 'div' );
-
-						container.insertBefore( temp, replace );
-
-						container.replaceChild( child, replace );
-						container.replaceChild( replace, temp );
-
-						container.removeChild( temp );
+				if ( child && child.id ) {
+					if ( feedsHash[child.id] ) {
+						index = child.style.order = ( feedsHash[child.id] + 1 ) * 10;
+					} else if ( orderOthers ) {
+						child.style.order = index + 1;
 					}
 				}
 			}
 		}
+	}
+
+	reorderFeeds( shift ) {
+		const self = this;
+
+		const feeds = self.shiftFeeds( shift );
+		self.props.modifyFeeds( feeds );
+
+		const feedsHash = EditFeed.getFeedsHash( feeds );
+		self.updateOrders( feedsHash, false );
 	}
 
 	handleMoveToTopClick() {
