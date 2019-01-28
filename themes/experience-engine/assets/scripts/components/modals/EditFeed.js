@@ -46,6 +46,7 @@ class EditFeed extends PureComponent {
 		const self = this;
 		const { feed, feeds, modifyFeeds } = self.props;
 		const newfeeds = [];
+		const feedsHash = {};
 
 		for ( let i = 0, len = feeds.length; i < len; i++ ) {
 			const item = feeds[i];
@@ -56,16 +57,30 @@ class EditFeed extends PureComponent {
 		}
 
 		newfeeds.sort( EditFeed.sortFeeds );
-		for ( let i = 0, len = newfeeds.length; i < len; i ++ ) {
-			newfeeds[i].sortorder = i + 1;
+		for ( let i = 0, len = newfeeds.length; i < len; i++ ) {
+			feedsHash[newfeeds[i].id] = newfeeds[i].sortorder = i + 1;
 		}
 
 		modifyFeeds( newfeeds );
 
-		const container = document.getElementById( 'inner-container' );
+		const container = document.getElementById( 'inner-content' );
 		if ( container ) {
-			for ( let i = 0; i < container.childNodes.length; i++ ) {
-				console.log( container.childNodes[i] );
+			for ( let i = 0, index = 0; i < container.childNodes.length; i++ ) {
+				const child = container.childNodes[i];
+				if ( child && child.id && feedsHash[child.id] ) {
+					if ( ++index !== feedsHash[child.id] ) {
+						const replaceId = Object.keys( feedsHash ).find( key => feedsHash[key] === index );
+						const replace = document.getElementById( replaceId );
+						const temp = document.createElement( 'div' );
+
+						container.insertBefore( temp, replace );
+
+						container.replaceChild( child, replace );
+						container.replaceChild( replace, temp );
+
+						container.removeChild( temp );
+					}
+				}
 			}
 		}
 	}
