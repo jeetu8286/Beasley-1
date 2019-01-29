@@ -50,7 +50,19 @@ class EditFeed extends PureComponent {
 
 		const feeds = self.shiftFeeds( 0 );
 		const feedsHash = EditFeed.getFeedsHash( feeds );
-		self.updateOrders( feedsHash, true );
+		const container = document.getElementById( 'inner-content' );
+		if ( container ) {
+			for ( let i = 0, index = 0; i < container.childNodes.length; i++ ) {
+				const child = container.childNodes[i];
+				if ( child && child.id ) {
+					if ( feedsHash[child.id] ) {
+						index = child.style.order = ( feedsHash[child.id] + 1 ) * 10;
+					} else {
+						child.style.order = index + 1;
+					}
+				}
+			}
+		}
 	}
 
 	componentWillUnmount() {
@@ -78,22 +90,6 @@ class EditFeed extends PureComponent {
 		return newfeeds;
 	}
 
-	updateOrders( feedsHash, orderOthers ) {
-		const container = document.getElementById( 'inner-content' );
-		if ( container ) {
-			for ( let i = 0, index = 0; i < container.childNodes.length; i++ ) {
-				const child = container.childNodes[i];
-				if ( child && child.id ) {
-					if ( feedsHash[child.id] ) {
-						index = child.style.order = ( feedsHash[child.id] + 1 ) * 10;
-					} else if ( orderOthers ) {
-						child.style.order = index + 1;
-					}
-				}
-			}
-		}
-	}
-
 	reorderFeeds( shift ) {
 		const self = this;
 
@@ -101,7 +97,15 @@ class EditFeed extends PureComponent {
 		self.props.modifyFeeds( feeds );
 
 		const feedsHash = EditFeed.getFeedsHash( feeds );
-		self.updateOrders( feedsHash, false );
+		const container = document.getElementById( 'inner-content' );
+		if ( container ) {
+			for ( let i = 0, keys = Object.keys( feedsHash ), len = keys.length; i < len; i++ ) {
+				const element = document.getElementById( keys[i] );
+				if ( element ) {
+					element.style.order = ( feedsHash[keys[i]] + 1 ) * 10;
+				}
+			}
+		}
 	}
 
 	handleMoveToTopClick() {
