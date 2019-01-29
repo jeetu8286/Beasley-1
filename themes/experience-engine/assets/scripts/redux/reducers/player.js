@@ -1,4 +1,5 @@
 import { getStorage } from '../../library/local-storage';
+import { ACTION_LOADED_PAGE, ACTION_LOADED_PARTIAL } from '../actions/screen';
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_STATUS_CHANGE,
@@ -241,6 +242,10 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_AD_BREAK_SYNCED_HIDE:
 			return { ...state, ...adReset };
+
+		case ACTION_LOADED_PAGE:
+		case ACTION_LOADED_PARTIAL:
+			return { ...state, streams: window.bbgiconfig.streams || [] };
 
 		default:
 			// do nothing
