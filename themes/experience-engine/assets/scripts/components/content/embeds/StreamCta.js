@@ -38,8 +38,10 @@ function StreamCta( props ) {
 			<div className="meta">
 				<h4>{title}</h4>
 				<h2>{subtitle}</h2>
-				<AddToFavorites feedId={id} classes="-icon" addLabel="Subscribe" removeLabel="Unsubscribe" showIcon={false} />
-				<EditFeed feed={id} title={title} />
+				<div className="actions">
+					<AddToFavorites feedId={id} classes="-icon" addLabel="Subscribe" removeLabel="Unsubscribe" showIcon={false} />
+					<EditFeed feed={id} title={title} className="btn" />
+				</div>
 			</div>
 
 			<div className="action">

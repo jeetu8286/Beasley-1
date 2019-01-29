@@ -147,22 +147,16 @@ class EditFeed extends PureComponent {
 				<Header>{title || feed || 'Feed'}</Header>
 
 				<div>
-					<button onClick={self.onMoveToTopClick}>Move To Top</button>
-				</div>
-				<div>
-					<button onClick={self.onMoveUpClick}>Move Up</button>
-				</div>
-				<div>
-					<button onClick={self.onMoveDownClick}>Move Down</button>
-				</div>
-				<div>
-					<button onClick={self.onMoveToBottomClick}>Move To Bottom</button>
+					<button className="btn" onClick={self.onMoveToTopClick}>Move To Top</button>
+					<button className="btn" onClick={self.onMoveUpClick}>Move Up</button>
+					<button className="btn" onClick={self.onMoveDownClick}>Move Down</button>
+					<button className="btn" onClick={self.onMoveToBottomClick}>Move To Bottom</button>
 				</div>
 
 				<hr />
 
 				<div>
-					<button onClick={self.onDeleteClick}>Delete</button>
+					<button className="btn" onClick={self.onDeleteClick}>Delete</button>
 				</div>
 			</Fragment>
 		);

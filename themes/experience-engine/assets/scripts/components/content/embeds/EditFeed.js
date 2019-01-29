@@ -5,14 +5,14 @@ import { bindActionCreators } from 'redux';
 
 import { showEditFeedModal } from '../../../redux/actions/modal';
 
-function EditFeed( { loggedIn, showModal, feed, title, feeds } ) {
+function EditFeed( { loggedIn, showModal, feed, title, feeds, className } ) {
 	const hasFeed = feeds.find( item => item.id === feed );
 	if ( !hasFeed ) {
 		return false;
 	}
 
 	return loggedIn 
-		? <button onClick={() => showModal( { feed, title } )}>Edit Feed</button>
+		? <button className={className} onClick={() => showModal( { feed, title } )}>Edit</button>
 		: false;
 }
 
@@ -21,11 +21,13 @@ EditFeed.propTypes = {
 	feed: PropTypes.string.isRequired,
 	feeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
 	title: PropTypes.string,
+	className: PropTypes.string,
 	showModal: PropTypes.func.isRequired,
 };
 
 EditFeed.defaultProps = {
 	title: '',
+	className: '',
 };
 
 function mapStateToProps( { auth } ) {
