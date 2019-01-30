@@ -113,3 +113,9 @@ add_filter( 'ep_indexable_post_types', function() {
 	// Index all post types that are not excluded from search
 	return get_post_types( array( 'exclude_from_search' => false ) );
 } );
+
+add_filter( 'ep_post_sync_args', function( $args ) {
+	// remove redundant information
+	unset( $args['comment_count'], $args['comment_status'], $args['ping_status'] );
+	return $args;
+} );
