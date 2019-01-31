@@ -302,12 +302,8 @@ class Video extends \Bbgi\Module {
 	 * @return string
 	 */
 	public function get_ad_tag_url( $event_id, $video_id ) {
-		$originalTagUrl = $tagUrl = trim( get_option( 'livestream_ad_tag_url' ) );
-		if ( empty( $tagUrl ) ) {
-			return '';
-		}
-
 		$cust_params = array();
+		$originalTagUrl = $tagUrl = trim( get_option( 'livestream_ad_tag_url' ) );
 
 		if ( ! empty( $event_id ) ) {
 			$cust_params[] = 'livestreameventid=' . urlencode( $event_id );
@@ -324,11 +320,10 @@ class Video extends \Bbgi\Module {
 			}
 		}
 
-		$cust_params = implode( '&', $cust_params );
-		$cust_params = urlencode( $cust_params );
-
 		if ( ! filter_var( $tagUrl, FILTER_VALIDATE_URL ) ) {
 			$network_id = trim( get_option( 'dfp_network_code' ) );
+			$iu = apply_filters( 'livestream_ad_tag_iu', "/{$network_id}/{$tagUrl}" );
+
 			$tagUrl = add_query_arg( array(
 				'env'                     => 'vp',
 				'gdfp_req'                => '1',
@@ -340,9 +335,12 @@ class Video extends \Bbgi\Module {
 				'sz'                      => '920x508',
 				'cmsid'                   => urlencode( $event_id ),
 				'vid'                     => urlencode( $video_id ),
-				'iu'                      => "/{$network_id}/{$tagUrl}",
+				'iu'                      => urlencode( $iu ),
 			), 'https://pubads.g.doubleclick.net/gampad/live/ads' );
 		}
+
+		$cust_params = implode( '&', $cust_params );
+		$cust_params = urlencode( $cust_params );
 
 		$tagUrl = add_query_arg( 'cust_params', $cust_params, $tagUrl );
 		$tagUrl = apply_filters( 'livestream_ad_tag_url', $tagUrl, $originalTagUrl );

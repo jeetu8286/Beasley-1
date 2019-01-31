@@ -6,6 +6,7 @@ add_action( 'wp_footer', 'ee_display_dfp_outofpage', 100 );
 
 add_filter( 'bbgiconfig', 'ee_update_dfp_bbgiconfig', 50 );
 add_filter( 'dfp_global_targeting', 'ee_update_dfp_global_targeting' );
+add_filter( 'livestream_ad_tag_iu', 'ee_update_livestream_ad_tag_iu' );
 
 if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 	function ee_update_dfp_bbgiconfig( $config ) {
@@ -64,6 +65,17 @@ if ( ! function_exists( 'ee_update_dfp_global_targeting' ) ) :
 		}
 
 		return $targeting;
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_livestream_ad_tag_iu' ) ) :
+	function ee_update_livestream_ad_tag_iu( $iu ) {
+		$dfp_livestream_uid = \Bbgi\Module::get( 'experience-engine' )->get_ad_slot_unit_id( 'video-preroll' );
+		if ( ! empty( $dfp_livestream_uid ) ) {
+			$iu = $dfp_livestream_uid;
+		}
+
+		return $iu;
 	}
 endif;
 
