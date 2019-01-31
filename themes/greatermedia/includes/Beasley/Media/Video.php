@@ -217,7 +217,7 @@ class Video extends \Beasley\Module {
 		$source = add_query_arg( array(
 			'timestamp' => $timestamp,
 			'clientId'  => get_option( 'livestream_client_id' ),
-			'token'     => hash_hmac( "md5", "{$key}:playback:{$timestamp}", $key ),
+			'token'     => hash_hmac( "md5", "{$key}:readonly:{$timestamp}", $key ),
 		), $json['m3u8'] );
 
 		return sprintf(
