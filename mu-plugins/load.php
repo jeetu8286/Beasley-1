@@ -26,10 +26,6 @@ include __DIR__ . '/gmr-fallback-thumbnails/gmr-fallback-thumbnails.php';
 include __DIR__ . '/gmr-mobile-homepage-curation/gmr-mobile-homepage-curation.php';
 include __DIR__ . '/advanced-custom-fields/acf.php';
 
-if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	include __DIR__ . '/cli/cli.php';
-}
-
 add_action( 'wp_loaded', function() {
 	$modules = array(
 		new \Bbgi\Seo(),
@@ -116,4 +112,10 @@ add_filter( 'tribe_meta_chunker_post_types', '__return_empty_array', 15 );
 add_filter( 'ep_indexable_post_types', function() {
 	// Index all post types that are not excluded from search
 	return get_post_types( array( 'exclude_from_search' => false ) );
+} );
+
+add_filter( 'ep_post_sync_args', function( $args ) {
+	// remove redundant information
+	unset( $args['comment_count'], $args['comment_status'], $args['ping_status'] );
+	return $args;
 } );
