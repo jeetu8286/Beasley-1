@@ -11,7 +11,7 @@
 		var $parent = $this.parents( '.livestream-oembed' );
 
 		var id = el.id;
-		var player = videojs( el );
+		var player = videojs( el, { techOrder: ['flash', 'html5'] } );
 		var videoArgs = {
 			src: $this.data( 'src' ),
 			type: 'application/x-mpegURL',
