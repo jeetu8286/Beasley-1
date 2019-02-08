@@ -30,7 +30,7 @@ class SecondStreet extends \Bbgi\Module {
 		$section_id = 'beasley_secondstreet_settings';
 
 		add_settings_section( $section_id, 'SecondStreet', '__return_false', $page );
-		add_settings_field( 'secondstreet_station_id', 'Station ID', 'beasley_input_field', $page, $section_id, 'name=secondstreet_station_id' );
+		add_settings_field( 'secondstreet_station_id', 'Station ID', 'bbgi_input_field', $page, $section_id, 'name=secondstreet_station_id' );
 		register_setting( $group, 'secondstreet_station_id', 'sanitize_text_field' );
 	}
 

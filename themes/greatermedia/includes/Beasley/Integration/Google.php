@@ -46,10 +46,10 @@ class Google extends \Beasley\Module {
 
 		add_settings_section( $section_id, 'Google', '__return_false', $page );
 
-		add_settings_field( self::OPTION_GTM, 'Tag Manager Code', 'beasley_input_field', $page, $section_id, 'name=beasley_google_tag_manager&desc=GTM-xxxxxx' );
-		add_settings_field( self::OPTION_UA, 'Analytics Code', 'beasley_input_field', $page, $section_id, 'name=gmr_google_analytics&desc=UA-xxxxxx-xx' );
-		add_settings_field( self::OPTION_UA_UID, 'User ID Dimension #', 'beasley_input_field', $page, $section_id, $uid_dimension_args );
-		add_settings_field( self::OPTION_UA_AUTHOR, 'Author Dimension #', 'beasley_input_field', $page, $section_id, $author_dimension_args );
+		add_settings_field( self::OPTION_GTM, 'Tag Manager Code', 'bbgi_input_field', $page, $section_id, 'name=beasley_google_tag_manager&desc=GTM-xxxxxx' );
+		add_settings_field( self::OPTION_UA, 'Analytics Code', 'bbgi_input_field', $page, $section_id, 'name=gmr_google_analytics&desc=UA-xxxxxx-xx' );
+		add_settings_field( self::OPTION_UA_UID, 'User ID Dimension #', 'bbgi_input_field', $page, $section_id, $uid_dimension_args );
+		add_settings_field( self::OPTION_UA_AUTHOR, 'Author Dimension #', 'bbgi_input_field', $page, $section_id, $author_dimension_args );
 
 		register_setting( $group, self::OPTION_GTM, 'sanitize_text_field' );
 		register_setting( $group, self::OPTION_UA, 'sanitize_text_field' );
