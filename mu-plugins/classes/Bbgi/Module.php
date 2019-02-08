@@ -36,6 +36,7 @@ abstract class Module {
 		self::$_modules = array(
 			'seo'               => new \Bbgi\Seo(),
 			'dfp'               => new \Bbgi\Integration\Dfp(),
+			'facebook'          => new \Bbgi\Integration\Facebook(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {
