@@ -26,20 +26,7 @@ include __DIR__ . '/gmr-fallback-thumbnails/gmr-fallback-thumbnails.php';
 include __DIR__ . '/gmr-mobile-homepage-curation/gmr-mobile-homepage-curation.php';
 include __DIR__ . '/advanced-custom-fields/acf.php';
 
-add_action( 'wp_loaded', function() {
-	$modules = array(
-		new \Bbgi\Seo(),
-		'dfp' => new \Bbgi\Integration\Dfp(),
-	);
-
-	if ( current_theme_supports( 'secondstreet' ) ) {
-		$modules[] = new \Bbgi\Integration\SecondStreet();
-	}
-
-	foreach ( $modules as $module ) {
-		$module->register();
-	}
-} );
+add_action( 'wp_loaded', array( \Bbgi\Module::class, 'register_modules' ), 0 );
 
 // Allows overriding options with constants
 add_filter( 'configure_smtp__options', function( $options ) {

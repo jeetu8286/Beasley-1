@@ -8,7 +8,7 @@ class GMR_Archive_Admin {
 	 * @access public
 	 */
 	public function setup() {
-		add_action( 'beasley-register-settings', array( $this, 'init_setting' ), 10, 2 );
+		add_action( 'bbgi_register_settings', array( $this, 'init_setting' ), 10, 2 );
 		add_filter( 'the_title', array( $this, 'the_title' ), 10, 2 );
 		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 10, 2 );
 		add_action( 'admin_footer-post.php', array( $this, 'add_post_status_to_dropdown' ) );

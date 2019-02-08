@@ -27,7 +27,7 @@ class Video extends \Beasley\Module {
 	public function register() {
 		add_action( 'init', $this( 'setup_embeds' ) );
 		add_action( 'init', $this( 'setup_shortcodes' ) );
-		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
+		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Video extends \Beasley\Module {
 	 * Registers Livestream video settings.
 	 *
 	 * @access public
-	 * @action beasley-register-settings
+	 * @action bbgi_register_settings
 	 * @param string $group
 	 * @param string $page
 	 */
@@ -73,9 +73,9 @@ class Video extends \Beasley\Module {
 
 		add_settings_section( $section_id, 'Livestream', '__return_false', $page );
 
-		add_settings_field( 'livestream_client_id', 'Client ID', 'beasley_input_field', $page, $section_id, 'name=livestream_client_id' );
-		add_settings_field( 'livestream_secret_key', 'Secret Key', 'beasley_input_field', $page, $section_id, 'name=livestream_secret_key' );
-		add_settings_field( 'livestream_ad_tag_url', 'Ad Tag URL', 'beasley_input_field', $page, $section_id, 'name=livestream_ad_tag_url' );
+		add_settings_field( 'livestream_client_id', 'Client ID', 'bbgi_input_field', $page, $section_id, 'name=livestream_client_id' );
+		add_settings_field( 'livestream_secret_key', 'Secret Key', 'bbgi_input_field', $page, $section_id, 'name=livestream_secret_key' );
+		add_settings_field( 'livestream_ad_tag_url', 'Ad Tag URL', 'bbgi_input_field', $page, $section_id, 'name=livestream_ad_tag_url' );
 
 		register_setting( $group, 'livestream_client_id', 'sanitize_text_field' );
 		register_setting( $group, 'livestream_secret_key', 'sanitize_text_field' );
