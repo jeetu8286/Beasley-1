@@ -36,6 +36,7 @@ abstract class Module {
 		self::$_modules = array(
 			'seo'               => new \Bbgi\Seo(),
 			'dfp'               => new \Bbgi\Integration\Dfp(),
+			'settings'          => new \Bbgi\Settings(),
 			'facebook'          => new \Bbgi\Integration\Facebook(),
 		);
 
