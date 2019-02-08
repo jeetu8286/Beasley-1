@@ -43,7 +43,7 @@ function greatermedia_init_dfp_settings( $group, $page ) {
 		add_settings_field( $key, $label, 'beasley_input_field', $page, 'beasley_dfp_unit_codes', 'name=' . $key );
 	}
 }
-add_action( 'beasley-register-settings', 'greatermedia_init_dfp_settings', 10, 2 );
+add_action( 'bbgi_register_settings', 'greatermedia_init_dfp_settings', 10, 2 );
 
 function greatermedia_is_dfp_active() {
 	$network_id = trim( get_option( 'dfp_network_code' ) );

@@ -11,7 +11,7 @@ class SecondStreet extends \Bbgi\Module {
 	 */
 	public function register() {
 		// add action hooks
-		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
+		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 
 		// add shortcodes
 		add_shortcode( 'ss_promo', $this( 'render_shortcode' ) );
@@ -22,7 +22,7 @@ class SecondStreet extends \Bbgi\Module {
 	 * Registers Google Analytics and Tag Manager settings.
 	 *
 	 * @access public
-	 * @action beasley-register-settings
+	 * @action bbgi_register_settings
 	 * @param string $group
 	 * @param string $page
 	 */

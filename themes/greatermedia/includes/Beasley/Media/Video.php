@@ -27,7 +27,7 @@ class Video extends \Beasley\Module {
 	public function register() {
 		add_action( 'init', $this( 'setup_embeds' ) );
 		add_action( 'init', $this( 'setup_shortcodes' ) );
-		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
+		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Video extends \Beasley\Module {
 	 * Registers Livestream video settings.
 	 *
 	 * @access public
-	 * @action beasley-register-settings
+	 * @action bbgi_register_settings
 	 * @param string $group
 	 * @param string $page
 	 */

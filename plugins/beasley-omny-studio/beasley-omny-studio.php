@@ -315,7 +315,7 @@ function omny_get_episode_audio_url( $url, $post ) {
 
 add_action( 'init', 'omny_init' );
 add_action( 'admin_init', 'omny_register_scheduled_events' );
-add_action( 'beasley-register-settings', 'omny_register_settings', 1, 2 );
+add_action( 'bbgi_register_settings', 'omny_register_settings', 1, 2 );
 add_action( 'omny_start_import_episodes', 'omny_start_import_episodes' );
 add_action( 'omny_run_import_episodes', 'omny_run_import_episodes' );
 add_action( 'wp_enqueue_scripts', 'omny_enqueue_scripts' );

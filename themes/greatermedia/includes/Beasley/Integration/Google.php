@@ -18,7 +18,7 @@ class Google extends \Beasley\Module {
 		add_action( 'wp_head', $this( 'render_analytics_head' ), 0 );
 		add_action( 'wp_head', $this( 'render_gtm_head' ) );
 		add_action( 'beasley_after_body', $this( 'render_gtm_body' ) );
-		add_action( 'beasley-register-settings', $this( 'register_settings' ), 10, 2 );
+		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 
 		add_filter( 'fbia_analytics_makrup', $this( 'get_fbia_analytics_markup' ) );
 	}
@@ -27,7 +27,7 @@ class Google extends \Beasley\Module {
 	 * Registers Google Analytics and Tag Manager settings.
 	 *
 	 * @access public
-	 * @action beasley-register-settings
+	 * @action bbgi_register_settings
 	 * @param string $group
 	 * @param string $page
 	 */
