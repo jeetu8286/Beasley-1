@@ -108,17 +108,26 @@ class Settings extends \Bbgi\Module {
 		);
 
 		add_settings_section( 'ee_site_settings', 'Station Settings', '__return_false', $this->_settings_page_hook );
+		add_settings_section( 'ee_site_colors', 'Brand Colors', '__return_false', $this->_settings_page_hook );
 
 		add_settings_field( 'gmr_site_logo', 'Site Logo', 'bbgi_image_field', $this->_settings_page_hook, 'ee_site_settings', 'name=gmr_site_logo' );
 		add_settings_field( 'ee_theme_version', 'Theme Version', 'bbgi_select_field', $this->_settings_page_hook, 'ee_site_settings', $theme_version_args );
 		add_settings_field( 'ee_newsletter_signup_page', 'Newsletter Signup Page', 'wp_dropdown_pages', $this->_settings_page_hook, 'ee_site_settings', $newsletter_args );
 		add_settings_field( 'ee_publisher', 'Publisher', array( $this, 'render_publisher_select' ), $this->_settings_page_hook, 'ee_site_settings', $publisher_args );
 
+		add_settings_field( 'ee_theme_primary_color', 'Primary', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_primary_color&default=#ff0000' );
+		add_settings_field( 'ee_theme_secondary_color', 'Secondary', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_secondary_color&default=#ffe964' );
+		add_settings_field( 'ee_theme_tertiary_color', 'Tertiary', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_tertiary_color&default=#ffffff' );
+
 		register_setting( self::option_group, 'gmr_site_logo', 'intval' );
 		register_setting( self::option_group, 'ee_newsletter_signup_page', 'intval' );
 		register_setting( self::option_group, 'ee_theme_version', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_publisher', 'sanitize_text_field' );
-		
+	
+		register_setting( self::option_group, 'ee_theme_primary_color', 'sanitize_text_field' );
+		register_setting( self::option_group, 'ee_theme_secondary_color', 'sanitize_text_field' );
+		register_setting( self::option_group, 'ee_theme_tertiary_color', 'sanitize_text_field' );
+
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
 		 */
