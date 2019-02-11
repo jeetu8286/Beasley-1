@@ -36,12 +36,6 @@ abstract class Module {
 		self::$_modules = array(
 			'site'              => new \Bbgi\Site(),
 			'seo'               => new \Bbgi\Seo(),
-<<<<<<< HEAD
-=======
-			'experience-engine' => new \Bbgi\Integration\ExperienceEngine(),
-			'firebase'          => new \Bbgi\Integration\Firebase(),
-			'dfp'               => new \Bbgi\Integration\Dfp(),
->>>>>>> origin/master
 			'settings'          => new \Bbgi\Settings(),
 			'shortcodes'        => new \Bbgi\Shortcodes(),
 			'video'             => new \Bbgi\Media\Video(),
