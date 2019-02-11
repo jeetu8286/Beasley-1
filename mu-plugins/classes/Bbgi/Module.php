@@ -35,6 +35,8 @@ abstract class Module {
 	public static function register_modules() {
 		self::$_modules = array(
 			'seo'               => new \Bbgi\Seo(),
+			'experience-engine' => new \Bbgi\Integration\ExperienceEngine(),
+			'firebase'          => new \Bbgi\Integration\Firebase(),
 			'dfp'               => new \Bbgi\Integration\Dfp(),
 			'settings'          => new \Bbgi\Settings(),
 			'facebook'          => new \Bbgi\Integration\Facebook(),
