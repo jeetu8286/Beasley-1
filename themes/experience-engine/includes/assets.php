@@ -59,18 +59,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 
 		wp_register_script( 'intersection-observer', '//polyfill.io/v2/polyfill.min.js?features=IntersectionObserver', null, null, true );
 
-		if ( $is_script_debug ) {
-			$perfume = array(
-				'firstPaint'           => true,
-				'firstContentfulPaint' => true,
-				'firstInputDelay'      => true,
-			);
-
-			// @see: https://zizzamia.github.io/perfume/
-			wp_enqueue_script( 'perfume', "{$base}/bundle/perfume.umd.min.js", null, null, false );
-			wp_add_inline_script( 'perfume', 'var perfumeInfo = new Perfume(' . json_encode( $perfume ) . ')', 'after' );
-		}
-
 		/**
 		 * Application script
 		 */

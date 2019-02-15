@@ -11,9 +11,6 @@ function coreConfig( options = {} ) {
 		// core-js
 		'node_modules/core-js/client/core.min.js',
 
-		// Perfume.js
-		'node_modules/perfume.js/dist/perfume.umd.min.js',
-
 		// video.js & videojs-flash
 		'node_modules/video.js/dist/video-js.min.css',
 		'node_modules/video.js/dist/video.min.js',
