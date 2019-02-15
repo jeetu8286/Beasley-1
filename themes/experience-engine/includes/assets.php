@@ -59,6 +59,15 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 
 		wp_register_script( 'intersection-observer', '//polyfill.io/v2/polyfill.min.js?features=IntersectionObserver', null, null, true );
 
+		$react_version = '16';
+		$react_mode = $is_script_debug ? 'development' : 'production.min';
+
+		wp_register_script( 'react', "//unpkg.com/react@{$react_version}/umd/react.{$react_mode}.js", null, null, true );
+		wp_script_add_data( 'react', 'crossorigin', true );
+
+		wp_register_script( 'react-dom', "//unpkg.com/react-dom@{$react_version}/umd/react-dom.{$react_mode}.js", null, null, true );
+		wp_script_add_data( 'react-dom', 'crossorigin', true );
+
 		/**
 		 * Application script
 		 */
@@ -72,6 +81,8 @@ try {
 EOL;
 
 		$deps = array(
+			'react',
+			'react-dom',
 			'firebase-app',
 			'firebase-auth',
 			'googletag',
@@ -188,6 +199,12 @@ if ( ! function_exists( 'ee_script_loader' ) ) :
 			$onload = esc_attr( $onload );
 			$tag = str_replace( " src=\"{$src}\"", " src=\"{$src}\" onload=\"{$onload}\"", $tag );
 			$tag = str_replace( " src='{$src}'", " src=\"{$src}\" onload=\"{$onload}\"", $tag );
+		}
+
+		$crossorigin = $wp_scripts->get_data( $handler, 'crossorigin' );
+		if ( $crossorigin ) {
+			$tag = str_replace( " src=\"{$src}\"", " src=\"{$src}\" crossorigin", $tag );
+			$tag = str_replace( " src='{$src}'", " src=\"{$src}\" crossorigin", $tag );
 		}
 
 		return $tag;

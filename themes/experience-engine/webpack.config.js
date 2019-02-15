@@ -48,8 +48,13 @@ function coreConfig( options = {} ) {
 			loader: 'babel-loader',
 			options: {
 				cacheDirectory: true,
-				presets: ['@babel/preset-react', '@babel/preset-env'],
-				plugins: ['@babel/plugin-syntax-dynamic-import'],
+				presets: [
+					'@babel/preset-react',
+					'@babel/preset-env',
+				],
+				plugins: [
+					'@babel/plugin-syntax-dynamic-import',
+				],
 			},
 		},
 	};
@@ -103,6 +108,8 @@ function coreConfig( options = {} ) {
 		},
 		externals: {
 			firebase: 'firebase',
+			react: 'React',
+			'react-dom': 'ReactDOM',
 		},
 		module: {
 			rules: [eslintRule, babelRule, cssRule],
