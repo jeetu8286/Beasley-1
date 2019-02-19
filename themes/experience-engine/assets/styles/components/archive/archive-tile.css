@@ -35,6 +35,12 @@
 				}
 			}
 		}
+
+		& .contest-tile {
+			& .meta {
+				flex: 0 1 auto;
+			}
+		}
 	}
 
 	&.-grid {
