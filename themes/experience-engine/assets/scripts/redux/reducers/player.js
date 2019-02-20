@@ -1,5 +1,4 @@
 import { getStorage } from '../../library/local-storage';
-import { ACTION_LOADED_PAGE, ACTION_LOADED_PARTIAL } from '../actions/screen';
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_STATUS_CHANGE,
@@ -19,6 +18,7 @@ import {
 	ACTION_AD_PLAYBACK_ERROR,
 	ACTION_AD_BREAK_SYNCED,
 	ACTION_AD_BREAK_SYNCED_HIDE,
+	ACTION_LOAD_STREAMS,
 	STATUSES,
 } from '../actions/player';
 
@@ -241,9 +241,8 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_AD_BREAK_SYNCED_HIDE:
 			return { ...state, ...adReset };
 
-		case ACTION_LOADED_PAGE:
-		case ACTION_LOADED_PARTIAL: {
-			const newstate = { ...state, streams: window.bbgiconfig.streams || [] };
+		case ACTION_LOAD_STREAMS: {
+			const newstate = { ...state, streams: action.streams || [] };
 
 			if ( !initialStation ) {
 				initialStation = getInitialStation( newstate.streams );
