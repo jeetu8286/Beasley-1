@@ -183,10 +183,21 @@ if ( ! function_exists( 'ee_get_related_articles' ) ) :
 		}
 
 		$post_id = get_queried_object_id();
-		$key = 'ee-related-articles-' . $post_id;
+		$key = 'ee-related-' . $post_id;
 		$related_articles = wp_cache_get( $key );
 		if ( $related_articles === false ) {
+			$remove_filter = false;
+			if ( ! has_filter( 'ep_formatted_args', 'ep_related_posts_formatted_args' ) ) {
+				$remove_filter = true;
+				add_filter( 'ep_formatted_args', 'ep_related_posts_formatted_args', 10, 2 );
+			}
+
 			$related_articles = ep_find_related( $post_id, 5 );
+
+			if ( $remove_filter ) {
+				remove_filter( 'ep_formatted_args', 'ep_related_posts_formatted_args', 10, 2 );
+			}
+
 			if ( ! empty( $related_articles ) ) {
 				wp_cache_set( $key, $related_articles, '', 15 * MINUTE_IN_SECONDS );
 			}
