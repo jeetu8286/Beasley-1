@@ -1,5 +1,5 @@
 import { getStorage } from '../../library/local-storage';
-import { ACTION_SET_USER_FEEDS } from '../actions/auth';
+import { ACTION_SET_USER_FEEDS, ACTION_RESET_USER } from '../actions/auth';
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_STATUS_CHANGE,
@@ -260,6 +260,13 @@ function reducer( state = {}, action = {} ) {
 
 			return newstate;
 		}
+
+		case ACTION_RESET_USER:
+			return {
+				...state,
+				station: DEFAULT_STATE.station,
+				streams: DEFAULT_STATE.streams,
+			};
 
 		default:
 			// do nothing
