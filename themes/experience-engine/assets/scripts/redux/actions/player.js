@@ -20,7 +20,6 @@ export const ACTION_AD_PLAYBACK_COMPLETE = 'production' === process.env.NODE_ENV
 export const ACTION_AD_PLAYBACK_ERROR    = 'production' === process.env.NODE_ENV ? 'pf' : 'PLAYER_AD_PLAYBACK_ERROR';
 export const ACTION_AD_BREAK_SYNCED      = 'production' === process.env.NODE_ENV ? 'pg' : 'PLAYER_AD_BREAK_SYNCED';
 export const ACTION_AD_BREAK_SYNCED_HIDE = 'production' === process.env.NODE_ENV ? 'ph' : 'PLAYER_AD_BREAK_SYNCED_HIDE';
-export const ACTION_LOAD_STREAMS         = 'production' === process.env.NODE_ENV ? 'pk' : 'PLAYER_LOAD_STREAMS';
 
 export const STATUSES = {
 	LIVE_PAUSE: 'LIVE_PAUSE',
@@ -221,10 +220,6 @@ export function seekPosition( position ) {
 	return { type: ACTION_SEEK_POSITION, position };
 }
 
-export function loadStreams( streams ) {
-	return { type: ACTION_LOAD_STREAMS, streams };
-}
-
 export default {
 	initTdPlayer,
 	playAudio,
@@ -234,5 +229,4 @@ export default {
 	resume,
 	setVolume,
 	seekPosition,
-	loadStreams,
 };

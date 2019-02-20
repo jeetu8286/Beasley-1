@@ -21,7 +21,13 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_SUPPRESS_USER_CHECK:
 			return { ...state, suppressUserCheck: true };
 		case ACTION_SET_USER_FEEDS:
-			return { ...state, feeds: action.feeds };
+			return { 
+				...state, 
+				feeds: action.feeds.filter( item => !! item.sortorder ).map( item => ( {
+					id: item.id,
+					sortorder: item.sortorder,
+				} ) ),
+			};
 		case ACTION_DELETE_USER_FEED:
 			return { ...state, feeds: state.feeds.filter( item => item.id !== action.feed ) };
 		default:

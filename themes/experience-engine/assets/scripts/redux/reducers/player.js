@@ -1,4 +1,5 @@
 import { getStorage } from '../../library/local-storage';
+import { ACTION_SET_USER_FEEDS } from '../actions/auth';
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_STATUS_CHANGE,
@@ -18,7 +19,6 @@ import {
 	ACTION_AD_PLAYBACK_ERROR,
 	ACTION_AD_BREAK_SYNCED,
 	ACTION_AD_BREAK_SYNCED_HIDE,
-	ACTION_LOAD_STREAMS,
 	STATUSES,
 } from '../actions/player';
 
@@ -241,8 +241,15 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_AD_BREAK_SYNCED_HIDE:
 			return { ...state, ...adReset };
 
-		case ACTION_LOAD_STREAMS: {
-			const newstate = { ...state, streams: action.streams || [] };
+		case ACTION_SET_USER_FEEDS: {
+			const newstreams = ( action.feeds || [] )
+				.filter( item => 'stream' === item.type && 0 < ( item.content || [] ).length )
+				.map( item => item.content[0] );
+
+			const newstate = { 
+				...state,
+				streams: newstreams || []
+			};
 
 			if ( !initialStation ) {
 				initialStation = getInitialStation( newstate.streams );
