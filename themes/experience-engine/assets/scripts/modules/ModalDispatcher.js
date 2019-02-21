@@ -14,6 +14,7 @@ import {
 	EDIT_FEED_MODAL,
 } from '../redux/actions/modal';
 
+import ErrorBoundary from '../components/ErrorBoundary';
 import CloseButton from '../components/modals/elements/Close';
 import SignInModal from '../components/modals/SignIn';
 import SignUpModal from '../components/modals/SignUp';
@@ -98,7 +99,9 @@ class ModalDispatcher extends Component {
 			<div className={`modal ${( modal || '' ).toLowerCase()}`}>
 				<div ref={self.modalRef} className="modal-content">
 					<CloseButton close={close} />
-					{component}
+					<ErrorBoundary>
+						{component}
+					</ErrorBoundary>
 				</div>
 			</div>
 		);
