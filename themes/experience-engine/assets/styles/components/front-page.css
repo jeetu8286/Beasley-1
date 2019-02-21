@@ -24,7 +24,11 @@
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
-		border-radius: 5px;
+		border-radius: 0;
+
+		@media (--min-medium-viewport) {
+			border-radius: 5px;
+		}
 	}
 
 	& .cta-content,
