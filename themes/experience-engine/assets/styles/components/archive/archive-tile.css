@@ -253,12 +253,6 @@
 				display: none;
 			}
 		}
-
-		& .type-contest {
-			& .contest-dates {
-				display: none;
-			}
-		}
 	}
 
 	& [id="wnks-concerts-events"] {
