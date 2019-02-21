@@ -73,6 +73,7 @@ class UserNav extends Component {
 			return getUser().then( json => {
 				if ( 'user information has not been set' === json.Error ) {
 					self.props.showCompleteSignup();
+					self.props.hideSplashScreen();
 				} else if ( UserNav.isHomepage() ) {
 					self.props.loadPage( `${window.bbgiconfig.wpapi}feeds-content`, {
 						suppressHistory: true,
