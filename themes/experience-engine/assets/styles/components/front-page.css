@@ -11,11 +11,25 @@
 	& .countdown  {
 		margin: 0 auto;
 		max-width: 1071px;
-		padding: 0 1rem 2.22rem;
+		padding: 2.222rem 1rem;
 	}
 
-	& .countdown,
+	& .placeholder-cta {
+		padding-bottom: 2.222rem;
+	}
+
 	& .cta {
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		border-radius: 5px;
+	}
+
+	& .cta-content {
+		text-align: center;
+	}
+
+	& .countdown {
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: contain;
@@ -23,8 +37,7 @@
 		position: relative;
 	}
 
-	& .countdown-content,
-	& .cta-content {
+	& .countdown-content {
 		left: 50%;
 		position: absolute;
 		text-align: center;
@@ -32,14 +45,12 @@
 		transform: translate(-50%, -50%);
 	}
 
-	& .countdown-title,
-	& .cta-title {
+	& .countdown-title {
 		font-size: 2rem;
 	}
 
 	& .cta-button {
 		display: inline-block;
-		padding: .5rem 1rem;
 	}
 
 	& .countdown-timer {

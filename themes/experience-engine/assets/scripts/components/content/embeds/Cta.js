@@ -13,6 +13,7 @@ function Cta( { payload } ) {
 		buttonText,
 		buttonTextColor,
 		link,
+		picture,
 	} = payload;
 
 	let button = false;
@@ -23,7 +24,7 @@ function Cta( { payload } ) {
 		};
 
 		button = (
-			<a className="cta-button" href={link} style={buttonStyle}>
+			<a className="btn cta-button" href={link} style={buttonStyle}>
 				{buttonText}
 			</a>
 		);
@@ -40,10 +41,14 @@ function Cta( { payload } ) {
 		blockStyle.backgroundImage = `url(${image})`;
 	}
 
+	if ( picture && picture.large && picture.large.url ) {
+		blockStyle.backgroundImage = `url(${picture.large.url})`;
+	}
+
 	return (
 		<div className="cta" style={blockStyle}>
 			<div className="cta-content">
-				<h4 className="cta-title">{title}</h4>
+				<h2 className="cta-title">{title}</h2>
 				{button}
 			</div>
 		</div>
