@@ -5,7 +5,9 @@ import { bindActionCreators } from 'redux';
 import firebase from 'firebase';
 import md5 from 'md5';
 
+import ErrorBoundary from '../components/ErrorBoundary';
 import ContentBlock from '../components/content/ContentBlock';
+
 import { initPage, loadPage, updatePage } from '../redux/actions/screen';
 import { loadAssets, unloadScripts } from '../library/dom';
 import { untrailingslashit } from '../library/strings';
@@ -202,11 +204,17 @@ class ContentDispatcher extends Component {
 
 		blocks.push(
 			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
-			<ContentBlock key={`${window.location.href}-${md5( content )}`} content={content} embeds={embeds} />,
+			<ErrorBoundary key={`${window.location.href}-${md5( content )}`}>
+				<ContentBlock content={content} embeds={embeds} />,
+			</ErrorBoundary>
 		);
 
 		Object.keys( partials ).forEach( ( key ) => {
-			blocks.push( <ContentBlock key={key} {...partials[key]} partial /> );
+			blocks.push(
+				<ErrorBoundary key={key}>
+					<ContentBlock {...partials[key]} partial />
+				</ErrorBoundary>
+			);
 		} );
 
 		return blocks;

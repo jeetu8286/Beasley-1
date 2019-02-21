@@ -8,6 +8,8 @@ import md5 from 'md5';
 
 import { getUser } from '../library/experience-engine';
 
+import ErrorBoundary from '../components/ErrorBoundary';
+
 import { showSignInModal, showSignUpModal, showCompleteSignupModal } from '../redux/actions/modal';
 import { setUser, resetUser } from '../redux/actions/auth';
 import { loadPage, hideSplashScreen } from '../redux/actions/screen';
@@ -172,7 +174,10 @@ class UserNav extends Component {
 			component = self.renderSignedOutState();
 		}
 
-		return ReactDOM.createPortal( component, container );
+		return ReactDOM.createPortal( 
+			React.createElement( ErrorBoundary, {}, component ),
+			container
+		);
 	}
 
 }

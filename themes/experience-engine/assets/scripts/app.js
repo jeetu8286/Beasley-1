@@ -1,3 +1,5 @@
+import '../styles/main.css';
+
 import React, { PureComponent, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -14,7 +16,7 @@ import UserNav from './modules/UserNav';
 import SearchForm from './modules/SearchForm';
 import BackToTop from './components/BackToTop';
 
-import '../styles/main.css';
+import ErrorBoundary from './components/ErrorBoundary';
 
 class Application extends PureComponent {
 
@@ -28,15 +30,29 @@ class Application extends PureComponent {
 		return (
 			<Fragment>
 				<IntersectionObserverContext.Provider value={this.observer}>
-					<ContentDispatcher />
-					<ModalDispatcher />
-					<LivePlayer />
-					<PrimaryNav />
-					<UserNav />
-					<SearchForm />
+					<ErrorBoundary>
+						<ContentDispatcher />
+					</ErrorBoundary>
+					<ErrorBoundary>
+						<ModalDispatcher />
+					</ErrorBoundary>
+					<ErrorBoundary>
+						<LivePlayer />
+					</ErrorBoundary>
+					<ErrorBoundary>
+						<PrimaryNav />
+					</ErrorBoundary>
+					<ErrorBoundary>
+						<UserNav />
+					</ErrorBoundary>
+					<ErrorBoundary>
+						<SearchForm />
+					</ErrorBoundary>
 				</IntersectionObserverContext.Provider>
 
-				<BackToTop />
+				<ErrorBoundary>
+					<BackToTop />
+				</ErrorBoundary>
 			</Fragment>
 		);
 	}

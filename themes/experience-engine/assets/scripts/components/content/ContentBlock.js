@@ -2,6 +2,7 @@ import React, { Fragment, Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
+import ErrorBoundary from '../ErrorBoundary';
 import AudioEmbed from './embeds/Audio';
 import SecondStreetEmbed from './embeds/SecondStreet';
 import LazyImage from './embeds/LazyImage';
@@ -50,8 +51,10 @@ class ContentBlock extends Component {
 			return false;
 		}
 
+		const element = React.createElement( component, params );
+
 		return ReactDOM.createPortal(
-			React.createElement( component, params ),
+			React.createElement( ErrorBoundary, {}, element ),
 			container,
 		);
 	}
