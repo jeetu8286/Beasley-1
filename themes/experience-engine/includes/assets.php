@@ -36,8 +36,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		 * CSS vars polyfill
 		 */
 		wp_enqueue_script( 'css-vars-ponyfill', 'https://unpkg.com/css-vars-ponyfill@1.16.1/dist/css-vars-ponyfill.min.js', null, null, false );
-		wp_script_add_data( 'css-vars-ponyfill', 'async', true );
-		wp_script_add_data( 'css-vars-ponyfill', 'onload', 'cssVars(' . wp_json_encode( [ 'variables' => ee_get_css_colors() ] ) . ')' );
+		wp_add_inline_script( 'css-vars-ponyfill', 'cssVars(' . wp_json_encode( [ 'variables' => ee_get_css_colors() ] ) . ')', 'after' );
 
 		/**
 		 * External libraries
