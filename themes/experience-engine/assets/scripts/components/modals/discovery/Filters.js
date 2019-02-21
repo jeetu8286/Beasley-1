@@ -74,6 +74,7 @@ class DiscoveryFilters extends PureComponent {
 							<option value="news">News</option>
 							<option value="video">Video</option>
 							<option value="contests">Contests</option>
+							<option value="stream">Streams</option>
 						</select>
 					</div>
 
