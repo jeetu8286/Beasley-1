@@ -52,4 +52,6 @@ export default {
 	setUser,
 	resetUser,
 	suppressUserCheck,
+	modifyUserFeeds,
+	deleteUserFeed,
 };

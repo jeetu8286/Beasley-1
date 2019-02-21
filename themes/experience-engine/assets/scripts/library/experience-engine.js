@@ -66,7 +66,7 @@ export function getFeeds( jwt = null ) {
 	const channel = getChannel();
 
 	return getToken( jwt )
-		.then( token => fetch( __api`experience/channels/${channel}/feeds/?authorization=${token}` ) )
+		.then( token => fetch( __api`experience/channels/${channel}/feeds/content/?authorization=${token}` ) )
 		.then( response => response.json() );
 }
 

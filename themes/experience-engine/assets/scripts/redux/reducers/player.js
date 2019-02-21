@@ -1,5 +1,5 @@
 import { getStorage } from '../../library/local-storage';
-import { ACTION_LOADED_PAGE, ACTION_LOADED_PARTIAL } from '../actions/screen';
+import { ACTION_SET_USER_FEEDS, ACTION_RESET_USER } from '../actions/auth';
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_STATUS_CHANGE,
@@ -241,9 +241,15 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_AD_BREAK_SYNCED_HIDE:
 			return { ...state, ...adReset };
 
-		case ACTION_LOADED_PAGE:
-		case ACTION_LOADED_PARTIAL: {
-			const newstate = { ...state, streams: window.bbgiconfig.streams || [] };
+		case ACTION_SET_USER_FEEDS: {
+			const newstreams = ( action.feeds || [] )
+				.filter( item => 'stream' === item.type && 0 < ( item.content || [] ).length )
+				.map( item => item.content[0] );
+
+			const newstate = { 
+				...state,
+				streams: newstreams || []
+			};
 
 			if ( !initialStation ) {
 				initialStation = getInitialStation( newstate.streams );
@@ -254,6 +260,13 @@ function reducer( state = {}, action = {} ) {
 
 			return newstate;
 		}
+
+		case ACTION_RESET_USER:
+			return {
+				...state,
+				station: DEFAULT_STATE.station,
+				streams: DEFAULT_STATE.streams,
+			};
 
 		default:
 			// do nothing
