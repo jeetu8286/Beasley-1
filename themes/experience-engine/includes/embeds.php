@@ -6,6 +6,7 @@ if ( ! function_exists( 'ee_setup_embed_filters' ) ) :
 	function ee_setup_embed_filters() {
 		add_filter( 'embed_oembed_html', 'ee_update_embed_oembed_html', 10, 4 );
 		add_filter( 'fvideos_video_html', 'ee_update_fvideos_video_html', 10, 2 );
+		add_filter( 'fvideos_show_video', 'ee_update_fvideos_show_video', 10, 2 );
 	}
 endif;
 
@@ -26,7 +27,7 @@ if ( ! function_exists( 'ee_update_embed_oembed_html' ) ) :
 			$html = ee_oembed_youtube_html( $data );
 		}
 
-		// we need to make sure that wpautop filter doesn't mess everything up here, so we need to inject embed code later
+		// we need to make sure that wpautop filter doesn't mess up everything here, so we need to inject embed code later
 		$placeholder = '<div><!-- ' . sha1( $html ) . ' --></div>';
 		$replace_filter = function( $content ) use ( $placeholder, $html ) {
 			return str_replace( $placeholder, $html, $content );
@@ -54,5 +55,11 @@ if ( ! function_exists( 'ee_oembed_youtube_html' ) ) :
 			esc_attr( $data->thumbnail_url ),
 			esc_attr( $data->html )
 		);
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_fvideos_show_video' ) ) :
+	function ee_update_fvideos_show_video( $show, $post_id ) {
+		return is_singular() && $post_id == get_queried_object_id();
 	}
 endif;
