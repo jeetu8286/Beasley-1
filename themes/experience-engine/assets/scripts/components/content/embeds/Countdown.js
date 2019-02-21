@@ -91,7 +91,6 @@ class Countdown extends Component {
 			title,
 			background,
 			link,
-			picture,
 		} = payload;
 
 		const { color, image } = background;
@@ -103,10 +102,6 @@ class Countdown extends Component {
 
 		if ( image ) {
 			blockStyle.backgroundImage = `url(${image})`;
-		}
-
-		if ( picture && picture.large && picture.large.url ) {
-			blockStyle.backgroundImage = `url(${picture.large.url})`;
 		}
 
 		const titleText = link
