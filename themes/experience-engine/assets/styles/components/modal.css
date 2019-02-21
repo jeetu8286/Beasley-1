@@ -169,9 +169,15 @@
 	}
 
 	& .-sign-in,
-	& .-forgot-password {
+	& .-forgot-password,
+	& .-sign-up {
 		background: var(--brand-primary);
 		border-radius: 25px;
-		padding: .75rem 4.25rem;
+		margin-right: 1rem;
+		padding: .75rem 2.25rem;
+
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 }
