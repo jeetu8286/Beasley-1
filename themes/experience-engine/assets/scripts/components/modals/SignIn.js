@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import firebase from 'firebase';
 
-import { showRestoreModal } from '../../redux/actions/modal';
+import { showRestoreModal, showSignUpModal } from '../../redux/actions/modal';
 
 import Header from './elements/Header';
 import Alert from './elements/Alert';
@@ -26,7 +26,6 @@ class SignIn extends PureComponent {
 
 		self.onFieldChange = self.handleFieldChange.bind( self );
 		self.onFormSubmit = self.handleFormSubmit.bind( self );
-		self.onRestoreClick = self.handleRestoreClick.bind( self );
 	}
 
 	componentDidMount() {
@@ -54,13 +53,10 @@ class SignIn extends PureComponent {
 			.catch( error => self.setState( { message: error.message } ) );
 	}
 
-	handleRestoreClick() {
-		this.props.restore();
-	}
-
 	render() {
 		const self = this;
 		const { email, password, message } = self.state;
+		const { restore, signup } = self.props;
 
 		return (
 			<Fragment>
@@ -95,13 +91,8 @@ class SignIn extends PureComponent {
 					</div>
 					<div className="modal-form-actions">
 						<button className="button -sign-in" type="submit">Sign In</button>
-						<button
-							className="button -forgot-password"
-							type="button"
-							onClick={self.onRestoreClick}
-						>
-							Forgot Password
-						</button>
+						<button className="button -forgot-password" type="button" onClick={restore}>Forgot Password</button>
+						<button className="button -sign-up" type="button" onClick={signup}>Sign Up</button>
 					</div>
 				</form>
 				<h5 className="section-head">
@@ -116,13 +107,17 @@ class SignIn extends PureComponent {
 
 SignIn.propTypes = {
 	restore: PropTypes.func.isRequired,
+	signup: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( { restore: showRestoreModal }, dispatch );
+	return bindActionCreators( {
+		signup: showSignUpModal,
+		restore: showRestoreModal,
+	}, dispatch );
 }
 
 export default connect( null, mapDispatchToProps )( trapHOC()( SignIn ) );

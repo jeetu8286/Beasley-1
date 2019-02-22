@@ -11,6 +11,8 @@ import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
 
 import { saveUser } from '../../library/experience-engine';
+
+import { showSignInModal } from '../../redux/actions/modal';
 import { suppressUserCheck } from '../../redux/actions/auth';
 
 class SignUp extends PureComponent {
@@ -76,6 +78,7 @@ class SignUp extends PureComponent {
 	render() {
 		const self = this;
 		const { email, password, firstname, lastname, zip, gender, bday, error } = self.state;
+		const { signin } = self.props;
 
 		return (
 			<Fragment>
@@ -125,6 +128,7 @@ class SignUp extends PureComponent {
 					</div>
 					<div className="modal-form-actions">
 						<button className="button -sign-in" type="submit">Sign Up</button>
+						<button className="button -sign-in" type="button" onClick={signin}>Sign In</button>
 					</div>
 				</form>
 				<h5 className="section-head">
@@ -141,10 +145,14 @@ SignUp.propTypes = {
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 	suppressUserCheck: PropTypes.func.isRequired,
+	signin: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( { suppressUserCheck }, dispatch );
+	return bindActionCreators( {
+		suppressUserCheck,
+		signin: showSignInModal,
+	}, dispatch );
 }
 
 export default connect( null, mapDispatchToProps )( trapHOC()( SignUp ) );
