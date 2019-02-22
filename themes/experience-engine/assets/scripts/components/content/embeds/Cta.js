@@ -13,7 +13,6 @@ function Cta( { payload } ) {
 		buttonText,
 		buttonTextColor,
 		link,
-		picture,
 	} = payload;
 
 	let button = false;
@@ -39,10 +38,6 @@ function Cta( { payload } ) {
 
 	if ( image ) {
 		blockStyle.backgroundImage = `url(${image})`;
-	}
-
-	if ( picture && picture.large && picture.large.url ) {
-		blockStyle.backgroundImage = `url(${picture.large.url})`;
 	}
 
 	return (
