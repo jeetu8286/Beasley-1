@@ -26,6 +26,9 @@ function coreConfig( options = {} ) {
 		'node_modules/videojs-contrib-ads/dist/videojs-contrib-ads.min.js',
 		'node_modules/videojs-ima/dist/videojs.ima.css',
 		'node_modules/videojs-ima/dist/videojs.ima.min.js',
+
+		// misc
+		'node_modules/date-input-polyfill/date-input-polyfill.dist.js',
 	];
 
 	const eslintRule = {
