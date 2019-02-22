@@ -60,7 +60,7 @@
 
 				&::after {
 					background-color: var(--brand-primary);
-					bottom: -0.4rem;
+					bottom: 5px;
 					content: "";
 					height: 2px;
 					left: 0;
