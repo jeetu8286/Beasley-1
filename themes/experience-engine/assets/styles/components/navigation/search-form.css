@@ -32,3 +32,19 @@
 		width: 14px;
 	}
 }
+
+.-dark {
+	& .search-form {
+		& input[type="search"] {
+			border-bottom: 1px solid var(--global-dove-gray);
+		}
+	}
+}
+
+.-light {
+	& .search-form {
+		& input[type="search"] {
+			border-bottom: 1px solid var(--global-mercury);
+		}
+	}
+}

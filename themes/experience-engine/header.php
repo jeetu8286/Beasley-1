@@ -12,7 +12,7 @@
 		wp_head();
 
 	?></head>
-	<body <?php body_class(); ?>>
+	<body <?php body_class( get_option( 'ee_theme_version', '-dark' ) ); ?>>
 		<div class="skip-links">
 			<a href="#q">Skip to Search</a>
 			<a href="#live-player">Skip to Live Player</a>
