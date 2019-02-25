@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import LazyImage from '../../content/embeds/LazyImage';
-import SvgIcon from '../../../library/icons';
+import SvgIcon from '../../SvgIcon';
 
 class Feed extends PureComponent {
 
