@@ -9,7 +9,11 @@ function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 		case ACTION_SHOW_MODAL:
 			if ( action.modal !== DISCOVER_MODAL ) {
+				document.documentElement.classList.add( 'locked' );
 				document.body.classList.add( 'locked' );
+				document.addEventListener( 'ontouchmove', ( e ) => {
+					e.preventDefault();
+				} );
 			}
 
 			return {
@@ -18,7 +22,11 @@ function reducer( state = {}, action = {} ) {
 				payload: action.payload,
 			};
 		case ACTION_HIDE_MODAL:
+			document.documentElement.classList.remove( 'locked' );
 			document.body.classList.remove( 'locked' );
+			document.removeEventListener( 'ontouchmove', () => {
+				return true;
+			} );
 			return { ...DEFAULT_STATE };
 		default:
 			// do nothing
