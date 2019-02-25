@@ -107,14 +107,17 @@ class SignUp extends PureComponent {
 						<label className="modal-form-label" htmlFor="user-password">Password</label>
 						<input className="modal-form-field" type="password" id="user-password" name="password" value={password} onChange={self.onFieldChange} placeholder="Your password" />
 					</div>
-					<div className="modal-form-group">
-						<label className="modal-form-label" htmlFor="user-zip">Zip</label>
-						<input className="modal-form-field" type="text" id="user-zip" name="zip" value={zip} onChange={self.onFieldChange} placeholder="90210" />
+					<div className="modal-form-group-inline">
+						<div className="modal-form-group">
+							<label className="modal-form-label" htmlFor="user-zip">Zip</label>
+							<input className="modal-form-field" type="text" id="user-zip" name="zip" value={zip} onChange={self.onFieldChange} placeholder="90210" />
+						</div>
+						<div className="modal-form-group">
+							<label className="modal-form-label" htmlFor="user-bday">Birthday</label>
+							<input className="modal-form-field" type="date" id="user-bday" name="bday" value={bday} onChange={self.onFieldChange} placeholder="Enter your birthday" />
+						</div>
 					</div>
-					<div className="modal-form-group">
-						<label className="modal-form-label" htmlFor="user-bday">Birthday</label>
-						<input className="modal-form-field" type="date" id="user-bday" name="bday" value={bday} onChange={self.onFieldChange} placeholder="Enter your birthday" />
-					</div>
+					
 					<div className="modal-form-group">
 						<label className="modal-form-label" htmlFor="user-gender-male">Gender</label>
 						<div className="modal-form-radio">
