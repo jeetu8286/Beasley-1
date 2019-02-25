@@ -3,6 +3,7 @@ html {
 	&.locked {
 		position: fixed;
 		overflow: hidden;
+		-webkit-overflow-scrolling: auto;
 		height: 100%;
 	}
 }
