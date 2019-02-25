@@ -100,7 +100,6 @@
 			position: absolute;
 			width: 100%;
 			left: -1.111rem;
-			transform: scale(1.2);
 
 			@media (--min-medium-viewport) {
 				left: 0;
