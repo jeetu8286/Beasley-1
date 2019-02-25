@@ -1,6 +1,9 @@
-body {
+body,
+html {
 	&.locked {
+		position: relative;
 		overflow: hidden;
+		height: 100%;
 	}
 }
 
