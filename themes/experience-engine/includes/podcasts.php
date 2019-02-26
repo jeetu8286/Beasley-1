@@ -49,6 +49,21 @@ if ( ! function_exists( 'ee_get_episode_player' ) ) :
 			return ee_get_lazy_audio( current( $url ), $episode->post_title, ! empty( $ee_feed_now['title'] ) ? $ee_feed_now['title'] : '' );
 		}
 
+		if ( $episode->ID ) {
+			$audio = get_post_meta( $episode->ID, 'omny-audio-url', true );
+			if ( filter_var( $audio, FILTER_VALIDATE_URL ) ) {
+				$podcast = get_post( $episode->post_parent );
+				$author = '';
+				if ( is_a( $podcast, '\WP_Post' ) ) {
+					$author = $podcast->post_title;
+				} elseif ( ! empty( $ee_feed_now['title'] ) ) {
+					$author = $ee_feed_now['title'];
+				}
+
+				return ee_get_lazy_audio( $audio, $episode->post_title, $author );
+			}
+		}
+
 		if ( preg_match( '#\[(embed|audio).*?\].*?\[\/(embed|audio)\]#i', $episode->post_content, $matches ) && $matches[1] == $matches[2] ) {
 			$shortcode = $matches[0];
 		}
