@@ -219,6 +219,7 @@ endif;
 
 if ( ! function_exists( 'ee_get_post_by_link' ) ) :
 	function ee_get_post_by_link( $link ) {
+		static $types = null;
 		global $wp_rewrite;
 
 		$request = parse_url( $link );
@@ -231,6 +232,10 @@ if ( ! function_exists( 'ee_get_post_by_link' ) ) :
 		if ( $post_id === false ) {
 			$request_path = trim( $request['path'], '/' );
 
+			if ( is_null( $types ) ) {
+				$types = get_post_types( array( 'public' => true ) );
+			}
+
 			$rewrite = $wp_rewrite->wp_rewrite_rules();
 			foreach ( $rewrite as $match => $query ) {
 				if ( preg_match( "#^{$match}#", $request_path, $matches ) || preg_match( "#^{$match}#", urldecode( $request_path ), $matches ) ) {
@@ -238,7 +243,15 @@ if ( ! function_exists( 'ee_get_post_by_link' ) ) :
 					$query = addslashes( \WP_MatchesMapRegex::apply( $query, $matches ) );
 
 					parse_str( $query, $query_vars );
-					if ( ! emptY( $query_vars ) ) {
+					if ( ! empty( $query_vars ) ) {
+						foreach ( $types as $type ) {
+							if ( ! empty( $query_vars[ $type ] ) ) {
+								$query_vars['post_type'] = $type;
+								$query_vars['name'] = $query_vars[ $type ];
+								unset( $query_vars[ $type ] );
+							}
+						}
+						
 						$query = new \WP_Query();
 						$posts = $query->query( array_merge( $query_vars, array(
 							'ignore_sticky_posts' => true,
