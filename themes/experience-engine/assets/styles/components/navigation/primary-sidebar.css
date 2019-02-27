@@ -10,15 +10,27 @@
 		bottom: 74px;
 		display: block;
 		height: 100%;
-		max-width: 190px;
+		min-width: 190px;
 		min-height: calc(100vh - 74px); /*74px is the height of the live player.*/
 		padding: 1.375rem 1.1rem;
 		position: absolute;
 		top: 0;
 	}
 
+	& .primary-sidebar-navigation {
+		text-align: center;
+		width: 100%;
+
+		@media (--min-medium-viewport) {
+			max-width: calc(190px - 2.2rem);
+			position: fixed;
+			width: 100%;
+		}
+	}
+
 	& .logo {
 		margin: 0 auto;
+		position: relative;
 		z-index: 9;
 
 		@media (--min-medium-viewport) {
