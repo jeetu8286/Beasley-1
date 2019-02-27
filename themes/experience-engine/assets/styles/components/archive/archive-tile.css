@@ -36,7 +36,8 @@
 			}
 		}
 
-		& .contest-tile {
+		& .contest-tile,
+		& .event-tile {
 			& .meta {
 				flex: 0 1 auto;
 			}
@@ -239,12 +240,6 @@
 				font-size: 1.375rem;
 				font-weight: 600;
 				margin-bottom: 0;
-			}
-		}
-
-		& .type-tribe_events {
-			& .meta {
-				display: none;
 			}
 		}
 
