@@ -94,6 +94,10 @@
 			width: calc(82.6667vw - 2.2rem);
 		}
 
+		& .primary-sidebar-navigation {
+
+		}
+
 		& .site-menu-toggle {
 			& svg {
 				transform: rotate(45deg);
@@ -152,4 +156,7 @@
 			}
 		}
 	}
+}
+body.-lock {
+	overflow: hidden;
 }
