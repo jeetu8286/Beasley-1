@@ -83,12 +83,29 @@ class LazyImage extends PureComponent {
 
 	loadImage() {
 		const self = this;
+		const { autoheight } = self.props;
 
 		// load image and update state
 		const imageSrc = self.getImageUrl();
 		const imageLoader = new Image();
+
 		imageLoader.src = imageSrc;
 		imageLoader.onload = () => {
+			// adjust height of container if it is needed
+			if ( autoheight ) {
+				const { width, height } = imageLoader;
+				// only for landscape images
+				if ( width > height ) {
+					const { containerWidth, containerHeight } = self.getDimensions();
+					const containerAspect = containerHeight / containerWidth;
+					const imageAspect = height / width;
+					if ( containerAspect > imageAspect ) {
+						const { container } = self;
+						container.style.maxHeight = `${containerHeight * imageAspect / containerAspect}px`;
+					}
+				}
+			}
+
 			// check if component is still mounted
 			if ( self.boxRef.current ) {
 				self.setState( { image: imageSrc } );
@@ -130,11 +147,13 @@ LazyImage.propTypes = {
 	alt: PropTypes.string.isRequired,
 	tracking: PropTypes.string,
 	attribution: PropTypes.string,
+	autoheight: PropTypes.string,
 };
 
 LazyImage.defaultProps = {
 	tracking: '',
 	attribution: '',
+	autoheight: '',
 };
 
 LazyImage.contextType = IntersectionObserverContext;

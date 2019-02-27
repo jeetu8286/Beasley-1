@@ -149,7 +149,7 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
 			...processEmbeds( container, 'audio', '.lazy-audio', getDatasetParams( 'src', 'title', 'author' ) ),
 			...processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
-			...processEmbeds( container, 'lazyimage', '.lazy-image', getDatasetParams( 'src', 'width', 'height', 'alt', 'tracking', 'attribution' ) ),
+			...processEmbeds( container, 'lazyimage', '.lazy-image', getDatasetParams( 'src', 'width', 'height', 'alt', 'tracking', 'attribution', 'autoheight' ) ),
 			...processEmbeds( container, 'share', '.share-buttons', getDatasetParams( 'url', 'title' ) ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
 			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),

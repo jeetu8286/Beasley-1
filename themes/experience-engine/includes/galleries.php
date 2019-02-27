@@ -85,24 +85,20 @@ if ( ! function_exists( 'ee_get_gallery_image_html' ) ) :
 		}
 
 		$image_full_url = $urls[ $gallery->ID ] . 'view/' . urlencode( $image->post_name ) . '/';
-		$tracking = function( $html ) use ( $image_full_url ) {
-			return str_replace( '<div ', '<div data-tracking="' . esc_attr( $image_full_url ) . '" ', $html );
+		$tracking_url = ! $is_first ? $image_full_url : '';
+		$update_lazy_image = function( $html ) use ( $tracking_url ) {
+			return str_replace( '<div ', '<div data-autoheight="1" data-tracking="' . esc_attr( $image_full_url ) . '" ', $html );
 		};
 
-		if ( ! $is_first ) {
-			add_filter( '_ee_the_lazy_image', $tracking );
-			$image_html = ee_the_lazy_image( $image->ID, false );
-			remove_filter( '_ee_the_lazy_image', $tracking );
-		} else {
-			$image_html = ee_the_lazy_image( $image->ID, false );
-		}
+		add_filter( '_ee_the_lazy_image', $update_lazy_image );
+		$image_html = ee_the_lazy_image( $image->ID, false );
+		remove_filter( '_ee_the_lazy_image', $update_lazy_image );
 
 		if ( empty( $image_html ) ) {
 			return false;
 		}
 
 		$title = get_the_title( $image );
-		$attribution = trim( get_post_meta( $image->ID, 'gmr_image_attribution', true ) );
 
 		ob_start();
 
@@ -110,11 +106,6 @@ if ( ! function_exists( 'ee_get_gallery_image_html' ) ) :
 
 		echo '<div class="gallery-meta">';
 			echo '<div class="wrapper">';
-
-				if ( ! empty( $attribution ) ) :
-					echo '<small class="attribution">', esc_html( $attribution ), '</small>';
-				endif;
-
 				echo '<div class="caption">';
 					echo '<h3>', esc_html( $title ), '</h3>';
 
