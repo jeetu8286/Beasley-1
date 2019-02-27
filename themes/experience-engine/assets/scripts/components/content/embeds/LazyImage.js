@@ -83,12 +83,29 @@ class LazyImage extends PureComponent {
 
 	loadImage() {
 		const self = this;
+		const { autoheight } = self.props;
 
 		// load image and update state
 		const imageSrc = self.getImageUrl();
 		const imageLoader = new Image();
+
 		imageLoader.src = imageSrc;
 		imageLoader.onload = () => {
+			// adjust height of container if it is needed
+			if ( autoheight ) {
+				const { width, height } = imageLoader;
+				// only for landscape images
+				if ( width > height ) {
+					const { containerWidth, containerHeight } = self.getDimensions();
+					const containerAspect = containerHeight / containerWidth;
+					const imageAspect = height / width;
+					if ( containerAspect > imageAspect ) {
+						const { container } = self;
+						container.style.maxHeight = `${containerHeight * imageAspect / containerAspect}px`;
+					}
+				}
+			}
+
 			// check if component is still mounted
 			if ( self.boxRef.current ) {
 				self.setState( { image: imageSrc } );
@@ -99,20 +116,23 @@ class LazyImage extends PureComponent {
 	render() {
 		const self = this;
 		const { image } = self.state;
-		const { alt } = self.props;
+		const { alt, attribution } = self.props;
 
 		const styles = {};
 
-		let loader = false;
+		let child = false;
 		if ( image ) {
 			styles.backgroundImage = `url(${image})`;
+			if ( attribution ) {
+				child = <div className="lazy-image-attribution">{attribution}</div>;
+			}
 		} else {
-			loader = <div className="loading" />;
+			child = <div className="loading" />;
 		}
 
 		return (
 			<div className="lazy-image" ref={self.boxRef} style={styles} role="img" aria-label={alt}>
-				{loader}
+				{child}
 			</div>
 		);
 	}
@@ -126,10 +146,14 @@ LazyImage.propTypes = {
 	height: PropTypes.string.isRequired,
 	alt: PropTypes.string.isRequired,
 	tracking: PropTypes.string,
+	attribution: PropTypes.string,
+	autoheight: PropTypes.string,
 };
 
 LazyImage.defaultProps = {
 	tracking: '',
+	attribution: '',
+	autoheight: '',
 };
 
 LazyImage.contextType = IntersectionObserverContext;

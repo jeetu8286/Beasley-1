@@ -48,6 +48,7 @@
 
 @import 'components/share/share';
 
+@import "components/gallery/archive";
 @import "components/gallery/listicle";
 
 @import "components/contest/contest-tile";

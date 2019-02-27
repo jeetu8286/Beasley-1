@@ -29,5 +29,6 @@
 
 		?><div class="container">
 			<main id="content" class="content">
+				<?php do_action( 'show_breaking_news_banner' ); ?>
 				<?php get_template_part( 'partials/ads/leaderboard' ); ?>
-					<div id="inner-content">
+				<div id="inner-content">
