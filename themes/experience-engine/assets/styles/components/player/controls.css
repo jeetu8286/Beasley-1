@@ -295,6 +295,12 @@
 	justify-content: center;
 	width: 64px;
 
+	&:focus,
+	&:hover {
+		outline: 0;
+		opacity: 0.8;
+	}
+
 	& svg {
 		fill: var(--brand-tertiary);
 		max-height: 31px;
