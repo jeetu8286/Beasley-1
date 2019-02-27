@@ -119,7 +119,8 @@ class PrimaryNav extends PureComponent {
 
 		const container = navRoot.parentNode;
 		container.classList.toggle( 'is-active' );
-		container.parentNode.classList.toggle( 'menu-is-active' );
+		container.parentNode.parentNode.classList.toggle( 'menu-is-active' );
+		document.body.classList.toggle( '-lock' );
 		container.setAttribute( 'aria-hidden', 'false' === container.getAttribute( 'aria-hidden' ) );
 	}
 
