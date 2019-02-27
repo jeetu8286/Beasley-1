@@ -79,7 +79,7 @@
     margin-bottom: 3rem;
 
     & .post-tag-label {
-        color: var(--global-theme-primary);
+        color: var(--global-theme-font-primary);
         font-weight: 600;
         font-size: 1rem;
         flex: 0 1 auto;
