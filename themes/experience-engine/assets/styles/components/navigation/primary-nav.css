@@ -18,7 +18,7 @@
 		font-size: 0.875rem;
 		font-weight: 500;
 		outline: none;
-		padding: 0.687rem 1.1rem;
+		padding: 0.5rem 1.1rem;
 		text-decoration: none;
 		text-align: left;
 		width: 100%;
@@ -46,7 +46,7 @@
 			cursor: pointer;
 			display: block;
 			outline: none;
-			padding: 1.15rem;
+			padding: 0.8rem 1.1rem;;
 			position: absolute;
 			right: 0;
 			top: 0;
