@@ -19,6 +19,7 @@
 		}
 
 		&:focus {
+			border-bottom: 1px solid var(--brand-secondary);
 			outline: 0;
 
 			&::-webkit-input-placeholder {
@@ -38,21 +39,5 @@
 		top: 0;
 		transform: translateY(50%);
 		width: 14px;
-	}
-}
-
-.-dark {
-	& .search-form {
-		& input[type="search"] {
-			border-bottom: 1px solid var(--global-dove-gray);
-		}
-	}
-}
-
-.-light {
-	& .search-form {
-		& input[type="search"] {
-			border-bottom: 1px solid var(--global-mercury);
-		}
 	}
 }
