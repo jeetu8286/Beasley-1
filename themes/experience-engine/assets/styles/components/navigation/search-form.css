@@ -9,13 +9,21 @@
 		color: var(--global-theme-font-tertiary);
 		font-size: .7778rem;
 		font-weight: 500;
-		padding: .6667rem 0 .6667rem 1.2778rem;
+		padding: .6667rem 1rem .6667rem 1.6rem;
 		width: 100%;
 
 		&::-webkit-input-placeholder {
 			color: var(--global-silver-chalice);
 			font-size: 0.875rem;
 			font-weight: 500;
+		}
+
+		&:focus {
+			outline: 0;
+
+			&::-webkit-input-placeholder {
+				color: var(--global-theme-font-tertiary);
+			}
 		}
 	}
 
@@ -24,7 +32,7 @@
 		border: none;
 		color: var(--brand-secondary);
 		height: 14px;
-		left: 0;
+		left: 2px;
 		padding: 0;
 		position: absolute;
 		top: 0;
