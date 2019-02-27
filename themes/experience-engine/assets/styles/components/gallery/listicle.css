@@ -33,6 +33,10 @@
 		position: absolute;
 		top: 0;
 		width: 100%;
+
+		& .lazy-image-attribution {
+			display: block;
+		}
 	}
 
 	& h4,

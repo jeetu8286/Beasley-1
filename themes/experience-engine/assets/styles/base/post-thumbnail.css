@@ -8,6 +8,12 @@
 		width: 100%;
 	}
 
+	&.featured-media {
+		& .lazy-image-attribution {
+			display: block;
+		}
+	}
+
 	& a,
 	& .placeholder-lazyimage,
 	& .lazy-image {
