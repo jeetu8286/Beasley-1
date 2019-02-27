@@ -99,20 +99,23 @@ class LazyImage extends PureComponent {
 	render() {
 		const self = this;
 		const { image } = self.state;
-		const { alt } = self.props;
+		const { alt, attribution } = self.props;
 
 		const styles = {};
 
-		let loader = false;
+		let child = false;
 		if ( image ) {
 			styles.backgroundImage = `url(${image})`;
+			if ( attribution ) {
+				child = <div className="lazy-image-attribution">{attribution}</div>;
+			}
 		} else {
-			loader = <div className="loading" />;
+			child = <div className="loading" />;
 		}
 
 		return (
 			<div className="lazy-image" ref={self.boxRef} style={styles} role="img" aria-label={alt}>
-				{loader}
+				{child}
 			</div>
 		);
 	}
@@ -126,10 +129,12 @@ LazyImage.propTypes = {
 	height: PropTypes.string.isRequired,
 	alt: PropTypes.string.isRequired,
 	tracking: PropTypes.string,
+	attribution: PropTypes.string,
 };
 
 LazyImage.defaultProps = {
 	tracking: '',
+	attribution: '',
 };
 
 LazyImage.contextType = IntersectionObserverContext;

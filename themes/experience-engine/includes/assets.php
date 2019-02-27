@@ -219,17 +219,18 @@ if ( ! function_exists( 'ee_script_loader' ) ) :
 endif;
 
 if ( ! function_exists( '_ee_the_lazy_image' ) ) :
-	function _ee_the_lazy_image( $url, $width, $height, $alt = '' ) {
+	function _ee_the_lazy_image( $url, $width, $height, $alt = '', $attribution = '' ) {
 		$is_jacapps = ee_is_jacapps();
 
 		$image = sprintf(
 			$is_jacapps
-				? '<img src="%s" width="%s" height="%s">'
-				: '<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s" data-alt="%s"></div>',
+				? '<img src="%s" width="%s" height="%s" alt="%s"><div>%s</dvi>'
+				: '<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s" data-alt="%s" data-attribution="%s"></div>',
 			esc_attr( $url ),
 			esc_attr( $width ),
 			esc_attr( $height ),
-			esc_attr( $alt )
+			esc_attr( $alt ),
+			esc_attr( $attribution )
 		);
 
 		$image = apply_filters( '_ee_the_lazy_image', $image, $is_jacapps, $url, $width, $height, $alt );
@@ -243,17 +244,18 @@ if ( ! function_exists( 'ee_the_lazy_image' ) ) :
 		$html = '';
 		if ( ! empty( $image_id ) ) {
 			$alt = trim( strip_tags( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) ) );
+			$attribution = get_post_meta( $image_id, 'gmr_image_attribution', true );
 
 			if ( ee_is_jacapps() ) {
 				$width = 800;
 				$height = 500;
 				$url = bbgi_get_image_url( $image_id, $width, $height );
 
-				$html = _ee_the_lazy_image( $url, $width, $height, $alt );
+				$html = _ee_the_lazy_image( $url, $width, $height, $alt, $attribution );
 			} else {
 				$img = wp_get_attachment_image_src( $image_id, 'original' );
 				if ( ! empty( $img ) ) {
-					$html = _ee_the_lazy_image( $img[0], $img[1], $img[2], $alt );
+					$html = _ee_the_lazy_image( $img[0], $img[1], $img[2], $alt, $attribution );
 				}
 			}
 		}
