@@ -26,6 +26,10 @@
 			position: fixed;
 			width: 100%;
 		}
+
+		@media (--min-large-viewport) {
+			text-align: left;
+		}
 	}
 
 	& .logo {
@@ -92,10 +96,6 @@
 			justify-content: center;
 			margin: 0;
 			width: calc(82.6667vw - 2.2rem);
-		}
-
-		& .primary-sidebar-navigation {
-
 		}
 
 		& .site-menu-toggle {
