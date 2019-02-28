@@ -95,18 +95,34 @@
 		}
 
 		& .author-meta-date {
-			color: var(--global-theme-font-secondary);
+			color: rgba(68, 68, 68, 0.6);
 			font-weight: 300;
 			padding-left: 1.5rem;
 
 			&:before {
-				background: var(--global-theme-font-secondary);
+				background: var(--global-mercury);
 				content: '';
 				display: none;
 				height: 12px;
 				margin-right: 1.5rem;
 				opacity: 0.7;
 				width: 2px;
+
+				@media(--min-medium-viewport) {
+					display: inline-block;
+				}
+			}
+		}
+
+		& .share-wrap-icons {
+			align-items: center;
+    		display: flex;
+
+			& .label {
+				color: var(--global-theme-font-tertiary);
+				display: none;
+				font-size: 1rem;
+				margin-right: 1rem;
 
 				@media(--min-medium-viewport) {
 					display: inline-block;
