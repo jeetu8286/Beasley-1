@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { searchKeywords } from '../../../library/experience-engine';
 import { modifyUserFeeds, deleteUserFeed } from '../../../redux/actions/auth';
+import { showSignInModal } from '../../../redux/actions/modal';
 
 class AddToFavorites extends PureComponent {
 
@@ -56,6 +57,12 @@ class AddToFavorites extends PureComponent {
 	handleAddClick() {
 		const self = this;
 		const feedsArray = [];
+		const { signedIn, showSignIn } = self.props;
+
+		if ( ! signedIn ) {
+			showSignIn();
+			return;
+		}
 
 		self.props.selectedFeeds.forEach( ( item ) => {
 			feedsArray.push( { 
@@ -132,9 +139,11 @@ AddToFavorites.propTypes = {
 	classes: PropTypes.string,
 	addLabel: PropTypes.string,
 	removeLabel: PropTypes.string,
+	signedIn: PropTypes.bool.isRequired,
 	showIcon: PropTypes.bool,
 	modifyUserFeeds: PropTypes.func.isRequired,
 	deleteUserFeed: PropTypes.func.isRequired,
+	showSignIn: PropTypes.func.isRequired,
 };
 
 AddToFavorites.defaultProps = {
@@ -147,13 +156,17 @@ AddToFavorites.defaultProps = {
 };
 
 function mapStateToProps( { auth } ) {
-	return { selectedFeeds: auth.feeds };
+	return {
+		signedIn: !!auth.user,
+		selectedFeeds: auth.feeds,
+	};
 }
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
 		modifyUserFeeds,
 		deleteUserFeed,
+		showSignIn: showSignInModal,
 	}, dispatch );
 }
 
