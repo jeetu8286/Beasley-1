@@ -109,7 +109,7 @@
 }
 
 .post-thumbnail-caption {
-	color: var(--global-mercury);
+	color: var(--global-font-secondary);
 	font-size: .875rem;
 	margin: .5rem 0 0 0;
 }
