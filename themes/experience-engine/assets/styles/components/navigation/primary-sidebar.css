@@ -6,7 +6,7 @@
 	overflow: auto;
 	padding: .6rem 1.1rem;
 
-	@media (--min-medium-viewport) {
+	@media (--min-large-viewport) {
 		bottom: 74px;
 		display: block;
 		height: 100%;
@@ -21,7 +21,7 @@
 		margin: 0 auto;
 		z-index: 9;
 
-		@media (--min-medium-viewport) {
+		@media (--min-large-viewport) {
 			margin: 0;
 		}
 
@@ -29,7 +29,7 @@
 			max-height: 60px;
 			width: auto;
 
-			@media (--min-medium-viewport) {
+			@media (--min-large-viewport) {
 				max-height: none;
 			}
 		}
@@ -49,6 +49,10 @@
 		width: 100%;
 
 		@media (--min-medium-viewport) {
+			max-width: 33.3333vw;
+		}
+
+		@media (--min-large-viewport) {
 			box-shadow: none;
 			display: block;
 			height: auto;
@@ -80,6 +84,10 @@
 			justify-content: center;
 			margin: 0;
 			width: calc(82.6667vw - 2.2rem);
+
+			@media(--min-medium-viewport) {
+				width: calc(33.3333vw - 2.2rem);
+			}
 		}
 
 		& .site-menu-toggle {
@@ -107,7 +115,7 @@
 	text-decoration: none;
 	z-index: 10;
 
-	@media (--min-medium-viewport) {
+	@media (--min-large-viewport) {
 		display: none;
 	}
 
