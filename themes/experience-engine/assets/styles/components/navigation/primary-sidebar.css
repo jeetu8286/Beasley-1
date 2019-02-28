@@ -37,10 +37,6 @@
 		position: relative;
 		z-index: 9;
 
-		@media (--min-medium-viewport) {
-			margin: -1rem 0;
-		}
-
 		& img {
 			max-height: 60px;
 			width: auto;
