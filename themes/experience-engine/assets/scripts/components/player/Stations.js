@@ -67,19 +67,13 @@ class Stations extends Component {
 		const self = this;
 		const { stream } = self.props;
 
-		/* eslint-disable camelcase */
-		const { title, stream_dial_numbers } = stream;
-		const dialNumbers = stream_dial_numbers;
-		/* eslint-enable */
-
 		return (
 			<Fragment>
 				<div className="controls-station control-border">
 					<button onClick={self.onToggle} aria-label="Open Stations Selector">
 						{ stream ? (
 							<span>
-								<span className="controls-station-title">{ title }</span>
-								{ dialNumbers }
+								<span className="controls-station-title">Saved Stations</span>
 							</span>
 						) : (
 							'Listen Live'
@@ -90,8 +84,9 @@ class Stations extends Component {
 						</svg>
 
 					</button>
+					{self.renderStations()}
 				</div>
-				{self.renderStations()}
+				
 			</Fragment>
 		);
 	}

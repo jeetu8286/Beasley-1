@@ -1,10 +1,17 @@
 .controls {
-	background-color: var(--global-theme-secondary);
+	background-color: #efefef;
 	box-shadow: inset 0px -2px 2px rgba(0, 0, 0, 0.2),
 				inset 0px 2px 0px rgba(255, 255, 255, 0.25);
 	display: flex;
-	min-height: 84px;
+	min-height: 75px;
 	position: relative;
+
+	& button {
+		&:focus,
+		&:hover {
+			outline: 0;
+		}
+	}
 
 	& .control-border {
 		border-left: 1px solid var(--global-mercury);
@@ -13,6 +20,7 @@
 	& .control-section {
 		align-items: center;
 		display: flex;
+		justify-content: flex-end;
 		position: relative;
 
 		@media(--min-medium-viewport) {
@@ -52,6 +60,10 @@
 			width: 100%;
 		}
 
+		& .audio-sponsor--text {
+			display: block !important;
+		}
+
 		&.-centered {
 			@media(--min-medium-viewport) {
 				justify-content: center;
@@ -61,7 +73,7 @@
 
 	& .controls-info {
 		color: var(--global-theme-font-primary);
-		font-size: 1rem;
+		font-size: 0.875rem;
 		width: 100%;
 
 		& strong {
@@ -97,6 +109,10 @@
 		max-width: 89px;
 		position: relative;
 		width: 100%;
+
+		& svg path {
+			fill: var(--brand-primary);
+		}
 	}
 
 	& .controls-sponsor {
@@ -268,8 +284,7 @@
 	& .controls-station {
 		display: none;
 		height: 100%;
-		max-width: 261px;
-		padding: 0 1.4375rem;
+		max-width: 180px;
 		position: relative;
 		width: 100%;
 
@@ -280,7 +295,7 @@
 		& button {
 			background: transparent;
 			color: var(--global-theme-font-primary);
-			font-size: 1rem;
+			font-size: 0.875rem;
 			font-weight: 600;
 			transition: color 300ms ease-in-out;
 			text-transform: uppercase;
@@ -292,19 +307,8 @@
 
 			& svg {
 				margin-left: .5rem;
-				fill: var(--brand-secondary);
-				stroke: var(--brand-secondary);
-			}
-
-			& .controls-station-title {
-
-				&:after {
-					content: '/';
-					color: var(--global-theme-font-tertiary);
-					display: inline;
-					font-weight: 600;
-					padding: 0 .5rem;
-				}
+				fill: var(--brand-primary);
+				stroke: var(--brand-primary);
 			}
 		}
 	}
@@ -359,9 +363,9 @@
 	border: 1px solid var(--global-white);
 	cursor: pointer;
 	display: flex;
-	height: 64px;
+	height: 54px;
 	justify-content: center;
-	width: 64px;
+	width: 54px;
 
 	&:focus,
 	&:hover {
