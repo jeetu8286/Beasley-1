@@ -1,4 +1,4 @@
-<div id="post-<?php the_ID(); ?>" <?php post_class( 'episode-tile' ); ?>>
+<div data-post-id="post-<?php the_ID(); ?>" <?php post_class( 'episode-tile' ); ?>>
 	<?php if ( ! ee_is_jacapps() ) : ?>
 		<div class="post-thumbnail">
 			<?php ee_the_lazy_thumbnail(); ?>

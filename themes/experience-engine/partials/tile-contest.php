@@ -1,4 +1,4 @@
-<div id="post-<?php the_ID(); ?>" <?php post_class( array( 'type-contest', 'contest-tile' ) ); ?>>
+<div data-post-id="post-<?php the_ID(); ?>" <?php post_class( array( 'type-contest', 'contest-tile' ) ); ?>>
 	<?php get_template_part( 'partials/tile/thumbnail' ); ?>
 
 	<div class="meta">
