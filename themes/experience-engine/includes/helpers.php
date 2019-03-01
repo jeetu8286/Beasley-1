@@ -2,7 +2,6 @@
 
 add_filter( 'next_posts_link_attributes', 'ee_load_more_attributes' );
 add_filter( 'get_the_archive_title', 'ee_update_archive_title' );
-add_filter('script_loader_tag', 'ee_remove_type_atts', 10, 2);
 
 if ( ! function_exists( 'ee_get_date' ) ) :
 	function ee_get_date( $timestamp, $gmt = 0 ) {
@@ -209,11 +208,5 @@ endif;
 if ( ! function_exists( 'ee_add_to_favorites' ) ) :
 	function ee_add_to_favorites( $keyword ) {
 		echo '<div class="add-to-favorites" data-keyword="', esc_attr( $keyword ), '"></div>';
-	}
-endif;
-
-if( ! function_exists('ee_remove_type_atts') ) :
-	function ee_remove_type_atts( $tag, $handle ) {
-		return preg_replace( "/type=['\"]text\/(javascript|css)['\"]/", '', $tag );
 	}
 endif;
