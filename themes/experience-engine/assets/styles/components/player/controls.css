@@ -71,6 +71,17 @@
 		}
 	}
 
+	& .controls-progress {
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+
+		& input[type="range"] {
+			width: 100%;
+		}
+	}
+
 	& .controls-info {
 		color: var(--global-theme-font-primary);
 		font-size: 0.875rem;

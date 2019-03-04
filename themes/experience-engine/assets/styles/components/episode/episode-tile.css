@@ -37,7 +37,7 @@
 	& .status {
 
 		& svg {
-			fill: var(--brand-primary);
+			fill: var(--global-white);
 		}
 	}
 
