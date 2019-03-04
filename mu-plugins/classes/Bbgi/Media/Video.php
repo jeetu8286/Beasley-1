@@ -1,8 +1,8 @@
 <?php
 
-namespace Beasley\Media;
+namespace Bbgi\Media;
 
-class Video extends \Beasley\Module {
+class Video extends \Bbgi\Module {
 
 	protected static $_accounts = array(
 		'bbgi-philadelphia' => '27204544',
@@ -25,8 +25,8 @@ class Video extends \Beasley\Module {
 	 * @access public
 	 */
 	public function register() {
-		add_action( 'init', $this( 'setup_embeds' ) );
-		add_action( 'init', $this( 'setup_shortcodes' ) );
+		add_action( 'wp_loaded', $this( 'setup_embeds' ) );
+		add_action( 'wp_loaded', $this( 'setup_shortcodes' ) );
 		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 	}
 
@@ -149,10 +149,10 @@ class Video extends \Beasley\Module {
 			return '';
 		}
 
-		$key = get_option( 'livestream_secret_key' );
-		return ! empty( $key )
-			? $this->_get_videojs_embed( $key, $account_id, $event_id, $video_id )
-			: $this->_get_iframe_embed( $account_id, $event_id, $video_id );
+		// $key = get_option( 'livestream_secret_key' );
+		// return ! empty( $key )
+		// 	? $this->_get_videojs_embed( $key, $account_id, $event_id, $video_id )
+		return $this->_get_iframe_embed( $account_id, $event_id, $video_id );
 	}
 
 	/**
