@@ -424,3 +424,11 @@
 		transform: translateX(10%);
 	}
 }
+
+.LIVE_PLAYING .pause-btn {
+	& svg {
+		width: 13px;
+		height: 23px;
+		transform: none;
+	}
+}
