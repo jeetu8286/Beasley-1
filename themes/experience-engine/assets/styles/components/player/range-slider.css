@@ -1,4 +1,4 @@
-.controls-volume {
+.ee-range-input {
 
   & input[type=range] {
     appearance: none;
