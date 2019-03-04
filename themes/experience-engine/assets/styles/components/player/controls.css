@@ -87,7 +87,6 @@
 	& .controls-info {
 		color: var(--global-theme-font-primary);
 		font-size: 0.875rem;
-		padding: 0 1rem;
 		width: 100%;
 
 		& strong {
