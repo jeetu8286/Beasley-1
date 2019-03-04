@@ -8,7 +8,6 @@ import SecondStreetEmbed from './embeds/SecondStreet';
 import LazyImage from './embeds/LazyImage';
 import Share from './embeds/Share';
 import LoadMore from './embeds/LoadMore';
-import Video from './embeds/Video';
 import EmbedVideo from './embeds/EmbedVideo';
 import Dfp from './embeds/Dfp';
 import Cta from './embeds/Cta';
@@ -24,7 +23,6 @@ const mapping = {
 	lazyimage: LazyImage,
 	share: Share,
 	loadmore: LoadMore,
-	video: Video,
 	embedvideo: EmbedVideo,
 	dfp: Dfp,
 	cta: Cta,
