@@ -12,7 +12,6 @@ class Dfp extends PureComponent {
 
 		self.slot = false;
 		self.interval = false;
-		self.displayed = false;
 
 		self.onVisibilityChange = self.handleVisibilityChange.bind( self );
 		self.refreshSlot = self.refreshSlot.bind( self );
@@ -127,10 +126,10 @@ class Dfp extends PureComponent {
 	}
 
 	refreshSlot() {
-		const { slot, displayd } = this;
+		const { slot } = this;
 		const { googletag } = window;
 
-		if ( slot && displayd ) {
+		if ( slot ) {
 			googletag.pubads().refresh( [slot] );
 		}
 	}
