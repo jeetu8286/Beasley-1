@@ -72,7 +72,8 @@ class Volume extends PureComponent {
 				<div className="ee-range-input">
 					<div className={`ee-range-input-slider ${showVolume ? '-volume-visible' : ''}`} aria-hidden={ !showVolume }>
 						<label className="screen-reader-text" htmlFor="audio-volume">Volume:</label>
-						<input type="range" id="audio-volume" min="0" max="100" step="1" value={volume} onChange={( e ) => setVolume( e.target.value )} />
+						<input type="range" id="audio-volume" min="0" max="82" step="1" value={volume} onChange={( e ) => setVolume( e.target.value )} />
+						<p className="pre-bar" style={{ width: `${volume}px`}} />
 					</div>
 				</div>
 			</div>

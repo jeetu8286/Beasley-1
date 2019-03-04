@@ -5,6 +5,7 @@
 	display: flex;
 	min-height: 75px;
 	position: relative;
+	padding-left: 1rem;
 
 	& button {
 		&:focus,
@@ -40,12 +41,13 @@
 			@media(--max-medium-viewport) {
 				padding-left: 1rem;
 				order: 1;
+				width: 100%;
 			}
 		}
 
 		&:last-child {
 			@media(--max-medium-viewport) {
-				max-width: 50px;
+				max-width: 60px;
 				order: 3;
 				width: 100%;
 			}
@@ -74,7 +76,7 @@
 	& .controls-progress {
 		left: 0;
 		position: absolute;
-		top: -17px;
+		top: 0;
 		width: 100%;
 		z-index: 9;
 
@@ -314,7 +316,7 @@
 			position: absolute;
 			transition: visibility 250ms ease-in-out,
 						opacity 250ms ease-in-out;
-			top: -0.5rem;
+			top: 8px;
 			visibility: hidden;
 			width: 82px;
 

@@ -46,15 +46,16 @@ class Progress extends PureComponent {
 		const self = this;
 		const { time, duration } = self.props;
 
-		if ( 0 >= duration ) {
+		/* if ( 0 >= duration ) {
 			return false;
-		}
+		} */
 
 		return (
 			<div className="controls-progress">
 				<span className="screen-reader-text">{Progress.format( time )}</span>
 				<div className="ee-range-input -progress">
 					<input type="range" min="0" max={duration} value={time} onChange={self.onSeek} />
+					<p className="pre-bar" style={{ width: `${time}px`}} />
 				</div>
 				<span className="screen-reader-text">{Progress.format( duration )}</span>
 			</div>
