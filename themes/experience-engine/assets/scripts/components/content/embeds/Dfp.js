@@ -80,12 +80,25 @@ class Dfp extends PureComponent {
 				.addService( googletag.pubads() );
 
 			let sizeMapping = false;
-			if ( 'top-leaderboard' === unitName || 'in-list' === unitName ) {
+			if ( 'top-leaderboard' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
 					.addSize( [970, 200], ['fluid', [970, 250], [970, 90], [728, 90]] )
 					.addSize( [729, 200], ['fluid', [728, 90]] )
-					.addSize( [0, 0], ['fluid', [320, 100], [320, 50]] )
+					.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
 					.build();
+			} else if ( 'in-list' === unitName ) {
+				if ( document.body.classList.contains( 'single' ) ) {
+					sizeMapping = googletag.sizeMapping()
+						.addSize( [729, 200], ['fluid', [728, 90]] )
+						.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
+						.build();
+				} else {
+					sizeMapping = googletag.sizeMapping()
+						.addSize( [970, 200], ['fluid', [970, 250], [970, 90], [728, 90]] )
+						.addSize( [729, 200], ['fluid', [728, 90]] )
+						.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
+						.build();
+				}
 			} else if ( 'bottom-leaderboard' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
 					.addSize( [970, 200], [[970, 250], [970, 90], [728, 90]] )

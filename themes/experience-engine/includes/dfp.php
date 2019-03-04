@@ -13,7 +13,7 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 		$ee = \Bbgi\Module::get( 'experience-engine' );
 
 		$fluid = array( 'fluid' );
-		$advanced = array( array( 970, 250 ), array( 970, 90 ), array( 728, 90 ), array( 320, 100 ), array( 320, 50 ) );
+		$advanced = array( array( 970, 250 ), array( 970, 90 ), array( 728, 90 ), array( 300, 250 ), array( 320, 100 ), array( 320, 50 ) );
 		$advanced_with_fluid = array_merge( $fluid, $advanced );
 
 		$sizes = array(
