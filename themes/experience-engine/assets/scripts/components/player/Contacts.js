@@ -9,12 +9,40 @@ class Contacts extends PureComponent {
 
 		const self = this;
 		self.state = { isOpen: false };
+		self.contactModalRef = React.createRef();
 
 		self.onToggle = self.handleToggleClick.bind( self );
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
+		self.handleClickOutside = self.handleClickOutside.bind( self );
+	}
+
+	componentDidMount() {
+		document.addEventListener( 'mousedown', this.handleClickOutside, false );
+		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener( 'mousedown', this.handleClickOutside, false );
+		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
 	handleToggleClick() {
 		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
+	}
+
+	handleClickOutside( e ) {
+		const self = this;
+		const { current: ref } = self.contactModalRef;
+
+		if ( !ref || !ref.contains( e.target ) ) {
+			self.setState( { isOpen: false } );
+		}
+	}
+
+	handleEscapeKeyDown( e ) {
+		if ( 27 === e.keyCode ) {
+			this.setState( { isOpen: false } );
+		}
 	}
 
 	render() {
@@ -42,7 +70,7 @@ class Contacts extends PureComponent {
 		}
 
 		return (
-			<div className="controls-contact control-border">
+			<div ref={self.contactModalRef} className="controls-contact control-border">
 				{contacts}
 				<button onClick={self.onToggle}>
 					<svg width="22" height="22" viewBox="0 0 22 22" fill="none" role="img" aria-labelledby="contact-icon-title contact-icon-desc" xmlns="http://www.w3.org/2000/svg">

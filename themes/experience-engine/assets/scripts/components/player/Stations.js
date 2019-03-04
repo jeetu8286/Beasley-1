@@ -12,8 +12,21 @@ class Stations extends Component {
 
 		const self = this;
 		self.state = { isOpen: false };
+		self.stationModalRef = React.createRef();
 
 		self.onToggle = self.handleToggleClick.bind( self );
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
+		self.handleClickOutside = self.handleClickOutside.bind( self );
+	}
+
+	componentDidMount() {
+		document.addEventListener( 'mousedown', this.handleClickOutside, false );
+		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener( 'mousedown', this.handleClickOutside, false );
+		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
 	handlePlayClick( station ) {
@@ -24,6 +37,21 @@ class Stations extends Component {
 
 	handleToggleClick() {
 		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
+	}
+
+	handleClickOutside( e ) {
+		const self = this;
+		const { current: ref } = self.stationModalRef;
+
+		if ( !ref || !ref.contains( e.target ) ) {
+			self.setState( { isOpen: false } );
+		}
+	}
+
+	handleEscapeKeyDown( e ) {
+		if ( 27 === e.keyCode ) {
+			this.setState( { isOpen: false } );
+		}
 	}
 
 	renderStations() {
@@ -69,7 +97,7 @@ class Stations extends Component {
 
 		return (
 			<Fragment>
-				<div className="controls-station control-border">
+				<div ref={self.stationModalRef} className="controls-station control-border">
 					<button onClick={self.onToggle} aria-label="Open Stations Selector">
 						{ stream ? (
 							<span>
