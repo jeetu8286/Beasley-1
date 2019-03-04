@@ -81,4 +81,14 @@
     }
 
   }
+
+  &.-progress {
+    & input[type=range] {
+      &::-webkit-slider-thumb {
+        border-radius: 0;
+        height: 7px;
+        width: 5px;
+      }
+    }
+  }
 }
