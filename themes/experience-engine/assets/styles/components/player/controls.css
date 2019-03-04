@@ -146,7 +146,20 @@
 		}
 
 		& .controls-recent-songs {
+			background-color: #efefef;
+			bottom: 75px;
 			display: none;
+			font-size: 1rem;
+			left: -115px;
+
+			& h5 {
+				font-size: 1rem;
+				color: var(--brand-secondary)
+			}
+
+			& ul li:last-child {
+				padding-bottom: 0;
+			}
 		}
 
 		&.-open {
