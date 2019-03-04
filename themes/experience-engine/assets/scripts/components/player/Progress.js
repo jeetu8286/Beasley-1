@@ -46,9 +46,9 @@ class Progress extends PureComponent {
 		const self = this;
 		const { time, duration } = self.props;
 
-		/* if ( 0 >= duration ) {
+		if ( 0 >= duration ) {
 			return false;
-		} */
+		}
 
 		return (
 			<div className="controls-progress">
