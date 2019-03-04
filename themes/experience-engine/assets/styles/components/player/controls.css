@@ -74,8 +74,9 @@
 	& .controls-progress {
 		left: 0;
 		position: absolute;
-		top: -10px;
+		top: -17px;
 		width: 100%;
+		z-index: 9;
 
 		& input[type="range"] {
 			width: 100%;
@@ -86,6 +87,7 @@
 	& .controls-info {
 		color: var(--global-theme-font-primary);
 		font-size: 0.875rem;
+		padding: 0 1rem;
 		width: 100%;
 
 		& strong {
