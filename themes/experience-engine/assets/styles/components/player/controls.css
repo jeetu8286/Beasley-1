@@ -74,12 +74,13 @@
 	& .controls-progress {
 		left: 0;
 		position: absolute;
-		top: 0;
+		top: -10px;
 		width: 100%;
 
 		& input[type="range"] {
 			width: 100%;
 		}
+		
 	}
 
 	& .controls-info {
