@@ -139,6 +139,7 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getDatasetParams( 'src', 'width', 'height', 'alt', 'tracking', 'attribution', 'autoheight' ) ),
 			...processEmbeds( container, 'share', '.share-buttons', getDatasetParams( 'url', 'title' ) ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
+			...processEmbeds( container, 'livestreamvideo', '.livestream', getDatasetParams( 'embedid', 'src' ) ),
 			...processEmbeds( container, 'embedvideo', '.youtube', getDatasetParams( 'title', 'thumbnail', 'html' ) ),
 			...processEmbeds( container, 'cta', '.cta', getPayloadParams() ),
 			...processEmbeds( container, 'countdown', '.countdown', getPayloadParams() ),
