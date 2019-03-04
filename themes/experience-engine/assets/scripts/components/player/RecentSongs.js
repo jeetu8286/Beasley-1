@@ -13,16 +13,18 @@ class RecentSongs extends PureComponent {
 
 		self.onToggle = self.handleToggleClick.bind( self );
 		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
-		self.handleClickOutside = self.handleClickOutside.bind( self );
+		self.handleUserEventOutside = self.handleUserEventOutside.bind( self );
 	}
 
 	componentDidMount() {
-		document.addEventListener( 'mousedown', this.handleClickOutside, false );
+		document.addEventListener( 'mousedown', this.handleUserEventOutside, false );
+		document.addEventListener( 'scroll', this.handleUserEventOutside, false );
 		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener( 'mousedown', this.handleClickOutside, false );
+		document.removeEventListener( 'mousedown', this.handleUserEventOutside, false );
+		document.removeEventListener( 'scroll', this.handleUserEventOutside, false );
 		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
@@ -30,7 +32,7 @@ class RecentSongs extends PureComponent {
 		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
 	}
 
-	handleClickOutside( e ) {
+	handleUserEventOutside( e ) {
 		const self = this;
 		const { current: ref } = self.recentSongsModalRef;
 

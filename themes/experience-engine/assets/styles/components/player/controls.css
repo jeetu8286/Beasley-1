@@ -113,6 +113,20 @@
 		& svg path {
 			fill: var(--brand-primary);
 		}
+
+		& .live-player-modal {
+			opacity: 0;
+			transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+			visibility: hidden;
+			will-change: visibility, opacity;
+		}
+
+		&.-open {
+			& .live-player-modal {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
 	}
 
 	& .controls-sponsor {
@@ -134,7 +148,7 @@
 
 			& svg rect {
 				fill: var(--global-theme-font-primary);
-				transition: fill 300ms ease-in-out;
+				transition: fill 250ms ease-in-out;
 			}
 
 			&:hover,
@@ -148,9 +162,12 @@
 		& .controls-recent-songs {
 			background-color: #efefef;
 			bottom: 75px;
-			display: none;
 			font-size: 1rem;
 			left: -115px;
+			opacity: 0;
+			transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+			visibility: hidden;
+			will-change: visibility, opacity;
 
 			& h5 {
 				font-size: 1rem;
@@ -164,7 +181,8 @@
 
 		&.-open {
 			& .controls-recent-songs {
-				display: block;
+				opacity: 1;
+				visibility: visible;
 			}
 		}
 	}
@@ -261,8 +279,8 @@
 		& button:hover,
 		& button:focus {
 			& svg path {
-				transition: fill 300ms ease-in-out,
-							stroke 300ms ease-in-out;
+				transition: fill 250ms ease-in-out,
+							stroke 250ms ease-in-out;
 			}
 
 			& svg path[fill] {
@@ -310,7 +328,7 @@
 			color: var(--global-theme-font-primary);
 			font-size: 0.875rem;
 			font-weight: 600;
-			transition: color 300ms ease-in-out;
+			transition: color 250ms ease-in-out;
 			text-transform: uppercase;
 
 			&:hover,
@@ -322,6 +340,20 @@
 				margin-left: .5rem;
 				fill: var(--brand-primary);
 				stroke: var(--brand-primary);
+			}
+		}
+
+		& .live-player-modal {
+			opacity: 0;
+			transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+			visibility: hidden;
+			will-change: visibility, opacity;
+		}
+
+		&.-open {
+			& .live-player-modal {
+				opacity: 1;
+				visibility: visible;
 			}
 		}
 	}
