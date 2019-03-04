@@ -6,10 +6,7 @@ $website = tribe_get_event_website_url();
 $cost = tribe_get_cost();
 
 ?><div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<?php get_template_part( 'partials/show/header' ); ?>
-
 	<div class="event-info">
-
 		<div class="events-link">
 			<a href="<?php echo esc_url( tribe_get_events_link() ); ?>">
 				<?php echo esc_html( tribe_get_event_label_plural() ); ?>
