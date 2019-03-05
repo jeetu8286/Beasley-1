@@ -248,7 +248,7 @@ function reducer( state = {}, action = {} ) {
 
 			const newstate = { 
 				...state,
-				streams: newstreams || []
+				streams: newstreams.length ? newstreams : DEFAULT_STATE.streams,
 			};
 
 			if ( !initialStation ) {

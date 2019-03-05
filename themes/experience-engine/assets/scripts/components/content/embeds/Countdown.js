@@ -113,9 +113,9 @@ class Countdown extends Component {
 		return (
 			<div className="countdown" style={blockStyle}>
 				<div className="countdown-content">
-					<h4 className="countdown-title">
+					<h2 className="countdown-title">
 						{titleText}
-					</h4>
+					</h2>
 
 					<div className="countdown-timer">
 						<div className="time" title="Days">{( '0' + days ).slice( -2 )}</div>

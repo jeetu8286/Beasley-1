@@ -11,6 +11,8 @@ import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
 
 import { saveUser } from '../../library/experience-engine';
+
+import { showSignInModal } from '../../redux/actions/modal';
 import { suppressUserCheck } from '../../redux/actions/auth';
 
 class SignUp extends PureComponent {
@@ -76,6 +78,7 @@ class SignUp extends PureComponent {
 	render() {
 		const self = this;
 		const { email, password, firstname, lastname, zip, gender, bday, error } = self.state;
+		const { signin } = self.props;
 
 		return (
 			<Fragment>
@@ -104,14 +107,17 @@ class SignUp extends PureComponent {
 						<label className="modal-form-label" htmlFor="user-password">Password</label>
 						<input className="modal-form-field" type="password" id="user-password" name="password" value={password} onChange={self.onFieldChange} placeholder="Your password" />
 					</div>
-					<div className="modal-form-group">
-						<label className="modal-form-label" htmlFor="user-zip">Zip</label>
-						<input className="modal-form-field" type="text" id="user-zip" name="zip" value={zip} onChange={self.onFieldChange} placeholder="90210" />
+					<div className="modal-form-group-inline">
+						<div className="modal-form-group">
+							<label className="modal-form-label" htmlFor="user-zip">Zip</label>
+							<input className="modal-form-field" type="text" id="user-zip" name="zip" value={zip} onChange={self.onFieldChange} placeholder="90210" />
+						</div>
+						<div className="modal-form-group">
+							<label className="modal-form-label" htmlFor="user-bday">Birthday</label>
+							<input className="modal-form-field" type="date" id="user-bday" name="bday" value={bday} onChange={self.onFieldChange} placeholder="Enter your birthday" />
+						</div>
 					</div>
-					<div className="modal-form-group">
-						<label className="modal-form-label" htmlFor="user-bday">Birthday</label>
-						<input className="modal-form-field" type="date" id="user-bday" name="bday" value={bday} onChange={self.onFieldChange} placeholder="Enter your birthday" />
-					</div>
+					
 					<div className="modal-form-group">
 						<label className="modal-form-label" htmlFor="user-gender-male">Gender</label>
 						<div className="modal-form-radio">
@@ -125,6 +131,7 @@ class SignUp extends PureComponent {
 					</div>
 					<div className="modal-form-actions">
 						<button className="button -sign-in" type="submit">Sign Up</button>
+						<button className="button -sign-in" type="button" onClick={signin}>Sign In</button>
 					</div>
 				</form>
 				<h5 className="section-head">
@@ -141,10 +148,14 @@ SignUp.propTypes = {
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 	suppressUserCheck: PropTypes.func.isRequired,
+	signin: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( { suppressUserCheck }, dispatch );
+	return bindActionCreators( {
+		suppressUserCheck,
+		signin: showSignInModal,
+	}, dispatch );
 }
 
 export default connect( null, mapDispatchToProps )( trapHOC()( SignUp ) );

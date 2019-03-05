@@ -11,35 +11,33 @@
 	& .countdown  {
 		margin: 0 auto;
 		max-width: 1071px;
-		padding: 0 1rem 2.22rem;
+		padding: 2.222rem 1rem;
 	}
 
-	& .countdown,
-	& .cta {
+	& .placeholder-cta,
+	& .placeholder-countdown {
+		padding-bottom: 2.222rem;
+	}
+
+	& .cta,
+	& .countdown {
 		background-position: center;
 		background-repeat: no-repeat;
-		background-size: contain;
-		padding-top: calc((9 / 25) * 100%);
-		position: relative;
+		background-size: cover;
+		border-radius: 0;
+
+		@media (--min-medium-viewport) {
+			border-radius: 5px;
+		}
 	}
 
-	& .countdown-content,
-	& .cta-content {
-		left: 50%;
-		position: absolute;
+	& .cta-content,
+	& .countdown-content {
 		text-align: center;
-		top: 50%;
-		transform: translate(-50%, -50%);
-	}
-
-	& .countdown-title,
-	& .cta-title {
-		font-size: 2rem;
 	}
 
 	& .cta-button {
 		display: inline-block;
-		padding: .5rem 1rem;
 	}
 
 	& .countdown-timer {
@@ -48,7 +46,7 @@
 		margin-bottom: 2rem;
 
 		& .time {
-			background-color: var(--global-mine-shaft);
+			background-color: var(--brand-primary);
 			color: var(--global-white);
 			display: block;
 			font-size: 3rem;
@@ -62,10 +60,12 @@
 			}
 
 			&:first-child {
+				border-radius: 5px 0 0 5px;
 				padding-left: .5rem;
 			}
 
 			&:last-child {
+				border-radius: 0 5px 5px 0;
 				padding-right: .5rem;
 
 				&::after {

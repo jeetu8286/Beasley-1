@@ -106,7 +106,9 @@
 	& .modal-content {
 		background-color: var(--global-white);
 		left: 50%;
+		max-height: calc(100% - 2.5rem);
 		max-width: 700px;
+		overflow: auto;
 		padding: 2rem;
 		position: absolute;
 		transform: translate(-50%, -50%);
@@ -114,6 +116,7 @@
 		width: calc(100% - 2.5rem);
 
 		@media(--min-medium-viewport) {
+			height: auto;
 			width: 100%;
 		}
 
@@ -165,13 +168,23 @@
 	}
 
 	& .modal-form-actions {
-		margin: 1rem 0 2rem 0;
+		margin: 1rem 0;
+
+		@media(--min-medium-viewport) {
+			margin: 1rem 0 2rem 0;
+		}
 	}
 
 	& .-sign-in,
-	& .-forgot-password {
+	& .-forgot-password,
+	& .-sign-up {
 		background: var(--brand-primary);
 		border-radius: 25px;
-		padding: .75rem 4.25rem;
+		margin-right: 1rem;
+		padding: .75rem 2.25rem;
+
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 }

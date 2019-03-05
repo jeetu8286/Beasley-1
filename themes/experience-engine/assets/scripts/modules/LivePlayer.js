@@ -13,8 +13,9 @@ import Progress from '../components/player/Progress';
 import RecentSongs from '../components/player/RecentSongs';
 import Offline from '../components/player/Offline';
 import Contacts from '../components/player/Contacts';
-
 import Sponsor from '../components/player/Sponsor';
+
+import ErrorBoundary from '../components/ErrorBoundary';
 
 import * as actions from '../redux/actions/player';
 
@@ -123,18 +124,34 @@ class LivePlayer extends Component {
 
 				<div className="controls">
 					<div className="control-section">
-						<Info />
+						<ErrorBoundary>
+							<Info />
+						</ErrorBoundary>
 					</div>
 					<div className="control-section -centered">
-						<RecentSongs />
-						<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
-						<Volume />
-						<Progress />
+						<ErrorBoundary>
+							<RecentSongs />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<Volume />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<Progress />
+						</ErrorBoundary>
 					</div>
 					<div className="control-section">
-						<Sponsor />
-						<Stations />
-						<Contacts />
+						<ErrorBoundary>
+							<Sponsor />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<Stations />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<Contacts />
+						</ErrorBoundary>
 					</div>
 				</div>
 			</Fragment>

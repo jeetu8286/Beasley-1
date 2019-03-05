@@ -23,7 +23,7 @@ function Cta( { payload } ) {
 		};
 
 		button = (
-			<a className="cta-button" href={link} style={buttonStyle}>
+			<a className="btn cta-button" href={link} style={buttonStyle}>
 				{buttonText}
 			</a>
 		);
@@ -43,7 +43,7 @@ function Cta( { payload } ) {
 	return (
 		<div className="cta" style={blockStyle}>
 			<div className="cta-content">
-				<h4 className="cta-title">{title}</h4>
+				<h2 className="cta-title">{title}</h2>
 				{button}
 			</div>
 		</div>

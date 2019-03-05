@@ -36,7 +36,8 @@
 			}
 		}
 
-		& .contest-tile {
+		& .contest-tile,
+		& .event-tile {
 			& .meta {
 				flex: 0 1 auto;
 			}
@@ -242,20 +243,8 @@
 			}
 		}
 
-		& .type-tribe_events {
-			& .meta {
-				display: none;
-			}
-		}
-
 		& .type-episode {
 			& .episode-meta {
-				display: none;
-			}
-		}
-
-		& .type-contest {
-			& .contest-dates {
 				display: none;
 			}
 		}
