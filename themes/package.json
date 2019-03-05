@@ -9,13 +9,5 @@
 		"grunt-contrib-cssmin": "^2.2.1",
 		"grunt-contrib-uglify": "^3.4.0",
 		"grunt-sass": "^2.1.0"
-	},
-	"dependencies": {
-		"video.js": "^7.1.0",
-		"videojs-contrib-ads": "^6.4.3",
-		"videojs-contrib-quality-levels": "^2.0.7",
-		"videojs-flash": "^2.1.2",
-		"videojs-hls-quality-selector": "^1.0.5",
-		"videojs-ima": "^1.5.1"
 	}
 }
