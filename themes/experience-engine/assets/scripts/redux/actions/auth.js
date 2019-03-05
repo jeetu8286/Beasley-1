@@ -39,7 +39,7 @@ export function modifyUserFeeds( feeds ) {
 		modifyFeeds( feeds )
 			.then( () => dispatch( { type: ACTION_MODIFY_USER_FEEDS, feeds } ) )
 			.then( () => getFeeds() )
-			.then( feeds => dispatch( { type: ACTION_UPDATE_USER_FEEDS, feeds } ) )
+			.then( userFeeds => dispatch( { type: ACTION_UPDATE_USER_FEEDS, feeds: userFeeds } ) )
 			.catch( suppressCatch );
 	};
 }
@@ -49,7 +49,7 @@ export function deleteUserFeed( feed ) {
 		deleteFeed( feed )
 			.then( () => dispatch( { type: ACTION_DELETE_USER_FEED, feed } ) )
 			.then( () => getFeeds() )
-			.then( feeds => dispatch( { type: ACTION_UPDATE_USER_FEEDS, feeds } ) )
+			.then( userFeeds => dispatch( { type: ACTION_UPDATE_USER_FEEDS, feeds: userFeeds } ) )
 			.catch( suppressCatch );
 	};
 }
