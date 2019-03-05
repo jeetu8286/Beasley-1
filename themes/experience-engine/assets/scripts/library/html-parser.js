@@ -54,19 +54,6 @@ function getLoadMoreParams( element ) {
 	};
 }
 
-function getLiveStreamVideoParams( element ) {
-	const attrs = { adTagUrl: element.dataset.adTag };
-
-	const video = element.getElementsByTagName( 'video' )[0];
-	if ( video ) {
-		attrs.id = video.getAttribute( 'id' );
-		attrs.poster = video.getAttribute( 'poster' );
-		attrs.src = video.dataset.src;
-	}
-
-	return attrs;
-}
-
 function getDfpParams( { dataset } ) {
 	const { targeting } = dataset;
 
@@ -152,7 +139,7 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getDatasetParams( 'src', 'width', 'height', 'alt', 'tracking', 'attribution', 'autoheight' ) ),
 			...processEmbeds( container, 'share', '.share-buttons', getDatasetParams( 'url', 'title' ) ),
 			...processEmbeds( container, 'loadmore', '.load-more', getLoadMoreParams ),
-			...processEmbeds( container, 'video', '.livestream', getLiveStreamVideoParams ),
+			...processEmbeds( container, 'livestreamvideo', '.livestream', getDatasetParams( 'embedid', 'src' ) ),
 			...processEmbeds( container, 'embedvideo', '.youtube', getDatasetParams( 'title', 'thumbnail', 'html' ) ),
 			...processEmbeds( container, 'cta', '.cta', getPayloadParams() ),
 			...processEmbeds( container, 'countdown', '.countdown', getPayloadParams() ),
