@@ -27,7 +27,7 @@ if ( ! function_exists( 'ee_get_date' ) ) :
 			? $timestamp + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS
 			: $timestamp;
 
-		$month = is_single() ? 'F' : 'M';
+		$month = is_single() || is_page() ? 'F' : 'M';
 		$format = $month . ( date( 'Y' ) == date( 'Y', $created_offset ) ? ' jS' : ' jS, Y' );
 
 		return date( $format, $created_offset );
