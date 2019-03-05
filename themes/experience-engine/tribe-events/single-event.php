@@ -5,6 +5,15 @@ the_post();
 $website = tribe_get_event_website_url();
 $cost = tribe_get_cost();
 
+$venue = array();
+if ( tribe_has_venue() ) :
+	$venue[] = tribe_get_venue();
+	$venue[] = tribe_get_address();
+	$venue[] = tribe_get_city();
+	$venue[] = tribe_get_stateprovince();
+	$venue[] = tribe_get_zip();
+endif;
+
 ?><div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div class="event-info">
 		<div class="events-link">
@@ -41,10 +50,12 @@ $cost = tribe_get_cost();
 			</div>
 		<?php endif; ?>
 
-		<div>
-			<?php echo preg_replace( '#\s*\<br\s*/?\>\s*#i', ', ', tribe_get_full_address() ); ?>
-			<?php echo tribe_get_map_link_html(); ?>
-		</div>
+		<?php if ( ! empty( $venue ) ) : ?>
+			<div class="event-venue">
+				<span class="tribe-address"><?php echo implode( ', ', $venue ) ?></span>
+				<?php echo tribe_get_map_link_html(); ?>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<div class="entry-content content-wrap">

@@ -38,8 +38,7 @@
 		}
 	}
 
-	& .tribe-address,
-	& .tribe-events-gmap {
+	& .event-venue {
 		font-size: .875rem;
 		letter-spacing: 0.0425em;
 	}
