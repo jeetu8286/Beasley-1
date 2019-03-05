@@ -9,7 +9,9 @@ export const ACTION_SET_USER = 'production' === process.env.NODE_ENV ? 'u0' : 'S
 export const ACTION_RESET_USER = 'production' === process.env.NODE_ENV ? 'u1' : 'RESET_USER';
 export const ACTION_SUPPRESS_USER_CHECK = 'production' === process.env.NODE_ENV ? 'u2' : 'SUPPRESS_USER_CHECK';
 export const ACTION_SET_USER_FEEDS = 'production' === process.env.NODE_ENV ? 'u3' : 'SET_USER_FEEDS';
-export const ACTION_DELETE_USER_FEED = 'production' === process.env.NODE_ENV ? 'u4' : 'DELETE_USER_FEED';
+export const ACTION_MODIFY_USER_FEEDS = 'production' === process.env.NODE_ENV ? 'u4' : 'MODIFY_USER_FEEDS';
+export const ACTION_UPDATE_USER_FEEDS = 'production' === process.env.NODE_ENV ? 'u5' : 'UPDATE_USER_FEEDS';
+export const ACTION_DELETE_USER_FEED = 'production' === process.env.NODE_ENV ? 'u6' : 'DELETE_USER_FEED';
 
 function suppressCatch() {}
 
@@ -35,7 +37,9 @@ export function suppressUserCheck() {
 export function modifyUserFeeds( feeds ) {
 	return ( dispatch ) => {
 		modifyFeeds( feeds )
-			.then( () => dispatch( { type: ACTION_SET_USER_FEEDS, feeds } ) )
+			.then( () => dispatch( { type: ACTION_MODIFY_USER_FEEDS, feeds } ) )
+			.then( () => getFeeds() )
+			.then( feeds => dispatch( { type: ACTION_UPDATE_USER_FEEDS, feeds } ) )
 			.catch( suppressCatch );
 	};
 }
@@ -44,6 +48,8 @@ export function deleteUserFeed( feed ) {
 	return ( dispatch ) => {
 		deleteFeed( feed )
 			.then( () => dispatch( { type: ACTION_DELETE_USER_FEED, feed } ) )
+			.then( () => getFeeds() )
+			.then( feeds => dispatch( { type: ACTION_UPDATE_USER_FEEDS, feeds } ) )
 			.catch( suppressCatch );
 	};
 }

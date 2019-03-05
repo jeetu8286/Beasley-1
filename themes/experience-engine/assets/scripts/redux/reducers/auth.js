@@ -3,6 +3,7 @@ import {
 	ACTION_RESET_USER,
 	ACTION_SUPPRESS_USER_CHECK,
 	ACTION_SET_USER_FEEDS,
+	ACTION_MODIFY_USER_FEEDS,
 	ACTION_DELETE_USER_FEED,
 } from '../actions/auth';
 
@@ -20,6 +21,7 @@ function reducer( state = {}, action = {} ) {
 			return { ...DEFAULT_STATE };
 		case ACTION_SUPPRESS_USER_CHECK:
 			return { ...state, suppressUserCheck: true };
+		case ACTION_MODIFY_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS:
 			return { 
 				...state, 
