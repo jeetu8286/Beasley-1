@@ -1,6 +1,7 @@
 <?php
 
 add_action( 'beasley_after_body', 'ee_setup_embed_filters' );
+add_filter( 'bbgi_livestream_video_html', 'ee_update_livestream_html', 10, 3 );
 
 if ( ! function_exists( 'ee_setup_embed_filters' ) ) :
 	function ee_setup_embed_filters() {
@@ -61,5 +62,17 @@ endif;
 if ( ! function_exists( 'ee_update_fvideos_show_video' ) ) :
 	function ee_update_fvideos_show_video( $show, $post_id ) {
 		return is_singular() && $post_id == get_queried_object_id();
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_livestream_html' ) ) :
+	function ee_update_livestream_html( $html, $embed_id, $url ) {
+		$html = sprintf(
+			'<div class="livestream" data-embedid="%s" data-src="%s"></div>',
+			esc_attr( $embed_id ),
+			esc_attr( $url )
+		);
+
+		return $html;
 	}
 endif;
