@@ -1,5 +1,4 @@
 import '../styles/main.css';
-import 'date-input-polyfill-react';
 
 import React, { PureComponent, Fragment } from 'react';
 import ReactDOM from 'react-dom';
