@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import LazyImage from '../../content/embeds/LazyImage';
+import SvgIcon from '../../SvgIcon';
 
 class Feed extends PureComponent {
 
@@ -54,6 +55,10 @@ class Feed extends PureComponent {
 
 				<div className="post-title">
 					<h3>{title}</h3>
+				</div>
+
+				<div className="feed-item-type">
+					{ type && <p className="type"><SvgIcon type={type} />{type}</p> }
 				</div>
 			</div>
 		);

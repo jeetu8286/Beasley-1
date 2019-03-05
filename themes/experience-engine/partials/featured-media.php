@@ -1,8 +1,7 @@
 <?php if ( has_post_thumbnail() ) : ?>
 	<div class="post-thumbnail-wrapper">
-		<div class="post-thumbnail">
+		<div class="post-thumbnail featured-media">
 			<?php ee_the_lazy_thumbnail(); ?>
-			<?php bbgi_the_image_attribution(); ?>
 		</div>
 
 		<?php $thumbnail_caption = get_the_post_thumbnail_caption( get_the_ID() ); ?>

@@ -1,4 +1,4 @@
-<div id="post-<?php the_ID(); ?>" <?php post_class( 'podcast-tile' ); ?>>
+<div data-post-id="post-<?php the_ID(); ?>" <?php post_class( 'podcast-tile' ); ?>>
 	<?php get_template_part( 'partials/tile/thumbnail' ); ?>
 	<div class="meta">
 		<?php get_template_part( 'partials/tile/title' ); ?> <?php //Podcast tile title must remain within meta to ensure layout is properly set on single episode page ?>

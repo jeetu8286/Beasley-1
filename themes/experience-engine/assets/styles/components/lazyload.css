@@ -18,6 +18,18 @@
 			width: 1.6rem;
 		}
 	}
+
+	& .lazy-image-attribution {
+		background-color: rgba(0, 0, 0, .4);
+		border-radius: 3px;
+		bottom: .75rem;
+		color: var(--global-white);
+		display: none;
+		font-size: .9rem;
+		padding: .15rem .5rem;
+		position: absolute;
+		right: .75rem;
+	}
 }
 
 .lazy-video {

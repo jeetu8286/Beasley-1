@@ -60,13 +60,14 @@
 
 				&::after {
 					background-color: var(--brand-primary);
-					bottom: -1.778rem;
+					bottom: 5px;
 					content: "";
 					height: 2px;
 					left: 0;
 					position: absolute;
 
 					@media (--min-large-viewport) {
+						bottom: -1.778rem;
 						left: calc(-2.611rem / 2);
 					}
 				}

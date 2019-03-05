@@ -79,7 +79,7 @@
     margin-bottom: 3rem;
 
     & .post-tag-label {
-        color: var(--global-theme-primary);
+        color: var(--global-theme-font-primary);
         font-weight: 600;
         font-size: 1rem;
         flex: 0 1 auto;
@@ -109,7 +109,7 @@
 }
 
 .post-thumbnail-caption {
-	color: var(--global-theme-font-secondary);
+	color: var(--global-font-secondary);
 	font-size: .875rem;
 	margin: .5rem 0 0 0;
 }

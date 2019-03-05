@@ -1,13 +1,17 @@
-body {
+body,
+html {
 	&.locked {
+		position: fixed;
 		overflow: hidden;
+		-webkit-overflow-scrolling: auto;
+		height: 100%;
 	}
 }
 
 .container {
 	padding-bottom: 74px; /*height of the fixed player*/
 
-	@media(--min-medium-viewport) {
+	@media(--min-large-viewport) {
 		padding-left: 190px;
 	}
 }

@@ -48,6 +48,7 @@
 
 @import 'components/share/share';
 
+@import "components/gallery/archive";
 @import "components/gallery/listicle";
 
 @import "components/contest/contest-tile";
@@ -59,6 +60,7 @@
 @import 'components/episode/episode-info';
 @import 'components/episode/episode-tile';
 
+@import "components/events/event-tile.css";
 @import 'components/events/event';
 
 @import "components/ads/ad-title";

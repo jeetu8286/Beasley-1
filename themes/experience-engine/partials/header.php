@@ -10,17 +10,20 @@
 		</svg>
 	</a>
 
-	<div class="logo" itemscope itemtype="http://schema.org/Organization">
-		<?php ee_the_custom_logo( 130, 130 ); ?>
-		<span class="screen-reader-text"><?php wp_title(); ?></span>
-	</div>
+	<div class="primary-sidebar-navigation">
+		<div class="logo" itemscope itemtype="http://schema.org/Organization">
+			<?php ee_the_custom_logo( 130, 130 ); ?>
+			<span class="screen-reader-text"><?php wp_title(); ?></span>
+		</div>
 
-	<div class="nav-wrap" aria-hidden="true">
-		<nav id="js-primary-nav" class="primary-nav" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
-			<?php echo get_search_form(); ?>
-			<?php get_template_part( 'partials/primary', 'navigation' ); ?>
-		</nav>
+		<div class="nav-wrap" aria-hidden="true">
+			<nav id="js-primary-nav" class="primary-nav" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+				<?php echo get_search_form(); ?>
+				<?php get_template_part( 'partials/primary', 'navigation' ); ?>
+			</nav>
 
-		<div id="user-nav" class="user-nav"></div>
+			<div id="user-nav" class="user-nav"></div>
+		</div>
 	</div>
+	
 </div>

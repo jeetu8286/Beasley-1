@@ -12,7 +12,7 @@
 		wp_head();
 
 	?></head>
-	<body <?php body_class(); ?>>
+	<body <?php body_class( get_option( 'ee_theme_version', '-dark' ) ); ?>>
 		<div class="skip-links">
 			<a href="#q">Skip to Search</a>
 			<a href="#live-player">Skip to Live Player</a>
@@ -29,5 +29,6 @@
 
 		?><div class="container">
 			<main id="content" class="content">
+				<?php do_action( 'show_breaking_news_banner' ); ?>
 				<?php get_template_part( 'partials/ads/leaderboard' ); ?>
-					<div id="inner-content">
+				<div id="inner-content">
