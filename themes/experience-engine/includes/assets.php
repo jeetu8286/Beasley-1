@@ -134,18 +134,6 @@ if ( ! function_exists( 'ee_load_polyfills' ) ) :
 					p.parentNode.replaceChild(s, p);
 				}
 			})();
-		</script>
-		<script id="date-input-polyfill">
-			var n = 'not-a-date';
-			var i = document.createElement('input');
-			i.setAttribute('type','date');
-			i.setAttribute('value', n); 
-			if (i.value === n) {
-				var s = document.createElement('script');
-				s.src = 'https://unpkg.com/date-input-polyfill@2.14.0/date-input-polyfill.dist.js';
-				var p = document.getElementById('date-input-polyfill')
-				p.parentNode.replaceChild(s, p);
-			}
 		</script><?php
 	}
 endif;
