@@ -64,15 +64,14 @@ class Settings extends \Bbgi\Module {
 		// Sort the Post types in the UI
 		ksort( $types, SORT_ASC );
 
-		foreach ( $types as $type => $type_object ) {
-			// Post types to exclude
-			$exclude = array(
-				'listener_submissions',
-				'advertiser',
-				'survey',
-				'show',
-			);
+		// Post types to exclude
+		$exclude = array(
+			'listener_submissions',
+			'advertiser',
+			'survey',
+		);
 
+		foreach ( $types as $type => $type_object ) {
 			// If the Post type is in the exclude list, then don't add to Media Page
 			if ( true === in_array( $type_object->name, $exclude ) ) {
 				continue;
