@@ -97,10 +97,6 @@ export function loadPartialPage( url, placeholder ) {
 }
 
 export function hideSplashScreen() {
-	if ( 'function' === typeof window['cssVars'] ) {
-		window['cssVars']( window.bbgiconfig.cssvars );
-	}
-
 	return { type: ACTION_HIDE_SPLASH_SCREEN };
 }
 
