@@ -125,13 +125,11 @@ endif;
 
 if ( ! function_exists( 'ee_load_polyfills' ) ) :
 	function ee_load_polyfills() {
-		$base = untrailingslashit( get_template_directory_uri() );
-
 		?><script id="polyfills">
 			(function() {
 				if (!Array.prototype.find) {
 					var s = document.createElement('script');
-					s.src = '<?php echo $base; ?>/bundle/core.min.js';
+					s.src = 'https://unpkg.com/core-js@2.6.2/client/core.min.js';
 					var p = document.getElementById('polyfills')
 					p.parentNode.replaceChild(s, p);
 				}
