@@ -76,5 +76,6 @@
 @import "components/back-to-top";
 @import "components/favorites";
 @import "components/formats/post-format";
+@import "components/breaking-news";
 
 @import "utilities/display";
