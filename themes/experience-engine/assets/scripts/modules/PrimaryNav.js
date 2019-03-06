@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import { removeChildren } from '../library/dom';
+import { showSignInModal, showDiscoverModal } from '../redux/actions/modal';
 
 const navRoot = document.getElementById( 'js-primary-nav' );
 const siteMenuToggle = document.getElementById( 'js-menu-toggle' );
@@ -89,6 +93,17 @@ class PrimaryNav extends PureComponent {
 		const container = primaryNavRef.current;
 
 		if ( 'BUTTON' === target.nodeName.toUpperCase() ) {
+			if ( menuItem.classList.contains( 'menu-item-discovery' ) ) {
+				const { signedIn, showDiscover, showSignin } = self.props;
+		
+				if ( signedIn ) {
+					showDiscover();
+				} else {
+					showSignin();
+				}
+				return;
+			}
+
 			const toggler = menuItem.querySelector( '.sub-menu-activator' );
 			if ( toggler ) {
 				toggler.classList.toggle( 'is-active' );
@@ -150,4 +165,25 @@ class PrimaryNav extends PureComponent {
 
 }
 
-export default PrimaryNav;
+PrimaryNav.propTypes = {
+	signedIn: PropTypes.bool.isRequired,
+	showDiscover: PropTypes.func.isRequired,
+	showSignin: PropTypes.func.isRequired,
+};
+
+function mapStateToProps( { auth } ) {
+	return {
+		signedIn: !!auth.user,
+	};
+}
+
+function mapDispatchToProps( dispatch ) {
+	const actions = {
+		showSignin: showSignInModal,
+		showDiscover: showDiscoverModal,
+	};
+
+	return bindActionCreators( actions, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( PrimaryNav );

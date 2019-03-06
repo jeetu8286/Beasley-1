@@ -2,6 +2,44 @@
 
 class PrimaryNavWalker extends \Walker_Nav_Menu {
 
+	public function walk( $elements, $max_depth, ...$args ) {
+		$home = trailingslashit( home_url() );
+
+		$newhome = new \WP_Post( new \stdClass );
+		$discovery = new \WP_Post( new \stdClass );
+
+		$newhome->post_title = $newhome->title = 'Home';
+		$newhome->url = $home;
+		$newhome->post_type = $discovery->post_type = 'nav_menu_item';
+		$newhome->object = $newhome->type = $discovery->object = $discovery->type = 'custom';
+		$newhome->current = $discovery->current = false;
+		$newhome->classes = $discovery->classes = array (
+			'menu-item',
+			'menu-item-type-custom',
+			'menu-item-object-custom',
+			'menu-item-home',
+		);
+
+		if ( is_home() || is_front_page() ) {
+			$newhome->current = true;
+			$newhome->classes[] = 'current-menu-item';
+			$newhome->classes[] = 'current_page_item';
+		}
+
+		$discovery->post_title = $discovery->title = 'Discovery';
+		$discovery->url = '#';
+		$discovery->classes[] = 'menu-item-discovery';
+
+		$newelements = array( $newhome, $discovery );
+		foreach ( $elements as $index => $element ) {
+			if ( trailingslashit( $element->url ) != $home ) {
+				$newelements[ $index ] = $element;
+			}
+		}
+
+		return parent::walk( $newelements, $max_depth, ...$args );
+	}
+
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
 		$element = '';
 		parent::start_lvl( $element, $depth, $args );
