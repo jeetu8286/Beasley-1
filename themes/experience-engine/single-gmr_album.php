@@ -7,8 +7,6 @@ the_post();
 
 ?><div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php if ( ee_is_first_page() ) : ?>
-		<?php get_template_part( 'partials/show/header' ); ?>
-
 		<div class="content-wrap album-header">
 			<h1 class="album-title"><?php the_title(); ?></h1>
 			<?php if ( ee_is_first_page() ) :

@@ -1,45 +1,58 @@
 .single-tribe_events {
+	& .events-link {
+		margin-bottom: 1rem;
 
-    & .events-link {
-        margin-bottom: 1rem;
+		& a {
+			font-size: .875rem;
+			font-weight: 600;
+		}
+	}
 
-        & a {
-            font-size: .875rem;
-            font-weight: 600;
-        }
-    }
+	& .event-info {
+		margin: 0 auto;
+		max-width: 1071px;
+		padding: 0 1rem 2.22rem;
+	}
 
-    & .event-info {
-        margin: 0 auto;
-        max-width: 1071px;
-        padding: 0 1rem 2.22rem;
-    }
+	& .tribe-address {
+		margin-right: 1rem;
+	}
 
-    & .tribe-address {
-        margin-right: 1rem;
-    }
+	& .tribe-events-gmap {
+		font-weight: 400;
+	}
 
-    & .tribe-events-gmap {
-        font-weight: 400;
-    }
+	& .event-date {
+		font-size: 1.5rem;
+		font-weight: 600;
 
-    & .event-date {
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
+		& .sep {
+			border-right: 2px solid var(--global-silver);
+			font-size: 1rem;
+			margin: 0 1rem;
 
-    & .tribe-address,
-    & .tribe-events-gmap {
-        font-size: .875rem;
-        letter-spacing: 0.0425em;
-    }
+			&::before {
+				content: " ";
+				display: inline-block;
+			}
+		}
+	}
 
-    & .event-meta {
-        display: flex;
-        font-size: .875rem;
-        justify-content: space-between;
-        margin: 1.5rem 0;
-        max-width: 250px;
-    }
+	& .event-venue {
+		font-size: .875rem;
+		letter-spacing: 0.0425em;
+	}
 
+	& .event-meta {
+		display: flex;
+		font-size: .875rem;
+		justify-content: space-between;
+		margin: 1.5rem 0;
+		max-width: 250px;
+	}
+
+	& .event-cost strong {
+		margin-right: 1rem;
+		text-transform: uppercase;
+	}
 }

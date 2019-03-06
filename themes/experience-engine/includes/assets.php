@@ -37,7 +37,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		 */
 		wp_enqueue_script( 'css-vars-ponyfill', 'https://unpkg.com/css-vars-ponyfill@1.16.1/dist/css-vars-ponyfill.min.js', null, null, false );
 		wp_script_add_data( 'css-vars-ponyfill', 'async', true );
-		wp_script_add_data( 'css-vars-ponyfill', 'onload', 'cssVars(' . wp_json_encode( [ 'variables' => ee_get_css_colors() ] ) . ')' );
 
 		/**
 		 * External libraries
@@ -125,13 +124,11 @@ endif;
 
 if ( ! function_exists( 'ee_load_polyfills' ) ) :
 	function ee_load_polyfills() {
-		$base = untrailingslashit( get_template_directory_uri() );
-
 		?><script id="polyfills">
 			(function() {
 				if (!Array.prototype.find) {
 					var s = document.createElement('script');
-					s.src = '<?php echo $base; ?>/bundle/core.min.js';
+					s.src = 'https://unpkg.com/core-js@2.6.2/client/core.min.js';
 					var p = document.getElementById('polyfills')
 					p.parentNode.replaceChild(s, p);
 				}
@@ -163,7 +160,9 @@ endif;
 
 if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 	function ee_the_bbgiconfig() {
-		$config = array();
+		$config = array(
+			'cssvars' => array( 'variables' => ee_get_css_colors() ),
+		);
 
 		$custom_logo_id = get_option( 'gmr_site_logo' );
 		if ( $custom_logo_id ) {

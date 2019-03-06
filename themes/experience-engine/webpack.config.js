@@ -1,16 +1,11 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 
-const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
 const { ModuleConcatenationPlugin } = webpack.optimize;
 
 function coreConfig( options = {} ) {
-	const copyPluginArgs = [
-		'node_modules/core-js/client/core.min.js',
-	];
-
 	const eslintRule = {
 		test: /\.js$/,
 		enforce: 'pre',
@@ -99,7 +94,6 @@ function coreConfig( options = {} ) {
 		},
 		plugins: [
 			new MiniCssExtractPlugin(),
-			new CopyWebpackPlugin( copyPluginArgs ),
 		],
 		optimization: {
 			noEmitOnErrors: true,
