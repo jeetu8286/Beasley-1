@@ -69,10 +69,6 @@ class Stations extends Component {
 		/* eslint-disable camelcase */
 		streams.forEach( ( { subtitle, stream_call_letters } ) => {
 
-			if( 1 <= streams.length ) {
-				return;
-			}
-
 			stations.push(
 				<div key={stream_call_letters}>
 					<button type="button" onClick={self.handlePlayClick.bind( self, stream_call_letters )}>

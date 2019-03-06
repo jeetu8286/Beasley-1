@@ -55,7 +55,7 @@ class Progress extends PureComponent {
 				<span className="screen-reader-text">{Progress.format( time )}</span>
 				<div className="ee-range-input -progress">
 					<input type="range" min="0" max={duration} value={time} onChange={self.onSeek} />
-					<p className="pre-bar" style={{ width: `${time}px`}} />
+					<p className="pre-bar" style={{ width: `${document.body.offsetWidth * time / duration}px`}} />
 				</div>
 				<span className="screen-reader-text">{Progress.format( duration )}</span>
 			</div>
