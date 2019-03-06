@@ -61,6 +61,10 @@ function hideSplashScreen() {
 		if ( splashScreen ) {
 			splashScreen.parentNode.removeChild( splashScreen );
 		}
+
+		if ( 'function' === typeof window['cssVars'] ) {
+			window['cssVars']( window.bbgiconfig.cssvars );
+		}
 	}, 2000 );
 }
 

@@ -37,7 +37,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		 */
 		wp_enqueue_script( 'css-vars-ponyfill', 'https://unpkg.com/css-vars-ponyfill@1.16.1/dist/css-vars-ponyfill.min.js', null, null, false );
 		wp_script_add_data( 'css-vars-ponyfill', 'async', true );
-		wp_script_add_data( 'css-vars-ponyfill', 'onload', 'cssVars(' . wp_json_encode( [ 'variables' => ee_get_css_colors() ] ) . ')' );
 
 		/**
 		 * External libraries
@@ -161,7 +160,9 @@ endif;
 
 if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 	function ee_the_bbgiconfig() {
-		$config = array();
+		$config = array(
+			'cssvars' => array( 'variables' => ee_get_css_colors() ),
+		);
 
 		$custom_logo_id = get_option( 'gmr_site_logo' );
 		if ( $custom_logo_id ) {
