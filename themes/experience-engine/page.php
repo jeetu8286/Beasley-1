@@ -3,10 +3,19 @@
 <?php the_post(); ?>
 
 <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<div class="content-wrap">
+	<header class="post-info">
 		<h1><?php the_title(); ?></h1>
-		<?php get_template_part( 'partials/content/meta' ); ?>
-		<?php the_content(); ?>
+		<div class="post-meta">
+			<?php get_template_part( 'partials/content/meta', 'page' ); ?>
+		</div>
+	</header>
+
+	<div class="entry-content content-wrap">
+		<div class="description">
+			<?php the_content(); ?>
+		</div>
+
+		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
 	</div>
 </div>
 

@@ -11,8 +11,9 @@ function Controls( { status, title, play, pause, resume } ) {
 			</button>
 
 			<button type="button" className="pause-btn" onClick={pause} aria-label="Pause">
-				<svg viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
-					<path d="M11 22h-4v-20h4v20zm6-20h-4v20h4v-20z" />
+				<svg width="13" height="23" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="4" height="23" rx="1" fill="#fff"/>
+					<rect x="9" width="4" height="23" rx="1" fill="#fff"/>
 				</svg>
 			</button>
 

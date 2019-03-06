@@ -9,12 +9,42 @@ class RecentSongs extends PureComponent {
 
 		const self = this;
 		self.state = { isOpen: false };
+		self.recentSongsModalRef = React.createRef();
 
 		self.onToggle = self.handleToggleClick.bind( self );
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
+		self.handleUserEventOutside = self.handleUserEventOutside.bind( self );
+	}
+
+	componentDidMount() {
+		document.addEventListener( 'mousedown', this.handleUserEventOutside, false );
+		document.addEventListener( 'scroll', this.handleUserEventOutside, false );
+		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener( 'mousedown', this.handleUserEventOutside, false );
+		document.removeEventListener( 'scroll', this.handleUserEventOutside, false );
+		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
 	handleToggleClick() {
 		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
+	}
+
+	handleUserEventOutside( e ) {
+		const self = this;
+		const { current: ref } = self.recentSongsModalRef;
+
+		if ( !ref || !ref.contains( e.target ) ) {
+			self.setState( { isOpen: false } );
+		}
+	}
+
+	handleEscapeKeyDown( e ) {
+		if ( 27 === e.keyCode ) {
+			this.setState( { isOpen: false } );
+		}
 	}
 
 	render() {
@@ -48,7 +78,7 @@ class RecentSongs extends PureComponent {
 		} );
 
 		return (
-			<div className={`controls-recent${isOpen ? ' -open' : ''}`}>
+			<div ref={self.recentSongsModalRef} className={`controls-recent${isOpen ? ' -open' : ''}`}>
 				<button onClick={self.onToggle}>
 					<svg width="29" height="6" viewBox="0 0 28 6" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect width="6" height="6" rx="3" fill="#EB108B"/>

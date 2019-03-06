@@ -6,7 +6,6 @@ the_post();
 
 ?><div <?php post_class(); ?>><?php
 	if ( ee_is_first_page() ) :
-		get_template_part( 'partials/show/header' );
 		get_template_part( 'partials/podcast/header' );
 
 		?><div class="content-wrap">
