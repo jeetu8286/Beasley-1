@@ -1,10 +1,18 @@
 .controls {
-	background-color: var(--global-theme-secondary);
+	background-color: #efefef;
 	box-shadow: inset 0px -2px 2px rgba(0, 0, 0, 0.2),
 				inset 0px 2px 0px rgba(255, 255, 255, 0.25);
 	display: flex;
-	min-height: 84px;
+	min-height: 75px;
 	position: relative;
+	padding-left: 1rem;
+
+	& button {
+		&:focus,
+		&:hover {
+			outline: 0;
+		}
+	}
 
 	& .control-border {
 		border-left: 1px solid var(--global-mercury);
@@ -13,6 +21,7 @@
 	& .control-section {
 		align-items: center;
 		display: flex;
+		justify-content: flex-end;
 		position: relative;
 
 		@media(--min-medium-viewport) {
@@ -32,12 +41,13 @@
 			@media(--max-medium-viewport) {
 				padding-left: 1rem;
 				order: 1;
+				width: 100%;
 			}
 		}
 
 		&:last-child {
 			@media(--max-medium-viewport) {
-				max-width: 50px;
+				max-width: 60px;
 				order: 3;
 				width: 100%;
 			}
@@ -52,6 +62,10 @@
 			width: 100%;
 		}
 
+		& .audio-sponsor--text {
+			display: block !important;
+		}
+
 		&.-centered {
 			@media(--min-medium-viewport) {
 				justify-content: center;
@@ -59,9 +73,22 @@
 		}
 	}
 
+	& .controls-progress {
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 9;
+
+		& input[type="range"] {
+			width: 100%;
+		}
+		
+	}
+
 	& .controls-info {
 		color: var(--global-theme-font-primary);
-		font-size: 1rem;
+		font-size: 0.875rem;
 		width: 100%;
 
 		& strong {
@@ -97,6 +124,24 @@
 		max-width: 89px;
 		position: relative;
 		width: 100%;
+
+		& svg path {
+			fill: var(--brand-primary);
+		}
+
+		& .live-player-modal {
+			opacity: 0;
+			transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+			visibility: hidden;
+			will-change: visibility, opacity;
+		}
+
+		&.-open {
+			& .live-player-modal {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
 	}
 
 	& .controls-sponsor {
@@ -118,7 +163,7 @@
 
 			& svg rect {
 				fill: var(--global-theme-font-primary);
-				transition: fill 300ms ease-in-out;
+				transition: fill 250ms ease-in-out;
 			}
 
 			&:hover,
@@ -130,12 +175,29 @@
 		}
 
 		& .controls-recent-songs {
-			display: none;
+			background-color: #efefef;
+			bottom: 75px;
+			font-size: 1rem;
+			left: -115px;
+			opacity: 0;
+			transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+			visibility: hidden;
+			will-change: visibility, opacity;
+
+			& h5 {
+				font-size: 1rem;
+				color: var(--brand-secondary)
+			}
+
+			& ul li:last-child {
+				padding-bottom: 0;
+			}
 		}
 
 		&.-open {
 			& .controls-recent-songs {
-				display: block;
+				opacity: 1;
+				visibility: visible;
 			}
 		}
 	}
@@ -232,8 +294,8 @@
 		& button:hover,
 		& button:focus {
 			& svg path {
-				transition: fill 300ms ease-in-out,
-							stroke 300ms ease-in-out;
+				transition: fill 250ms ease-in-out,
+							stroke 250ms ease-in-out;
 			}
 
 			& svg path[fill] {
@@ -248,13 +310,13 @@
 			outline: 0;
 		}
 
-		& .controls-volume-slider {
+		& .ee-range-input-slider {
 			left: 3rem;
 			opacity: 0;
 			position: absolute;
 			transition: visibility 250ms ease-in-out,
 						opacity 250ms ease-in-out;
-			top: -0.5rem;
+			top: 8px;
 			visibility: hidden;
 			width: 82px;
 
@@ -268,8 +330,7 @@
 	& .controls-station {
 		display: none;
 		height: 100%;
-		max-width: 261px;
-		padding: 0 1.4375rem;
+		max-width: 180px;
 		position: relative;
 		width: 100%;
 
@@ -280,9 +341,9 @@
 		& button {
 			background: transparent;
 			color: var(--global-theme-font-primary);
-			font-size: 1rem;
+			font-size: 0.875rem;
 			font-weight: 600;
-			transition: color 300ms ease-in-out;
+			transition: color 250ms ease-in-out;
 			text-transform: uppercase;
 
 			&:hover,
@@ -292,19 +353,22 @@
 
 			& svg {
 				margin-left: .5rem;
-				fill: var(--brand-secondary);
-				stroke: var(--brand-secondary);
+				fill: var(--brand-primary);
+				stroke: var(--brand-primary);
 			}
+		}
 
-			& .controls-station-title {
+		& .live-player-modal {
+			opacity: 0;
+			transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+			visibility: hidden;
+			will-change: visibility, opacity;
+		}
 
-				&:after {
-					content: '/';
-					color: var(--global-theme-font-tertiary);
-					display: inline;
-					font-weight: 600;
-					padding: 0 .5rem;
-				}
+		&.-open {
+			& .live-player-modal {
+				opacity: 1;
+				visibility: visible;
 			}
 		}
 	}
@@ -359,9 +423,9 @@
 	border: 1px solid var(--global-white);
 	cursor: pointer;
 	display: flex;
-	height: 64px;
+	height: 54px;
 	justify-content: center;
-	width: 64px;
+	width: 54px;
 
 	&:focus,
 	&:hover {
@@ -373,5 +437,13 @@
 		fill: var(--brand-tertiary);
 		max-height: 31px;
 		transform: translateX(10%);
+	}
+}
+
+.LIVE_PLAYING .pause-btn {
+	& svg {
+		width: 13px;
+		height: 23px;
+		transform: none;
 	}
 }
