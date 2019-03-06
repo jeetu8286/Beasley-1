@@ -74,34 +74,34 @@
 }
 
 .post-tags {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 3rem;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 3rem;
 
-    & .post-tag-label {
-        color: var(--global-theme-font-primary);
-        font-weight: 600;
-        font-size: 1rem;
-        flex: 0 1 auto;
-        text-transform: uppercase;
-    }
+	& .post-tag-label {
+		color: var(--global-theme-font-primary);
+		font-weight: 600;
+		font-size: 1rem;
+		flex: 0 1 auto;
+		text-transform: uppercase;
+	}
 
-    & .post-tag-items {
-        color: var(--global-theme-font-secondary);
-        font-size: 1rem;
-        flex: 0 1 auto;
-        text-transform: capitalize;
-        width: calc(90% - 2rem);
-    }
+	& .post-tag-items {
+		color: var(--global-theme-font-secondary);
+		font-size: 1rem;
+		flex: 0 1 auto;
+		text-transform: capitalize;
+		width: calc(90% - 2rem);
+	}
 
-    & a {
-        color: inherit;
-        margin-left: .250rem;
+	& a {
+		color: inherit;
+		margin-left: .250rem;
 
-        &:first-child {
-            margin-left: 0;
-        }
-    }
+		&:first-child {
+			margin-left: 0;
+		}
+	}
 }
 
 .post-thumbnail-wrapper {
