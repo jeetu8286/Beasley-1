@@ -1,5 +1,6 @@
 .breaking-news-banner {
-    background: var(--global-theme-primary);
+    background: var(--global-alabaster);
+    border-bottom: 1px solid var(--global-mercury);
     font-size: 1rem;
     padding: 1rem;
     text-align: center;
@@ -10,5 +11,11 @@
 
     & .breaking-news-banner__excerpt {
         color: var(--global-theme-font-primary);
+    }
+}
+
+body.-dark {
+    & .breaking-news-banner {
+        background: var(--global-theme-secondary);
     }
 }
