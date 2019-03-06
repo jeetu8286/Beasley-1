@@ -86,18 +86,10 @@ class Dfp extends PureComponent {
 					.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
 					.build();
 			} else if ( 'in-list' === unitName ) {
-				if ( document.body.classList.contains( 'single' ) ) {
-					sizeMapping = googletag.sizeMapping()
-						.addSize( [729, 200], ['fluid', [728, 90]] )
-						.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
-						.build();
-				} else {
-					sizeMapping = googletag.sizeMapping()
-						.addSize( [970, 200], ['fluid', [970, 250], [970, 90], [728, 90]] )
-						.addSize( [729, 200], ['fluid', [728, 90]] )
-						.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
-						.build();
-				}
+				sizeMapping = googletag.sizeMapping()
+					.addSize( [729, 200], ['fluid', [728, 90]] )
+					.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
+					.build();
 			} else if ( 'bottom-leaderboard' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
 					.addSize( [970, 200], [[970, 250], [970, 90], [728, 90]] )
