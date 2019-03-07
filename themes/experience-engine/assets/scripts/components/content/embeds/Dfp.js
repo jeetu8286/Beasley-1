@@ -12,7 +12,6 @@ class Dfp extends PureComponent {
 
 		self.slot = false;
 		self.interval = false;
-		self.displayed = false;
 
 		self.onVisibilityChange = self.handleVisibilityChange.bind( self );
 		self.refreshSlot = self.refreshSlot.bind( self );
@@ -80,11 +79,16 @@ class Dfp extends PureComponent {
 				.addService( googletag.pubads() );
 
 			let sizeMapping = false;
-			if ( 'top-leaderboard' === unitName || 'in-list' === unitName ) {
+			if ( 'top-leaderboard' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
 					.addSize( [970, 200], ['fluid', [970, 250], [970, 90], [728, 90]] )
 					.addSize( [729, 200], ['fluid', [728, 90]] )
-					.addSize( [0, 0], ['fluid', [320, 100], [320, 50]] )
+					.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
+					.build();
+			} else if ( 'in-list' === unitName ) {
+				sizeMapping = googletag.sizeMapping()
+					.addSize( [729, 200], ['fluid', [728, 90]] )
+					.addSize( [0, 0], ['fluid', [300, 250], [320, 100], [320, 50]] )
 					.build();
 			} else if ( 'bottom-leaderboard' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
@@ -114,10 +118,10 @@ class Dfp extends PureComponent {
 	}
 
 	refreshSlot() {
-		const { slot, displayd } = this;
+		const { slot } = this;
 		const { googletag } = window;
 
-		if ( slot && displayd ) {
+		if ( slot ) {
 			googletag.pubads().refresh( [slot] );
 		}
 	}
