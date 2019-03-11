@@ -17,10 +17,39 @@ import { suppressUserCheck } from '../../redux/actions/auth';
 
 class SignUp extends PureComponent {
 
+	static createMask( value ) {
+		return value.toString().replace( /(\d{4})(\d{2})(\d{2})/, '$1/$2/$3' );
+	}
+
+	static detectSupportedDevices( browsers ) {
+		const { userAgent } = window.navigator;
+		const isChrome = !!window.chrome;
+		const isFireFox = -1 > userAgent.toLowerCase().indexOf( 'firefox' );
+		const iOS = !!userAgent.match( /iPad/i ) || !!userAgent.match( /iPhone/i );
+		const webkit = !!userAgent.match( /WebKit/i );
+		const iOSChrome = iOS && !userAgent.match( /Chrome/i );
+		const iOSSafari = iOS && webkit && !userAgent.match( /CriOS/i );
+		const iOSFireFox = iOS && isFireFox;
+
+		/* Dont fallback on supported or partially supported browsers */
+
+		if( 'supported' === browsers ) {
+			return !isChrome && !iOSSafari && !iOSFireFox && !iOSChrome;
+		} else {
+			return;
+		}
+	}
+
+	static isMS() {
+		const { userAgent } = window.navigator;
+		return document.documentMode || !!userAgent.match( /Edge/i );
+	}
+
 	constructor( props ) {
 		super( props );
 
 		const self = this;
+		this.hiddenBday = React.createRef();
 
 		self.state = {
 			email: '',
@@ -35,6 +64,7 @@ class SignUp extends PureComponent {
 
 		self.onFieldChange = self.handleFieldChange.bind( self );
 		self.onFormSubmit = self.handleFormSubmit.bind( self );
+		self.handleInputMask = self.handleInputMask.bind( self );
 	}
 
 	componentDidMount() {
@@ -42,12 +72,18 @@ class SignUp extends PureComponent {
 	}
 
 	componentWillUnmount() {
+
 		this.props.deactivateTrap();
 	}
 
 	handleFieldChange( e ) {
 		const { target } = e;
 		this.setState( { [target.name]: target.value } );
+	}
+
+	handleInputMask( e ) {
+		const { target } = e;
+		this.setState( { [target.name]: SignUp.createMask( target.value ) } );
 	}
 
 	handleFormSubmit( e ) {
@@ -79,7 +115,7 @@ class SignUp extends PureComponent {
 		const self = this;
 		const { email, password, firstname, lastname, zip, gender, bday, error } = self.state;
 		const { signin } = self.props;
-
+ 
 		return (
 			<Fragment>
 				<Header>
@@ -114,7 +150,7 @@ class SignUp extends PureComponent {
 						</div>
 						<div className="modal-form-group">
 							<label className="modal-form-label" htmlFor="user-bday">Birthday</label>
-							<input className="modal-form-field" type="date" id="user-bday" name="bday" value={bday} onChange={self.onFieldChange} placeholder="Enter your birthday" />
+							<input className="modal-form-field" type={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? 'text' : 'date' } id="user-bday" name="bday" value={bday} onChange={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? self.handleInputMask : self.onFieldChange } placeholder={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? 'yyyy/mm/dd' : 'Enter your birthday' } />
 						</div>
 					</div>
 					
