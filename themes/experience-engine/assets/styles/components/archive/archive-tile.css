@@ -290,7 +290,9 @@
 }
 
 .show {
-	& .status button svg {
-		fill: var(--brand-primary);
+	& .episode-tile {
+		& .status button svg {
+			fill: var(--brand-primary);
+		}
 	}
 }
