@@ -11,6 +11,7 @@ import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
 
 import { saveUser } from '../../library/experience-engine';
+import { isChrome, isFireFox, isIOS, isWebKit } from '../../library/browser';
 
 import { showSignInModal } from '../../redux/actions/modal';
 import { suppressUserCheck } from '../../redux/actions/auth';
@@ -23,18 +24,14 @@ class SignUp extends PureComponent {
 
 	static detectSupportedDevices( browsers ) {
 		const { userAgent } = window.navigator;
-		const isChrome = !!window.chrome;
-		const isFireFox = -1 > userAgent.toLowerCase().indexOf( 'firefox' );
-		const iOS = !!userAgent.match( /iPad/i ) || !!userAgent.match( /iPhone/i );
-		const webkit = !!userAgent.match( /WebKit/i );
-		const iOSChrome = iOS && !userAgent.match( /Chrome/i );
-		const iOSSafari = iOS && webkit && !userAgent.match( /CriOS/i );
-		const iOSFireFox = iOS && isFireFox;
+		const iOSChrome = isIOS() && !userAgent.match( /Chrome/i );
+		const iOSSafari = isIOS() && isWebKit() && !userAgent.match( /CriOS/i );
+		const iOSFireFox = isIOS() && isFireFox();
 
 		/* Dont fallback on supported or partially supported browsers */
 
 		if( 'supported' === browsers ) {
-			return !isChrome && !iOSSafari && !iOSFireFox && !iOSChrome;
+			return !isChrome() && !iOSSafari && !iOSFireFox && !iOSChrome;
 		} else {
 			return;
 		}
