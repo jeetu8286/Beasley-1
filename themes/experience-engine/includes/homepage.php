@@ -11,7 +11,7 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 			'podcast'   => 'ee_render_homepage_standard_feed',
 			'countdown' => 'ee_render_homepage_payloadable_feed', 
 			'cta'       => 'ee_render_homepage_payloadable_feed',
-			'stream'    => 'ee_render_homepage_stream',
+			// 'stream'    => 'ee_render_homepage_stream', // uncomment if we need stream CTAs on the homepage
 		);
 
 		foreach ( $feeds as $feed ) {
