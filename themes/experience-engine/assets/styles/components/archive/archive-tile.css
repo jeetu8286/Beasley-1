@@ -288,3 +288,9 @@
 		}
 	}
 }
+
+.show {
+	& .status button svg {
+		fill: var(--brand-primary);
+	}
+}
