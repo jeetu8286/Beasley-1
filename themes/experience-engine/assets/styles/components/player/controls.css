@@ -344,6 +344,7 @@
 			font-size: 0.875rem;
 			font-weight: 600;
 			transition: color 250ms ease-in-out;
+			text-align: left;
 			text-transform: uppercase;
 
 			&:hover,
