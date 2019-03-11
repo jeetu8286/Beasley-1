@@ -43,6 +43,11 @@ class LivePlayer extends Component {
 			id: 'MediaPlayer',
 			playerId: 'td_container',
 			techPriority: ['Html5'],
+			geoTargeting: {
+				desktop: { isActive: false },
+				iOS: { isActive: false },
+				android: { isActive: false },
+			},
 		} );
 
 		tdmodules.push( {
