@@ -12,6 +12,12 @@
 		display: none;
 	}
 
+	& .episode-tile {
+		& .status button svg {
+			fill: var(--global-white);
+		}
+	}
+
 	&.-list {
 		& > div {
 			display: flex;
@@ -75,7 +81,7 @@
 		& .episode-tile {
 			padding-bottom: 0;
 
-			& .status button svg path {
+			& .status button svg {
 				fill: var(--global-white);
 			}
 		}
