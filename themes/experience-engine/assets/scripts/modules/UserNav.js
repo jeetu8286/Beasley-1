@@ -107,7 +107,7 @@ class UserNav extends Component {
 	renderSignedInState( user ) {
 		const displayName = user.displayName || user.email;
 		let photo = user.photoURL;
-		if ( !photo || !photo.length ) {
+		if ( ( !photo || !photo.length ) && user.email ) {
 			photo = `//www.gravatar.com/avatar/${md5( user.email )}.jpg?s=100`;
 		}
 
