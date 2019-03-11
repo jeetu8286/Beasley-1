@@ -74,6 +74,10 @@
 
 		& .episode-tile {
 			padding-bottom: 0;
+
+			& .status svg path {
+				fill: var(--global-white);
+			}
 		}
 
 		& .swiper-button-prev {
