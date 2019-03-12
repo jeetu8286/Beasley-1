@@ -47,7 +47,7 @@ if ( ! function_exists( 'ee_edit_feed_button' ) ) :
 			$title = $feed['title'];
 		}
 
-		echo '<div class="edit-feed" data-feed="', esc_attr( $feed['id'] ), '" data-title="', esc_attr( $title ), '"></div>';
+		// echo '<div class="edit-feed" data-feed="', esc_attr( $feed['id'] ), '" data-title="', esc_attr( $title ), '"></div>'; // uncomment need "edit feed" button
 	}
 endif;
 
