@@ -45,6 +45,11 @@
 		margin: 0 auto;
 		max-width: 1071px;
 		padding: 0 1rem 2.22rem;
+
+		h1 {
+			font-size: 2.38rem;
+			line-height: 1.355;
+		}
 	}
 
 	& .profile {
@@ -68,7 +73,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		margin-bottom: 1rem;
-		
+
 		@media(--min-medium-viewport) {
 			align-items: center;
 			flex-direction: row;
@@ -79,7 +84,7 @@
 			display: flex;
 			flex-direction: row;
 			font-size: 1rem;
-			
+
 			& .author-meta-date:first-child {
 				padding-left: 0;
 
