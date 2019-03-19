@@ -21,7 +21,7 @@
 		text-align: center;
 		width: 100%;
 
-		@media (--min-medium-viewport) {
+		@media (--min-large-viewport) {
 			height: calc(100% - 176px);
 			margin-right: -1rem;
 			margin-left: -1rem;
