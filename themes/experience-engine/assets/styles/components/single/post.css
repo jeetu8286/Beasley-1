@@ -54,10 +54,10 @@
 
 	& .profile {
 		color: inherit;
-		font-size: 1.3rem;
+		font-size: 1rem;
 		font-style: italic;
-		font-weight: 300;
-		line-height: 1.5;
+		font-weight: 100;
+		line-height: 1.611;
 	}
 
 	& .post-meta {
