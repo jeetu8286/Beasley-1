@@ -6,6 +6,7 @@
 	& .status {
 		& button {
 			background-color: transparent;
+			border: 1px solid var(--brand-primary);
 			height: 117px;
 			width: 117px;
 		}

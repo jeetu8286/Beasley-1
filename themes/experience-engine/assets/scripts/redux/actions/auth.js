@@ -12,6 +12,7 @@ export const ACTION_SET_USER_FEEDS = 'production' === process.env.NODE_ENV ? 'u3
 export const ACTION_MODIFY_USER_FEEDS = 'production' === process.env.NODE_ENV ? 'u4' : 'MODIFY_USER_FEEDS';
 export const ACTION_UPDATE_USER_FEEDS = 'production' === process.env.NODE_ENV ? 'u5' : 'UPDATE_USER_FEEDS';
 export const ACTION_DELETE_USER_FEED = 'production' === process.env.NODE_ENV ? 'u6' : 'DELETE_USER_FEED';
+export const ACTION_SET_DISPLAY_NAME = 'production' === process.env.NODE_ENV ? 'u7' : 'SET_USER_DISPLAY_NAME';
 
 function suppressCatch() {}
 
@@ -54,10 +55,15 @@ export function deleteUserFeed( feed ) {
 	};
 }
 
+export function setDisplayName( name ) {
+	return { type: ACTION_SET_DISPLAY_NAME, name };
+}
+
 export default {
 	setUser,
 	resetUser,
 	suppressUserCheck,
 	modifyUserFeeds,
 	deleteUserFeed,
+	setDisplayName,
 };

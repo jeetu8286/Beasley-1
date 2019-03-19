@@ -13,7 +13,7 @@ import OAuthButtons from './authentication/OAuthButtons';
 import { saveUser } from '../../library/experience-engine';
 
 import { showSignInModal } from '../../redux/actions/modal';
-import { suppressUserCheck } from '../../redux/actions/auth';
+import { suppressUserCheck, setDisplayName } from '../../redux/actions/auth';
 
 class SignUp extends PureComponent {
 
@@ -70,6 +70,8 @@ class SignUp extends PureComponent {
 
 				saveUser( emailAddress, zip, gender, bday );
 				user.updateProfile( userData );
+
+				self.props.setDisplayName( userData.displayName );
 			} )
 			.then( () => self.props.close() )
 			.catch( error => self.setState( { error: error.message } ) );
@@ -150,11 +152,13 @@ SignUp.propTypes = {
 	deactivateTrap: PropTypes.func.isRequired,
 	suppressUserCheck: PropTypes.func.isRequired,
 	signin: PropTypes.func.isRequired,
+	setDisplayName: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
 		suppressUserCheck,
+		setDisplayName,
 		signin: showSignInModal,
 	}, dispatch );
 }
