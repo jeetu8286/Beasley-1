@@ -71,14 +71,11 @@
 		z-index: 8;
 		width: 100%;
 
-		@media (--min-medium-viewport) {
-			max-width: 33.3333vw;
-		}
-
 		@media (--min-large-viewport) {
 			box-shadow: none;
 			display: block;
 			height: auto;
+			max-width: 33.3333vw;
 			overflow: visible;
 			position: static;
 			padding: 0;
