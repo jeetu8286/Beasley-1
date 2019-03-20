@@ -105,17 +105,24 @@ class UserNav extends Component {
 	}
 
 	renderSignedInState( user ) {
-		const displayName = user.displayName || user.email;
+		const self = this;
+		const { userDisplayName } = self.props;
+
+		const displayName = user.displayName || userDisplayName || user.email;
 		let photo = user.photoURL;
-		if ( !photo || !photo.length ) {
+		if ( ( !photo || !photo.length ) && user.email ) {
 			photo = `//www.gravatar.com/avatar/${md5( user.email )}.jpg?s=100`;
+		}
+
+		if ( -1 !== photo.indexOf( 'gravatar.com' ) ) {
+			photo += '&d=mp';
 		}
 
 		return (
 			<Fragment>
 				<div className="user-nav-info">
 					<span className="user-nav-name">{displayName}</span>
-					<button className="user-nav-button" type="button" onClick={this.onSignOut}>Log Out</button>
+					<button className="user-nav-button" type="button" onClick={self.onSignOut}>Log Out</button>
 				</div>
 				<div className="user-nav-image">
 					<img src={photo} alt={displayName} />
@@ -161,7 +168,7 @@ class UserNav extends Component {
 			component = self.renderSignedOutState();
 		}
 
-		return ReactDOM.createPortal( 
+		return ReactDOM.createPortal(
 			React.createElement( ErrorBoundary, {}, component ),
 			container
 		);
@@ -177,11 +184,13 @@ UserNav.propTypes = {
 	resetUser: PropTypes.func.isRequired,
 	user: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ).isRequired,
 	suppressUserCheck: PropTypes.bool.isRequired,
+	userDisplayName: PropTypes.string.isRequired,
 };
 
 function mapStateToProps( { auth } ) {
 	return {
 		user: auth.user || false,
+		userDisplayName: auth.displayName,
 		suppressUserCheck: auth.suppressUserCheck,
 	};
 }
