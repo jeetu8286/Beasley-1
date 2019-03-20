@@ -1,6 +1,7 @@
 .user-nav {
 	background-color: var(--global-theme-secondary);
 	border-top: 1px solid var(--global-mercury);
+	display: flex;
 	justify-content: space-between;
 	padding: 1.1rem 0;
 	z-index: 10;
@@ -25,12 +26,14 @@
 
 		& img {
 			border-radius: 50%;
-			height: 30px;
-			width: 30px;
+			max-width: 30px;
 		}
 	}
 
 	& .user-nav-info {
+		padding-right: 1rem;
+		text-align: left;
+
 		& span {
 			color: var(--global-theme-font-primary);
 			font-size: .875rem;
