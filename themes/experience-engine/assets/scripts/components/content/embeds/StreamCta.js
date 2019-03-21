@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import AddToFavorites from './AddToFavorites';
 import EditFeed from './EditFeed';
 import Controls from '../../player/Controls';
 
@@ -39,7 +38,6 @@ function StreamCta( props ) {
 				<h4>{title}</h4>
 				<h2>{subtitle}</h2>
 				<div className="actions">
-					<AddToFavorites feedId={id} classes="-icon" addLabel="Subscribe" removeLabel="Unsubscribe" showIcon={false} />
 					<EditFeed feed={id} title={title} className="btn" />
 				</div>
 			</div>

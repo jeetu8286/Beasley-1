@@ -11,7 +11,7 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 			'podcast'   => 'ee_render_homepage_standard_feed',
 			'countdown' => 'ee_render_homepage_payloadable_feed', 
 			'cta'       => 'ee_render_homepage_payloadable_feed',
-			'stream'    => 'ee_render_homepage_stream',
+			// 'stream'    => 'ee_render_homepage_stream', // uncomment if we need stream CTAs on the homepage
 		);
 
 		foreach ( $feeds as $feed ) {
@@ -47,7 +47,7 @@ if ( ! function_exists( 'ee_edit_feed_button' ) ) :
 			$title = $feed['title'];
 		}
 
-		echo '<div class="edit-feed" data-feed="', esc_attr( $feed['id'] ), '" data-title="', esc_attr( $title ), '"></div>';
+		// echo '<div class="edit-feed" data-feed="', esc_attr( $feed['id'] ), '" data-title="', esc_attr( $title ), '"></div>'; // uncomment if need "edit feed" button
 	}
 endif;
 
