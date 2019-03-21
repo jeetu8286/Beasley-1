@@ -10,7 +10,7 @@ import Header from './elements/Header';
 import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
 
-import { saveUser } from '../../library/experience-engine';
+import { saveUser, validateDate } from '../../library/experience-engine';
 import { isChrome, isFireFox, isIOS, isWebKit } from '../../library/browser';
 
 import { showSignInModal } from '../../redux/actions/modal';
@@ -69,7 +69,6 @@ class SignUp extends PureComponent {
 	}
 
 	componentWillUnmount() {
-
 		this.props.deactivateTrap();
 	}
 
@@ -97,7 +96,14 @@ class SignUp extends PureComponent {
 		e.preventDefault();
 
 		self.props.suppressUserCheck();
-		auth.createUserWithEmailAndPassword( emailAddress, password )
+		if( false === validateDate( bday ) ) {
+			self.setState( { error: 'Please ensure date is in MM/DD/YYYY format' } );
+			return false;
+		} else {
+			self.setState( { error: '' } );
+		}
+
+		auth.createUserWithEmailAndPassword( emailAddress, password, bday )
 			.then( ( response ) => {
 				const { user } = response;
 
@@ -114,7 +120,7 @@ class SignUp extends PureComponent {
 		const self = this;
 		const { email, password, firstname, lastname, zip, gender, bday, error } = self.state;
 		const { signin } = self.props;
- 
+
 		return (
 			<Fragment>
 				<Header>
@@ -154,7 +160,7 @@ class SignUp extends PureComponent {
 						</div>
 						<div className="modal-form-group">
 							<label className="modal-form-label" htmlFor="user-bday">Birthday</label>
-							<input className="modal-form-field" type={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? 'text' : 'date' } id="user-bday" name="bday" value={bday} onChange={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? self.handleInputMask : self.onFieldChange } placeholder={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? 'yyyy/mm/dd' : 'Enter your birthday' } />
+							<input className="modal-form-field" type={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? 'text' : 'date' } id="user-bday" name="bday" value={bday} onChange={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? self.handleInputMask : self.onFieldChange } placeholder={ SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ? 'mm/dd/yyy' : 'Enter your birthday' } />
 						</div>
 					</div>
 
