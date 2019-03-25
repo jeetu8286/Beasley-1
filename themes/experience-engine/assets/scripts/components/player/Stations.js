@@ -12,8 +12,23 @@ class Stations extends Component {
 
 		const self = this;
 		self.state = { isOpen: false };
+		self.stationModalRef = React.createRef();
 
 		self.onToggle = self.handleToggleClick.bind( self );
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
+		self.handleUserEventOutside = self.handleUserEventOutside.bind( self );
+	}
+
+	componentDidMount() {
+		document.addEventListener( 'mousedown', this.handleUserEventOutside, false );
+		document.addEventListener( 'scroll', this.handleUserEventOutside, false );
+		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener( 'mousedown', this.handleUserEventOutside, false );
+		document.removeEventListener( 'scroll', this.handleUserEventOutside, false );
+		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
 	handlePlayClick( station ) {
@@ -24,6 +39,21 @@ class Stations extends Component {
 
 	handleToggleClick() {
 		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
+	}
+
+	handleUserEventOutside( e ) {
+		const self = this;
+		const { current: ref } = self.stationModalRef;
+
+		if ( !ref || !ref.contains( e.target ) ) {
+			self.setState( { isOpen: false } );
+		}
+	}
+
+	handleEscapeKeyDown( e ) {
+		if ( 27 === e.keyCode ) {
+			this.setState( { isOpen: false } );
+		}
 	}
 
 	renderStations() {
@@ -37,49 +67,37 @@ class Stations extends Component {
 		const stations = [];
 
 		/* eslint-disable camelcase */
-		streams.forEach( ( { title, subtitle, stream_call_letters, picture } ) => {
-			const styles = {};
-			const { large } = ( picture || {} );
-			const { url } = ( large || {} );
-			if ( url ) {
-				styles.backgroundImage = `url(${url})`;
-			}
+		streams.forEach( ( { subtitle, stream_call_letters } ) => {
 
 			stations.push(
-				<div key={stream_call_letters} style={styles}>
+				<div key={stream_call_letters}>
 					<button type="button" onClick={self.handlePlayClick.bind( self, stream_call_letters )}>
-						{title}
+						<span>{subtitle}</span>
 					</button>
-					<span>{subtitle}</span>
 				</div>
 			);
 		} );
 		/* eslint-enable */
 
 		return (
-			<div className="live-player-modal">
+			<Fragment>
 				{stations}
-			</div>
+			</Fragment>
 		);
 	}
 
 	render() {
 		const self = this;
 		const { stream } = self.props;
-
-		/* eslint-disable camelcase */
-		const { title, stream_dial_numbers } = stream;
-		const dialNumbers = stream_dial_numbers;
-		/* eslint-enable */
+		const { isOpen } = self.state; 
 
 		return (
 			<Fragment>
-				<div className="controls-station control-border">
+				<div ref={self.stationModalRef} className={`controls-station control-border${isOpen ? ' -open' : ''}`}>
 					<button onClick={self.onToggle} aria-label="Open Stations Selector">
 						{ stream ? (
 							<span>
-								<span className="controls-station-title">{ title }</span>
-								{ dialNumbers }
+								<span className="controls-station-title">Saved Stations</span>
 							</span>
 						) : (
 							'Listen Live'
@@ -90,8 +108,11 @@ class Stations extends Component {
 						</svg>
 
 					</button>
+					<div className="live-player-modal">
+						{self.renderStations()}
+					</div> 
 				</div>
-				{self.renderStations()}
+				
 			</Fragment>
 		);
 	}

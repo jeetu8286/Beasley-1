@@ -60,9 +60,9 @@
 @import 'components/episode/episode-info';
 @import 'components/episode/episode-tile';
 
+@import "components/events/event-tile.css";
 @import 'components/events/event';
 
-@import "components/ads/ad-title";
 @import "components/ads/ad";
 @import "components/discover/discover-modal";
 
@@ -75,5 +75,6 @@
 @import "components/back-to-top";
 @import "components/favorites";
 @import "components/formats/post-format";
+@import "components/breaking-news";
 
 @import "utilities/display";

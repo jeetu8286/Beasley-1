@@ -12,6 +12,12 @@
 		display: none;
 	}
 
+	& .episode-tile {
+		& .status button svg {
+			fill: var(--global-white);
+		}
+	}
+
 	&.-list {
 		& > div {
 			display: flex;
@@ -36,7 +42,8 @@
 			}
 		}
 
-		& .contest-tile {
+		& .contest-tile,
+		& .event-tile {
 			& .meta {
 				flex: 0 1 auto;
 			}
@@ -73,6 +80,10 @@
 
 		& .episode-tile {
 			padding-bottom: 0;
+
+			& .status button svg {
+				fill: var(--global-white);
+			}
 		}
 
 		& .swiper-button-prev {
@@ -242,12 +253,6 @@
 			}
 		}
 
-		& .type-tribe_events {
-			& .meta {
-				display: none;
-			}
-		}
-
 		& .type-episode {
 			& .episode-meta {
 				display: none;
@@ -280,6 +285,14 @@
 					margin-right: 1.278rem;
 				}
 			}
+		}
+	}
+}
+
+.show {
+	& .episode-tile {
+		& .status button svg {
+			fill: var(--brand-primary);
 		}
 	}
 }

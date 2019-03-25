@@ -1,0 +1,11 @@
+.event-tile {
+	& .event-dates {
+		align-items: center;
+		color: var(--global-dove-gray);
+		display: flex;
+		font-size: .875rem;
+		font-weight: 500;
+		margin-top: 1.2rem;
+		text-transform: uppercase;
+	}
+}

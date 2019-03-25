@@ -3,13 +3,16 @@ import {
 	ACTION_RESET_USER,
 	ACTION_SUPPRESS_USER_CHECK,
 	ACTION_SET_USER_FEEDS,
+	ACTION_MODIFY_USER_FEEDS,
 	ACTION_DELETE_USER_FEED,
+	ACTION_SET_DISPLAY_NAME,
 } from '../actions/auth';
 
 export const DEFAULT_STATE = {
 	user: null,
 	suppressUserCheck: false,
 	feeds: [],
+	displayName: '',
 };
 
 function reducer( state = {}, action = {} ) {
@@ -20,6 +23,7 @@ function reducer( state = {}, action = {} ) {
 			return { ...DEFAULT_STATE };
 		case ACTION_SUPPRESS_USER_CHECK:
 			return { ...state, suppressUserCheck: true };
+		case ACTION_MODIFY_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS:
 			return { 
 				...state, 
@@ -30,6 +34,8 @@ function reducer( state = {}, action = {} ) {
 			};
 		case ACTION_DELETE_USER_FEED:
 			return { ...state, feeds: state.feeds.filter( item => item.id !== action.feed ) };
+		case ACTION_SET_DISPLAY_NAME:
+			return { ...state, displayName: action.name };
 		default:
 			// do nothing
 			break;

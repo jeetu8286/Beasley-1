@@ -1,5 +1,5 @@
 import { getStorage } from '../../library/local-storage';
-import { ACTION_SET_USER_FEEDS, ACTION_RESET_USER } from '../actions/auth';
+import { ACTION_SET_USER_FEEDS, ACTION_UPDATE_USER_FEEDS, ACTION_RESET_USER } from '../actions/auth';
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_STATUS_CHANGE,
@@ -241,6 +241,7 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_AD_BREAK_SYNCED_HIDE:
 			return { ...state, ...adReset };
 
+		case ACTION_UPDATE_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS: {
 			const newstreams = ( action.feeds || [] )
 				.filter( item => 'stream' === item.type && 0 < ( item.content || [] ).length )

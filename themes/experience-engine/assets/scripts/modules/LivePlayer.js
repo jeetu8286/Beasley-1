@@ -43,6 +43,11 @@ class LivePlayer extends Component {
 			id: 'MediaPlayer',
 			playerId: 'td_container',
 			techPriority: ['Html5'],
+			geoTargeting: {
+				desktop: { isActive: false },
+				iOS: { isActive: false },
+				android: { isActive: false },
+			},
 		} );
 
 		tdmodules.push( {
@@ -123,6 +128,9 @@ class LivePlayer extends Component {
 				<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
 
 				<div className="controls">
+					<ErrorBoundary>
+						<Progress />
+					</ErrorBoundary>
 					<div className="control-section">
 						<ErrorBoundary>
 							<Info />
@@ -137,9 +145,6 @@ class LivePlayer extends Component {
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<Volume />
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Progress />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section">

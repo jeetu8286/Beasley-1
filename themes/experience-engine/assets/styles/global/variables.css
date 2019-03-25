@@ -1,12 +1,14 @@
 :root {
 	--global-black: #000000;
 	--global-mine-shaft: #333333;
+	--global-tundora: #444444;
 	--global-dove-gray: #737373;
 	--global-silver: #cccbcb;
 	--global-silver-chalice: #a5a5a5;
 	--global-mercury: #e5e5e5;
 	--global-gallery: #f0f0f0;
 	--global-white: #ffffff;
+	--global-alabaster: #FCFCFC;
 
 	--social-twiiter: #55acee;
 	--social-facebook: #3b5999;
@@ -23,13 +25,13 @@
 	--global-theme-primary: #f1f1f1;
 	--global-theme-secondary: #fcfcfc;
 
-	--global-theme-font-primary: #444444;
+	--global-theme-font-primary: var(--global-tundora);
 	--global-theme-font-secondary: var(--global-font-primary);
 	--global-theme-font-tertiary: var(--global-dove-gray);
 
 	/* Set default brand colors */
 	--brand-primary: red;
-	--brand-secondaary: green;
+	--brand-secondary: green;
 	--brand-tertiary: blue;
 }
 

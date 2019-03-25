@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="nav-wrap" aria-hidden="true">
-			<nav id="js-primary-nav" class="primary-nav" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+			<nav id="js-primary-nav" class="primary-nav" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
 				<?php echo get_search_form(); ?>
 				<?php get_template_part( 'partials/primary', 'navigation' ); ?>
 			</nav>

@@ -13,7 +13,7 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 		$ee = \Bbgi\Module::get( 'experience-engine' );
 
 		$fluid = array( 'fluid' );
-		$advanced = array( array( 970, 250 ), array( 970, 90 ), array( 728, 90 ), array( 320, 100 ), array( 320, 50 ) );
+		$advanced = array( array( 970, 250 ), array( 970, 90 ), array( 728, 90 ), array( 300, 250 ), array( 320, 100 ), array( 320, 50 ) );
 		$advanced_with_fluid = array_merge( $fluid, $advanced );
 
 		$sizes = array(
@@ -152,7 +152,7 @@ if ( ! function_exists( 'ee_display_dfp_outofpage' ) ) :
 		$dfp_ad_interstitial = \Bbgi\Module::get( 'experience-engine' )->get_ad_slot_unit_id( 'interstitial' );
 		if ( ! empty( $dfp_ad_interstitial ) ) :
 			?><div id="div-gpt-ad-1484200509775-3" style="height:0;overflow:hidden;width:0;">
-				<script type="text/javascript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-1484200509775-3'); });</script>
+				<script>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1484200509775-3'); });</script>
 			</div><?php
 		endif;
 	}

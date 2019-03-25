@@ -3,11 +3,12 @@
 	height: 100%;
 	left: 0;
 	margin-top: -3.333rem;
+	min-height: calc(100vh - 3.333rem);
 	overflow: auto;
 	position: absolute;
 	top: 0;
 	width: 100%;
-	z-index: 80;
+	z-index: 5;
 
 	& .modal-header {
 		font-style: italic;
@@ -76,19 +77,24 @@
 				border-right: 2px solid var(--brand-secondary);
 				content: " ";
 				display: block;
-				height: 8px;
+				height: 4px;
 				pointer-events: none;
 				position: absolute;
 				right: calc(100% - 90px);
-				top: 12px;
+				top: 8px;
 				transform: rotate(45deg);
 				transform-origin: 50%;
 				transition: transform 300ms ease;
-				width: 8px;
+				width: 4px;
+
+				@media(--min-xlarge-viewport) {
+					height: 8px;
+					top: 12px;
+					width: 8px;
+				}
 			}
 
 			&.select-location {
-
 				&::after {
 					right: calc(100% - 115px);
 				}
@@ -110,6 +116,25 @@
 		max-width: 90px;
 		min-width: 90px;
 		width: 100%;
+	}
+
+	& input[type="search"] {
+		padding-top: 0;
+		position: relative;
+		top: -4px;
+
+		@media(--min-xlarge-viewport) {
+			padding-top: .6667rem;
+			top: 0;
+		}
+	}
+
+	& button[type="submit"] {
+		top: -7px;
+
+		@media(--min-xlarge-viewport) {
+			top: 0;
+		}
 	}
 
 	& .post-thumbnail {

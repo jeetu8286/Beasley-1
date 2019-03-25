@@ -107,7 +107,7 @@
 			left: 0;
 			max-height: 25px;
 			position: absolute;
-			top: 0;
+			top: -7px;
 			transform: translateY(50%);
 			width: 3px;
 		}
