@@ -1,13 +1,10 @@
 .user-nav {
 	background-color: var(--global-theme-secondary);
-	/* border-top: 1px solid var(--global-mercury); */
+	border-top: 1px solid var(--global-mercury);
 	display: flex;
 	justify-content: space-between;
 	padding: 1.1rem 0;
 	z-index: 10;
-
-	/* Hiding the User nav temporarily, delete below when ready to enable */
-	visibility: hidden;
 
 	& > div {
 		display: flex;
@@ -73,5 +70,21 @@
 				width: 16px;
 			}
 		}
+	}
+}
+
+/* Show/hide functionality when the user-nav is disabled */
+.hidden-user-nav {
+	& .user-nav {
+		border-top: none;
+		visibility: hidden;
+	}
+
+	& .placeholder-discovery {
+		display: none;
+	}
+
+	& .menu-item-discovery {
+		display: none;
 	}
 }
