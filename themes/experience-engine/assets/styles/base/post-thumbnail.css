@@ -31,7 +31,7 @@
 		padding-top: 0;
 		display: none;
 	}
-	
+
 	& .placeholder-lazyimage {
 		height: auto;
 		position: relative;
@@ -43,4 +43,14 @@
 			width: 100%;
 		}
 	}
+}
+
+.jacapps .post-thumbnail {
+	&::before {
+		content: normal;
+		display: block;
+		padding-top: 0;
+		width: 100%;
+	}
+
 }
