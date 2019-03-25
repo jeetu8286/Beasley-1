@@ -175,6 +175,7 @@
 }
 body.-lock {
 	overflow: hidden;
+	position: relative;
 }
 
 body {
