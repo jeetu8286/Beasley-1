@@ -104,7 +104,7 @@ class ExperienceEngine extends \Bbgi\Module {
 		}
 
 		// Append the device parameter to indicate this request is from the website
-		if ( false === strpos( $path, '?' ) ) {
+		if ( false === stripos( $path, '?' ) ) {
 			$path .= '?';
 		}
 		else {
