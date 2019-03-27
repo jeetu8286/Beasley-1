@@ -13,7 +13,7 @@
 		min-width: 190px;
 		min-height: calc(100vh - 74px); /*74px is the height of the live player.*/
 		padding: 1.375rem 1.1rem;
-		position: absolute;
+		position: fixed;
 		top: 0;
 	}
 
@@ -21,7 +21,7 @@
 		text-align: center;
 		width: 100%;
 
-		@media (--min-medium-viewport) {
+		@media (--min-large-viewport) {
 			height: calc(100% - 176px);
 			margin-right: -1rem;
 			margin-left: -1rem;
@@ -32,6 +32,10 @@
 			padding: 0 1rem;
 			position: fixed;
 			width: 100%;
+		}
+
+		@media (--min-large-viewport) {
+			text-align: left;
 		}
 	}
 
@@ -65,23 +69,20 @@
 		left: 0;
 		max-width: 82.6667vw;
 		overflow: auto;
-		padding: 3.5rem 1.1rem 0;
+		padding: 3.5rem 1.1rem 5.6rem;
 		position: fixed;
 		top: 0;
 		z-index: 8;
 		width: 100%;
 
-		@media (--min-medium-viewport) {
-			max-width: 33.3333vw;
-		}
-
 		@media (--min-large-viewport) {
 			box-shadow: none;
 			display: block;
 			height: auto;
+			max-width: 33.3333vw;
 			overflow: visible;
 			position: static;
-			padding: 0;
+			padding: 0 0 10.5rem 0;
 			top: 0;
 			width: auto;
 		}
@@ -102,6 +103,19 @@
 	}
 
 	&.menu-is-active {
+		& .primary-sidebar-navigation::before {
+			background-color: var(--global-theme-secondary);
+			content: '';
+			display: block;
+			height: 100%;
+			left: 0;
+			max-height: 5rem;
+			position: fixed;
+			top: 0;
+			width: 82.6667vw;
+			z-index: 9;
+		}
+
 		& .logo {
 			display: flex;
 			justify-content: center;
@@ -111,10 +125,6 @@
 			@media(--min-medium-viewport) {
 				width: calc(33.3333vw - 2.2rem);
 			}
-		}
-
-		& .primary-sidebar-navigation {
-
 		}
 
 		& .site-menu-toggle {
@@ -177,5 +187,30 @@
 	}
 }
 body.-lock {
+	height: 100%;
 	overflow: hidden;
+	position: fixed;
+	width: 100%;
+}
+
+body {
+	@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /* this is specifically to remove the shake on the nav when scrolling in IE. */
+		height: 100%;
+		overflow: auto;
+	}
+	@supports (-ms-ime-align:auto) {
+		height: 100%;
+		overflow: auto;
+	}
+}
+
+html {
+	@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /* this is specifically to remove the shake on the nav when scrolling in IE. */
+		height: 100%;
+		overflow: hidden;
+	}
+	@supports (-ms-ime-align:auto) {
+		height: 100%;
+		overflow: hidden;
+	}
 }

@@ -76,7 +76,7 @@ class UserNav extends Component {
 					self.props.showCompleteSignup();
 					self.props.hideSplashScreen();
 				} else if ( UserNav.isHomepage() ) {
-					self.props.loadPage( `${window.bbgiconfig.wpapi}feeds-content`, {
+					self.props.loadPage( `${window.bbgiconfig.wpapi}feeds-content?device=other`, {
 						suppressHistory: true,
 						fetchParams: {
 							method: 'POST',
@@ -112,6 +112,10 @@ class UserNav extends Component {
 		let photo = user.photoURL;
 		if ( ( !photo || !photo.length ) && user.email ) {
 			photo = `//www.gravatar.com/avatar/${md5( user.email )}.jpg?s=100`;
+		}
+
+		if ( -1 !== photo.indexOf( 'gravatar.com' ) ) {
+			photo += '&d=mp';
 		}
 
 		return (
@@ -164,7 +168,7 @@ class UserNav extends Component {
 			component = self.renderSignedOutState();
 		}
 
-		return ReactDOM.createPortal( 
+		return ReactDOM.createPortal(
 			React.createElement( ErrorBoundary, {}, component ),
 			container
 		);
