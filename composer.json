@@ -18,10 +18,8 @@
 		"wpackagist-plugin/restricted-site-access": "*",
 		"wpackagist-plugin/term-management-tools": "*",
 		"wpackagist-plugin/the-events-calendar": "*",
-		"wpackagist-plugin/video-thumbnails": "*",
 		"wpackagist-plugin/wordpress-importer": "*",
 		"wpackagist-plugin/wp-crontrol": "*",
-		"wpackagist-plugin/yet-another-related-posts-plugin": "*",
 		"wpackagist-plugin/wordpress-seo": "*",
 		"wpackagist-plugin/safe-redirect-manager": "*",
 		"wpackagist-plugin/simple-local-avatars": "*",
@@ -32,10 +30,6 @@
 	},
 	"require-dev": {
 		"wpackagist-plugin/query-monitor": "*",
-		"wpackagist-plugin/debug-bar": "*",
-		"wpackagist-plugin/debug-bar-cron": "*",
-		"wpackagist-plugin/debug-bar-extender": "*",
-		"wpackagist-plugin/debug-bar-remote-requests": "*",
 		"wpackagist-plugin/rewrite-rules-inspector": "*",
 		"wpackagist-plugin/user-switching": "*"
 	},

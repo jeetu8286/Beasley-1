@@ -127,13 +127,19 @@ class Video extends \Bbgi\Module {
 		}
 
 		$embed_id = 'ls_embed_' . rand( 1, getrandmax() );
+		$url = sprintf(
+			'//livestream.com/accounts/%s/events/%s/videos/%s/player',
+			esc_attr( $account_id ),
+			esc_attr( $event_id ),
+			esc_attr( $video_id )
+		);
 
 		ob_start();
 
 		?><div class="livestream livestream-oembed">
 			<iframe
 				id="<?php echo esc_attr( $embed_id ); ?>"
-				src="//livestream.com/accounts/<?php echo esc_attr( $account_id ); ?>/events/<?php echo esc_attr( $event_id ); ?>/videos/<?php echo esc_attr( $video_id ); ?>/player?autoPlay=false&mute=false"
+				src="<?php echo esc_url( $url ); ?>?autoPlay=false&mute=false"
 				frameborder="0" scrolling="no" allowfullscreen>
 			</iframe>
 			<script
@@ -143,7 +149,7 @@ class Video extends \Bbgi\Module {
 			</script>
 		</div><?php
 
-		return ob_get_clean();
+		return apply_filters( 'bbgi_livestream_video_html', ob_get_clean(), $embed_id, $url );
 	}
 
 }

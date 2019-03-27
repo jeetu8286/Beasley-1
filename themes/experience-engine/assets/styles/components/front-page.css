@@ -1,0 +1,101 @@
+.home {
+	& .section-head {
+		font-style: italic;
+	}
+
+	& .content-wrap + div:not(.content-wrap) {
+		padding-bottom: 3.889rem;
+	}
+
+	& .cta,
+	& .countdown  {
+		margin: 0 auto;
+		max-width: 1071px;
+		padding: 2.222rem 1rem;
+	}
+
+	& .placeholder-cta,
+	& .placeholder-countdown {
+		padding-bottom: 2.222rem;
+	}
+
+	& .cta,
+	& .countdown {
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		border-radius: 0;
+
+		@media (--min-medium-viewport) {
+			border-radius: 5px;
+		}
+	}
+
+	& .cta-content,
+	& .countdown-content {
+		text-align: center;
+	}
+
+	& .cta-button {
+		display: inline-block;
+	}
+
+	& .countdown-timer {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 2rem;
+
+		& .time {
+			background-color: var(--brand-primary);
+			color: var(--global-white);
+			display: block;
+			font-size: 3rem;
+			font-family: monospace;
+			font-weight: 700;
+			padding: .25rem 0;
+
+			&::after {
+				content: ":";
+				margin: 0 .25rem;
+			}
+
+			&:first-child {
+				border-radius: 5px 0 0 5px;
+				padding-left: .5rem;
+			}
+
+			&:last-child {
+				border-radius: 0 5px 5px 0;
+				padding-right: .5rem;
+
+				&::after {
+					content: "";
+					margin: 0;
+				}
+			}
+		}
+	}
+
+	& #inner-content {
+		& .content-wrap {
+			position: relative;
+		}
+
+		& .placeholder-editfeed {
+			background-color: var(--global-white);		
+			position: absolute;
+			right: 0;
+			top: .3rem;
+			z-index: 10;
+
+			& button {
+				background-color: transparent;
+				border: none;
+				color: var(--brand-primary);
+				cursor: pointer;
+				font-style: italic;
+				font-weight: bold;
+			}
+		}
+	}
+}

@@ -34,12 +34,17 @@ abstract class Module {
 	 */
 	public static function register_modules() {
 		self::$_modules = array(
+			'site'              => new \Bbgi\Site(),
 			'seo'               => new \Bbgi\Seo(),
+			'settings'          => new \Bbgi\Settings(),
+			'shortcodes'        => new \Bbgi\Shortcodes(),
 			'video'             => new \Bbgi\Media\Video(),
+			'image-attributes'  => new \Bbgi\Image\Attributes(),
+			'thumbnail-column'  => new \Bbgi\Image\ThumbnailColumn(),
 			'experience-engine' => new \Bbgi\Integration\ExperienceEngine(),
+			'google'            => new \Bbgi\Integration\Google(),
 			'firebase'          => new \Bbgi\Integration\Firebase(),
 			'dfp'               => new \Bbgi\Integration\Dfp(),
-			'settings'          => new \Bbgi\Settings(),
 			'facebook'          => new \Bbgi\Integration\Facebook(),
 		);
 

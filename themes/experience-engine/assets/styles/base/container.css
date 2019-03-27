@@ -1,0 +1,38 @@
+body,
+html {
+	&.locked {
+		position: fixed;
+		overflow: hidden;
+		-webkit-overflow-scrolling: auto;
+		height: 100%;
+	}
+}
+
+.container {
+	padding-bottom: 74px; /*height of the fixed player*/
+
+	@media(--min-large-viewport) {
+		padding-left: 190px;
+	}
+}
+
+.content {
+	padding-bottom: 4.611rem;
+}
+
+#inner-content {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.content-wrap {
+	margin: 0 auto;
+	max-width: 1071px;
+	padding: 0 1.3rem 2.22rem;
+	width: 100%;
+
+	& .archive-tiles:last-child {
+		padding-bottom: 0;
+	}
+}

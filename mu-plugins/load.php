@@ -25,6 +25,7 @@ include __DIR__ . '/legacy-redirects/class-CMM_Legacy_Redirects.php';
 include __DIR__ . '/gmr-fallback-thumbnails/gmr-fallback-thumbnails.php';
 include __DIR__ . '/gmr-mobile-homepage-curation/gmr-mobile-homepage-curation.php';
 include __DIR__ . '/advanced-custom-fields/acf.php';
+include __DIR__ . '/featured-videos/featured-video.php';
 
 add_action( 'wp_loaded', array( \Bbgi\Module::class, 'register_modules' ), 0 );
 
@@ -106,3 +107,18 @@ add_filter( 'ep_post_sync_args', function( $args ) {
 	unset( $args['comment_count'], $args['comment_status'], $args['ping_status'] );
 	return $args;
 } );
+
+function tribe( $slug_or_class = null ) {
+	$container = Tribe__Container::init();
+
+	$suppressed_modules = array();
+	if ( ! is_admin() ) {
+		$suppressed_modules = array(
+			'tec.assets',
+		);
+	}
+
+	return null === $slug_or_class || in_array( $slug_or_class, $suppressed_modules )
+		? $container
+		: $container->make( $slug_or_class );
+}

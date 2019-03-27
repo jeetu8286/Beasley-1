@@ -31,26 +31,21 @@ define( 'GREATERMEDIA_VERSION', $version );
 add_theme_support( 'homepage-curation' );
 add_theme_support( 'homepage-countdown-clock' );
 add_theme_support( 'secondstreet' );
+add_theme_support( 'firebase' );
+add_theme_support( 'legacy-live-player' );
 add_theme_support( 'html5', array( 'search-form' ) );
-
-include_once __DIR__ . '/vendor/autoload.php';
 
 require_once __DIR__ . '/includes/liveplayer/class-liveplayer.php';
 require_once __DIR__ . '/includes/site-options/class-gmr-site-options.php';
-require_once __DIR__ . '/includes/site-options/class-gmr-site-options-helper-functions.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-admin.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-walker.php';
 require_once __DIR__ . '/includes/mega-menu/mega-menu-mobile-walker.php';
-require_once __DIR__ . '/includes/image-attributes/loader.php';
 require_once __DIR__ . '/includes/category-options.php';
 require_once __DIR__ . '/includes/class-favicon.php';
-require_once __DIR__ . '/includes/iframe-embed.php';
 require_once __DIR__ . '/includes/flexible-feature-images/gmr-flexible-feature-images.php';
 require_once __DIR__ . '/includes/auction-nudge/gmr-auction-nudge.php';
 require_once __DIR__ . '/includes/class-gm-tinymce.php';
 require_once __DIR__ . '/includes/dfp.php';
-require_once __DIR__ . '/includes/shortcodes.php';
-require_once __DIR__ . '/includes/class-firebase.php';
 require_once __DIR__ . '/includes/class-wp-widget-triton-song-history.php';
 require_once __DIR__ . '/includes/class-wp-widget-recent-contests.php';
 require_once __DIR__ . '/includes/futuri.php';
@@ -143,30 +138,23 @@ function greatermedia_scripts_styles() {
 	wp_enqueue_script( 'firebase', '//www.gstatic.com/firebasejs/3.6.9/firebase.js', null, null );
 	wp_enqueue_script( 'iframe-resizer', '//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.min.js', null, null );
 
-	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill' ), GREATERMEDIA_VERSION, true );
-	wp_localize_script( 'greatermedia', 'platformConfig', apply_filters( 'beasley_js_platform_config', array(
-		'firebase' => array(
-			'apiKey'            => get_option( 'beasley_firebase_apiKey' ),
-			'authDomain'        => get_option( 'beasley_firebase_authDomain' ),
-			'databaseURL'       => get_option( 'beasley_firebase_databaseURL' ),
-			'storageBucket'     => get_option( 'beasley_firebase_storageBucket' ),
-			'messagingSenderId' => get_option( 'beasley_firebase_messagingSenderId' ),
-		),
-	) ) );
+	wp_enqueue_script( 'greatermedia', "{$baseurl}/assets/js/frontend{$postfix}.js", array( 'modernizr', 'jquery', 'jquery-waypoints', 'underscore', 'classlist-polyfill', 'firebase' ), GREATERMEDIA_VERSION, true );
+	wp_localize_script( 'greatermedia', 'platformConfig', apply_filters( 'bbgiconfig', array() ) );
 
 	/**
 	 * Insert the global Simpli.fi retargeting script tag.
 	 */
-	wp_enqueue_script(
-		'simpli-fi-global-retargeting',
-		'https://tag.simpli.fi/sifitag/273421f0-841f-0135-dc80-06659b33d47c',
-		array(),
-		null,
-		true
-	);
+	wp_enqueue_script( 'simpli-fi-global-retargeting', '//tag.simpli.fi/sifitag/273421f0-841f-0135-dc80-06659b33d47c', array(), null, true );
+
+	wp_enqueue_script( 'liveplayer' );
+	wp_enqueue_script( 'gmlp-js' );
+	wp_enqueue_script( 'gmr-gallery' );
+	wp_enqueue_script( 'gmedia_keywords-autocomplete-script' );
+	wp_enqueue_script( 'omny' );
 
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,700,800', null, null );
 	wp_enqueue_style( 'greatermedia', "{$baseurl}/assets/css/greater_media{$postfix}.css", array( 'google-fonts' ), GREATERMEDIA_VERSION );
+	wp_enqueue_style( 'gmr-gallery' );
 
 	// YARPP styles are not being used, so let's get rid of them!
 	wp_dequeue_style( 'yarppWidgetCss' );
@@ -182,6 +170,15 @@ add_action( 'get_footer', function () {
  	wp_dequeue_style( 'yarppRelatedCss' );
  	wp_dequeue_style( 'yarpp-thumbnails-yarpp-thumbnail' );
 } );
+
+/**
+ * Helper function for use in conditionals related to content display and the News/Sports theme
+ *
+ * @return bool
+ */
+function is_news_site() {
+	return (bool) filter_var( get_option( 'gmr_newssite' ), FILTER_VALIDATE_BOOLEAN );
+}
 
 /**
  * Register Navigation Menus
@@ -1222,3 +1219,27 @@ function beasley_suppress_empty_search( $where, \WP_Query $query ) {
 	return $where;
 }
 add_filter( 'posts_where', 'beasley_suppress_empty_search', 10, 2 );
+
+function beasley_google_onload_code() {
+	$onload = <<<EOL
+document.addEventListener("DOMContentLoaded", function() {
+	jQuery( document ).on( 'pjax:end', function () {
+		ga( 'set', 'location', window.location.href );
+		ga( 'send', 'pageview' );
+	} );
+
+	var \$body = jQuery( 'body' );
+
+	\$body.on( 'inlineAudioPlaying.gmr', function () {
+		ga( 'send', 'event', 'audio', 'Inline audio playing' );
+	} );
+
+	\$body.on( 'liveStreamPlaying.gmr', function () {
+		ga( 'send', 'event', 'audio', 'Live stream playing' );
+	} );
+});
+EOL;
+
+	return $onload;
+}
+add_filter( 'bbgi_google_onload_code', 'beasley_google_onload_code' );
