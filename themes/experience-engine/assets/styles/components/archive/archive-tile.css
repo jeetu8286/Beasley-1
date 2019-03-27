@@ -12,10 +12,8 @@
 		display: none;
 	}
 
-	& .episode-tile {
-		& .status button svg {
-			fill: var(--brand-primary);
-		}
+	& .status button svg {
+		fill: var(--global-white);
 	}
 
 	&.-list {
@@ -82,7 +80,7 @@
 			padding-bottom: 0;
 
 			& .status button svg {
-				fill: var(--global-white);
+				fill: var(--brand-primary);
 			}
 		}
 
