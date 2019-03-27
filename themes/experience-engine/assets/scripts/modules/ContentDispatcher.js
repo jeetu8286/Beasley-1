@@ -95,17 +95,29 @@ class ContentDispatcher extends Component {
 		if ( carousels ) {
 			for ( let i = 0, len = carousels.length; i < len; i++ ) {
 				const count = carousels[i].classList.contains( '-large' ) ? 2.2 : 4.2;
+				const group = carousels[i].classList.contains( '-large' ) ? 2 : 4;
 
 				new Swiper(carousels[i], { // eslint-disable-line
-					slidesPerView: count,
+					slidesPerView: count + 2,
+					slidesPerGroup: group + 2,
 					spaceBetween: 36,
 					freeMode: true,
 					breakpoints: {
+						1680: {
+							slidesPerView: count + 1,
+							slidesPerGroup: count + 1,
+						},
+						1280: {
+							slidesPerView: count,
+							slidesPerGroup: group,
+						},
 						900: {
 							slidesPerView: 2.2,
+							slidesPerGroup: 2,
 						},
 						480: {
 							slidesPerView: 1.2,
+							slidesPerGroup: 1,
 							spaceBetween: 27,
 						}
 					},
