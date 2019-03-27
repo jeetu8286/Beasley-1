@@ -12,6 +12,10 @@
 		display: none;
 	}
 
+	& .status button svg {
+		fill: var(--global-white);
+	}
+
 	&:not(.-carousel) {
 		& .episode-tile {
 			& .status button svg {
@@ -96,6 +100,9 @@
 
 		& .episode-tile {
 				padding-bottom: 0;
+				& .status button svg {
+					fill: var(--brand-primary);
+				}
 		}
 
 		& .swiper-button-prev {
@@ -240,6 +247,10 @@
 			& .status button {
 				background-color: var(--brand-tertiary);
 				border-color: var(--brand-tertiary);
+
+				& svg {
+					fill: var(--brand-primary);
+				}
 			}
 		}
 
