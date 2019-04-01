@@ -14,7 +14,7 @@
 
 	& .episode-tile {
 		& .status button svg {
-			fill: var(--global-white);
+			fill: var(--brand-primary);
 		}
 	}
 
