@@ -8,6 +8,7 @@
 @import "base/post-thumbnail";
 @import "base/wp";
 @import "base/media";
+@import "base/tables";
 
 @import "components/section/section-header";
 
