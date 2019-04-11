@@ -96,13 +96,16 @@ class SignUp extends PureComponent {
 		e.preventDefault();
 
 		self.props.suppressUserCheck();
-		if( false === validateDate( bday ) ) {
-			self.setState( { error: 'Please ensure date is in MM/DD/YYYY format' } );
-			return false;
-		} else {
-			self.setState( { error: '' } );
-		}
 
+		if( SignUp.detectSupportedDevices( 'supported' ) || SignUp.isMS() ) {
+			if( false === validateDate( bday ) ) {
+				self.setState( { error: 'Please ensure date is in MM/DD/YYYY format' } );
+				return false;
+			} else {
+				self.setState( { error: '' } );
+			}
+		}
+		
 		auth.createUserWithEmailAndPassword( emailAddress, password, bday )
 			.then( ( response ) => {
 				const { user } = response;
