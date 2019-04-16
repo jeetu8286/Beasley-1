@@ -181,7 +181,7 @@
 		}
 
 		& .controls-recent-songs {
-			background-color: #efefef;
+			background-color: var(--global-theme-secondary);
 			bottom: 75px;
 			font-size: 1rem;
 			left: -115px;
@@ -465,6 +465,10 @@
 .-light {
 
 	& .controls {
+		background-color: var(--global-gallery);
+	}
+
+	& .controls-recent-songs {
 		background-color: var(--global-gallery);
 	}
 }
