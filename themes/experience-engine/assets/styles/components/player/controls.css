@@ -161,6 +161,14 @@
 			display: flex;
 			margin-bottom: 0;
 			white-space: nowrap;
+
+			&:nth-of-type(2) {
+				display: inline-block;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				width: 98%;
+			}
 		}
 	}
 
