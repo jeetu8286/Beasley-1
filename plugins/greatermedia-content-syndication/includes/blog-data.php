@@ -770,6 +770,7 @@ class BlogData {
 
 		$tmp = download_url( $filename );
 		if ( is_wp_error( $tmp ) ) {
+			self::log( "ImportMedia( $post_id / $original_id ), Failed to Download $filename : " . $tmp->get_error_message() );
 			return $tmp;
 		}
 
@@ -803,6 +804,8 @@ class BlogData {
 
 				// If error storing temporarily, unlink
 				if ( is_wp_error( $tmp ) ) {
+					// NOTE: Appears to be an invalid code path - if $tmp is a WP_Error,
+					// we already return early.
 					@unlink( $file_array['tmp_name'] );
 					$file_array['tmp_name'] = '';
 				}
@@ -819,6 +822,7 @@ class BlogData {
 
 				// If error storing permanently, unlink
 				if ( is_wp_error( $id ) ) {
+					self::log( "ImportMedia( $post_id / $original_id ), Media Sideload Failed $filename : " . $id->get_error_message() );
 					@unlink( $file_array['tmp_name'] );
 				} else {
 					// Try to migrate the post attachment to S3 if it failed for whatever reason
@@ -938,14 +942,29 @@ class BlogData {
 	private static function updateImageCaption( $new_id, $old_id ) {
 		if ( self::$content_site_id ) {
 			switch_to_blog( self::$content_site_id );
+
 			$old_post = get_post( $old_id, ARRAY_A );
+			$old_alt  = get_post_meta( $old_id, '_wp_attachment_image_alt', true );
+			$old_attr = get_post_meta( $old_id, 'gmr_image_attribution', true );
+
 			restore_current_blog();
 
 			if ( ! empty( $old_post ) ) {
 				$new_post = get_post( $new_id, ARRAY_A );
 				if ( ! empty( $new_post ) ) {
 					$new_post['post_excerpt'] = $old_post['post_excerpt'];
+					$new_post['post_title']   = $old_post['post_title'];
+					$new_post['post_content'] = $old_post['post_content'];
+
 					wp_update_post( $new_post );
+
+					if ( ! empty( $old_alt ) ) {
+						update_post_meta( $new_id, '_wp_attachment_image_alt', $old_alt );
+					}
+
+					if ( ! empty( $old_attr ) ) {
+						update_post_meta( $new_id, 'gmr_image_attribution', $old_attr );
+					}
 				}
 			}
 		}

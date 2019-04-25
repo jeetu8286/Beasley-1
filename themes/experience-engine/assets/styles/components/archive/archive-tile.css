@@ -25,8 +25,36 @@
 	}
 
 	& .episode-tile {
+		& .status {
+
+			&.LIVE_PLAYING {
+				& button svg rect {
+					fill: var(--brand-primary);
+				}
+			}
+
+			&.LIVE_BUFFERING {
+				& .loading-btn {
+					& .loading::after {
+						border-left-color: var(--brand-primary);
+						border-bottom-color: var(--brand-primary);
+					}
+				}
+			}
+
+			&.LIVE_STOP,
+			&.LIVE_PAUSE {
+				& button svg {
+					fill: var(--brand-primary);
+				}
+			}
+		}
+	}
+
+	& .episodes {
+		
 		& .status button svg {
-			fill: var(--brand-primary);
+			fill: var(--global-white);
 		}
 	}
 
@@ -322,6 +350,10 @@
 	& .episode-tile {
 		& .status button svg {
 			fill: var(--brand-primary);
+
+			& rect {
+				fill: var(--brand-primary);
+			}
 		}
 	}
 }

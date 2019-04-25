@@ -2,6 +2,34 @@
 
 add_action( 'beasley_after_body', 'ee_setup_embed_filters' );
 add_filter( 'bbgi_livestream_video_html', 'ee_update_livestream_html', 10, 3 );
+add_filter( 'embed_oembed_html', 'ee_responsive_oembed_html', 10, 3 );
+add_filter( 'embed_oembed_html', 'ee_prepare_embedly_content', 10, 4 );
+
+/**
+ * Embedly gives the placeholder blockquote content a class of '.embedly-card' which is also used for the
+ * iFrame. In order to give it a unique identifier that isn't confused with the iFrame, this function will
+ * give it a temporary unique identifier which will allow it to be rendered through React correctly.
+ *
+ * This will provide a solution that is backwards-compatible with existing Embedly content
+ */
+if ( ! function_exists( 'ee_prepare_embedly_content' ) ) :
+	function ee_prepare_embedly_content( $cached_html, $url, $attr, $post_id ) {
+
+		// Do the default action for jacapps pages
+		if ( ee_is_jacapps() ) {
+			return $cached_html;
+		}
+
+		$cached_html = str_ireplace(
+			'<blockquote class="embedly-card"',
+			'<blockquote class="embedly-card-prerender"',
+			$cached_html
+		);
+
+		return $cached_html;
+	}
+endif;
+
 
 if ( ! function_exists( 'ee_setup_embed_filters' ) ) :
 	function ee_setup_embed_filters() {
@@ -76,3 +104,40 @@ if ( ! function_exists( 'ee_update_livestream_html' ) ) :
 		return $html;
 	}
 endif;
+
+/**
+ * Adds a responsive embed wrapper around oEmbed content
+ *
+ * @param string $html The oEmbed markup
+ * @param string $url  The URL being embedded
+ * @param array  $attr An array of attributes
+ * @return string      Updated embed markup
+ */
+function ee_responsive_oembed_html( $html, $url, $attr ) {
+	$classes = array();
+
+	if ( false !== stripos( $html, 'embedly-card' ) ) {
+		$classes_all = array(
+			'embedly-responsive-media',
+		);
+	}
+	else {
+		// Add these classes to all embeds except embedly
+		$classes_all = array(
+			'responsive-media',
+		);
+	}
+
+	// Check for different providers and add appropriate classes.
+	if ( false !== strpos( $url, 'vimeo.com' ) ) {
+		$classes[] = 'vimeo';
+	}
+
+	if ( false !== strpos( $url, 'youtube.com' ) ) {
+		$classes[] = 'youtube';
+	}
+
+	$classes = array_merge( $classes, $classes_all );
+
+	return '<div class="' . esc_attr( implode( $classes, ' ' ) ) . '">' . $html . '</div>';
+}
