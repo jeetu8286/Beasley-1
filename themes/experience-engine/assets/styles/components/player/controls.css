@@ -153,7 +153,9 @@
 			letter-spacing: 0.01em;
 			line-height: 1.2;
 			padding: .1rem .25rem;
+			position: relative;
 			text-transform: uppercase;
+			top: -1px;
 		}
 
 		& span:not(.live) {
@@ -162,17 +164,12 @@
 
 		& p {
 			align-items: center;
-			display: flex;
+			display: inline-block;
 			margin-bottom: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
 			white-space: nowrap;
-
-			&:nth-of-type(2) {
-				display: inline-block;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				width: 98%;
-			}
+			width: 98%;
 		}
 	}
 
