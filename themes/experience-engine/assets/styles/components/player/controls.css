@@ -33,7 +33,6 @@
 
 		&:first-child {
 			flex: 2 0px;
-			margin-left: 1rem;
 			order: 2;
 			overflow: hidden;
 
