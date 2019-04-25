@@ -93,6 +93,7 @@
 
 			@media(--min-xlarge-viewport) {
 				flex: 1 100%;
+				min-width: 416px;
 			}
 		}
 
