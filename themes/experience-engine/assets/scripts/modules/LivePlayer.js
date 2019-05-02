@@ -157,7 +157,7 @@ class LivePlayer extends Component {
 							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} colors={buttonsBackgroundStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Volume />
+							<Volume colors={buttonsFillStyle} />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section">
