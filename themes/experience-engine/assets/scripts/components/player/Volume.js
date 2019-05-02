@@ -50,9 +50,8 @@ class Volume extends PureComponent {
 
 	render() {
 		const self = this;
-		const { volume, audio, setVolume } = self.props;
+		const { volume, audio, setVolume, colors } = self.props;
 		const { showVolume } = self.state;
-		const { colors } = self.props;
 
 		if ( audio && audio.length && 0 === audio.indexOf( 'https://omny.fm/' ) ) {
 			return false;

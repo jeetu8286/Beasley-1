@@ -123,6 +123,7 @@ class LivePlayer extends Component {
 		controlsStyle.backgroundColor = customColors['--brand-background-color'] || customColors['--global-theme-secondary'];
 		buttonsBackgroundStyle.backgroundColor = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
 		buttonsFillStyle.fill = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		buttonsFillStyle.stroke = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
 
 		console.log( customColors );
 
@@ -165,7 +166,7 @@ class LivePlayer extends Component {
 							<Sponsor />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Stations />
+							<Stations colors={buttonsFillStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<Contacts />
