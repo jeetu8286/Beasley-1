@@ -114,6 +114,16 @@ class LivePlayer extends Component {
 			notification = <Offline />;
 		}
 
+		let { customColors } = container.dataset;
+		let controlsStyle = {};
+		let buttonStyle = {};
+
+		customColors = JSON.parse( customColors );
+		controlsStyle.backgroundColor = customColors['--brand-background-color'] || customColors['--global-theme-secondary'];
+		buttonStyle.backgroundColor = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+
+		console.log( customColors );
+
 		const children = (
 			<Fragment>
 				{notification}
@@ -131,7 +141,7 @@ class LivePlayer extends Component {
 					<Progress />
 				</ErrorBoundary>
 
-				<div className="controls">
+				<div className="controls" style={ controlsStyle }>
 					<div className="control-section">
 						<ErrorBoundary>
 							<Info />
@@ -142,7 +152,7 @@ class LivePlayer extends Component {
 							<RecentSongs />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
+							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} colors={buttonStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<Volume />
