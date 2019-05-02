@@ -116,11 +116,13 @@ class LivePlayer extends Component {
 
 		let { customColors } = container.dataset;
 		let controlsStyle = {};
-		let buttonStyle = {};
+		let buttonsBackgroundStyle = {};
+		let buttonsFillStyle = {};
 
 		customColors = JSON.parse( customColors );
 		controlsStyle.backgroundColor = customColors['--brand-background-color'] || customColors['--global-theme-secondary'];
-		buttonStyle.backgroundColor = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		buttonsBackgroundStyle.backgroundColor = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		buttonsFillStyle.fill = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
 
 		console.log( customColors );
 
@@ -149,10 +151,10 @@ class LivePlayer extends Component {
 					</div>
 					<div className="control-section -centered">
 						<ErrorBoundary>
-							<RecentSongs />
+							<RecentSongs colors={buttonsFillStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} colors={buttonStyle} />
+							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} colors={buttonsBackgroundStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<Volume />

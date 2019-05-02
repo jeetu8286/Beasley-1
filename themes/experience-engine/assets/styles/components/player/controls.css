@@ -227,7 +227,7 @@
 			&:hover,
 			&:focus {
 				& svg rect {
-					fill: var(--brand-primary)
+					fill: var(--brand-primary) !important; /* Use important to override color settings*/
 				}
 			}
 		}
