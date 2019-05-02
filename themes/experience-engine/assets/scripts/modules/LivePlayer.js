@@ -169,7 +169,7 @@ class LivePlayer extends Component {
 							<Stations colors={buttonsFillStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Contacts />
+							<Contacts colors={buttonsFillStyle} />
 						</ErrorBoundary>
 					</div>
 				</div>
