@@ -115,15 +115,17 @@ class LivePlayer extends Component {
 		}
 
 		let { customColors } = container.dataset;
-		let controlsStyle = {};
-		let buttonsBackgroundStyle = {};
-		let buttonsFillStyle = {};
+		const controlsStyle = {};
+		const buttonsBackgroundStyle = {};
+		const buttonsFillStyle = {};
+		const textStyle = {};
 
 		customColors = JSON.parse( customColors );
 		controlsStyle.backgroundColor = customColors['--brand-background-color'] || customColors['--global-theme-secondary'];
 		buttonsBackgroundStyle.backgroundColor = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
 		buttonsFillStyle.fill = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
 		buttonsFillStyle.stroke = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		textStyle.color = customColors['--brand-text-color'] || customColors['--global-theme-secondary'];
 
 		console.log( customColors );
 
@@ -147,7 +149,7 @@ class LivePlayer extends Component {
 				<div className="controls" style={ controlsStyle }>
 					<div className="control-section">
 						<ErrorBoundary>
-							<Info />
+							<Info colors={textStyle} />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section -centered">
@@ -166,7 +168,7 @@ class LivePlayer extends Component {
 							<Sponsor />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Stations colors={buttonsFillStyle} />
+							<Stations colors={buttonsFillStyle} textColors={textStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<Contacts colors={buttonsFillStyle} />

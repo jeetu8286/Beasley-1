@@ -415,7 +415,7 @@
 
 			&:hover,
 			&:focus {
-				color: var(--global-theme-font-secondary);
+				color: var(--global-theme-font-secondary) !important; /* Use important to override color settings */
 			}
 
 			& svg {

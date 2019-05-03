@@ -88,13 +88,13 @@ class Stations extends Component {
 
 	render() {
 		const self = this;
-		const { stream, colors } = self.props;
+		const { stream, colors, textColors } = self.props;
 		const { isOpen } = self.state; 
 
 		return (
 			<Fragment>
 				<div ref={self.stationModalRef} className={`controls-station control-border${isOpen ? ' -open' : ''}`}>
-					<button onClick={self.onToggle} aria-label="Open Stations Selector">
+					<button onClick={self.onToggle} aria-label="Open Stations Selector" style={textColors}>
 						{ stream ? (
 							<span>
 								<span className="controls-station-title">Saved Stations</span>
