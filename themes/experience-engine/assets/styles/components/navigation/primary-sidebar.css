@@ -41,7 +41,13 @@
 		/* Windows Only */
 		@nest .is-windows & {
 			@media (--min-large-viewport) {
+				padding-right: 16px;
 				overflow-y: hidden;
+			}
+
+			&:hover {
+				padding-right: 0;
+				overflow-y: auto;
 			}
 		}
 	}
