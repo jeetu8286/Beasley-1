@@ -18,7 +18,10 @@ the_post();
 
 	<div class="entry-content content-wrap">
 		<div class="description">
-			<?php get_template_part( 'partials/featured-media', 'autoheight' ); ?>
+			<?php if ( bbgi_featured_image_layout_is( null, 'inline' ) ) : ?>
+				<?php get_template_part( 'partials/featured-media', 'autoheight' ); ?>
+			<?php endif; ?>
+
 			<?php the_content(); ?>
 
 			<?php if ( ( $contest_prize = trim( get_post_meta( get_the_ID(), 'prizes-desc', true ) ) ) ) : ?>
