@@ -44,13 +44,13 @@ class SongArchive extends PureComponent {
 					<p>Loading ...</p>
 					:
 					<div>
-						<p>{ moment( this.state.now ).format( 'MMM D, YYYY' ) }</p>
+						<h4>{ moment.unix( this.state.now ).format( 'MMM D, YYYY' ) }</h4>
 
 						<ul>
 							{ this.state.songs.map( ( song ) => {
 								return (
 									<li key={ song.id }>
-										<span className="song-time">{ moment( song.timestamp ).format( 'HH:mm A' ) }</span>
+										<span className="song-time">{ moment.unix( song.timestamp ).format( 'HH:mm A' ) }</span>
 										&nbsp;
 										<span className="song-title">{ song.title }</span>
 										&mdash;
