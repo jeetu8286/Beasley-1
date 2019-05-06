@@ -180,6 +180,10 @@ class PrimaryNav extends PureComponent {
 					document.body.classList.remove( '-lock' );
 				}
 
+				if ( isWindowsBrowser() ) {
+					this.detectScrollbar();
+				}
+
 			} else {
 				if ( !container.classList.contains( 'is-active' ) ){
 					container.setAttribute( 'aria-hidden', true );
