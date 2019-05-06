@@ -16,4 +16,3 @@ define( 'GMR_FLEXIBLE_FEATURE_IMAGES_PATH', dirname( __FILE__ ) );
 define( 'GMR_FLEXIBLE_FEATURE_IMAGES_URL', trailingslashit( get_template_directory_uri() ) . 'includes/flexible-feature-images/' );
 
 include trailingslashit( GMR_FLEXIBLE_FEATURE_IMAGES_PATH ) . 'includes/class-flexible-feature-images.php';
-include trailingslashit( GMR_FLEXIBLE_FEATURE_IMAGES_PATH ) . 'includes/functions.php';
