@@ -37,6 +37,13 @@
 		@media (--min-large-viewport) {
 			text-align: left;
 		}
+
+		/* Windows Only */
+		@nest .is-windows & {
+			@media (--min-large-viewport) {
+				overflow-y: hidden;
+			}
+		}
 	}
 
 	& .custom-logo-link {

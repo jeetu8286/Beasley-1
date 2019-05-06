@@ -34,7 +34,6 @@ class Application extends PureComponent {
 		}
 
 		if ( isWindowsBrowser() ) {
-			console.log( 'is microsoft' );
 			document.body.classList.add( 'is-windows' );
 		}
 
