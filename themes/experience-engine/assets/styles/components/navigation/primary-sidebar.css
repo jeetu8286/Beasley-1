@@ -39,7 +39,7 @@
 		}
 
 		/* Windows Only */
-		@nest .is-windows & {
+		@nest .is-windows &.has-scrollbar {
 			@media (--min-large-viewport) {
 				padding-right: 16px;
 				overflow-y: hidden;
