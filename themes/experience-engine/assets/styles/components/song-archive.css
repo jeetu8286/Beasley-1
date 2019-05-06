@@ -1,4 +1,10 @@
 .song-archive {
+	padding: 0 15px;
+
+	@media ( --min-large-viewport ) {
+		padding: 0;
+	}
+
 	& ul {
 		list-style-type: none;
 		padding: 0;
