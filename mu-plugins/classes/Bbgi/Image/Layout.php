@@ -122,9 +122,9 @@ class Layout extends \Bbgi\Module {
 	 * Enqueue JavaScript and CSS resources for admin functionality as needed
 	 */
 	public function admin_enqueue_scripts() {
-		global $post, $pagenow, $typenow;
+		global $post, $pagenow;
 
-		if ( $pagenow == 'post.php' && $typenow == 'post' && $post && post_type_supports( $post->post_type, 'flexible-feature-image' ) ) {
+		if ( $pagenow == 'post.php' && $post && post_type_supports( $post->post_type, 'flexible-feature-image' ) ) {
 			$feature_image_preference = get_post_meta( $post->ID, 'post_feature_image_preference', true );
 
             ?><script>

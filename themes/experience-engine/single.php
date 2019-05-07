@@ -14,6 +14,10 @@ the_post();
 	<?php endif; ?>
 
 	<header class="post-info">
+		<?php if ( bbgi_featured_image_layout_is( null, 'top' ) || bbgi_featured_image_layout_is( null, 'poster' ) ) : ?>
+			<?php get_template_part( 'partials/featured-media', 'autoheight' ); ?>
+		<?php endif; ?>
+
 		<h1>
 			<?php the_title(); ?>
 		</h1>
