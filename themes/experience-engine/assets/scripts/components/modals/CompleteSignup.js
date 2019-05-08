@@ -52,7 +52,7 @@ class CompleteSignup extends PureComponent {
 		const { user, close } = self.props;
 
 		/* Convert bday since validateDate expects date in mm/dd/yyyy format */
-		if ( bday && bday.indexOf( '-' ) !== -1 ) {
+		if ( bday && -1 !== bday.indexOf( '-' ) ) {
 			bday = bday.split( '-' ).reverse().join( '/' );
 		}
 
