@@ -67,12 +67,11 @@ class Stations extends Component {
 		const stations = [];
 
 		/* eslint-disable camelcase */
-		streams.forEach( ( { subtitle, stream_call_letters } ) => {
-
+		streams.forEach( ( { title, stream_call_letters } ) => {
 			stations.push(
 				<div key={stream_call_letters}>
 					<button type="button" onClick={self.handlePlayClick.bind( self, stream_call_letters )}>
-						<span>{subtitle}</span>
+						<span>{title}</span>
 					</button>
 				</div>
 			);
