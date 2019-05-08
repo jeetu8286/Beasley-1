@@ -67,10 +67,19 @@ class Stations extends Component {
 		const stations = [];
 
 		/* eslint-disable camelcase */
-		streams.forEach( ( { title, stream_call_letters } ) => {
+		streams.forEach( ( { title, stream_call_letters, picture } ) => {
+			const { large, original } = picture || {};
+			const { url } = large || original || {};
+
+			let logo = false;
+			if ( url ) {
+				logo = <img src={url} alt={title} />;
+			}
+
 			stations.push(
 				<div key={stream_call_letters}>
-					<button type="button" onClick={self.handlePlayClick.bind( self, stream_call_letters )}>
+					<button type="button" className="control-station-button" onClick={self.handlePlayClick.bind( self, stream_call_letters )}>
+						{logo}
 						<span>{title}</span>
 					</button>
 				</div>
