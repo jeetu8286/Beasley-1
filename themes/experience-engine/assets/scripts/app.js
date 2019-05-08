@@ -49,7 +49,7 @@ class Application extends PureComponent {
 						<PrimaryNav />
 					</ErrorBoundary>
 					<ErrorBoundary>
-						<UserNav />
+						<UserNav suppressUserCheck={ false } />
 					</ErrorBoundary>
 					<ErrorBoundary>
 						<SearchForm />
