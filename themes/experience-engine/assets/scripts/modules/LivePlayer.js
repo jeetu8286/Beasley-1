@@ -127,10 +127,6 @@ class LivePlayer extends Component {
 
 				<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
 
-				<ErrorBoundary>
-					<Progress />
-				</ErrorBoundary>
-
 				<div className="controls">
 					<div className="control-section">
 						<ErrorBoundary>
@@ -138,14 +134,19 @@ class LivePlayer extends Component {
 						</ErrorBoundary>
 					</div>
 					<div className="control-section -centered">
+						<div className="controls-wrapper -centered">
+							<ErrorBoundary>
+								<RecentSongs />
+							</ErrorBoundary>
+							<ErrorBoundary>
+								<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
+							</ErrorBoundary>
+							<ErrorBoundary>
+								<Volume />
+							</ErrorBoundary>
+						</div>
 						<ErrorBoundary>
-							<RecentSongs />
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Volume />
+							<Progress />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section">
