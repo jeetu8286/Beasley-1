@@ -486,6 +486,10 @@
 	& .time {
 		font-size: .875rem;
 
+		@media(--min-medium-viewport) {
+			display: none;
+		}
+
 		&.-current {
 			color: var(--brand-primary);
 		}
