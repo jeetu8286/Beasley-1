@@ -483,6 +483,21 @@
 		}
 	}
 
+	& .time {
+		font-size: .875rem;
+
+		&.-current {
+			color: var(--brand-primary);
+		}
+
+		&.-total {
+			&:before {
+				content: "|";
+				margin: 0 5px;
+			}
+		}
+	}
+
 }
 
 .controls-progress {
@@ -513,15 +528,15 @@
 
 	& .time {
 		display: none;
-	}
 
-	& .time.-desktop {
-		@media(--min-medium-viewport) {
-			align-items: center;
-			color: var(--global-theme-font-primary);
-			display: inline-flex;
-			font-size: .675rem;
-			margin-top: 3px;
+		&.-desktop {
+			@media(--min-medium-viewport) {
+				align-items: center;
+				color: var(--global-theme-font-primary);
+				display: inline-flex;
+				font-size: .675rem;
+				margin-top: 3px;
+			}
 		}
 	}
 }
