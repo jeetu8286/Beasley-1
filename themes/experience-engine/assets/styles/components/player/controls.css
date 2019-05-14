@@ -151,7 +151,6 @@
 		& input[type="range"] {
 			width: 100%;
 		}
-
 	}
 
 	& .controls-info {
@@ -486,6 +485,23 @@
 
 }
 
+.controls-progress {
+	&.-mobile {
+		display: block;
+
+		@media(--min-medium-viewport) {
+			display: none;
+		}
+	}
+
+	&.-desktop {
+		display: none;
+
+		@media(--min-medium-viewport) {
+			display: block;
+		}
+	}
+}
 
 .status {
 	& button {
@@ -536,8 +552,11 @@
 	display: flex;
 	height: 54px;
 	justify-content: center;
-	margin-top: -40px;
 	width: 54px;
+
+	@media(--min-medium-viewport) {
+		margin-top: -40px;
+	}
 
 	&:focus,
 	&:hover {
