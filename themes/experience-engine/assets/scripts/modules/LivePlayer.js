@@ -8,6 +8,7 @@ import Stations from '../components/player/Stations';
 import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
 import Volume from '../components/player/Volume';
+import Rewind from '../components/player/Rewind';
 
 import Progress from '../components/player/Progress';
 import RecentSongs from '../components/player/RecentSongs';
@@ -135,6 +136,9 @@ class LivePlayer extends Component {
 					</div>
 					<div className="control-section -centered">
 						<div className="controls-wrapper -centered">
+							<ErrorBoundary>
+								<Rewind />
+							</ErrorBoundary>
 							<ErrorBoundary>
 								<RecentSongs />
 							</ErrorBoundary>
