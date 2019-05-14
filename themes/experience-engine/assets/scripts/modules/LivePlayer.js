@@ -137,9 +137,6 @@ class LivePlayer extends Component {
 					<div className="control-section -centered">
 						<div className="controls-wrapper -centered">
 							<ErrorBoundary>
-								<Rewind />
-							</ErrorBoundary>
-							<ErrorBoundary>
 								<RecentSongs />
 							</ErrorBoundary>
 							<ErrorBoundary>
@@ -154,6 +151,9 @@ class LivePlayer extends Component {
 						</ErrorBoundary>
 					</div>
 					<div className="control-section">
+						<ErrorBoundary>
+							<Rewind />
+						</ErrorBoundary>
 						<ErrorBoundary>
 							<Sponsor />
 						</ErrorBoundary>

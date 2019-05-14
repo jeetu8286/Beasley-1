@@ -279,6 +279,28 @@
 		}
 	}
 
+	& .controls-rewind {
+		margin-left: -50px;
+
+		& button {
+			& svg path {
+				fill: var(--global-theme-font-primary);
+				transition: fill 250ms ease-in-out;
+			}
+
+			&:hover,
+			&:focus {
+				& svg path {
+					fill: var(--brand-primary)
+				}
+			}
+
+			@media(--min-medium-viewport) {
+				display: none;
+			}
+		}
+	}
+
 	& .controls-recent-songs {
 		background: var(--global-theme-secondary);
 		bottom: 102px; /*Height of the live player bar + 18px*/
