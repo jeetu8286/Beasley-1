@@ -144,7 +144,7 @@
 	& .controls-progress {
 		left: 0;
 		position: absolute;
-		bottom: 16px;
+		bottom: 8px;
 		width: 100%;
 		z-index: 9;
 
@@ -498,7 +498,30 @@
 		display: none;
 
 		@media(--min-medium-viewport) {
-			display: block;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+		}
+
+		& .-progress {
+			align-self: center;
+			margin: 0 10px;
+			position: relative;
+			width: 100%;
+		}
+	}
+
+	& .time {
+		display: none;
+	}
+
+	& .time.-desktop {
+		@media(--min-medium-viewport) {
+			align-items: center;
+			color: var(--global-theme-font-primary);
+			display: inline-flex;
+			font-size: .675rem;
+			margin-top: 3px;
 		}
 	}
 }
