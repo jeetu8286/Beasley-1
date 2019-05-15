@@ -150,7 +150,7 @@ class LivePlayer extends Component {
 					</div>
 					<div className="control-section">
 						<ErrorBoundary>
-							<Sponsor />
+							<Sponsor className="controls-sponsor" minWidth="769" />
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<Stations />
@@ -160,6 +160,8 @@ class LivePlayer extends Component {
 						</ErrorBoundary>
 					</div>
 				</div>
+
+				<Sponsor className="sponsor-mobile" maxWidth="768" />
 			</Fragment>
 		);
 
