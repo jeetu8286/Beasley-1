@@ -4,7 +4,7 @@ import {
 } from '../actions/navigation';
 
 export const DEFAULT_STATE = {
-	current: 'home',
+	current: 'menu-item-home',
 	previous: null
 };
 
