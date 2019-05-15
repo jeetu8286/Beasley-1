@@ -14,6 +14,7 @@ class RecentSongs extends PureComponent {
 		self.onToggle = self.handleToggleClick.bind( self );
 		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
 		self.handleUserEventOutside = self.handleUserEventOutside.bind( self );
+		self.handleViewMoreClick = self.handleViewMoreClick.bind( self );
 	}
 
 	componentDidMount() {
@@ -47,6 +48,10 @@ class RecentSongs extends PureComponent {
 		}
 	}
 
+	handleViewMoreClick() {
+		this.setState( { isOpen: false } );
+	}
+
 	render() {
 		const self = this;
 		const { isOpen } = self.state;
@@ -78,6 +83,15 @@ class RecentSongs extends PureComponent {
 			);
 		} );
 
+		let config = window.bbgiconfig;
+		let callsign = '';
+		let viewMoreLink = '';
+
+		if ( config.streams && 0 < config.streams.length ) {
+			callsign     = config.streams[0].stream_call_letters;
+			viewMoreLink = '/stream/' + callsign + '/';
+		}
+
 		return (
 			<div ref={self.recentSongsModalRef} className={`controls-recent${isOpen ? ' -open' : ''}`}>
 				<button onClick={self.onToggle}>
@@ -99,6 +113,7 @@ class RecentSongs extends PureComponent {
 					<ul>
 						{items}
 					</ul>
+					<a href={viewMoreLink} onClick={this.handleViewMoreClick}>View More</a>
 				</div>
 			</div>
 		);
