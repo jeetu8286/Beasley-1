@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { showEditFeedModal } from '../../../redux/actions/modal';
+//import Notification from '../../Notification';
 
 //function EditFeed( { loggedIn, showModal, feed, title, feeds, className } ) {
 /** For some reason feeds are not being initializaed, leaving for context */
@@ -18,11 +19,15 @@ class EditFeed extends PureComponent {
 		super();
 		const self = this;
 
+		self.state = {
+			showNotification: true
+		};
+
 		self.handleRemove = self.handleRemove.bind( self );
 	}
 
-	handleRemove( event ) {
-		console.log( event );
+	handleRemove() {
+
 	}
 
 	render() {
