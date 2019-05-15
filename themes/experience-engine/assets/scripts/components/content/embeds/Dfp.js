@@ -140,23 +140,6 @@ class Dfp extends PureComponent {
 					.addSize( [300, 0], [[300, 250], [1, 1]] )
 
 					.build();
-			} else if ( 'player-sponsorship-mobile' === unitName ) {
-				sizeMapping = googletag.sizeMapping()
-
-					.addSize( [0,0], ['fluid'] )
-
-					.addSize( [1000, 200], [] )
-
-					.build();
-			} else if ( 'player-sponsorship' === unitName ) {
-				sizeMapping = googletag.sizeMapping()
-
-					// does not display on small screens
-					.addSize( [0,0], [] )
-
-					.addSize( [1000,200], ['fluid'] )
-
-					.build();
 			}
 
 			if ( sizeMapping ) {
