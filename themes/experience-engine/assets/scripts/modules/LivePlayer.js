@@ -108,12 +108,15 @@ class LivePlayer extends Component {
 			play,
 			pause,
 			resume,
+			duration,
 		} = props;
 
 		let notification = false;
 		if ( ! online ) {
 			notification = <Offline />;
 		}
+
+		const progressClass = ! duration ? '-live' : '-podcast';
 
 		const children = (
 			<Fragment>
@@ -144,7 +147,7 @@ class LivePlayer extends Component {
 								<RecentSongs />
 							</ErrorBoundary>
 							<ErrorBoundary>
-								<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
+								<Controls status={status} play={() => play( station )} pause={pause} resume={resume} progressClass={progressClass} />
 							</ErrorBoundary>
 							<ErrorBoundary>
 								<Volume />
@@ -186,6 +189,7 @@ LivePlayer.propTypes = {
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
+	duration: PropTypes.number.isRequired,
 };
 
 function mapStateToProps( { player } ) {
@@ -194,6 +198,7 @@ function mapStateToProps( { player } ) {
 		status: player.status,
 		adPlayback: player.adPlayback,
 		adSynced: player.adSynced,
+		duration: player.duration
 	};
 }
 

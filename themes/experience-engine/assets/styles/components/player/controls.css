@@ -631,3 +631,17 @@
 		background-color: var(--global-gallery);
 	}
 }
+
+.-live.LIVE_PAUSE .resume-btn,
+.-live.LIVE_PLAYING .pause-btn,
+.-live.LIVE_STOP .play-btn,
+.-live.LIVE_FAILED .play-btn,
+.-live.LIVE_BUFFERING .loading-btn,
+.-live.LIVE_CONNECTING .loading-btn,
+.-live.LIVE_RECONNECTING .loading-btn,
+.-live.STREAM_GEO_BLOCKED .play-btn,
+.-live.STATION_NOT_FOUND .play-btn {
+	@media(--min-medium-viewport) {
+		margin-top: 0;
+	}
+}
