@@ -7,7 +7,7 @@ const Notification = ( { message } ) => {
 	}
 
 	return (
-		<div className="breaking-news-banner -fade">
+		<div className="breaking-news-banner notification-banner -fade">
 			<div className="breaking-news-banner__inner">
 				<span className="breaking-news-banner__excerpt">{message}</span>
 			</div>
