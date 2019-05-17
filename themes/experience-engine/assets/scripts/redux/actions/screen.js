@@ -101,7 +101,7 @@ export function hideSplashScreen() {
 	return { type: ACTION_HIDE_SPLASH_SCREEN };
 }
 
-export function updateNotice( isOpen, message ) {
+export function updateNotice( { isOpen, message } ) {
 	return {
 		type: ACTION_UPDATE_NOTICE,
 		force: true,

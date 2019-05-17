@@ -122,6 +122,7 @@ class Discover extends Component {
 	render() {
 		const self = this;
 		const { error, filteredFeeds, loading } = self.state;
+		const { notice } = self.props;
 
 		let items = <div className="loading" />;
 		if ( !loading ) {
@@ -156,7 +157,7 @@ class Discover extends Component {
 						<h2>Discover</h2>
 					</Header>
 
-					<Notification message={error} />
+					{notice.isOpen && <Notification message={notice.message} />}
 
 					<Alert message={error} />
 
@@ -180,8 +181,11 @@ Discover.propTypes = {
 	deleteUserFeed: PropTypes.func.isRequired,
 };
 
-function mapStateToProps( { auth } ) {
-	return { selectedFeeds: auth.feeds };
+function mapStateToProps( { auth, screen } ) {
+	return {
+		selectedFeeds: auth.feeds,
+		notice: screen.notice
+	};
 }
 
 function mapDispatchToProps( dispatch ) {

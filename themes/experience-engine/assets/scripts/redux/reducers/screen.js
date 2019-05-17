@@ -20,7 +20,10 @@ export const DEFAULT_STATE = {
 	partials: {},
 	error: '',
 	splashScreen: true,
-	notice: {}
+	notice: {
+		isOpen: false,
+		message: '',
+	}
 };
 
 function manageScripts( load, unload ) {
@@ -152,8 +155,14 @@ function reducer( state = {}, action = {} ) {
 			hideSplashScreen();
 			return { ...state, splashScreen: false };
 
-		case ACTION_UPDATE_NOTICE:
-			return { ...state, isOpen: action.isOpen, message: action.message };
+		case ACTION_UPDATE_NOTICE: {
+			const notice = {
+				isOpen: action.isOpen,
+				message: action.message,
+			};
+
+			return { ...state, notice: notice };
+		}
 
 		default:
 			// do nothing
