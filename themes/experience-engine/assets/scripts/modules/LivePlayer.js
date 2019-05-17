@@ -161,7 +161,9 @@ class LivePlayer extends Component {
 					</div>
 				</div>
 
-				<Sponsor className="sponsor-mobile" maxWidth="1059" />
+				<ErrorBoundary>
+					<Sponsor className="sponsor-mobile" maxWidth="1059" />
+				</ErrorBoundary>
 			</Fragment>
 		);
 
