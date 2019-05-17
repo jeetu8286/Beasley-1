@@ -50,21 +50,21 @@ class EditFeed extends Component {
 
 		return (
 			<div className="edit-feed-controls">
-				<button className={className} aria-label="Edit Feed" onClick={self.onMoveUp}>
+				<button className={className} aria-label="Move Down Feed" onClick={self.onMoveUp}>
 					<svg width="14" height="9" aria-labelledby="move-down-modal-title move-down-modal-desc"  xmlns="http://www.w3.org/2000/svg">
 						<title id="move-down-modal-title">Move Down</title>
 						<path d="M12.88 2.275L7.276 7.88a.38.38 0 0 1-.552 0L1.12 2.275a.38.38 0 0 1 0-.554l.601-.6a.38.38 0 0 1 .554 0L7 5.846l4.726-4.727a.38.38 0 0 1 .553 0l.601.601a.38.38 0 0 1 0 .554z" fill="currentColor" stroke="currentColor" strokeWidth=".5"/>
 					</svg>
 				</button>
 
-				<button className={className} aria-label="Edit Feed" onClick={self.onMoveUp}>
+				<button className={className} aria-label="Move Up Feed" onClick={self.onMoveUp}>
 					<svg width="14" height="9" aria-labelledby="move-up-modal-title move-up-modal-desc"  xmlns="http://www.w3.org/2000/svg">
 						<title id="move-up-modal-title">Move Up</title>
 						<path d="M1.12 6.725L6.724 1.12a.38.38 0 0 1 .552 0l5.604 5.605a.38.38 0 0 1 0 .554l-.601.6a.38.38 0 0 1-.553 0L7 3.154 2.274 7.88a.38.38 0 0 1-.553 0l-.601-.601a.38.38 0 0 1 0-.554z" fill="currentColor" stroke="currentColor" strokeWidth=".5"/>
 					</svg>
 				</button>
 
-				<button className={className} aria-label="Edit Feed" onClick={self.onRemove}>
+				<button className={className} aria-label="Remove Feed" onClick={self.onRemove}>
 					<svg width="13" height="14" aria-labelledby="close-modal-title close-modal-desc" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<title id="close-modal-title">Close</title>
 						<path fillRule="evenodd" clipRule="evenodd" d="M6.707 7.707L11 12l.707-.707L7.414 7l4.293-4.293L11 2 6.707 6.293l-5-5L1 2l5 5-5 5 .707.707 5-5z" fill="currentColor"/>
