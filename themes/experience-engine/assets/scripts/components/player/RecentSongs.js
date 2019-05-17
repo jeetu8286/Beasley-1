@@ -108,7 +108,7 @@ class RecentSongs extends PureComponent {
 					</svg>
 				</button>
 
-				<div className="controls-recent-songs" style="background: var( --brand-primary ); color: var( --brand-text-color );">
+				<div className="controls-recent-songs" style="background: var( --brand-background-color ); color: var( --brand-text-color );">
 					<h5 style="color: var( --brand-text-color );">Recently played</h5>
 					<ul>
 						{items}
