@@ -1,7 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-function Notification( { message } ) {
+const Notification = ( { message } ) => {
+	if ( !message || !message.length ) {
+		return false;
+	}
+
 	return (
 		<div className="breaking-news-banner -fade">
 			<div className="breaking-news-banner__inner">
@@ -9,7 +13,7 @@ function Notification( { message } ) {
 			</div>
 		</div>
 	);
-}
+};
 
 Notification.propTypes = {
 	message: PropTypes.string

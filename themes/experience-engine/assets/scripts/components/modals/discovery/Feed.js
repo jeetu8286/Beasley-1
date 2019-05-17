@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import LazyImage from '../../content/embeds/LazyImage';
 import SvgIcon from '../../SvgIcon';
+import Alert from '../../modals/elements/Alert';
 
 class Feed extends PureComponent {
 
@@ -20,6 +21,8 @@ class Feed extends PureComponent {
 
 		self.setState( { loading: true } );
 		self.props.onAdd( id );
+
+		return <Alert message="Feed added to your homepage" />;
 	}
 
 	handleRemove() {

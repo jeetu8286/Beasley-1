@@ -8,6 +8,7 @@ import trapHOC from '@10up/react-focus-trap-hoc';
 import Header from './elements/Header';
 import Alert from './elements/Alert';
 import CloseButton from './elements/Close';
+import Notification from '../Notification';
 
 import FeedItem from './discovery/Feed';
 import DiscoveryFilters from './discovery/Filters';
@@ -154,6 +155,8 @@ class Discover extends Component {
 					<Header>
 						<h2>Discover</h2>
 					</Header>
+
+					<Notification message={error} />
 
 					<Alert message={error} />
 

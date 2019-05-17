@@ -9,6 +9,7 @@ import {
 	ACTION_LOADED_PARTIAL,
 	ACTION_LOAD_ERROR,
 	ACTION_HIDE_SPLASH_SCREEN,
+	ACTION_UPDATE_NOTICE
 } from '../actions/screen';
 
 export const DEFAULT_STATE = {
@@ -19,6 +20,7 @@ export const DEFAULT_STATE = {
 	partials: {},
 	error: '',
 	splashScreen: true,
+	notice: {}
 };
 
 function manageScripts( load, unload ) {
@@ -149,6 +151,9 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_HIDE_SPLASH_SCREEN:
 			hideSplashScreen();
 			return { ...state, splashScreen: false };
+
+		case ACTION_UPDATE_NOTICE:
+			return { ...state, isOpen: action.isOpen, message: action.message };
 
 		default:
 			// do nothing
