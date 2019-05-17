@@ -17,6 +17,15 @@ class Feed extends PureComponent {
 		const self = this;
 		self.handleAdd = self.handleAdd.bind( self );
 		self.handleRemove = self.handleRemove.bind( self );
+		self.hideNotice = self.hideNotice.bind( self );
+	}
+
+	hideNotice() {
+		setTimeout( () => {
+			this.props.updateNotice( {
+				isOpen: false
+			} );
+		}, 2000 );
 	}
 
 	handleAdd() {
@@ -30,6 +39,8 @@ class Feed extends PureComponent {
 			message: 'Feed added to your homepage',
 			isOpen: true
 		} );
+
+		self.hideNotice();
 	}
 
 	handleRemove() {
@@ -38,6 +49,13 @@ class Feed extends PureComponent {
 
 		self.setState( { loading: true } );
 		self.props.onRemove( id );
+
+		self.props.updateNotice( {
+			message: 'Feed removed from your homepage',
+			isOpen: true
+		} );
+
+		self.hideNotice();
 	}
 
 	render() {
@@ -84,6 +102,7 @@ Feed.propTypes = {
 	added: PropTypes.bool.isRequired,
 	onAdd: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
+	updateNotice: PropTypes.func.isRequired,
 };
 
 Feed.defaultProps = {
