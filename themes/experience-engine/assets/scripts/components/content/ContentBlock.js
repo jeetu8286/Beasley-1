@@ -86,18 +86,11 @@ class ContentBlock extends Component {
 			document.getElementById( partial ? 'inner-content' : 'content' )
 		);
 
-		if ( isHome ) {
-			portal = <Homepage>{portal}</Homepage>;
-		}
-
 		const embedComponents = ready ? embeds.map( ContentBlock.createEmbed ) : false;
 
-		return (
-			<Fragment>
-				{portal}
-				{embedComponents}
-			</Fragment>
-		);
+		return isHome
+			? <Homepage>{portal}{embedComponents}</Homepage>
+			: <Fragment>{portal}{embedComponents}</Fragment>;
 	}
 
 }

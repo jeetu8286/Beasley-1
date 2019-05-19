@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import HomepageOrderingContext from '../../../context/homepage-ordering';
-import { modifyUserFeeds, deleteUserFeed } from '../../../redux/actions/auth';
+import { deleteUserFeed } from '../../../redux/actions/auth';
 
 class EditFeed extends Component {
 
@@ -78,7 +78,6 @@ EditFeed.propTypes = {
 	feeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
 	title: PropTypes.string,
 	className: PropTypes.string,
-	modifyFeeds: PropTypes.func.isRequired,
 	deleteFeed: PropTypes.func.isRequired,
 };
 
@@ -98,7 +97,6 @@ function mapStateToProps( { auth } ) {
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
-		modifyFeeds: modifyUserFeeds,
 		deleteFeed: deleteUserFeed,
 	}, dispatch );
 }

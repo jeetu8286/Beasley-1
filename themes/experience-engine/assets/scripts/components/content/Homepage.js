@@ -20,15 +20,6 @@ class Homepage extends Component {
 		return 0;
 	}
 
-	static getFeedsHash( feeds ) {
-		const feedsHash = {};
-		for ( let i = 0, len = feeds.length; i < len; i++ ) {
-			feedsHash[feeds[i].id] = i + 1;
-		}
-
-		return feedsHash;
-	}
-
 	constructor( props ) {
 		super( props );
 
@@ -44,32 +35,45 @@ class Homepage extends Component {
 	}
 
 	updateOrderNumbers() {
-		const feeds = this.shiftFeeds( 0, false );
-		const feedsHash = Homepage.getFeedsHash( feeds );
-		const container = document.getElementById( 'inner-content' );
-		if ( container ) {
-			for ( let i = 0, j = 0, index = 0; i < container.childNodes.length; i++ ) {
-				const child = container.childNodes[i];
-				if ( child && child.id ) {
-					if ( feedsHash[child.id] ) {
-						index = child.style.order = ( j + 1 ) * 10;
-						j++;
-					} else {
-						child.style.order = index + 1;
-					}
-				}
+		this.repositionFeeds( this.shiftFeeds( 0, false ) );
+	}
+
+	repositionFeeds( feeds ) {
+		let i = 0;
+		feeds.forEach( ( item ) => {
+			const child = document.querySelector( `#inner-content > #${item.id}` );
+			if ( child ) {
+				child.style.order = ( i + 1 ) * 10;
+				i++;
 			}
-		}
+		} );
+
+		document.querySelectorAll( '#inner-content > div' ).forEach( ( child, i ) => {
+			if ( child && ! child.style.order ) {
+				child.style.order = i * 10 + 1;
+			}
+		} );
 	}
 
 	shiftFeeds( shift, feed ) {
 		const self = this;
 		const { feeds } = self.props;
 
-		const newfeeds = feeds.map( ( item, i ) => ( {
-			id: item.id,
-			sortorder: i * 10 - ( item.id === feed ? shift : 0 ),
-		} ) );
+		let index = 0;
+		let delta = 0;
+		const newfeeds = feeds.map( ( item ) => {
+			if ( document.querySelector( `#inner-content > #${item.id}` ) ) {
+				index++;
+				delta = 0;
+			} else {
+				delta += .01;
+			}
+
+			return {
+				id: item.id,
+				sortorder: index * 10 + delta - ( item.id === feed ? shift : 0 ),
+			};
+		} );
 
 		newfeeds.sort( Homepage.sortFeeds );
 		for ( let i = 0, len = newfeeds.length; i < len; i++ ) {
@@ -81,25 +85,14 @@ class Homepage extends Component {
 
 	reorderFeeds( shift, feed ) {
 		const self = this;
-
 		const feeds = self.shiftFeeds( shift, feed );
 		self.props.modifyFeeds( feeds );
-
-		const feedsHash = Homepage.getFeedsHash( feeds );
-		const container = document.getElementById( 'inner-content' );
-		if ( container ) {
-			for ( let i = 0, keys = Object.keys( feedsHash ), len = keys.length; i < len; i++ ) {
-				const element = document.getElementById( keys[i] );
-				if ( element ) {
-					element.style.order = ( feedsHash[keys[i]] + 1 ) * 10;
-				}
-			}
-		}
+		self.repositionFeeds( feeds );
 	}
 
 	render() {
 		return (
-			<HomepageOrderingContext.Provider value={self.childrenContext}>
+			<HomepageOrderingContext.Provider value={this.childrenContext}>
 				{this.props.children}
 			</HomepageOrderingContext.Provider>
 		);
