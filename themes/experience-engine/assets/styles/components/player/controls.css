@@ -253,7 +253,7 @@
 			&:hover,
 			&:focus {
 				& svg rect {
-					fill: var(--brand-primary)
+					fill: var(--brand-primary) !important; /* Use important to override color settings*/
 				}
 			}
 		}
@@ -402,13 +402,14 @@
 			& svg path {
 				transition: fill 250ms ease-in-out,
 							stroke 250ms ease-in-out;
+				fill: var(--brand-primary) !important; /* Use important to override color settings */
 			}
 
 			& svg path[fill] {
-				fill: var(--brand-primary);
+				fill: var(--brand-primary) !important; /* Use important to override color settings */
 			}
 			& svg path[stroke] {
-				stroke: var(--brand-primary);
+				stroke: var(--brand-primary) !important; /* Use important to override color settings */;
 			}
 		}
 
@@ -462,7 +463,7 @@
 
 			&:hover,
 			&:focus {
-				color: var(--global-theme-font-secondary);
+				color: var(--global-theme-font-secondary) !important; /* Use important to override color settings */
 			}
 
 			& svg {

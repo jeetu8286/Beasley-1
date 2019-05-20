@@ -117,6 +117,18 @@ class LivePlayer extends Component {
 		}
 
 		const progressClass = ! duration ? '-live' : '-podcast';
+		let { customColors } = container.dataset;
+		const controlsStyle = {};
+		const buttonsBackgroundStyle = {};
+		const buttonsFillStyle = {};
+		const textStyle = {};
+
+		customColors = JSON.parse( customColors );
+		controlsStyle.backgroundColor = customColors['--brand-background-color'] || customColors['--global-theme-secondary'];
+		buttonsBackgroundStyle.backgroundColor = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		buttonsFillStyle.fill = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		buttonsFillStyle.stroke = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		textStyle.color = customColors['--brand-text-color'] || customColors['--global-theme-secondary'];
 
 		const children = (
 			<Fragment>
@@ -135,10 +147,10 @@ class LivePlayer extends Component {
 					<Progress className="-mobile" />
 				</ErrorBoundary>
 
-				<div className="controls">
+				<div className="controls" style={ controlsStyle }>
 					<div className="control-section">
 						<ErrorBoundary>
-							<Info />
+							<Info colors={textStyle} />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section -centered">
@@ -165,10 +177,10 @@ class LivePlayer extends Component {
 							<Sponsor />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Stations />
+							<Stations colors={buttonsFillStyle} textColors={textStyle} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Contacts />
+							<Contacts colors={buttonsFillStyle} />
 						</ErrorBoundary>
 					</div>
 				</div>
