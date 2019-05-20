@@ -5,6 +5,9 @@ import { bindActionCreators } from 'redux';
 
 import HomepageOrderingContext from '../../../context/homepage-ordering';
 import { deleteUserFeed } from '../../../redux/actions/auth';
+import { updateNotice } from '../../../redux/actions/screen';
+
+import Notification from '../../Notification';
 
 class EditFeed extends Component {
 
@@ -15,18 +18,36 @@ class EditFeed extends Component {
 		self.onRemove = self.handleRemove.bind( self );
 		self.onMoveUp = self.handleMoveUp.bind( self );
 		self.onMoveDown = self.handleMoveDown.bind( self );
+		self.hideNotice = self.hideNotice.bind( self );
 	}
 
 	handleMoveDown() {
-		this.context.moveDown( this.props.feed );
+		const self = this;
+
+		self.context.moveDown( self.props.feed );
+
+		self.props.updateNotice( {
+			message: 'Feed moved down',
+			isOpen: true
+		} );
+
+		self.hideNotice();
 	}
 
 	handleMoveUp() {
-		this.context.moveUp( this.props.feed );
+		const self = this;
+		self.context.moveUp( self.props.feed );
+
+		updateNotice( {
+			message: 'Feed moved up',
+			isOpen: true
+		} );
+
+		self.hideNotice();
 	}
 
 	handleRemove() {
-		const { feed, deleteFeed } = this.props;
+		const { feed, deleteFeed, updateNotice, hideNotice } = this.props;
 
 		deleteFeed( feed );
 
@@ -34,11 +55,26 @@ class EditFeed extends Component {
 		if ( container ) {
 			container.classList.add( '-hidden' );
 		}
+
+		updateNotice( {
+			message: 'Feed removed from your homepage',
+			isOpen: true
+		} );
+
+		hideNotice();
+	}
+
+	hideNotice() {
+		setTimeout( () => {
+			this.props.updateNotice( {
+				isOpen: false
+			} );
+		}, 2000 );
 	}
 
 	render() {
 		const self = this;
-		const { loggedIn, className } = self.props;
+		const { loggedIn, className, notice } = self.props;
 
 		if ( ! loggedIn ) {
 			return false;
@@ -46,6 +82,7 @@ class EditFeed extends Component {
 
 		return (
 			<div className="edit-feed-controls">
+				{notice.isOpen && <Notification message={notice.message} />}
 				<button className={className} aria-label="Move Down Feed" onClick={self.onMoveDown}>
 					<svg width="14" height="9" aria-labelledby="move-down-modal-title move-down-modal-desc"  xmlns="http://www.w3.org/2000/svg">
 						<title id="move-down-modal-title">Move Down</title>
@@ -79,6 +116,7 @@ EditFeed.propTypes = {
 	title: PropTypes.string,
 	className: PropTypes.string,
 	deleteFeed: PropTypes.func.isRequired,
+	updateNotice: PropTypes.func.isRequired,
 };
 
 EditFeed.defaultProps = {
@@ -88,16 +126,18 @@ EditFeed.defaultProps = {
 
 EditFeed.contextType = HomepageOrderingContext;
 
-function mapStateToProps( { auth } ) {
+function mapStateToProps( { auth, screen } ) {
 	return {
 		loggedIn: !!auth.user,
 		feeds: auth.feeds,
+		notice: screen.notice
 	};
 }
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
 		deleteFeed: deleteUserFeed,
+		updateNotice
 	}, dispatch );
 }
 
