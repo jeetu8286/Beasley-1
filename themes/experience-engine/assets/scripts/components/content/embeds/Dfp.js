@@ -22,7 +22,8 @@ class Dfp extends PureComponent {
 		const { placeholder } = self.props;
 
 		self.container = document.getElementById( placeholder );
-		self.context.observe( self.container, self.tryDisplaySlot.bind( self ) );
+		// self.context.observe( self.container, self.tryDisplaySlot.bind( self ) );
+		self.tryDisplaySlot();
 
 		if ( 'right-rail' === self.props.unitName ) {
 			self.startInterval();
@@ -33,7 +34,7 @@ class Dfp extends PureComponent {
 	componentWillUnmount() {
 		const self = this;
 
-		self.context.unobserve( self.container );
+		// self.context.unobserve( self.container );
 		self.destroySlot();
 
 		if ( 'right-rail' === self.props.unitName ) {
@@ -99,13 +100,13 @@ class Dfp extends PureComponent {
 					.addSize( [0, 0], [] )
 
 					// accepts common desktop banner formats
-					.addSize( [300, 0], [[300, 250], [320, 50], [320, 100]] )
-					.addSize( [728, 0], [[728, 90]] )
-					.addSize( [900, 0], [[300, 250], [320, 50], [320, 100]] )
-					.addSize( [918, 0], [[728, 90]] )
-					.addSize( [1060, 0], [[300, 250], [320, 50], [320, 100]] )
-					.addSize( [1238, 0], [[728, 90]] )
-					.addSize( [1480, 0], [[728, 90], [970, 90], [970, 250]] )
+					.addSize( [300, 0], [[300, 250], [320, 50], [320, 100], 'fluid'] )
+					.addSize( [728, 0], [[728, 90], 'fluid'] )
+					.addSize( [900, 0], [[300, 250], [320, 50], [320, 100], 'fluid'] )
+					.addSize( [918, 0], [[728, 90], 'fluid'] )
+					.addSize( [1060, 0], [[300, 250], [320, 50], [320, 100], 'fluid'] )
+					.addSize( [1238, 0], [[728, 90], 'fluid'] )
+					.addSize( [1480, 0], [[728, 90], [970, 90], [970, 250], 'fluid'] )
 					.build();
 
 			} else if ( 'bottom-leaderboard' === unitName ) {
@@ -114,11 +115,11 @@ class Dfp extends PureComponent {
 					.addSize( [0, 0], [] )
 
 					// accepts common desktop banner formats
-					.addSize( [300, 0], [[320, 50], [320, 100]] )
-					.addSize( [728, 0], [[728, 90]] )
-					.addSize( [900, 0], [[320, 50], [320, 100]] )
-					.addSize( [918, 0], [[728, 90]] )
-					.addSize( [1160, 0], [[728, 90], [970, 90], [970, 250]] )
+					.addSize( [300, 0], [[320, 50], [320, 100], 'fluid'] )
+					.addSize( [728, 0], [[728, 90], 'fluid'] )
+					.addSize( [900, 0], [[320, 50], [320, 100], 'fluid'] )
+					.addSize( [918, 0], [[728, 90], 'fluid'] )
+					.addSize( [1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'] )
 
 					.build();
 			} else if ( 'right-rail' === unitName ) {
