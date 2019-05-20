@@ -142,7 +142,7 @@ class LivePlayer extends Component {
 						</ErrorBoundary>
 					</div>
 					<div className="control-section -centered">
-						<div className="controls-wrapper -centered">
+						<div className={`controls-wrapper -centered ${progressClass}`}>
 							<ErrorBoundary>
 								<RecentSongs />
 							</ErrorBoundary>
