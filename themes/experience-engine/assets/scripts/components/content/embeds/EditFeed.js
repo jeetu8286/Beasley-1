@@ -67,6 +67,7 @@ class EditFeed extends Component {
 	hideNotice() {
 		setTimeout( () => {
 			this.props.updateNotice( {
+				message: this.props.notice.message,
 				isOpen: false
 			} );
 		}, 2000 );
@@ -75,6 +76,7 @@ class EditFeed extends Component {
 	render() {
 		const self = this;
 		const { loggedIn, className, notice } = self.props;
+		const noticeClass = !notice.isOpen ? '' : '-visible';
 
 		if ( ! loggedIn ) {
 			return false;
@@ -82,7 +84,7 @@ class EditFeed extends Component {
 
 		return (
 			<div className="edit-feed-controls">
-				{notice.isOpen && <Notification message={notice.message} />}
+				<Notification message={notice.message} noticeClass={noticeClass} />
 				<button className={className} aria-label="Move Down Feed" onClick={self.onMoveDown}>
 					<svg width="14" height="9" aria-labelledby="move-down-modal-title move-down-modal-desc"  xmlns="http://www.w3.org/2000/svg">
 						<title id="move-down-modal-title">Move Down</title>
@@ -117,6 +119,8 @@ EditFeed.propTypes = {
 	className: PropTypes.string,
 	deleteFeed: PropTypes.func.isRequired,
 	updateNotice: PropTypes.func.isRequired,
+	hideNotice: PropTypes.func,
+	notice: PropTypes.object.isRequired,
 };
 
 EditFeed.defaultProps = {
@@ -130,7 +134,7 @@ function mapStateToProps( { auth, screen } ) {
 	return {
 		loggedIn: !!auth.user,
 		feeds: auth.feeds,
-		notice: screen.notice
+		notice: screen.notice,
 	};
 }
 
