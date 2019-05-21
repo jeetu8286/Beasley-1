@@ -292,8 +292,10 @@
 		display: none;
 
 		&.-podcast {
+			display: block;
+
 			@media(--min-medium-viewport) {
-				display: block;
+				display: none;
 			}
 		}
 
