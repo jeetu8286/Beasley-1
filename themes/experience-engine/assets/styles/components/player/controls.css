@@ -289,6 +289,12 @@
 	}
 
 	& .controls-rewind {
+		display: none;
+
+		&.-podcast {
+			display: block;
+		}
+
 		& button {
 			& svg path {
 				fill: var(--global-theme-font-primary);
