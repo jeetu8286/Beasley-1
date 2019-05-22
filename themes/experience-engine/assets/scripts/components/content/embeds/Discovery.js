@@ -4,9 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import LazyImage from './LazyImage';
-//import PrimaryNav from './modules/PrimaryNav';
-
-
 import { showSignInModal, showDiscoverModal } from '../../../redux/actions/modal';
 
 class Discovery extends PureComponent {
