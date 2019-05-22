@@ -47,7 +47,7 @@ class EditFeed extends Component {
 	}
 
 	handleRemove() {
-		const { feed, deleteFeed, updateNotice, hideNotice } = this.props;
+		const { feed, deleteFeed, updateNotice } = this.props;
 
 		deleteFeed( feed );
 
@@ -61,7 +61,7 @@ class EditFeed extends Component {
 			isOpen: true
 		} );
 
-		hideNotice();
+		this.hideNotice();
 	}
 
 	hideNotice() {
