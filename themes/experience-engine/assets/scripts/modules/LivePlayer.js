@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { isIOS } from '../library/browser';
+
 import Stations from '../components/player/Stations';
 import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
@@ -127,6 +129,8 @@ class LivePlayer extends Component {
 		buttonsFillStyle.stroke = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
 		textStyle.color = customColors['--brand-text-color'] || customColors['--global-theme-secondary'];
 
+		const isIos = isIOS();
+
 		const children = (
 			<Fragment>
 				{notification}
@@ -155,7 +159,14 @@ class LivePlayer extends Component {
 							<RecentSongs colors={customColors} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} colors={buttonsBackgroundStyle} />
+							<Controls
+								status={status}
+								play={() => play( station )}
+								pause={pause}
+								resume={resume}
+								colors={buttonsBackgroundStyle}
+								isIos={isIos}
+							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<Volume colors={buttonsFillStyle} />
