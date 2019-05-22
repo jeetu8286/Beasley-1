@@ -27,6 +27,7 @@ body.-dark {
 	transition: opacity 1s;
 	top: 0;
 	width: 100%;
+	z-index: 10;
 
 	&.-visible {
 		opacity: 1;
