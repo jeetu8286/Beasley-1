@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import LazyImage from './LazyImage';
-
 import { showSignInModal, showDiscoverModal } from '../../../redux/actions/modal';
 
 class Discovery extends PureComponent {
@@ -19,6 +18,16 @@ class Discovery extends PureComponent {
 	handleClick() {
 		const self = this;
 		const { signedIn, showDiscover, showSignin } = self.props;
+		const menuItems = document.querySelectorAll( '#menu-ee-primary li' );
+		const discoveryWrapper = document.querySelector( '#menu-item-discovery' )
+
+		for ( var i = 0; i < menuItems.length; i++ ) {
+			menuItems[i].classList.remove( 'current-menu-item' );
+		}
+
+		if ( ! discoveryWrapper.classList.contains( 'current-menu-item' ) ) {
+			discoveryWrapper.classList.add( 'current-menu-item' );
+		}
 
 		if ( signedIn ) {
 			showDiscover();
