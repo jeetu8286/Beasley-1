@@ -57,7 +57,7 @@ class EditFeed extends Component {
 		}
 
 		updateNotice( {
-			message: `<span className="title">${title}</span> has been removed from your homepage`,
+			message: `<span class="title">${title}</span> has been removed from your homepage`,
 			isOpen: true
 		} );
 
