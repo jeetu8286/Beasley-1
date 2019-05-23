@@ -39,7 +39,6 @@ class ContentDispatcher extends Component {
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
 		const state = { data: document.documentElement.outerHTML, pageXOffset, pageYOffset };
-		window.console.log( 'replaceState', state, document.title, location.href );
 
 		var isFirefox = -1 < window.navigator.userAgent.toLowerCase().indexOf( 'firefox' );
 		if ( ! isFirefox ) {
