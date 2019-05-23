@@ -95,7 +95,7 @@ class Contacts extends PureComponent {
 							style={buttonsFillStyle} />
 					</svg>
 				</button>
-				<div className="live-player-modal" style={modalStyle}>
+				<div className="live-player-modal live-player-modal--contact" style={modalStyle}>
 					{contacts}
 				</div>
 			</div>
