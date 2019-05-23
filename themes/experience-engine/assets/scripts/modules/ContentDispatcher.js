@@ -39,6 +39,7 @@ class ContentDispatcher extends Component {
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
 		const state = { data: document.documentElement.outerHTML, pageXOffset, pageYOffset };
+		window.console.log( 'replaceState', state, document.title, location.href );
 		history.replaceState( state, document.title, location.href );
 
 		// load current page into the state
