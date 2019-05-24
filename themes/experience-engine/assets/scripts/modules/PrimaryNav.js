@@ -174,12 +174,20 @@ class PrimaryNav extends PureComponent {
 			container.classList.add( 'is-active' );
 			container.parentNode.parentNode.classList.add( 'menu-is-active' );
 			document.body.classList.add( '-lock' );
-			container.setAttribute( 'aria-hidden', false );
+			if( window.matchMedia( '(min-width: 900px)' ).matches ) {
+				container.setAttribute( 'aria-hidden', false );
+			} else {
+				container.setAttribute( 'aria-hidden', true );
+			}
 		} else {
 			container.classList.remove( 'is-active' );
 			container.parentNode.parentNode.classList.remove( 'menu-is-active' );
 			document.body.classList.remove( '-lock' );
-			container.setAttribute( 'aria-hidden', true );
+			if( window.matchMedia( '(min-width: 900px)' ).matches ) {
+				container.setAttribute( 'aria-hidden', false );
+			} else {
+				container.setAttribute( 'aria-hidden', true );
+			}
 		}
 	}
 
@@ -191,7 +199,11 @@ class PrimaryNav extends PureComponent {
 			container.classList.remove( 'is-active' );
 			container.parentNode.parentNode.classList.remove( 'menu-is-active' );
 			document.body.classList.remove( '-lock' );
-			container.setAttribute( 'aria-hidden', true );
+			if( window.matchMedia( '(min-width: 900px)' ).matches ) {
+				container.setAttribute( 'aria-hidden', false );
+			} else {
+				container.setAttribute( 'aria-hidden', true );
+			}
 		}
 	}
 
@@ -203,7 +215,12 @@ class PrimaryNav extends PureComponent {
 			container.classList.remove( 'is-active' );
 			container.parentNode.parentNode.classList.remove( 'menu-is-active' );
 			document.body.classList.remove( '-lock' );
-			container.setAttribute( 'aria-hidden', true );
+			if( window.matchMedia( '(min-width: 900px)' ).matches ) {
+				container.setAttribute( 'aria-hidden', false );
+			} else {
+				container.setAttribute( 'aria-hidden', true );
+			}
+
 		}
 	}
 
