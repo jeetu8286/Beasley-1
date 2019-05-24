@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { isIOS } from '../library/browser';
+
 import Stations from '../components/player/Stations';
 import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
@@ -130,6 +132,8 @@ class LivePlayer extends Component {
 		buttonsFillStyle.stroke = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
 		textStyle.color = customColors['--brand-text-color'] || customColors['--global-theme-secondary'];
 
+		const isIos = isIOS();
+
 		const children = (
 			<Fragment>
 				{notification}
@@ -156,13 +160,21 @@ class LivePlayer extends Component {
 					<div className="control-section -centered">
 						<div className={`controls-wrapper -centered ${progressClass}`}>
 							<ErrorBoundary>
-								<RecentSongs />
+								<RecentSongs colors={customColors} />
 							</ErrorBoundary>
 							<ErrorBoundary>
-								<Controls status={status} play={() => play( station )} pause={pause} resume={resume} progressClass={progressClass} />
+								<Controls 
+									status={status}
+									play={() => play( station )}
+									pause={pause}
+									resume={resume}
+									colors={buttonsBackgroundStyle}
+									isIos={isIos}
+									progressClass={progressClass}
+								/>
 							</ErrorBoundary>
 							<ErrorBoundary>
-								<Volume />
+								<Volume colors={buttonsFillStyle} />
 							</ErrorBoundary>
 						</div>
 						<ErrorBoundary>
@@ -177,10 +189,10 @@ class LivePlayer extends Component {
 							<Sponsor />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Stations colors={buttonsFillStyle} textColors={textStyle} />
+							<Stations colors={customColors} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Contacts colors={buttonsFillStyle} />
+							<Contacts colors={customColors} />
 						</ErrorBoundary>
 					</div>
 				</div>

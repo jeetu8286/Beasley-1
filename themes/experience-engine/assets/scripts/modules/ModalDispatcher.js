@@ -11,8 +11,10 @@ import {
 	RESTORE_MODAL,
 	COMPLETE_SIGNUP_MODAL,
 	DISCOVER_MODAL,
-	EDIT_FEED_MODAL,
+	EDIT_FEED_MODAL
 } from '../redux/actions/modal';
+
+import { setNavigationRevert } from '../redux/actions/navigation';
 
 import ErrorBoundary from '../components/ErrorBoundary';
 import CloseButton from '../components/modals/elements/Close';
@@ -24,7 +26,6 @@ import CompleteSignup from '../components/modals/CompleteSignup';
 import EditFeedModal from '../components/modals/EditFeed';
 
 class ModalDispatcher extends Component {
-
 	constructor( props ) {
 		super( props );
 
@@ -45,51 +46,100 @@ class ModalDispatcher extends Component {
 		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
 	}
 
+	handleMenuCurrentItem() {
+		const self = this;
+		const { navigation } = self.props;
+		const { previous: previousMenuItem } = navigation;
+		const previous = document.getElementById( previousMenuItem );
+
+		// If Discovery was toggled by a non-menu item and a current item doesn't exist, deselect all items
+		const menuItems = document.querySelectorAll( '#menu-ee-primary li' );
+
+		for ( var i = 0; i < menuItems.length; i++ ) {
+			menuItems[i].classList.remove( 'current-menu-item' );
+		}
+
+		if ( previous ) {
+			previous.classList.add( 'current-menu-item' );
+		}
+		else {
+			// If Discovery was toggled by a non-menu item and a previous item doesn't appear, select 'Home'
+			const homeButton = document.getElementById( 'menu-item-home' );
+			homeButton.classList.add( 'current-menu-item' );
+		}
+
+		self.props.navigationRevert();
+	}
+
 	handleClickOutside( e ) {
 		const self = this;
 		const { modal } = self.props;
 		const { current: ref } = self.modalRef;
 
-		if ( 'CLOSED' !== modal && DISCOVER_MODAL !== modal && ( !ref || !ref.contains( e.target ) ) ) {
+		if (
+			'CLOSED' !== modal &&
+			DISCOVER_MODAL !== modal &&
+			( !ref || !ref.contains( e.target ) )
+		) {
 			self.props.close();
+			self.handleMenuCurrentItem();
 		}
 	}
 
 	handleEscapeKeyDown( e ) {
 		if ( 27 === e.keyCode ) {
 			this.props.close();
+			this.handleMenuCurrentItem();
 		}
+	}
+
+	handleClose() {
+		this.props.close();
+		this.handleMenuCurrentItem();
 	}
 
 	render() {
 		const self = this;
-		const { modal, payload, close } = self.props;
+		const { modal, payload } = self.props;
 
 		let component = false;
 
 		switch ( modal ) {
 			case SIGNIN_MODAL:
-				component = <SignInModal close={close} {...payload} />;
+				component = (
+					<SignInModal close={() => this.handleClose()} {...payload} />
+				);
 				break;
 			case SIGNUP_MODAL:
-				component = <SignUpModal close={close} {...payload} />;
+				component = (
+					<SignUpModal close={() => this.handleClose()} {...payload} />
+				);
 				break;
 			case RESTORE_MODAL:
-				component = <RestoreModal close={close} {...payload} />;
+				component = (
+					<RestoreModal close={() => this.handleClose()} {...payload} />
+				);
 				break;
 			case DISCOVER_MODAL:
 				component = (
 					<div className="discover-modal" ref={self.modalRef}>
-						<DiscoverModal close={close} {...payload} />
+						<DiscoverModal close={() => this.handleClose()} {...payload} />
 					</div>
 				);
 
-				return ReactDOM.createPortal( component, document.getElementById( 'inner-content' ) );
+				return ReactDOM.createPortal(
+					component,
+					document.getElementById( 'inner-content' )
+				);
 			case COMPLETE_SIGNUP_MODAL:
-				component = <CompleteSignup close={close} {...payload } />;
+				component = (
+					<CompleteSignup close={() => this.handleClose()} {...payload} />
+				);
 				break;
 			case EDIT_FEED_MODAL:
-				component = <EditFeedModal close={close} {...payload} />;
+				component = (
+					<EditFeedModal close={() => this.handleClose()} {...payload} />
+				);
 				break;
 			default:
 				return false;
@@ -98,10 +148,8 @@ class ModalDispatcher extends Component {
 		return (
 			<div className={`modal ${( modal || '' ).toLowerCase()}`}>
 				<div ref={self.modalRef} className="modal-content">
-					<CloseButton close={close} />
-					<ErrorBoundary>
-						{component}
-					</ErrorBoundary>
+					<CloseButton close={() => this.handleClose()} />
+					<ErrorBoundary>{component}</ErrorBoundary>
 				</div>
 			</div>
 		);
@@ -112,19 +160,26 @@ ModalDispatcher.propTypes = {
 	modal: PropTypes.string,
 	payload: PropTypes.shape( {} ),
 	close: PropTypes.func.isRequired,
+	navigationRevert: PropTypes.func.isRequired
 };
 
 ModalDispatcher.defaultProps = {
 	modal: 'CLOSED',
-	payload: {},
+	payload: {}
 };
 
-function mapStateToProps( { modal } ) {
-	return { ...modal };
+function mapStateToProps( { modal, navigation } ) {
+	return { ...modal, navigation };
 }
 
 function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( { close: hideModal }, dispatch );
+	return bindActionCreators(
+		{ close: hideModal, navigationRevert: setNavigationRevert },
+		dispatch
+	);
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( ModalDispatcher );
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)( ModalDispatcher );
