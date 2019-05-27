@@ -109,6 +109,19 @@
 			& button {
 				padding: 1rem;
 			}
+
+			& .control-station-button {
+				padding: 0;
+
+				& img {
+					max-height: 51px;
+					width: auto;
+				}
+
+				& span {
+					padding: 1rem;
+				}
+			}
 		}
 
 		& .audio-sponsor--text {
@@ -222,13 +235,6 @@
 			& svg rect {
 				fill: var(--global-theme-font-primary);
 				transition: fill 250ms ease-in-out;
-			}
-
-			&:hover,
-			&:focus {
-				& svg rect {
-					fill: var(--brand-primary)
-				}
 			}
 		}
 
@@ -355,13 +361,6 @@
 				transition: fill 250ms ease-in-out,
 							stroke 250ms ease-in-out;
 			}
-
-			& svg path[fill] {
-				fill: var(--brand-primary);
-			}
-			& svg path[stroke] {
-				stroke: var(--brand-primary);
-			}
 		}
 
 		& button:focus {
@@ -414,7 +413,7 @@
 
 			&:hover,
 			&:focus {
-				color: var(--global-theme-font-secondary);
+				color: var(--global-theme-font-secondary) !important; /* Use important to override color settings */
 			}
 
 			& svg {
@@ -455,6 +454,20 @@
 
 		@media(--min-medium-viewport) {
 			margin: 0 2rem;
+		}
+	}
+
+	&.-is-ios {
+		@media(--min-medium-viewport) {
+			margin: 0 1rem;
+		}
+
+		& button {
+			margin: 0;
+
+			@media(--min-xlarge-viewport) {
+				margin: 0 2rem;
+			}
 		}
 	}
 

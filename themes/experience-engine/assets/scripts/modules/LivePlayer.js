@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { isIOS } from '../library/browser';
+
 import Stations from '../components/player/Stations';
 import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
@@ -114,6 +116,21 @@ class LivePlayer extends Component {
 			notification = <Offline />;
 		}
 
+		let { customColors } = container.dataset;
+		const controlsStyle = {};
+		const buttonsBackgroundStyle = {};
+		const buttonsFillStyle = {};
+		const textStyle = {};
+
+		customColors = JSON.parse( customColors );
+		controlsStyle.backgroundColor = customColors['--brand-background-color'] || customColors['--global-theme-secondary'];
+		buttonsBackgroundStyle.backgroundColor = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		buttonsFillStyle.fill = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		buttonsFillStyle.stroke = customColors['--brand-button-color'] || customColors['--global-theme-secondary'];
+		textStyle.color = customColors['--brand-text-color'] || customColors['--global-theme-secondary'];
+
+		const isIos = isIOS();
+
 		const children = (
 			<Fragment>
 				{notification}
@@ -131,21 +148,28 @@ class LivePlayer extends Component {
 					<Progress />
 				</ErrorBoundary>
 
-				<div className="controls">
+				<div className="controls" style={ controlsStyle }>
 					<div className="control-section">
 						<ErrorBoundary>
-							<Info />
+							<Info colors={textStyle} />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section -centered">
 						<ErrorBoundary>
-							<RecentSongs />
+							<RecentSongs colors={customColors} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Controls status={status} play={() => play( station )} pause={pause} resume={resume} />
+							<Controls
+								status={status}
+								play={() => play( station )}
+								pause={pause}
+								resume={resume}
+								colors={buttonsBackgroundStyle}
+								isIos={isIos}
+							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Volume />
+							<Volume colors={buttonsFillStyle} />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section">
@@ -153,10 +177,10 @@ class LivePlayer extends Component {
 							<Sponsor />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Stations />
+							<Stations colors={customColors} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<Contacts />
+							<Contacts colors={customColors} />
 						</ErrorBoundary>
 					</div>
 				</div>
