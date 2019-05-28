@@ -71,6 +71,7 @@ class PrimaryNav extends PureComponent {
 		container.removeEventListener( 'click', self.handleSubMenu );
 
 		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
+		document.removeEventListener( 'click', self.handleClickOutSide );
 	}
 
 	handlePageChange() {
@@ -214,28 +215,23 @@ class PrimaryNav extends PureComponent {
 
 	}
 
-	handleClickOutSide( e ) {
+	handleClickOutSide( event ) {
 		const container = navRoot.parentNode;
 
-		if( e ) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			if ( e.target !== siteMenuToggle && !container.contains( e.target ) ) {
-				if ( ! window.matchMedia( '(min-width: 900px)' ).matches ) {
-					container.classList.remove( 'is-active' );
-					container.parentNode.parentNode.classList.remove( 'menu-is-active' );
-					document.body.classList.remove( '-lock' );
-					container.setAttribute(
-						'aria-hidden',
-						'true'
-					);
-				} else {
-					return false;
-				}
+		if ( event && ! container.contains( event.target ) ) {
+			// @TODO move this repeated code into a function.
+			if ( ! window.matchMedia( '(min-width: 900px)' ).matches ) {
+				container.classList.remove( 'is-active' );
+				container.parentNode.parentNode.classList.remove( 'menu-is-active' );
+				document.body.classList.remove( '-lock' );
+				container.setAttribute(
+					'aria-hidden',
+					'true'
+				);
+			} else {
+				return false;
 			}
 		}
-
 	}
 
 	detectScrollbar() {
