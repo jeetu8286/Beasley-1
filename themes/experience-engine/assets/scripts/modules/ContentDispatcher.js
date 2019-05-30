@@ -11,13 +11,14 @@ import ContentBlock from '../components/content/ContentBlock';
 import { hideModal } from '../redux/actions/modal';
 import {
 	initPage,
-	initPageHistory,
+	initPageLoaded,
 	loadPage,
 	updatePage
 } from '../redux/actions/screen';
 
 import { loadAssets, unloadScripts } from '../library/dom';
 import { untrailingslashit } from '../library/strings';
+import slugify from '../library/slugify';
 
 const specialPages = ['/wp-admin/', '/wp-signup.php', '/wp-login.php'];
 
@@ -40,8 +41,7 @@ class ContentDispatcher extends Component {
 
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
-		// @temp unique identifier
-		const uuid = Math.floor( Date.now() / 1000 );
+		const uuid = slugify( location.href );
 		const data = document.documentElement.outerHTML;
 		const state = {
 			uuid,
@@ -52,7 +52,7 @@ class ContentDispatcher extends Component {
 
 		// load current page into the state
 		self.props.initPage();
-		self.props.initPageHistory( uuid, data );
+		self.props.initPageLoaded( uuid, data );
 		self.handleSliderLoad();
 	}
 
@@ -220,9 +220,10 @@ class ContentDispatcher extends Component {
 	handlePageChange( event ) {
 		if ( event && event.state ) {
 			const { uuid, pageXOffset, pageYOffset } = event.state;
-			// @note: Grab `data` from redux based off of `uuid` from event.state
+			// @jerome may not be needed and above can get const
+			// const { location } = window;
+			// const uuidOverride = slugify( location.href );
 			const { data } = this.props.history[uuid];
-			// update content state
 			this.props.updatePage( data );
 			// scroll to the top of the page and remove modal (one way or other)
 			setTimeout( () => window.scrollTo( pageXOffset, pageYOffset ), 100 );
@@ -285,7 +286,7 @@ function mapDispatchToProps( dispatch ) {
 		{
 			hideModal,
 			initPage,
-			initPageHistory,
+			initPageLoaded,
 			loadPage,
 			updatePage
 		},
