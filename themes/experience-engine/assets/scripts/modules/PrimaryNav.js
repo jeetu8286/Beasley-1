@@ -31,6 +31,8 @@ class PrimaryNav extends PureComponent {
 		self.onPageChange = self.handlePageChange.bind( self );
 		self.onResize = self.onResize.bind( self );
 		self.detectScrollbar = self.detectScrollbar.bind( self );
+		self.handleEscapeKey = self.handleEscapeKey.bind( self );
+		self.handleClickOutSide = self.handleClickOutSide.bind( self );
 
 		removeChildren( navRoot );
 	}
@@ -46,6 +48,8 @@ class PrimaryNav extends PureComponent {
 		container.addEventListener( 'click', self.handleSubMenu );
 
 		siteMenuToggle.addEventListener( 'click', self.handleMobileNav );
+		document.addEventListener( 'keydown', self.handleEscapeKey );
+		document.addEventListener( 'click', self.handleClickOutSide );
 
 		if ( window.matchMedia( '(min-width: 900px)' ).matches ) {
 			navRoot.parentNode.setAttribute( 'aria-hidden', false );
@@ -67,6 +71,7 @@ class PrimaryNav extends PureComponent {
 		container.removeEventListener( 'click', self.handleSubMenu );
 
 		siteMenuToggle.removeEventListener( 'click', self.handleMobileNav );
+		document.removeEventListener( 'click', self.handleClickOutSide );
 	}
 
 	handlePageChange() {
@@ -184,6 +189,49 @@ class PrimaryNav extends PureComponent {
 			'aria-hidden',
 			'false' === container.getAttribute( 'aria-hidden' )
 		);
+	}
+
+	handleEscapeKey( e ) {
+		if( e ) {
+
+			if( 27 === e.keyCode ) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				if ( ! window.matchMedia( '(min-width: 900px)' ).matches ) {
+					const container = navRoot.parentNode;
+					container.classList.remove( 'is-active' );
+					container.parentNode.parentNode.classList.remove( 'menu-is-active' );
+					document.body.classList.remove( '-lock' );
+					container.setAttribute(
+						'aria-hidden',
+						'true'
+					);
+				} else {
+					return false;
+				}
+			}
+		}
+
+	}
+
+	handleClickOutSide( event ) {
+		const container = navRoot.parentNode;
+
+		if ( event && ! container.contains( event.target ) ) {
+			// @TODO move this repeated code into a function.
+			if ( ! window.matchMedia( '(min-width: 900px)' ).matches ) {
+				container.classList.remove( 'is-active' );
+				container.parentNode.parentNode.classList.remove( 'menu-is-active' );
+				document.body.classList.remove( '-lock' );
+				container.setAttribute(
+					'aria-hidden',
+					'true'
+				);
+			} else {
+				return false;
+			}
+		}
 	}
 
 	detectScrollbar() {
