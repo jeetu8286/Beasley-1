@@ -12,14 +12,9 @@ import { initPage, loadPage, updatePage } from '../redux/actions/screen';
 import { loadAssets, unloadScripts } from '../library/dom';
 import { untrailingslashit } from '../library/strings';
 
-const specialPages = [
-	'/wp-admin/',
-	'/wp-signup.php',
-	'/wp-login.php',
-];
+const specialPages = ['/wp-admin/', '/wp-signup.php', '/wp-login.php'];
 
 class ContentDispatcher extends Component {
-
 	constructor( props ) {
 		super( props );
 
@@ -38,10 +33,15 @@ class ContentDispatcher extends Component {
 
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
-		const state = { data: document.documentElement.outerHTML, pageXOffset, pageYOffset };
+		const state = {
+			data: document.documentElement.outerHTML,
+			pageXOffset,
+			pageYOffset,
+		};
 
-		var isFirefox = -1 < window.navigator.userAgent.toLowerCase().indexOf( 'firefox' );
-		if ( ! isFirefox ) {
+		var isFirefox =
+			-1 < window.navigator.userAgent.toLowerCase().indexOf( 'firefox' );
+		if ( !isFirefox ) {
 			history.replaceState( state, document.title, location.href );
 		}
 
@@ -101,7 +101,8 @@ class ContentDispatcher extends Component {
 				const count = carousels[i].classList.contains( '-large' ) ? 2.2 : 4.2;
 				const group = carousels[i].classList.contains( '-large' ) ? 2 : 4;
 
-				new Swiper(carousels[i], { // eslint-disable-line
+				// eslint-disable-next-line no-undef
+				new Swiper( carousels[i], {
 					slidesPerView: count + 2,
 					slidesPerGroup: group + 2,
 					spaceBetween: 36,
@@ -123,7 +124,7 @@ class ContentDispatcher extends Component {
 							slidesPerView: 1.2,
 							slidesPerGroup: 1,
 							spaceBetween: 27,
-						}
+						},
 					},
 					navigation: {
 						nextEl: '.swiper-button-next',
@@ -167,7 +168,7 @@ class ContentDispatcher extends Component {
 		}
 
 		// return if different origin or a relative link that doesn't start from forward slash
-		if ( ( origin !== linkOrigin && !link.match( /^\/\w+/ ) ) ) {
+		if ( origin !== linkOrigin && !link.match( /^\/\w+/ ) ) {
 			return;
 		}
 
@@ -183,12 +184,17 @@ class ContentDispatcher extends Component {
 		// load user homepage if token is not empty and the next page is a homepage
 		// otherwise just load the next page
 		const auth = firebase.auth();
-		if ( untrailingslashit( origin ) === untrailingslashit( link.split( /[?#]/ )[0] ) && auth.currentUser ) {
+		if (
+			untrailingslashit( origin ) === untrailingslashit( link.split( /[?#]/ )[0] ) &&
+			auth.currentUser
+		) {
 			auth.currentUser
 				.getIdToken()
 				.then( token => {
 					load( link, {
-						fetchUrlOverride: `${window.bbgiconfig.wpapi}feeds-content?device=other`,
+						fetchUrlOverride: `${
+							window.bbgiconfig.wpapi
+						}feeds-content?device=other`,
 						fetchParams: {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -226,20 +232,19 @@ class ContentDispatcher extends Component {
 			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
 			<ErrorBoundary key={`${window.location.href}-${md5( content )}`}>
 				<ContentBlock content={content} embeds={embeds} />,
-			</ErrorBoundary>
+			</ErrorBoundary>,
 		);
 
-		Object.keys( partials ).forEach( ( key ) => {
+		Object.keys( partials ).forEach( key => {
 			blocks.push(
 				<ErrorBoundary key={key}>
 					<ContentBlock {...partials[key]} partial />
-				</ErrorBoundary>
+				</ErrorBoundary>,
 			);
 		} );
 
 		return blocks;
 	}
-
 }
 
 ContentDispatcher.propTypes = {
@@ -260,11 +265,17 @@ function mapStateToProps( { screen } ) {
 }
 
 function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( {
-		init: initPage,
-		load: loadPage,
-		update: updatePage,
-	}, dispatch );
+	return bindActionCreators(
+		{
+			init: initPage,
+			load: loadPage,
+			update: updatePage,
+		},
+		dispatch,
+	);
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( ContentDispatcher );
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)( ContentDispatcher );

@@ -12,13 +12,13 @@ import {
 } from '../actions/screen';
 
 export const DEFAULT_STATE = {
-	url: false,
-	scripts: {},
-	embeds: [],
 	content: '',
-	partials: {},
+	embeds: [],
 	error: '',
+	partials: {},
+	scripts: {},
 	splashScreen: true,
+	url: false,
 };
 
 function manageScripts( load, unload ) {
@@ -75,8 +75,8 @@ function reducer( state = {}, action = {} ) {
 
 			return {
 				...state,
-				embeds: action.embeds,
 				content: action.content,
+				embeds: action.embeds,
 				scripts: action.scripts,
 			};
 
@@ -110,11 +110,11 @@ function reducer( state = {}, action = {} ) {
 
 			return {
 				...state,
-				scripts: action.scripts,
-				embeds: action.embeds,
 				content: action.content,
+				embeds: action.embeds,
 				error: '',
 				partials: {},
+				scripts: action.scripts,
 			};
 		}
 
@@ -145,7 +145,7 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_LOAD_ERROR:
 			return { ...state, error: action.error };
-	
+
 		case ACTION_HIDE_SPLASH_SCREEN:
 			hideSplashScreen();
 			return { ...state, splashScreen: false };

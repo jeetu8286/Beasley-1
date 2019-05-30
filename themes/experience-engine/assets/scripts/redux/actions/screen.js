@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { removeChildren, dispatchEvent } from '../../library/dom';
 import { getStateFromContent, parseHtml } from '../../library/html-parser';
 import { pageview } from '../../library/google-analytics';
@@ -6,13 +7,20 @@ import { pageview } from '../../library/google-analytics';
  * We use this approach to minify action names in the production bundle and have
  * human friendly actions in the dev bundle. Use "s{x}" format to create new actions.
  */
-export const ACTION_INIT_PAGE          = 'production' === process.env.NODE_ENV ? 's0' : 'PAGE_INIT';
-export const ACTION_LOADING_PAGE       = 'production' === process.env.NODE_ENV ? 's1' : 'PAGE_LOADING';
-export const ACTION_LOADED_PAGE        = 'production' === process.env.NODE_ENV ? 's2' : 'PAGE_LOADED';
-export const ACTION_LOADING_PARTIAL    = 'production' === process.env.NODE_ENV ? 's3' : 'PARTIAL_LOADING';
-export const ACTION_LOADED_PARTIAL     = 'production' === process.env.NODE_ENV ? 's4' : 'PARTIAL_LOADED';
-export const ACTION_LOAD_ERROR         = 'production' === process.env.NODE_ENV ? 's5' : 'LOADING_ERROR';
-export const ACTION_HIDE_SPLASH_SCREEN = 'production' === process.env.NODE_ENV ? 's6' : 'HIDE_SPLASH_SCREEN';
+export const ACTION_INIT_PAGE =
+	'production' === process.env.NODE_ENV ? 's0' : 'PAGE_INIT';
+export const ACTION_LOADING_PAGE =
+	'production' === process.env.NODE_ENV ? 's1' : 'PAGE_LOADING';
+export const ACTION_LOADED_PAGE =
+	'production' === process.env.NODE_ENV ? 's2' : 'PAGE_LOADED';
+export const ACTION_LOADING_PARTIAL =
+	'production' === process.env.NODE_ENV ? 's3' : 'PARTIAL_LOADING';
+export const ACTION_LOADED_PARTIAL =
+	'production' === process.env.NODE_ENV ? 's4' : 'PARTIAL_LOADED';
+export const ACTION_LOAD_ERROR =
+	'production' === process.env.NODE_ENV ? 's5' : 'LOADING_ERROR';
+export const ACTION_HIDE_SPLASH_SCREEN =
+	'production' === process.env.NODE_ENV ? 's6' : 'HIDE_SPLASH_SCREEN';
 
 export function initPage() {
 	const content = document.getElementById( 'content' );
@@ -25,13 +33,14 @@ export function initPage() {
 }
 
 export function loadPage( url, options = {} ) {
-	return ( dispatch ) => {
+	return dispatch => {
 		const { history, location, pageXOffset, pageYOffset } = window;
 
 		dispatch( { type: ACTION_LOADING_PAGE, url } );
 
 		function onError( error ) {
-			console.error( error ); // eslint-disable-line no-console
+			// eslint-disable-next-line no-console
+			console.error( error );
 			dispatch( { type: ACTION_LOAD_ERROR, error } );
 		}
 
@@ -40,8 +49,16 @@ export function loadPage( url, options = {} ) {
 			const pageDocument = parsed.document;
 
 			if ( !options.suppressHistory ) {
-				history.replaceState( { ...history.state, pageXOffset, pageYOffset }, document.title, location.href );
-				history.pushState( { data, pageXOffset: 0, pageYOffset: 0 }, pageDocument.title, url );
+				history.replaceState(
+					{ ...history.state, pageXOffset, pageYOffset },
+					document.title,
+					location.href,
+				);
+				history.pushState(
+					{ data, pageXOffset: 0, pageYOffset: 0 },
+					pageDocument.title,
+					url,
+				);
 
 				dispatchEvent( 'pushstate' );
 				pageview( pageDocument.title, window.location.href );
@@ -75,11 +92,12 @@ export function updatePage( data ) {
 }
 
 export function loadPartialPage( url, placeholder ) {
-	return ( dispatch ) => {
+	return dispatch => {
 		dispatch( { type: ACTION_LOADING_PARTIAL, url } );
 
 		function onError( error ) {
-			console.error( error ); // eslint-disable-line no-console
+			// eslint-disable-next-line no-console
+			console.error( error );
 			dispatch( { type: ACTION_LOAD_ERROR, error } );
 		}
 
@@ -101,9 +119,9 @@ export function hideSplashScreen() {
 }
 
 export default {
+	hideSplashScreen,
 	initPage,
 	loadPage,
-	updatePage,
 	loadPartialPage,
-	hideSplashScreen,
+	updatePage,
 };

@@ -21,26 +21,25 @@ import Embedly from './embeds/Embedly';
 import SongArchive from './embeds/SongArchive';
 
 const mapping = {
-	secondstreet: SecondStreetEmbed,
 	audio: AudioEmbed,
-	lazyimage: LazyImage,
-	share: Share,
-	loadmore: LoadMore,
-	livestreamvideo: LivestreamVideo,
-	embedvideo: EmbedVideo,
-	dfp: Dfp,
-	cta: Cta,
 	countdown: Countdown,
-	streamcta: StreamCta,
+	cta: Cta,
+	dfp: Dfp,
 	discovery: Discovery,
-	favorites: AddToFavorites,
 	editfeed: EditFeed,
 	embedly: Embedly,
+	embedvideo: EmbedVideo,
+	favorites: AddToFavorites,
+	lazyimage: LazyImage,
+	livestreamvideo: LivestreamVideo,
+	loadmore: LoadMore,
+	secondstreet: SecondStreetEmbed,
+	share: Share,
 	songarchive: SongArchive,
+	streamcta: StreamCta,
 };
 
 class ContentBlock extends Component {
-
 	static createEmbed( embed ) {
 		const { type, params } = embed;
 		const { placeholder } = params;
@@ -81,10 +80,12 @@ class ContentBlock extends Component {
 
 		const portal = ReactDOM.createPortal(
 			<div dangerouslySetInnerHTML={{ __html: content }} />,
-			document.getElementById( partial ? 'inner-content' : 'content' )
+			document.getElementById( partial ? 'inner-content' : 'content' ),
 		);
 
-		const embedComponents = ready ? embeds.map( ContentBlock.createEmbed ) : false;
+		const embedComponents = ready
+			? embeds.map( ContentBlock.createEmbed )
+			: false;
 
 		return (
 			<Fragment>
@@ -93,7 +94,6 @@ class ContentBlock extends Component {
 			</Fragment>
 		);
 	}
-
 }
 
 ContentBlock.propTypes = {
