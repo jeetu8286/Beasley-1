@@ -7,7 +7,6 @@ import HomepageOrderingContext from '../../context/homepage-ordering';
 import { modifyUserFeeds, deleteUserFeed } from '../../redux/actions/auth';
 
 class Homepage extends Component {
-
 	static sortFeeds( a, b ) {
 		if ( a.sortorder > b.sortorder ) {
 			return 1;
@@ -26,7 +25,7 @@ class Homepage extends Component {
 		const self = this;
 		self.childrenContext = {
 			moveUp: self.reorderFeeds.bind( self, 15 ),
-			moveDown: self.reorderFeeds.bind( self, -15 ),
+			moveDown: self.reorderFeeds.bind( self, -15 )
 		};
 	}
 
@@ -40,7 +39,7 @@ class Homepage extends Component {
 
 	repositionFeeds( feeds ) {
 		let i = 0;
-		feeds.forEach( ( item ) => {
+		feeds.forEach( item => {
 			const child = document.querySelector( `#inner-content > #${item.id}` );
 			if ( child ) {
 				child.style.order = ( i + 1 ) * 10;
@@ -48,8 +47,18 @@ class Homepage extends Component {
 			}
 		} );
 
-		document.querySelectorAll( '#inner-content > div' ).forEach( ( child, i ) => {
-			if ( child && ! child.style.order ) {
+		// es6
+		// document.querySelectorAll( '#inner-content > div' ).forEach( ( child, i ) => {
+		// 	if ( child && ! child.style.order ) {
+		// 		child.style.order = i * 10 + 1;
+		// 	}
+		// } );
+
+		// ie11
+		let innerContent = document.querySelectorAll( '#inner-content > div' );
+		innerContent = [].slice.call( innerContent );
+		innerContent.forEach( ( child, i ) => {
+			if ( child && !child.style.order ) {
 				child.style.order = i * 10 + 1;
 			}
 		} );
@@ -61,17 +70,17 @@ class Homepage extends Component {
 
 		let index = 0;
 		let delta = 0;
-		const newfeeds = feeds.map( ( item ) => {
+		const newfeeds = feeds.map( item => {
 			if ( document.querySelector( `#inner-content > #${item.id}` ) ) {
 				index++;
 				delta = 0;
 			} else {
-				delta += .01;
+				delta += 0.01;
 			}
 
 			return {
 				id: item.id,
-				sortorder: index * 10 + delta - ( item.id === feed ? shift : 0 ),
+				sortorder: index * 10 + delta - ( item.id === feed ? shift : 0 )
 			};
 		} );
 
@@ -97,14 +106,13 @@ class Homepage extends Component {
 			</HomepageOrderingContext.Provider>
 		);
 	}
-
 }
 
 Homepage.propTypes = {
 	children: PropTypes.node.isRequired,
 	feeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
 	deleteFeed: PropTypes.func.isRequired,
-	modifyFeeds: PropTypes.func.isRequired,
+	modifyFeeds: PropTypes.func.isRequired
 };
 
 function mapStateToProps( { auth } ) {
@@ -112,15 +120,21 @@ function mapStateToProps( { auth } ) {
 	feeds.sort( Homepage.sortFeeds );
 
 	return {
-		feeds,
+		feeds
 	};
 }
 
 function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( {
-		deleteFeed: deleteUserFeed,
-		modifyFeeds: modifyUserFeeds,
-	}, dispatch );
+	return bindActionCreators(
+		{
+			deleteFeed: deleteUserFeed,
+			modifyFeeds: modifyUserFeeds
+		},
+		dispatch
+	);
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( Homepage );
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)( Homepage );
