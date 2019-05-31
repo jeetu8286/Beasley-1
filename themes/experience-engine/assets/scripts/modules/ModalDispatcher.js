@@ -94,6 +94,12 @@ class ModalDispatcher extends Component {
 	}
 
 	handleClose() {
+		const innerContent = document.getElementById( 'inner-content' );
+
+		if ( innerContent ) {
+			innerContent.classList.remove( 'discover-modal-open' );
+		}
+
 		this.props.close();
 		this.handleMenuCurrentItem();
 	}
