@@ -32,7 +32,7 @@ html {
 
 	@nest .single & {
 		&.discover-modal-open {
-			& .post {
+			& .hentry {
 				display: none;
 			}
 		}
