@@ -10,6 +10,7 @@ import Stations from '../components/player/Stations';
 import Controls from '../components/player/Controls';
 import Info from '../components/player/Info';
 import Volume from '../components/player/Volume';
+import Rewind from '../components/player/Rewind';
 
 import Progress from '../components/player/Progress';
 import RecentSongs from '../components/player/RecentSongs';
@@ -109,6 +110,7 @@ class LivePlayer extends Component {
 			play,
 			pause,
 			resume,
+			duration,
 		} = props;
 
 		let notification = false;
@@ -116,6 +118,7 @@ class LivePlayer extends Component {
 			notification = <Offline />;
 		}
 
+		const progressClass = ! duration ? '-live' : '-podcast';
 		let { customColors } = container.dataset;
 		const controlsStyle = {};
 		const buttonsBackgroundStyle = {};
@@ -145,7 +148,7 @@ class LivePlayer extends Component {
 				<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
 
 				<ErrorBoundary>
-					<Progress />
+					<Progress className="-mobile" />
 				</ErrorBoundary>
 
 				<div className="controls" style={ controlsStyle }>
@@ -155,24 +158,33 @@ class LivePlayer extends Component {
 						</ErrorBoundary>
 					</div>
 					<div className="control-section -centered">
+						<div className={`controls-wrapper -centered ${progressClass}`}>
+							<ErrorBoundary>
+								<RecentSongs colors={customColors} />
+							</ErrorBoundary>
+							<ErrorBoundary>
+								<Controls 
+									status={status}
+									play={() => play( station )}
+									pause={pause}
+									resume={resume}
+									colors={buttonsBackgroundStyle}
+									isIos={isIos}
+									progressClass={progressClass}
+								/>
+							</ErrorBoundary>
+							<ErrorBoundary>
+								<Volume colors={buttonsFillStyle} />
+							</ErrorBoundary>
+						</div>
 						<ErrorBoundary>
-							<RecentSongs colors={customColors} />
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Controls
-								status={status}
-								play={() => play( station )}
-								pause={pause}
-								resume={resume}
-								colors={buttonsBackgroundStyle}
-								isIos={isIos}
-							/>
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Volume colors={buttonsFillStyle} />
+							<Progress className="-desktop" />
 						</ErrorBoundary>
 					</div>
 					<div className="control-section">
+						<ErrorBoundary>
+							<Rewind progressClass={progressClass} />
+						</ErrorBoundary>
 						<ErrorBoundary>
 							<Sponsor className="controls-sponsor" minWidth="1060" />
 						</ErrorBoundary>
@@ -205,6 +217,7 @@ LivePlayer.propTypes = {
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
+	duration: PropTypes.number.isRequired,
 };
 
 function mapStateToProps( { player } ) {
@@ -213,6 +226,7 @@ function mapStateToProps( { player } ) {
 		status: player.status,
 		adPlayback: player.adPlayback,
 		adSynced: player.adSynced,
+		duration: player.duration
 	};
 }
 
