@@ -51,7 +51,6 @@
 
 			@media (--min-xlarge-viewport) {
 				margin: 0 auto;
-				width: 95%;
 			}
 
 			& > * {
