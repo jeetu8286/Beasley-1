@@ -215,7 +215,7 @@ class ContentDispatcher extends Component {
 	}
 
 	render() {
-		const { content, embeds, partials } = this.props;
+		const { content, embeds, partials, isHome } = this.props;
 		const blocks = [];
 
 		if ( !content || !content.length ) {
@@ -225,7 +225,7 @@ class ContentDispatcher extends Component {
 		blocks.push(
 			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
 			<ErrorBoundary key={`${window.location.href}-${md5( content )}`}>
-				<ContentBlock content={content} embeds={embeds} />,
+				<ContentBlock content={content} embeds={embeds} isHome={isHome} />,
 			</ErrorBoundary>
 		);
 
@@ -249,6 +249,7 @@ ContentDispatcher.propTypes = {
 	init: PropTypes.func.isRequired,
 	load: PropTypes.func.isRequired,
 	update: PropTypes.func.isRequired,
+	isHome: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps( { screen } ) {
@@ -256,6 +257,7 @@ function mapStateToProps( { screen } ) {
 		content: screen.content,
 		embeds: screen.embeds,
 		partials: screen.partials,
+		isHome: screen.isHome,
 	};
 }
 

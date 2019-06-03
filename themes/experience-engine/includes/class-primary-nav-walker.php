@@ -32,10 +32,14 @@ class PrimaryNavWalker extends \Walker_Nav_Menu {
 		$discovery->url = '#';
 		$discovery->classes[] = 'menu-item-discovery';
 
-		$newelements = array( $newhome, $discovery );
+		$newelements = array(
+			'home' => $newhome,
+			'discovery' => $discovery
+		);
+
 		foreach ( $elements as $index => $element ) {
 			if ( trailingslashit( $element->url ) != $home ) {
-				$newelements[ $index ] = $element;
+				array_push( $newelements, $element );
 			}
 		}
 
