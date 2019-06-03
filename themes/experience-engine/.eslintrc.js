@@ -27,7 +27,7 @@ module.exports = {
 	},
 	rules: {
 		'comma-dangle': [
-			'error',
+			'warn',
 			{
 				arrays: 'always-multiline',
 				objects: 'always-multiline',
