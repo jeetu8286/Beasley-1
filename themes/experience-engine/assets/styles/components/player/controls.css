@@ -22,7 +22,8 @@
 		border-left: 1px solid var(--global-mercury);
 	}
 
-	& .control-section {
+	& .control-section,
+	& .controls-wrapper {
 		align-items: center;
 		box-sizing: border-box;
 		display: flex;
@@ -135,17 +136,30 @@
 		}
 	}
 
+	& .controls-wrapper:first-child {
+		overflow: visible;
+	}
+
+	& .controls-wrapper {
+		transition: margin-top 250ms ease-in-out;
+	}
+
+	& .controls-wrapper.-podcast {
+		@media(--min-medium-viewport) {
+			margin-top: -35px;
+		}
+	}
+
 	& .controls-progress {
 		left: 0;
 		position: absolute;
-		top: 0;
+		bottom: 8px;
 		width: 100%;
 		z-index: 9;
 
 		& input[type="range"] {
 			width: 100%;
 		}
-
 	}
 
 	& .controls-info {
@@ -266,6 +280,36 @@
 		}
 	}
 
+	& .controls-rewind {
+		display: none;
+
+		&.-podcast {
+			display: block;
+
+			@media(--min-medium-viewport) {
+				display: none;
+			}
+		}
+
+		& button {
+			& svg path {
+				fill: var(--global-theme-font-primary);
+				transition: fill 250ms ease-in-out;
+			}
+
+			&:hover,
+			&:focus {
+				& svg path {
+					fill: var(--brand-primary)
+				}
+			}
+
+			@media(--min-medium-viewport) {
+				display: none;
+			}
+		}
+	}
+
 	& .controls-recent-songs {
 		background: var(--global-theme-secondary);
 		bottom: 102px; /*Height of the live player bar + 18px*/
@@ -377,6 +421,17 @@
 			visibility: hidden;
 			width: 82px;
 
+			& input[type="range"]::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				border: none;
+				height: 10px;
+				width: 10px;
+				border-radius: 50%;
+				background: var(--brand-primary);
+				margin-top: -3.5px;
+				z-index: 400;
+			}
+
 			&.-volume-visible {
 				opacity: 1;
 				visibility: visible;
@@ -442,8 +497,69 @@
 		}
 	}
 
+	& .time {
+		font-size: .875rem;
+
+		@media(--min-medium-viewport) {
+			display: none;
+		}
+
+		&.-current {
+			color: var(--brand-primary);
+		}
+
+		&.-total {
+			&:before {
+				content: "|";
+				margin: 0 5px;
+			}
+		}
+	}
+
 }
 
+.controls-progress {
+	&.-mobile {
+		display: block;
+
+		@media(--min-medium-viewport) {
+			display: none;
+		}
+	}
+
+	&.-desktop {
+		transition: opacity 2s ease-in-out;
+		opacity: 0;
+
+		@media(--min-medium-viewport) {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+			opacity: 1;
+		}
+
+		& .-progress {
+			align-self: center;
+			margin: 0 10px;
+			position: relative;
+			width: 100%;
+		}
+	}
+
+	& .time {
+		display: none;
+
+		&.-desktop {
+			@media(--min-medium-viewport) {
+				align-items: center;
+				color: var(--global-theme-font-primary);
+				display: inline-flex;
+				font-size: .675rem;
+				margin-top: 3px;
+			}
+		}
+	}
+}
 
 .status {
 	& button {
@@ -539,5 +655,19 @@
 
 	& .controls-recent-songs {
 		background-color: var(--global-gallery);
+	}
+}
+
+.-live.LIVE_PAUSE .resume-btn,
+.-live.LIVE_PLAYING .pause-btn,
+.-live.LIVE_STOP .play-btn,
+.-live.LIVE_FAILED .play-btn,
+.-live.LIVE_BUFFERING .loading-btn,
+.-live.LIVE_CONNECTING .loading-btn,
+.-live.LIVE_RECONNECTING .loading-btn,
+.-live.STREAM_GEO_BLOCKED .play-btn,
+.-live.STATION_NOT_FOUND .play-btn {
+	@media(--min-medium-viewport) {
+		margin-top: 0;
 	}
 }
