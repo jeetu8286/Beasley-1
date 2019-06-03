@@ -2,7 +2,7 @@
 import { removeChildren, dispatchEvent } from '../../library/dom';
 import { getStateFromContent, parseHtml } from '../../library/html-parser';
 import { pageview } from '../../library/google-analytics';
-
+import slugify from '../../library/slugify';
 /**
  * We use this approach to minify action names in the production bundle and have
  * human friendly actions in the dev bundle. Use "s{x}" format to create new actions.
@@ -21,18 +21,26 @@ export const ACTION_LOAD_ERROR =
 	'production' === process.env.NODE_ENV ? 's5' : 'LOADING_ERROR';
 export const ACTION_HIDE_SPLASH_SCREEN =
 	'production' === process.env.NODE_ENV ? 's6' : 'HIDE_SPLASH_SCREEN';
+export const ACTION_UPDATE_NOTICE =
+	'production' === process.env.NODE_ENV ? 's7' : 'UPDATE_NOTICE ';
+export const ACTION_HISTORY_HTML_SNAPSHOT =
+	'production' === process.env.NODE_ENV ? 's10' : 'HISTORY_HTML_SNAPSHOT';
 
 export function initPage() {
 	const content = document.getElementById( 'content' );
 	const parsed = getStateFromContent( content );
-
 	// clean up content block for now, it will be poplated in the render function
 	removeChildren( content );
 
 	return { type: ACTION_INIT_PAGE, ...parsed };
 }
 
+export function initPageLoaded( uuid, data ) {
+	return { type: ACTION_HISTORY_HTML_SNAPSHOT, uuid, data };
+}
+
 export function loadPage( url, options = {} ) {
+	const urlSlugified = slugify( url );
 	return dispatch => {
 		const { history, location, pageXOffset, pageYOffset } = window;
 
@@ -48,6 +56,13 @@ export function loadPage( url, options = {} ) {
 			const parsed = parseHtml( data );
 			const pageDocument = parsed.document;
 
+			dispatch( {
+				type: ACTION_LOADED_PAGE,
+				url,
+				...parsed,
+				isHome: pageDocument.body.classList.contains( 'home' ),
+			} );
+
 			if ( !options.suppressHistory ) {
 				history.replaceState(
 					{ ...history.state, pageXOffset, pageYOffset },
@@ -55,10 +70,15 @@ export function loadPage( url, options = {} ) {
 					location.href,
 				);
 				history.pushState(
-					{ data, pageXOffset: 0, pageYOffset: 0 },
+					{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
 					pageDocument.title,
 					url,
 				);
+				dispatch( {
+					type: ACTION_HISTORY_HTML_SNAPSHOT,
+					uuid: urlSlugified,
+					data,
+				} );
 
 				dispatchEvent( 'pushstate' );
 				pageview( pageDocument.title, window.location.href );
@@ -67,7 +87,13 @@ export function loadPage( url, options = {} ) {
 				document.body.className = pageDocument.body.className;
 			}
 
-			dispatch( { type: ACTION_LOADED_PAGE, url, ...parsed } );
+			dispatch( {
+				type: ACTION_LOADED_PAGE,
+				url,
+				...parsed,
+				isHome: pageDocument.body.classList.contains( 'home' ),
+			} );
+
 			window.scrollTo( 0, 0 );
 		}
 
@@ -118,10 +144,20 @@ export function hideSplashScreen() {
 	return { type: ACTION_HIDE_SPLASH_SCREEN };
 }
 
+export function updateNotice( { isOpen, message } ) {
+	return {
+		type: ACTION_UPDATE_NOTICE,
+		force: true,
+		isOpen,
+		message,
+	};
+}
+
 export default {
 	hideSplashScreen,
 	initPage,
+	initPageLoaded,
 	loadPage,
 	loadPartialPage,
-	updatePage,
+	updateNotice,
 };

@@ -8,9 +8,17 @@ import md5 from 'md5';
 import ErrorBoundary from '../components/ErrorBoundary';
 import ContentBlock from '../components/content/ContentBlock';
 
-import { initPage, loadPage, updatePage } from '../redux/actions/screen';
+import { hideModal } from '../redux/actions/modal';
+import {
+	initPage,
+	initPageLoaded,
+	loadPage,
+	updatePage,
+} from '../redux/actions/screen';
+
 import { loadAssets, unloadScripts } from '../library/dom';
 import { untrailingslashit } from '../library/strings';
+import slugify from '../library/slugify';
 
 const specialPages = ['/wp-admin/', '/wp-signup.php', '/wp-login.php'];
 
@@ -33,20 +41,18 @@ class ContentDispatcher extends Component {
 
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
+		const uuid = slugify( location.href );
+		const data = document.documentElement.outerHTML;
 		const state = {
-			data: document.documentElement.outerHTML,
+			uuid,
 			pageXOffset,
 			pageYOffset,
 		};
-
-		var isFirefox =
-			-1 < window.navigator.userAgent.toLowerCase().indexOf( 'firefox' );
-		if ( !isFirefox ) {
-			history.replaceState( state, document.title, location.href );
-		}
+		history.replaceState( state, document.title, location.href );
 
 		// load current page into the state
-		self.props.init();
+		self.props.initPage();
+		self.props.initPageLoaded( uuid, data );
 		self.handleSliderLoad();
 	}
 
@@ -101,6 +107,7 @@ class ContentDispatcher extends Component {
 				const count = carousels[i].classList.contains( '-large' ) ? 2.2 : 4.2;
 				const group = carousels[i].classList.contains( '-large' ) ? 2 : 4;
 
+				// @note This comes from handleSliderLoad
 				// eslint-disable-next-line no-undef
 				new Swiper( carousels[i], {
 					slidesPerView: count + 2,
@@ -137,7 +144,7 @@ class ContentDispatcher extends Component {
 
 	handleClick( e ) {
 		const self = this;
-		const { load } = self.props;
+		const { loadPage } = self.props;
 
 		const { target } = e;
 		let linkNode = target;
@@ -191,7 +198,7 @@ class ContentDispatcher extends Component {
 			auth.currentUser
 				.getIdToken()
 				.then( token => {
-					load( link, {
+					loadPage( link, {
 						fetchUrlOverride: `${
 							window.bbgiconfig.wpapi
 						}feeds-content?device=other`,
@@ -203,25 +210,29 @@ class ContentDispatcher extends Component {
 					} );
 				} )
 				.catch( () => {
-					load( link );
+					loadPage( link );
 				} );
 		} else {
-			load( link );
+			loadPage( link );
 		}
 	}
 
 	handlePageChange( event ) {
 		if ( event && event.state ) {
-			const { data, pageXOffset, pageYOffset } = event.state;
-			// update content state
-			this.props.update( data );
-			// scroll to the top of the page
+			const { uuid, pageXOffset, pageYOffset } = event.state;
+			// @jerome may not be needed and above can get const
+			// const { location } = window;
+			// const uuidOverride = slugify( location.href );
+			const { data } = this.props.history[uuid];
+			this.props.updatePage( data );
+			// scroll to the top of the page and remove modal (one way or other)
 			setTimeout( () => window.scrollTo( pageXOffset, pageYOffset ), 100 );
+			this.props.hideModal();
 		}
 	}
 
 	render() {
-		const { content, embeds, partials } = this.props;
+		const { content, embeds, partials, isHome } = this.props;
 		const blocks = [];
 
 		if ( !content || !content.length ) {
@@ -231,7 +242,7 @@ class ContentDispatcher extends Component {
 		blocks.push(
 			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
 			<ErrorBoundary key={`${window.location.href}-${md5( content )}`}>
-				<ContentBlock content={content} embeds={embeds} />,
+				<ContentBlock content={content} embeds={embeds} isHome={isHome} />,
 			</ErrorBoundary>,
 		);
 
@@ -250,16 +261,22 @@ class ContentDispatcher extends Component {
 ContentDispatcher.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
+	history: PropTypes.arrayOf( PropTypes.object ),
 	partials: PropTypes.shape( {} ).isRequired,
-	init: PropTypes.func.isRequired,
-	load: PropTypes.func.isRequired,
-	update: PropTypes.func.isRequired,
+	hideModal: PropTypes.func.isRequired,
+	initPage: PropTypes.func.isRequired,
+	initPageHistory: PropTypes.func.isRequired,
+	isHome: PropTypes.bool.isRequired,
+	loadPage: PropTypes.func.isRequired,
+	updatePage: PropTypes.func.isRequired,
 };
 
 function mapStateToProps( { screen } ) {
 	return {
+		history: screen.history,
 		content: screen.content,
 		embeds: screen.embeds,
+		isHome: screen.isHome,
 		partials: screen.partials,
 	};
 }
@@ -267,9 +284,11 @@ function mapStateToProps( { screen } ) {
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators(
 		{
-			init: initPage,
-			load: loadPage,
-			update: updatePage,
+			hideModal,
+			initPage,
+			initPageLoaded,
+			loadPage,
+			updatePage,
 		},
 		dispatch,
 	);

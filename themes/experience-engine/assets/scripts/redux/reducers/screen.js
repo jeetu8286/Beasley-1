@@ -9,16 +9,24 @@ import {
 	ACTION_LOADED_PARTIAL,
 	ACTION_LOAD_ERROR,
 	ACTION_HIDE_SPLASH_SCREEN,
+	ACTION_UPDATE_NOTICE,
+	ACTION_HISTORY_HTML_SNAPSHOT,
 } from '../actions/screen';
 
 export const DEFAULT_STATE = {
 	content: '',
 	embeds: [],
 	error: '',
+	history: [],
+	isHome: false,
 	partials: {},
 	scripts: {},
 	splashScreen: true,
 	url: false,
+	notice: {
+		isOpen: false,
+		message: '',
+	},
 };
 
 function manageScripts( load, unload ) {
@@ -111,6 +119,7 @@ function reducer( state = {}, action = {} ) {
 			return {
 				...state,
 				content: action.content,
+				isHome: action.isHome,
 				embeds: action.embeds,
 				error: '',
 				partials: {},
@@ -149,6 +158,27 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_HIDE_SPLASH_SCREEN:
 			hideSplashScreen();
 			return { ...state, splashScreen: false };
+
+		case ACTION_UPDATE_NOTICE: {
+			const notice = {
+				isOpen: action.isOpen,
+				message: action.message,
+			};
+
+			return { ...state, notice: notice };
+		}
+
+		case ACTION_HISTORY_HTML_SNAPSHOT:
+			return {
+				...state,
+				history: {
+					...state.history,
+					[action.uuid]: {
+						id: action.uuid,
+						data: action.data,
+					},
+				},
+			};
 
 		default:
 			// do nothing
