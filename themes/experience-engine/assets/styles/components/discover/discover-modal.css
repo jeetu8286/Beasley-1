@@ -51,7 +51,6 @@
 
 			@media (--min-xlarge-viewport) {
 				margin: 0 auto;
-				width: 95%;
 			}
 
 			& > * {
@@ -179,5 +178,9 @@
 				opacity: 1;
 			}
 		}
+	}
+
+	& .-added .post-thumbnail button {
+		opacity: 1;
 	}
 }
