@@ -40,7 +40,7 @@ Controls.propTypes = {
 	colors: PropTypes.object,
 	isIos: PropTypes.bool,
 	progressClass: PropTypes.string,
-	};
+};
 
 Controls.defaultProps = {
 	title: '',
