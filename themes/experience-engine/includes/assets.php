@@ -62,10 +62,10 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		$react_mode = $is_script_debug ? 'development' : 'production.min';
 
 		wp_register_script( 'react', "//unpkg.com/react@{$react_version}/umd/react.{$react_mode}.js", null, null, true );
-		wp_script_add_data( 'react', 'crossorigin', false );
+		wp_script_add_data( 'react', 'crossorigin', true );
 
 		wp_register_script( 'react-dom', "//unpkg.com/react-dom@{$react_version}/umd/react-dom.{$react_mode}.js", null, null, true );
-		wp_script_add_data( 'react-dom', 'crossorigin', false );
+		wp_script_add_data( 'react-dom', 'crossorigin', true );
 
 		/**
 		 * Application script
