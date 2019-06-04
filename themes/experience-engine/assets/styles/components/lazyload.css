@@ -3,9 +3,9 @@
 	background-position: center center;
 	background-size: cover;
 	position: relative;
+	background-color: var( --global-mercury );
 
 	& .loading {
-		background: var( --global-mercury );
 		position: absolute;
 		bottom: 0;
 		left: 0;
