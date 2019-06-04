@@ -107,7 +107,10 @@ class UserNav extends Component {
 						self.finishLoading();
 						self.props.showCompleteSignup();
 					} else {
-						self.loadHomepage( user );
+						ensureUserHasCurrentChannel()
+							.then( ( result ) => {
+								self.loadHomepage( user );
+							} );
 					}
 				} )
 				.catch( () => {
