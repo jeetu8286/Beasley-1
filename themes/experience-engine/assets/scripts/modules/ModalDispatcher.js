@@ -99,12 +99,6 @@ class ModalDispatcher extends Component {
 	}
 
 	handleClose() {
-		const innerContent = document.getElementById( 'inner-content' );
-
-		if ( innerContent ) {
-			innerContent.classList.remove( 'discover-modal-open' );
-		}
-
 		this.props.close();
 		this.handleMenuCurrentItem();
 	}
@@ -114,7 +108,6 @@ class ModalDispatcher extends Component {
 		const { modal, payload } = self.props;
 
 		let component = false;
-		let innerContent;
 
 		switch ( modal ) {
 			case SIGNIN_MODAL:
@@ -133,12 +126,6 @@ class ModalDispatcher extends Component {
 				);
 				break;
 			case DISCOVER_MODAL:
-				innerContent = document.getElementById( 'inner-content' );
-
-				if ( innerContent ) {
-					innerContent.classList.add( 'discover-modal-open' );
-				}
-
 				component = (
 					<div className="discover-modal" ref={self.modalRef}>
 						<DiscoverModal close={() => this.handleClose()} {...payload} />

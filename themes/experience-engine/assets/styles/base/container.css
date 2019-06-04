@@ -29,14 +29,6 @@ html {
 	display: flex;
 	flex-direction: column;
 	position: relative;
-
-	@nest .single & {
-		&.discover-modal-open {
-			& .hentry {
-				display: none;
-			}
-		}
-	}
 }
 
 .content-wrap {
