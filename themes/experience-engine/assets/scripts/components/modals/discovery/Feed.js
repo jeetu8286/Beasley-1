@@ -38,7 +38,7 @@ class Feed extends PureComponent {
 
 		self.props.updateNotice( {
 			message: `<span class="title">${title}</span> has been added to your homepage`,
-			isOpen: true
+			isOpen: true,
 		} );
 
 		self.hideNotice();
@@ -53,7 +53,7 @@ class Feed extends PureComponent {
 
 		self.props.updateNotice( {
 			message: `<span class="title">${title}</span> has been removed from your homepage`,
-			isOpen: true
+			isOpen: true,
 		} );
 
 		self.hideNotice();
@@ -61,7 +61,7 @@ class Feed extends PureComponent {
 
 	render() {
 		const self = this;
-		const { id, title, picture, type, added } = self.props;
+		const { id, title, picture, type, added, pageNum } = self.props;
 
 		const placholder = `${id}-thumbnail`;
 		const image = ( picture.original || picture.large || {} ).url;
@@ -76,7 +76,7 @@ class Feed extends PureComponent {
 		const tileClass= added ? '-added' : '';
 
 		return (
-			<div className={`${type} post-tile ${tileClass}`}>
+			<div className={`${type} post-tile ${tileClass}`} data-pagenum={ pageNum }>
 				<div className="post-thumbnail">
 					<div id={placholder} className="placeholder placeholder-lazyimage">
 						{lazyImage}
@@ -107,6 +107,7 @@ Feed.propTypes = {
 	onRemove: PropTypes.func.isRequired,
 	updateNotice: PropTypes.func.isRequired,
 	notice: PropTypes.object.isRequired,
+	pageNum: PropTypes.number,
 };
 
 Feed.defaultProps = {
@@ -115,7 +116,7 @@ Feed.defaultProps = {
 
 function mapStateToProps( { screen } ) {
 	return {
-		notice: screen.notice
+		notice: screen.notice,
 	};
 }
 
