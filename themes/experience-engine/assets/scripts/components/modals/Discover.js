@@ -31,13 +31,19 @@ class Discover extends Component {
 		self.state = {
 			loading: true,
 			error: '',
+			pageNum: 1,
+			pageSize: 20,
 			filteredFeeds: [],
+			pendingPageNum: 0,
+			pendingScrollX: 0,
+			pendingScrollY: 0,
 		};
 
-		self.onFilterChange = self.handleFilterChange.bind( self );
-		self.onAdd = self.handleAdd.bind( self );
-		self.onRemove = self.handleRemove.bind( self );
-		self.onClose = self.handleClose.bind( self );
+		self.onFilterChange   = self.handleFilterChange.bind( self );
+		self.onAdd            = self.handleAdd.bind( self );
+		self.onRemove         = self.handleRemove.bind( self );
+		self.onClose          = self.handleClose.bind( self );
+		self.didLoadMoreClick = self.didLoadMoreClick.bind( self );
 	}
 
 	componentDidMount() {
@@ -62,6 +68,7 @@ class Discover extends Component {
 			.then( response => response.json() )
 			.then( feeds => {
 				this.setState( {
+					pageNum: 1,
 					filteredFeeds: feeds,
 					loading: false,
 				} );
@@ -119,22 +126,69 @@ class Discover extends Component {
 		self.props.close();
 	}
 
+	/**
+	 * Increment page number and store previous scroll position for later
+	 * update
+	 */
+	didLoadMoreClick() {
+		this.setState( {
+			pageNum: this.state.pageNum + 1,
+			pendingPageNum: this.state.pageNum + 1,
+			pendingScrollX: window.scrollX,
+			pendingScrollY: window.scrollY,
+		} );
+
+		return false;
+	}
+
+	/**
+	 * If a new page was rendered on Discovery we have to shift scroll
+	 * offset to avoid jitter. We do this by resetting the scroll to value
+	 * prior to loading the next page. The element check is necessary to ensure
+	 * that atleast one element with the new pageNum was rendered.
+	 */
+	componentDidUpdate() {
+		if ( this.state.pendingPageNum ) {
+			let el = document.querySelector( '[data-pagenum="' + this.state.pendingPageNum + '"]' );
+
+			if ( el ) {
+				window.scrollTo( this.state.pendingScrollX, this.state.pendingScrollY );
+
+				this.setState( {
+					pendingPageNum: 0,
+					pendingScrollX: 0,
+					pendingScrollY: 0,
+				} );
+			}
+		}
+	}
+
 	render() {
 		const self = this;
-		const { error, filteredFeeds, loading } = self.state;
+		const { error, loading } = self.state;
 		const { notice } = self.props;
 		const noticeClass = !notice.isOpen ? '' : '-visible';
+
+		let { filteredFeeds }       = self.state;
+		const { pageNum, pageSize } = self.state;
+		let totalPages              = filteredFeeds.length / pageSize;
+		let hasNextPage             = pageNum < totalPages;
+
+		if ( 0 < filteredFeeds.length ) {
+			filteredFeeds = filteredFeeds.slice( 0, pageSize * pageNum );
+		}
 
 		let items = <div className="loading" />;
 		if ( !loading ) {
 			if ( 0 < filteredFeeds.length ) {
-				items = filteredFeeds.map( ( item ) => {
+				items = filteredFeeds.map( ( item, index ) => {
 					const { id, title, picture, type } = item;
 
 					return (
 						<FeedItem
 							key={id}
 							id={id}
+							pageNum={ Math.floor( ( index + 1 ) / pageSize ) + 1 }
 							title={title}
 							picture={picture}
 							type={type}
@@ -166,6 +220,19 @@ class Discover extends Component {
 						{items}
 					</div>
 				</div>
+
+				{ ! loading && hasNextPage &&
+					<div className="load-more-feeds">
+						<button
+							type="button"
+							className="btn load-more-button"
+							aria-label="Load More Feeds"
+							onClick={this.didLoadMoreClick}>
+							Load More
+						</button>
+					</div>
+				}
+
 			</Fragment>
 		);
 	}
@@ -185,7 +252,7 @@ Discover.propTypes = {
 function mapStateToProps( { auth, screen } ) {
 	return {
 		selectedFeeds: auth.feeds,
-		notice: screen.notice
+		notice: screen.notice,
 	};
 }
 
