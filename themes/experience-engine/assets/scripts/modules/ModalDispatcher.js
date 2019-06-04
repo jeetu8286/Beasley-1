@@ -78,6 +78,7 @@ class ModalDispatcher extends Component {
 		if (
 			'CLOSED' !== modal &&
 			DISCOVER_MODAL !== modal &&
+			COMPLETE_SIGNUP_MODAL !== modal &&
 			( !ref || !ref.contains( e.target ) )
 		) {
 			self.props.close();
@@ -86,7 +87,12 @@ class ModalDispatcher extends Component {
 	}
 
 	handleEscapeKeyDown( e ) {
-		if ( 27 === e.keyCode ) {
+		const { modal } = this.props;
+
+		if (
+			27 === e.keyCode &&
+			COMPLETE_SIGNUP_MODAL !== modal
+		) {
 			this.props.close();
 			this.handleMenuCurrentItem();
 		}
