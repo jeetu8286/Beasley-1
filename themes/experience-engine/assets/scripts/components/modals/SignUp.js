@@ -16,6 +16,7 @@ import {
 	validateEmail,
 	validateZipcode,
 	validateGender,
+	ensureUserHasCurrentChannel,
 } from '../../library/experience-engine';
 
 import { isChrome, isFireFox, isIOS, isWebKit } from '../../library/browser';
@@ -153,7 +154,14 @@ class SignUp extends PureComponent {
 
 				self.props.setDisplayName( userData.displayName );
 			} )
-			.then( () => self.props.close() )
+			.then( () => {
+				ensureUserHasCurrentChannel()
+					.then( () => {
+						self.props.close();
+						window.location.reload();
+						document.body.innerHTML = '';
+					} );
+			} )
 			.catch( error => self.setState( { error: error.message } ) );
 	}
 

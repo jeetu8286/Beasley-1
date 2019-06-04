@@ -199,7 +199,6 @@ export function searchKeywords( keyword ) {
 
 export function validateDate( dateString ) {
 	// @note: Leaving this is without disabling it.
-	console.log( 'validateDate', dateString );
 	// First check for the pattern
 	if ( !/^\d{1,2}\/|-\d{1,2}\/|-\d{4}$/.test( dateString ) ) {
 		return false;
