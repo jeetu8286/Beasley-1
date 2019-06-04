@@ -337,6 +337,7 @@
 		display: flex;
 		height: 22px;
 		position: relative;
+		z-index: 1;
 
 		& button {
 			display: none;

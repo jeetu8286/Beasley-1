@@ -10,6 +10,7 @@
 	/* Safari, Chrome */
 	& input[type=range]{
 		appearance: none;
+		background: transparent;
 		border: 1px solid white;
 		cursor: pointer;
 		height: 16px;
