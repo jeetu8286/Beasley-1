@@ -140,6 +140,7 @@
 		}
 
 		& .logo {
+			background: var(--global-theme-secondary);
 			display: flex;
 			justify-content: center;
 			margin: 0;
