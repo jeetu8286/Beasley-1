@@ -111,6 +111,6 @@
 	}
 
 	& + .pre-bar {
-		background: var( --brand-button-color );
+		background: var(--brand-button-color);
 	}
 }
