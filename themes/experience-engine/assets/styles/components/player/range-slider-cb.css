@@ -47,7 +47,6 @@
 	& input[type=range]::-moz-range-track {
 		width: 82px;
 		height: 2px;
-		background: blue;
 		border: none;
 		border-radius: 3px;
 	}
