@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { removeChildren } from '../library/dom';
-import { showSignInModal, showDiscoverModal } from '../redux/actions/modal';
+import { showSignInModal, showDiscoverModal, hideModal } from '../redux/actions/modal';
 import { setNavigationCurrent } from '../redux/actions/navigation';
 
 import { isWindowsBrowser } from '../library/browser';
@@ -77,12 +77,15 @@ class PrimaryNav extends PureComponent {
 	handlePageChange() {
 		const self = this;
 		const { primaryNavRef } = self;
-		const { setNavigationCurrent } = self.props;
+		const { setNavigationCurrent, hideModal } = self.props;
 		const container = primaryNavRef.current;
 
 		const { href, pathname } = window.location;
 
 		const previouslySelected = container.querySelectorAll( '.current-menu-item' );
+
+		hideModal();
+
 		for ( let i = 0; i < previouslySelected.length; i++ ) {
 			previouslySelected[i].classList.remove( 'current-menu-item' );
 		}
@@ -321,6 +324,7 @@ function mapDispatchToProps( dispatch ) {
 		showSignin: showSignInModal,
 		showDiscover: showDiscoverModal,
 		setNavigationCurrent: setNavigationCurrent,
+		hideModal: hideModal,
 	};
 
 	return bindActionCreators( actions, dispatch );
