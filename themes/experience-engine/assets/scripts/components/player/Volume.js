@@ -76,7 +76,7 @@ class Volume extends PureComponent {
 							<label className="screen-reader-text" htmlFor="audio-volume">Volume:</label>
 							<input type="range" min="0" max="82" step="1" value={volume} onChange={( e ) => setVolume( e.target.value )} />
 						</div>
-						<p className="pre-bar" style={{ width: `${volume}px`}} />
+						<p className="pre-bar" style={{ width: `${volume}%`}} />
 					</div>
 				</div>
 			</div>
