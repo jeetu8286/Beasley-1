@@ -136,10 +136,11 @@
 			position: fixed;
 			top: 0;
 			width: 82.6667vw;
-			z-index: 0;
+			z-index: 7;
 		}
 
 		& .logo {
+			background: var(--global-theme-secondary);
 			display: flex;
 			justify-content: center;
 			margin: 0;
