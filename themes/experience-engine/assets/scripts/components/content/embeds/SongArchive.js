@@ -47,7 +47,7 @@ class SongArchive extends PureComponent {
 							{ this.state.songs.map( ( song ) => {
 								return (
 									<li key={ song.id }>
-										<span className="song-time">{ dayjs.unix( song.timestamp ).format( 'HH:mm A' ) }</span>
+										<span className="song-time">{ dayjs.unix( song.timestamp ).format( 'h:mm A' ) }</span>
 										&nbsp;
 										<span className="song-title">{ song.title }</span>
 										&mdash;

@@ -136,10 +136,11 @@
 			position: fixed;
 			top: 0;
 			width: 82.6667vw;
-			z-index: 0;
+			z-index: 7;
 		}
 
 		& .logo {
+			background: var(--global-theme-secondary);
 			display: flex;
 			justify-content: center;
 			margin: 0;
@@ -175,6 +176,10 @@
 	position: absolute;
 	text-decoration: none;
 	z-index: 8;
+
+	/* IE11 Fix */
+	height: 57px;
+	top: 14px;
 
 	@media (--min-large-viewport) {
 		display: none;
