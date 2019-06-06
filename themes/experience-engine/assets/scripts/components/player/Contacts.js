@@ -102,7 +102,6 @@ class Contacts extends PureComponent {
 			<div
 				ref={self.contactModalRef}
 				className={`controls-contact control-border ${isOpen ? ' -open' : ''}`}
-				style={modalStyle}
 			>
 				<button onClick={self.onToggle}>
 					<svg
