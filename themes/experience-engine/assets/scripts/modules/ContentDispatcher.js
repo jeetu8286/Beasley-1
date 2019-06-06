@@ -13,7 +13,7 @@ import {
 	initPage,
 	initPageLoaded,
 	loadPage,
-	updatePage
+	updatePage,
 } from '../redux/actions/screen';
 
 import { loadAssets, unloadScripts } from '../library/dom';
@@ -46,7 +46,7 @@ class ContentDispatcher extends Component {
 		const state = {
 			uuid,
 			pageXOffset,
-			pageYOffset
+			pageYOffset,
 		};
 		history.replaceState( state, document.title, location.href );
 
@@ -82,11 +82,11 @@ class ContentDispatcher extends Component {
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
 		const scripts = [
-			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js'
+			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js',
 		];
 
 		const styles = [
-			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css'
+			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css',
 		];
 
 		if ( carousels.length ) {
@@ -117,26 +117,26 @@ class ContentDispatcher extends Component {
 					breakpoints: {
 						1680: {
 							slidesPerView: count + 1,
-							slidesPerGroup: count + 1
+							slidesPerGroup: count + 1,
 						},
 						1280: {
 							slidesPerView: count,
-							slidesPerGroup: group
+							slidesPerGroup: group,
 						},
 						900: {
 							slidesPerView: 2.2,
-							slidesPerGroup: 2
+							slidesPerGroup: 2,
 						},
 						480: {
 							slidesPerView: 1.2,
 							slidesPerGroup: 1,
-							spaceBetween: 27
-						}
+							spaceBetween: 27,
+						},
 					},
 					navigation: {
 						nextEl: '.swiper-button-next',
-						prevEl: '.swiper-button-prev'
-					}
+						prevEl: '.swiper-button-prev',
+					},
 				} );
 			}
 		}
@@ -205,8 +205,8 @@ class ContentDispatcher extends Component {
 						fetchParams: {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-							body: `format=raw&authorization=${encodeURIComponent( token )}`
-						}
+							body: `format=raw&authorization=${encodeURIComponent( token )}`,
+						},
 					} );
 				} )
 				.catch( () => {
@@ -243,14 +243,14 @@ class ContentDispatcher extends Component {
 			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
 			<ErrorBoundary key={`${window.location.href}-${md5( content )}`}>
 				<ContentBlock content={content} embeds={embeds} isHome={isHome} />,
-			</ErrorBoundary>
+			</ErrorBoundary>,
 		);
 
 		Object.keys( partials ).forEach( key => {
 			blocks.push(
 				<ErrorBoundary key={key}>
 					<ContentBlock {...partials[key]} partial />
-				</ErrorBoundary>
+				</ErrorBoundary>,
 			);
 		} );
 
@@ -268,7 +268,7 @@ ContentDispatcher.propTypes = {
 	initPageHistory: PropTypes.func.isRequired,
 	isHome: PropTypes.bool.isRequired,
 	loadPage: PropTypes.func.isRequired,
-	updatePage: PropTypes.func.isRequired
+	updatePage: PropTypes.func.isRequired,
 };
 
 function mapStateToProps( { screen } ) {
@@ -277,7 +277,7 @@ function mapStateToProps( { screen } ) {
 		content: screen.content,
 		embeds: screen.embeds,
 		isHome: screen.isHome,
-		partials: screen.partials
+		partials: screen.partials,
 	};
 }
 
@@ -288,13 +288,13 @@ function mapDispatchToProps( dispatch ) {
 			initPage,
 			initPageLoaded,
 			loadPage,
-			updatePage
+			updatePage,
 		},
-		dispatch
+		dispatch,
 	);
 }
 
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps
+	mapDispatchToProps,
 )( ContentDispatcher );

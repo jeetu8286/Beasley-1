@@ -11,7 +11,7 @@ import {
 	RESTORE_MODAL,
 	COMPLETE_SIGNUP_MODAL,
 	DISCOVER_MODAL,
-	EDIT_FEED_MODAL
+	EDIT_FEED_MODAL,
 } from '../redux/actions/modal';
 
 import { setNavigationRevert } from '../redux/actions/navigation';
@@ -61,8 +61,7 @@ class ModalDispatcher extends Component {
 
 		if ( previous ) {
 			previous.classList.add( 'current-menu-item' );
-		}
-		else {
+		} else {
 			// If Discovery was toggled by a non-menu item and a previous item doesn't appear, select 'Home'
 			const homeButton = document.getElementById( 'menu-item-home' );
 			homeButton.classList.add( 'current-menu-item' );
@@ -79,6 +78,7 @@ class ModalDispatcher extends Component {
 		if (
 			'CLOSED' !== modal &&
 			DISCOVER_MODAL !== modal &&
+			COMPLETE_SIGNUP_MODAL !== modal &&
 			( !ref || !ref.contains( e.target ) )
 		) {
 			self.props.close();
@@ -87,19 +87,18 @@ class ModalDispatcher extends Component {
 	}
 
 	handleEscapeKeyDown( e ) {
-		if ( 27 === e.keyCode ) {
+		const { modal } = this.props;
+
+		if (
+			27 === e.keyCode &&
+			COMPLETE_SIGNUP_MODAL !== modal
+		) {
 			this.props.close();
 			this.handleMenuCurrentItem();
 		}
 	}
 
 	handleClose() {
-		const innerContent = document.getElementById( 'inner-content' );
-
-		if ( innerContent ) {
-			innerContent.classList.remove( 'discover-modal-open' );
-		}
-
 		this.props.close();
 		this.handleMenuCurrentItem();
 	}
@@ -109,7 +108,6 @@ class ModalDispatcher extends Component {
 		const { modal, payload } = self.props;
 
 		let component = false;
-		let innerContent;
 
 		switch ( modal ) {
 			case SIGNIN_MODAL:
@@ -128,12 +126,6 @@ class ModalDispatcher extends Component {
 				);
 				break;
 			case DISCOVER_MODAL:
-				innerContent = document.getElementById( 'inner-content' );
-
-				if ( innerContent ) {
-					innerContent.classList.add( 'discover-modal-open' );
-				}
-
 				component = (
 					<div className="discover-modal" ref={self.modalRef}>
 						<DiscoverModal close={() => this.handleClose()} {...payload} />
@@ -142,7 +134,7 @@ class ModalDispatcher extends Component {
 
 				return ReactDOM.createPortal(
 					component,
-					document.getElementById( 'inner-content' )
+					document.getElementById( 'inner-content' ),
 				);
 			case COMPLETE_SIGNUP_MODAL:
 				component = (
@@ -173,12 +165,12 @@ ModalDispatcher.propTypes = {
 	modal: PropTypes.string,
 	payload: PropTypes.shape( {} ),
 	close: PropTypes.func.isRequired,
-	navigationRevert: PropTypes.func.isRequired
+	navigationRevert: PropTypes.func.isRequired,
 };
 
 ModalDispatcher.defaultProps = {
 	modal: 'CLOSED',
-	payload: {}
+	payload: {},
 };
 
 function mapStateToProps( { modal, navigation } ) {
@@ -188,11 +180,11 @@ function mapStateToProps( { modal, navigation } ) {
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators(
 		{ close: hideModal, navigationRevert: setNavigationRevert },
-		dispatch
+		dispatch,
 	);
 }
 
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps
+	mapDispatchToProps,
 )( ModalDispatcher );

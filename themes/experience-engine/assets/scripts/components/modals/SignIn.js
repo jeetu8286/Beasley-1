@@ -5,6 +5,9 @@ import { bindActionCreators } from 'redux';
 import firebase from 'firebase';
 
 import { showRestoreModal, showSignUpModal } from '../../redux/actions/modal';
+import {
+	ensureUserHasCurrentChannel,
+} from '../../library/experience-engine';
 
 import Header from './elements/Header';
 import Alert from './elements/Alert';
@@ -49,7 +52,14 @@ class SignIn extends PureComponent {
 		e.preventDefault();
 
 		auth.signInWithEmailAndPassword( email, password )
-			.then( self.props.close )
+			.then( () => {
+				ensureUserHasCurrentChannel()
+					.then( () => {
+						self.props.close();
+						window.location.reload();
+						document.body.innerHTML = '';
+					} );
+			} )
 			.catch( error => self.setState( { message: error.message } ) );
 	}
 

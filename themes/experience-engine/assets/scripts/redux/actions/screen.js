@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { removeChildren, dispatchEvent } from '../../library/dom';
 import { getStateFromContent, parseHtml } from '../../library/html-parser';
 import { pageview } from '../../library/google-analytics';
@@ -46,7 +47,8 @@ export function loadPage( url, options = {} ) {
 		dispatch( { type: ACTION_LOADING_PAGE, url } );
 
 		function onError( error ) {
-			console.error( error ); // eslint-disable-line no-console
+			// eslint-disable-next-line no-console
+			console.error( error );
 			dispatch( { type: ACTION_LOAD_ERROR, error } );
 		}
 
@@ -58,24 +60,24 @@ export function loadPage( url, options = {} ) {
 				type: ACTION_LOADED_PAGE,
 				url,
 				...parsed,
-				isHome: pageDocument.body.classList.contains( 'home' )
+				isHome: pageDocument.body.classList.contains( 'home' ),
 			} );
 
 			if ( !options.suppressHistory ) {
 				history.replaceState(
 					{ ...history.state, pageXOffset, pageYOffset },
 					document.title,
-					location.href
+					location.href,
 				);
 				history.pushState(
 					{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
 					pageDocument.title,
-					url
+					url,
 				);
 				dispatch( {
 					type: ACTION_HISTORY_HTML_SNAPSHOT,
 					uuid: urlSlugified,
-					data
+					data,
 				} );
 
 				dispatchEvent( 'pushstate' );
@@ -89,7 +91,7 @@ export function loadPage( url, options = {} ) {
 				type: ACTION_LOADED_PAGE,
 				url,
 				...parsed,
-				isHome: pageDocument.body.classList.contains( 'home' )
+				isHome: pageDocument.body.classList.contains( 'home' ),
 			} );
 
 			window.scrollTo( 0, 0 );
@@ -111,7 +113,7 @@ export function updatePage( data ) {
 	return {
 		type: ACTION_LOADED_PAGE,
 		force: true,
-		...parsed
+		...parsed,
 	};
 }
 
@@ -120,7 +122,8 @@ export function loadPartialPage( url, placeholder ) {
 		dispatch( { type: ACTION_LOADING_PARTIAL, url } );
 
 		function onError( error ) {
-			console.error( error ); // eslint-disable-line no-console
+			// eslint-disable-next-line no-console
+			console.error( error );
 			dispatch( { type: ACTION_LOAD_ERROR, error } );
 		}
 
@@ -146,16 +149,15 @@ export function updateNotice( { isOpen, message } ) {
 		type: ACTION_UPDATE_NOTICE,
 		force: true,
 		isOpen,
-		message
+		message,
 	};
 }
 
 export default {
+	hideSplashScreen,
 	initPage,
 	initPageLoaded,
 	loadPage,
-	updatePage,
 	loadPartialPage,
-	hideSplashScreen,
-	updateNotice
+	updateNotice,
 };

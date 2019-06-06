@@ -10,7 +10,7 @@ import {
 	ACTION_LOAD_ERROR,
 	ACTION_HIDE_SPLASH_SCREEN,
 	ACTION_UPDATE_NOTICE,
-	ACTION_HISTORY_HTML_SNAPSHOT
+	ACTION_HISTORY_HTML_SNAPSHOT,
 } from '../actions/screen';
 
 export const DEFAULT_STATE = {
@@ -25,8 +25,8 @@ export const DEFAULT_STATE = {
 	url: false,
 	notice: {
 		isOpen: false,
-		message: ''
-	}
+		message: '',
+	},
 };
 
 function manageScripts( load, unload ) {
@@ -85,7 +85,7 @@ function reducer( state = {}, action = {} ) {
 				...state,
 				content: action.content,
 				embeds: action.embeds,
-				scripts: action.scripts
+				scripts: action.scripts,
 			};
 
 		case ACTION_LOADING_PARTIAL:
@@ -123,7 +123,7 @@ function reducer( state = {}, action = {} ) {
 				embeds: action.embeds,
 				error: '',
 				partials: {},
-				scripts: action.scripts
+				scripts: action.scripts,
 			};
 		}
 
@@ -146,9 +146,9 @@ function reducer( state = {}, action = {} ) {
 					...state.partials,
 					[action.placeholder]: {
 						content: action.content,
-						embeds: action.embeds
-					}
-				}
+						embeds: action.embeds,
+					},
+				},
 			};
 		}
 
@@ -162,7 +162,7 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_UPDATE_NOTICE: {
 			const notice = {
 				isOpen: action.isOpen,
-				message: action.message
+				message: action.message,
 			};
 
 			return { ...state, notice: notice };
@@ -175,9 +175,9 @@ function reducer( state = {}, action = {} ) {
 					...state.history,
 					[action.uuid]: {
 						id: action.uuid,
-						data: action.data
-					}
-				}
+						data: action.data,
+					},
+				},
 			};
 
 		default:
