@@ -324,10 +324,9 @@ PrimaryNav.propTypes = {
 	setNavigationCurrent: PropTypes.func.isRequired,
 };
 
-function mapStateToProps( { auth, screen } ) {
+function mapStateToProps( { auth } ) {
 	return {
 		signedIn: !!auth.user,
-		isLoading: screen.isLoading,
 	};
 }
 

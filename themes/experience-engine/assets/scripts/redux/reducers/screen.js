@@ -23,7 +23,6 @@ export const DEFAULT_STATE = {
 	scripts: {},
 	splashScreen: true,
 	url: false,
-	isLoading: false,
 	notice: {
 		isOpen: false,
 		message: '',
@@ -92,7 +91,7 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_LOADING_PARTIAL:
 		case ACTION_LOADING_PAGE:
 			NProgress.start();
-			return { ...state, url: action.url, isLoading: true };
+			return { ...state, url: action.url };
 
 		case ACTION_LOADED_PAGE: {
 			// do not accept action if user goes to another page before current page is loaded
@@ -125,7 +124,6 @@ function reducer( state = {}, action = {} ) {
 				error: '',
 				partials: {},
 				scripts: action.scripts,
-				isLoading: false,
 			};
 		}
 
