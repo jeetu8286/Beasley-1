@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Dfp from './Dfp';
+import CountdownTicker from './CountdownTicker';
 
 const SECOND_IN_MILLISECONDS = 1000;
 const MINUTE_IN_MILLISECONDS = SECOND_IN_MILLISECONDS * 60;
@@ -18,8 +19,7 @@ class Countdown extends Component {
 		self.state = self.getTimeRemaining( false );
 		self.interval = null;
 
-		self.getTimeRemaining = self.getTimeRemaining.bind( self );
-		self.buildTicker      = self.buildTicker.bind( self );
+		self.getTimeRemaining   = self.getTimeRemaining.bind( self );
 	}
 
 	componentDidMount() {
@@ -86,42 +86,6 @@ class Countdown extends Component {
 		] );
 	}
 
-	/**
-	 * Separates number and returns ticker markup
-	 */
-	buildTicker( string ) {
-		if ( !string ) {
-			return;
-		}
-
-		let newString = ( '0' + string ).slice( -2 );
-
-		return (
-			<Fragment>
-				<div className="tick">
-					<div className="up">
-						<div className="shadow"></div>
-						<div className="inn">{newString[0]}</div>
-					</div>
-					<div className="down">
-						<div className="shadow"></div>
-						<div className="inn">{newString[0]}</div>
-					</div>
-				</div>
-				<div className="tick">
-					<div className="up">
-						<div className="shadow"></div>
-						<div className="inn">{newString[1]}</div>
-					</div>
-					<div className="down">
-						<div className="shadow"></div>
-						<div className="inn">{newString[1]}</div>
-					</div>
-				</div>
-			</Fragment>
-		);
-	}
-
 	render() {
 		const self = this;
 		const { payload } = self.props;
@@ -176,16 +140,16 @@ class Countdown extends Component {
 
 						<div className="countdown-timer">
 							<div className="time" title="Days">
-								{this.buildTicker( days )}
+								<CountdownTicker number={days} />
 							</div>
 							<div className="time" title="Hours">
-								{this.buildTicker( hours )}
+								<CountdownTicker number={hours} />
 							</div>
 							<div className="time" title="Minutes">
-								{this.buildTicker( minutes )}
+								<CountdownTicker number={minutes} />
 							</div>
 							<div className="time" title="Seconds">
-								{this.buildTicker( seconds )}
+								<CountdownTicker number={seconds} />
 							</div>
 						</div>
 					</div>
