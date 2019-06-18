@@ -40,6 +40,10 @@
 		display: inline-block;
 	}
 
+	& .countdown-title {
+		margin-bottom: 0;
+	}
+
 	& .countdown-content {
 		display: flex;
 		flex-direction: column;
@@ -58,6 +62,15 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	& .countdown-labels {
+		margin-bottom: .25rem;
+
+		& span {
+			font-size: .875rem;
+			margin: 0 1rem;
+		}
 	}
 
 	& .countdown-timer {

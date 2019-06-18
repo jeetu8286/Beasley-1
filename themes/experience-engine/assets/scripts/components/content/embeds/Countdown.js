@@ -97,10 +97,12 @@ class Countdown extends Component {
 			title,
 			background,
 			link,
+			timeColor
 		} = payload;
 
 		const { color, image } = background;
 		const blockStyle = {};
+		const timeStyle = {};
 
 		if ( color ) {
 			blockStyle.backgroundColor = color;
@@ -108,6 +110,10 @@ class Countdown extends Component {
 
 		if ( image ) {
 			blockStyle.backgroundImage = `url(${image})`;
+		}
+
+		if ( timeColor ) {
+			timeStyle.color = timeColor;
 		}
 
 		const titleText = link
@@ -123,6 +129,13 @@ class Countdown extends Component {
 						<h2 className="countdown-title">
 							{titleText}
 						</h2>
+
+						<div className="countdown-labels" style={timeStyle}>
+							<span className="countdown-labels day">Days</span>
+							<span className="countdown-labels hour">Hours</span>
+							<span className="countdown-labels minute">Minutes</span>
+							<span className="countdown-labels second">Seconds</span>
+						</div>
 
 						<div className="countdown-timer">
 							<div className="time" title="Days">{( '0' + days ).slice( -2 )}</div>
