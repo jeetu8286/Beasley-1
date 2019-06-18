@@ -40,10 +40,24 @@
 		display: inline-block;
 	}
 
+	& .countdown-content {
+		display: flex;
+	}
+
+	& .countdown-wrapper,
+	& .countdown-sponsor {
+		flex: 1 0 50%;
+	}
+
+	& .countdown-sponsor {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 	& .countdown-timer {
 		display: flex;
 		justify-content: center;
-		margin-bottom: 2rem;
 
 		& .time {
 			background-color: var(--brand-primary);
