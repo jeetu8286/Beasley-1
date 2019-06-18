@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import Dfp from './Dfp';
@@ -19,6 +19,7 @@ class Countdown extends Component {
 		self.interval = null;
 
 		self.getTimeRemaining = self.getTimeRemaining.bind( self );
+		self.buildTicker      = self.buildTicker.bind( self );
 	}
 
 	componentDidMount() {
@@ -85,6 +86,42 @@ class Countdown extends Component {
 		] );
 	}
 
+	/**
+	 * Separates number and returns ticker markup
+	 */
+	buildTicker( string ) {
+		if ( !string ) {
+			return;
+		}
+
+		let newString = ( '0' + string ).slice( -2 );
+
+		return (
+			<Fragment>
+				<div className="tick">
+					<div className="up">
+						<div className="shadow"></div>
+						<div className="inn">{newString[0]}</div>
+					</div>
+					<div className="down">
+						<div className="shadow"></div>
+						<div className="inn">{newString[0]}</div>
+					</div>
+				</div>
+				<div className="tick">
+					<div className="up">
+						<div className="shadow"></div>
+						<div className="inn">{newString[1]}</div>
+					</div>
+					<div className="down">
+						<div className="shadow"></div>
+						<div className="inn">{newString[1]}</div>
+					</div>
+				</div>
+			</Fragment>
+		);
+	}
+
 	render() {
 		const self = this;
 		const { payload } = self.props;
@@ -131,17 +168,25 @@ class Countdown extends Component {
 						</h2>
 
 						<div className="countdown-labels" style={timeStyle}>
-							<span className="countdown-labels day">Days</span>
-							<span className="countdown-labels hour">Hours</span>
-							<span className="countdown-labels minute">Minutes</span>
-							<span className="countdown-labels second">Seconds</span>
+							<span id="countdown-label-day" className="countdown-labels day">Days</span>
+							<span id="countdown-label-hour" className="countdown-labels hour">Hours</span>
+							<span id="countdown-label-minute" className="countdown-labels minute">Minutes</span>
+							<span id="countdown-label-second" className="countdown-labels second">Seconds</span>
 						</div>
 
 						<div className="countdown-timer">
-							<div className="time" title="Days">{( '0' + days ).slice( -2 )}</div>
-							<div className="time" title="Hours">{( '0' + hours ).slice( -2 )}</div>
-							<div className="time" title="Minutes">{( '0' + minutes ).slice( -2 )}</div>
-							<div className="time" title="Seconds">{( '0' + seconds ).slice( -2 )}</div>
+							<div className="time" title="Days">
+								{this.buildTicker( days )}
+							</div>
+							<div className="time" title="Hours">
+								{this.buildTicker( hours )}
+							</div>
+							<div className="time" title="Minutes">
+								{this.buildTicker( minutes )}
+							</div>
+							<div className="time" title="Seconds">
+								{this.buildTicker( seconds )}
+							</div>
 						</div>
 					</div>
 
