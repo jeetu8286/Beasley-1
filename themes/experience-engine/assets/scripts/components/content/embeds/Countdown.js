@@ -98,7 +98,8 @@ class Countdown extends Component {
 			title,
 			background,
 			link,
-			timeColor
+			timeColor,
+			timeBackground
 		} = payload;
 
 		const { color, image } = background;
@@ -115,6 +116,10 @@ class Countdown extends Component {
 
 		if ( timeColor ) {
 			timeStyle.color = timeColor;
+		}
+
+		if ( timeBackground ) {
+			timeStyle.background = timeBackground;
 		}
 
 		const titleText = link
