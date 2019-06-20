@@ -51,10 +51,10 @@
 	}
 
 	& .countdown-content {
-		display: flex;
-		flex-direction: column;
+		display: block;
 
 		@media (--min-medium-viewport) {
+			display: flex;
 			flex-direction: row;
 		}
 	}
