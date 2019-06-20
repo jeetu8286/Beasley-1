@@ -132,24 +132,24 @@ class Countdown extends Component {
 						</h2>
 
 						<div className="countdown-labels" style={timeStyle}>
-							<span id="countdown-label-day" className="countdown-labels day">Days</span>
-							<span id="countdown-label-hour" className="countdown-labels hour">Hours</span>
-							<span id="countdown-label-minute" className="countdown-labels minute">Minutes</span>
-							<span id="countdown-label-second" className="countdown-labels second">Seconds</span>
+							<div id="countdown-label-day" className="countdown-labels day">Days</div>
+							<div id="countdown-label-hour" className="countdown-labels hour">Hours</div>
+							<div id="countdown-label-minute" className="countdown-labels minute">Minutes</div>
+							<div id="countdown-label-second" className="countdown-labels second">Seconds</div>
 						</div>
 
 						<div className="countdown-timer">
 							<div className="time" title="Days">
-								<CountdownTicker number={days} />
+								<CountdownTicker number={days} timeStyle={timeStyle} />
 							</div>
 							<div className="time" title="Hours">
-								<CountdownTicker number={hours} />
+								<CountdownTicker number={hours} timeStyle={timeStyle} />
 							</div>
 							<div className="time" title="Minutes">
-								<CountdownTicker number={minutes} />
+								<CountdownTicker number={minutes} timeStyle={timeStyle} />
 							</div>
 							<div className="time" title="Seconds">
-								<CountdownTicker number={seconds} />
+								<CountdownTicker number={seconds} timeStyle={timeStyle} />
 							</div>
 						</div>
 					</div>
@@ -165,6 +165,7 @@ class Countdown extends Component {
 Countdown.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	payload: PropTypes.oneOfType( [PropTypes.bool, PropTypes.object] ),
+	timeStyle: PropTypes.object,
 };
 
 Countdown.defaultProps = {
