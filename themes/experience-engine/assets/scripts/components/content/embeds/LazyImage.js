@@ -182,12 +182,14 @@ LazyImage.propTypes = {
 	tracking: PropTypes.string,
 	attribution: PropTypes.string,
 	autoheight: PropTypes.string,
+	crop: PropTypes.bool,
 };
 
 LazyImage.defaultProps = {
 	tracking: '',
 	attribution: '',
 	autoheight: '',
+	crop: true,
 };
 
 LazyImage.contextType = IntersectionObserverContext;
