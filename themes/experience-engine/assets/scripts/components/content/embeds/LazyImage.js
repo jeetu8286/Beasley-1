@@ -73,8 +73,14 @@ class LazyImage extends PureComponent {
 		}
 
 		const self = this;
-		const { src, width, height } = self.props;
+		let { src, width, height } = self.props;
 		const { containerWidth, containerHeight } = self.getDimensions();
+
+		// Kludge: Temporary fix for incorrectly cached image URLs in EE API
+		src = src.replace(
+			'b987fm.bbgistage.com/wp-content/uploads/sites/82/',
+			'987theshark.bbgistage.com/wp-content/uploads/sites/90/',
+		);
 
 		const imageWidth = +width;
 		const imageHeight = +height;
@@ -88,12 +94,16 @@ class LazyImage extends PureComponent {
 			if ( imageWidth > imageHeight ) {
 				if ( 2 < ( imageWidth / imageHeight ) ) {
 					maxheight = 'height';
-					mode = '&mode=crop';
+					if ( this.props.crop ) {
+						mode = '&mode=crop';
+					}
 				}
 			} else {
 				if ( 2 < ( imageHeight / imageWidth ) ) {
 					maxwidth = 'width';
-					mode = '&mode=crop';
+					if ( this.props.crop ) {
+						mode = '&mode=crop';
+					}
 				}
 			}
 		}
@@ -182,12 +192,14 @@ LazyImage.propTypes = {
 	tracking: PropTypes.string,
 	attribution: PropTypes.string,
 	autoheight: PropTypes.string,
+	crop: PropTypes.bool,
 };
 
 LazyImage.defaultProps = {
 	tracking: '',
 	attribution: '',
 	autoheight: '',
+	crop: true,
 };
 
 LazyImage.contextType = IntersectionObserverContext;
