@@ -102,6 +102,19 @@ class Dfp extends PureComponent {
 
 					.build();
 
+			} else if ( 'in-list-gallery' === unitName ) {
+
+				sizeMapping = googletag.sizeMapping()
+
+					// does not display on very small screens
+					.addSize( [0, 0], [] )
+
+					// accepts common small screen banner formats
+					.addSize( [300, 0], [[300, 250]] )
+					.addSize( [320, 0], [[300, 250], [320, 50], [320, 100]] )
+
+					.build();
+
 			} else if ( 'bottom-leaderboard' === unitName ) {
 				sizeMapping = googletag.sizeMapping()
 					// does not display on small screens
