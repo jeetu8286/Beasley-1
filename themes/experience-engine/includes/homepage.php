@@ -307,4 +307,4 @@ function ee_customize_homepage_rss_feed( $query ) {
 	}
 }
 
-add_action( 'pre_get_posts', 'ee_customize_homepage_rss_feed', -1000 );
+add_action( 'pre_get_posts', 'ee_customize_homepage_rss_feed' );
