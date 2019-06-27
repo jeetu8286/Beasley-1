@@ -16,12 +16,14 @@ window.addEventListener( 'popstate',()=>{
 	window.dispatchEvent( new Event( 'locationchange' ) );
 } );
 
-window.addEventListener( 'locationchange', function() {
-	if ( window.geotargetly ) {
-		try {
-			window.geotargetly( document, 'script', 'style', 'head' );
-		} catch ( e ) {
-			// no-op
+if ( window.bbgiconfig.geotargetly ) {
+	window.addEventListener( 'locationchange', function() {
+		if ( window.geotargetly ) {
+			try {
+				window.geotargetly( document, 'script', 'style', 'head' );
+			} catch ( e ) {
+				// no-op
+			}
 		}
-	}
-} );
+	} );
+}
