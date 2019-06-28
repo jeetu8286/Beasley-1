@@ -19,7 +19,6 @@ window.addEventListener( 'popstate',()=>{
 window.addEventListener( 'locationchange', function() {
 	if ( window.bbgiconfig.geotargetly && window.geotargetly ) {
 		try {
-			window.console.log( 'do geotargetly', location.href );
 			window.geotargetly( document, 'script', 'style', 'head' );
 		} catch ( e ) {
 			// no-op
