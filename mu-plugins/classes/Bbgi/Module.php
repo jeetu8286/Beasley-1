@@ -48,6 +48,7 @@ abstract class Module {
 			'dfp'               => new \Bbgi\Integration\Dfp(),
 			'facebook'          => new \Bbgi\Integration\Facebook(),
 			'webhooks'          => new \Bbgi\Webhooks(),
+			'cache'             => new \Bbgi\Api\Cache(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {
