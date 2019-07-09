@@ -16,7 +16,12 @@ add_filter( 'gmr-show-curation-post-types', 'gmr_contest_register_curration_post
 add_filter( 'manage_' . GMR_CONTEST_CPT . '_posts_columns', 'gmr_contests_filter_contest_columns_list' );
 add_filter( 'post_row_actions', 'gmr_contests_filter_contest_actions', PHP_INT_MAX, 2 );
 add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_contests_extend_live_link_suggestion_post_types' );
-add_filter( 'pre_get_posts', 'gmr_filter_expired_contests', 10000 );
+add_filter( 'cron_schedules', 'contest_cron_intervals' );
+add_action( 'contest_invalidator_cron_hook', 'invalidate_expired_contests' );
+
+if ( ! wp_next_scheduled( 'contest_invalidator_cron_hook' ) ) {
+	wp_schedule_event( time(), '1hour', 'contest_invalidator_cron_hook' );
+}
 
 /**
  * Enqueues admin styles.
@@ -464,7 +469,7 @@ $did_filter_expired_contests = false;
 function gmr_filter_expired_contests( $query ) {
 	global $did_filter_expired_contests;
 
-	if ( ! is_admin() && ( is_search() || is_post_type_archive( GMR_CONTEST_CPT ) ) && ! $did_filter_expired_contests ) {
+	if ( ! is_admin() && ( $query->is_search() || $query->is_post_type_archive( GMR_CONTEST_CPT ) ) && ! $did_filter_expired_contests ) {
 		$now           = time();
 		$query_params = array(
 			'relation' => 'AND',
@@ -512,4 +517,53 @@ function gmr_filter_expired_contests( $query ) {
 	} else {
 		return $query;
 	}
+}
+
+/**
+ * Invalidates any expired contests
+ */
+function invalidate_expired_contests() {
+
+	// Grab all published contests that have a contest end date in the past
+	$expired_contests_query = new \WP_Query( [
+		'post_type'	=> GMR_CONTEST_CPT,
+		'post_status' => 'publish',
+		'meta_query' => [
+			array(
+				array(
+					'key'     => 'contest-end',
+					'type'    => 'NUMERIC',
+					'value'   => time(),
+					'compare' => '<=',
+				)
+			),
+		]
+	] );
+
+	if ( $expired_contests_query->post_count ) {
+		foreach( $expired_contests_query->posts as $contest_post ) {
+			wp_update_post( [
+				'ID'	=> $contest_post->ID,
+				'post_status' => 'draft'
+			] );
+		}
+	}
+
+}
+
+/**
+ * Add custom 1 hour cron interval.
+ *
+ * @param array $schedules Cron schedules.
+ * @return array
+ */
+function contest_cron_intervals( $schedules ) {
+	if ( ! isset( $schedules['30minute'] ) ) {
+		$schedules['30minute'] = array(
+			'interval' => 30 * MINUTE_IN_SECONDS,
+			'display'  => 'Every 30 minutes',
+		);
+	}
+
+	return $schedules;
 }
