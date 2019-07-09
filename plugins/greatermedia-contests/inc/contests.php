@@ -574,7 +574,7 @@ function contest_cron_intervals( $schedules ) {
 
 
 /**
- * CLI scrip to invalidate all expired contests on all sites
+ * CLI script to invalidate all expired contests on all sites
  */
 function run_all_contests_invalidator_cli( $args ) {
 
@@ -598,7 +598,7 @@ function run_all_contests_invalidator_cli( $args ) {
 		invalidate_expired_contests();
 		restore_current_blog();
 
-		error_log( 'Unpublished contests for site ' . $site->domain );
+		WP_CLI::log( 'Unpublished contests for site ' . $site->domain );
 
 	}
 
