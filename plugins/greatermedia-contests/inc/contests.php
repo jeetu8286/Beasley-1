@@ -24,9 +24,12 @@ if ( class_exists( 'WP_CLI' ) ) {
 	WP_CLI::add_command( 'fix_incorrect_contests', 'fix_all_contests_invalidator_cli' );
 }
 
-if ( ! wp_next_scheduled( 'contest_invalidator_cron_hook' ) ) {
-	wp_schedule_event( time(), '1hour', 'contest_invalidator_cron_hook' );
-}
+add_action( 'admin_init', function () {
+	if ( ! wp_next_scheduled( 'contest_invalidator_cron_hook' ) ) {
+		wp_schedule_event( time(), '30minute', 'contest_invalidator_cron_hook' );
+	}
+});
+
 
 /**
  * Enqueues admin styles.
@@ -531,9 +534,10 @@ function invalidate_expired_contests() {
 
 	// Grab all published contests that have a contest end date in the past
 	$expired_contests_query = new \WP_Query( [
-		'post_type'	=> GMR_CONTEST_CPT,
-		'post_status' => 'publish',
-		'meta_query' => [
+		'post_type'      => GMR_CONTEST_CPT,
+		'post_status'    => 'publish',
+		'posts_per_page' => 500,
+		'meta_query'     => [
 			array(
 				array(
 					'key'     => 'contest-end',
@@ -546,9 +550,9 @@ function invalidate_expired_contests() {
 					'type'    => 'NUMERIC',
 					'value'   => 0,
 					'compare' => '>',
-				)
+				),
 			),
-		]
+		],
 	] );
 
 	if ( $expired_contests_query->post_count ) {
