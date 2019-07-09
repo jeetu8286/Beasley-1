@@ -557,11 +557,14 @@ function invalidate_expired_contests() {
 
 	if ( $expired_contests_query->post_count ) {
 		foreach( $expired_contests_query->posts as $contest_post ) {
+			gmr_contests_log( " - Setting {$contest_post->ID} to draft" );
 			wp_update_post( [
 				'ID'	=> $contest_post->ID,
 				'post_status' => 'draft'
 			] );
 		}
+	} else {
+		gmr_contests_log( " - No contests found on this site" );
 	}
 
 }
@@ -603,6 +606,8 @@ function run_all_contests_invalidator_cli( $args ) {
 		if ( false !== stripos( $site->domain, 'content.' ) ) {
 			continue;
 		}
+
+		WP_CLI::log( 'Processing site ' . $site->domain );
 
 		// Switch to the blog and change the expired contests to a draft
 		switch_to_blog( $site->blog_id );
@@ -672,11 +677,17 @@ function fix_incorrectly_expired_contests() {
 
 	if ( $expired_contests_query->post_count ) {
 		foreach( $expired_contests_query->posts as $contest_post ) {
-			\WP_CLI::line( "Publishing " . $contest_post->ID );
+			gmr_contests_log( "Publishing " . $contest_post->ID );
 			wp_update_post( [
 				'ID'	=> $contest_post->ID,
 				'post_status' => 'publish'
 			] );
 		}
+	}
+}
+
+function gmr_contests_log( $message ) {
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		\WP_CLI::log( $message );
 	}
 }
