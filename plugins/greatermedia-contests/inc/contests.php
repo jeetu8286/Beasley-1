@@ -668,6 +668,7 @@ function fix_incorrectly_expired_contests() {
 
 	if ( $expired_contests_query->post_count ) {
 		foreach( $expired_contests_query->posts as $contest_post ) {
+			\WP_CLI::line( "Publishing " . $contest_post->ID );
 			wp_update_post( [
 				'ID'	=> $contest_post->ID,
 				'post_status' => 'publish'
