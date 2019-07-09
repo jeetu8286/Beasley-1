@@ -19,6 +19,10 @@ add_filter( 'gmr_live_link_suggestion_post_types', 'gmr_contests_extend_live_lin
 add_filter( 'cron_schedules', 'contest_cron_intervals' );
 add_action( 'contest_invalidator_cron_hook', 'invalidate_expired_contests' );
 
+if ( class_exists( 'WP_CLI' ) ) {
+	WP_CLI::add_command( 'invalidate_all_contests', 'run_all_contests_invalidator_cli' );
+}
+
 if ( ! wp_next_scheduled( 'contest_invalidator_cron_hook' ) ) {
 	wp_schedule_event( time(), '1hour', 'contest_invalidator_cron_hook' );
 }
@@ -566,4 +570,37 @@ function contest_cron_intervals( $schedules ) {
 	}
 
 	return $schedules;
+}
+
+
+/**
+ * CLI scrip to invalidate all expired contests on all sites
+ */
+function run_all_contests_invalidator_cli( $args ) {
+
+	if ( ! class_exists( 'WP_CLI'  ) ) {
+		return;
+	}
+
+	$sites = get_sites( [
+		'public'	=> '1',
+	] );
+
+	foreach ( $sites as $site ) {
+
+		// Don't do this on the content factory website
+		if ( false !== stripos( $site->domain, 'content.' ) ) {
+			continue;
+		}
+
+		// Switch to the blog and change the expired contests to a draft
+		switch_to_blog( $site->blog_id );
+		invalidate_expired_contests();
+		restore_current_blog();
+
+		error_log( 'Unpublished contests for site ' . $site->domain );
+
+	}
+
+    WP_CLI::success( $args[0] );
 }
