@@ -544,6 +544,7 @@ function invalidate_expired_contests() {
 		'post_status'    => 'publish',
 		'posts_per_page' => 500,
 		'meta_query'     => [
+			'relation' => 'OR',
 			array(
 				array(
 					'key'     => 'contest-end',
@@ -558,6 +559,20 @@ function invalidate_expired_contests() {
 					'compare' => '>',
 				),
 			),
+			array(
+				array(
+					'key'     => 'post_expiration',
+					'type'    => 'NUMERIC',
+					'value'   => time(),
+					'compare' => '<=',
+				),
+				array(
+					'key'     => 'post_expiration',
+					'type'    => 'NUMERIC',
+					'value'   => 0,
+					'compare' => '>',
+				),
+			)
 		],
 	] );
 
@@ -690,11 +705,15 @@ function fix_incorrectly_expired_contests( $after ) {
 
 	if ( $expired_contests_query->post_count ) {
 		foreach( $expired_contests_query->posts as $contest_post ) {
-			gmr_contests_log( "Publishing " . $contest_post->ID );
-			wp_update_post( [
-				'ID'	=> $contest_post->ID,
-				'post_status' => 'publish'
-			] );
+			$expiration_timestamp = get_post_meta( $contest_post->ID, 'post_expiration', true );
+
+			if ( ! $expiration_timestamp || $expiration_timestamp > time() ) {
+				gmr_contests_log( "Publishing " . $contest_post->ID );
+				wp_update_post( [
+					'ID'	=> $contest_post->ID,
+					'post_status' => 'publish'
+				] );
+			}
 		}
 	}
 }
