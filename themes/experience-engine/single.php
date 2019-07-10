@@ -10,7 +10,7 @@ the_post();
 	<?php if ( ee_get_current_show() ) : ?>
 		<?php if ( bbgi_featured_image_layout_is( null, 'top' ) ) : ?>
 			<header class="post-info">
-				<?php get_template_part( 'partials/featured-media', 'autoheight' ); ?>
+				<?php get_template_part( 'partials/featured-media' ); ?>
 			</header>
 		<?php endif; ?>
 
@@ -24,13 +24,13 @@ the_post();
 
 			<?php if ( bbgi_featured_image_layout_is( null, 'poster' ) ) : ?>
 
-				<?php get_template_part( 'partials/featured-media', 'autoheight' ); ?>
+				<?php get_template_part( 'partials/featured-media' ); ?>
 
 			<?php endif; ?>
 
 		<?php elseif ( bbgi_featured_image_layout_is( null, 'top' ) || bbgi_featured_image_layout_is( null, 'poster' ) ) : ?>
 
-			<?php get_template_part( 'partials/featured-media', 'autoheight' ); ?>
+			<?php get_template_part( 'partials/featured-media' ); ?>
 
 		<?php endif; ?>
 
@@ -48,7 +48,7 @@ the_post();
 	<div class="entry-content content-wrap">
 		<div class="description">
 			<?php if ( bbgi_featured_image_layout_is( null, 'inline' ) ) : ?>
-				<?php get_template_part( 'partials/featured-media', 'autoheight' ); ?>
+				<?php get_template_part( 'partials/featured-media' ); ?>
 			<?php endif; ?>
 			<?php ee_the_content_with_ads(); ?>
 
