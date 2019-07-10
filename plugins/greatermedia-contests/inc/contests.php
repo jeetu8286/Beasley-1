@@ -483,7 +483,7 @@ function gmr_filter_expired_contests( $query ) {
 
 	global $did_filter_expired_contests;
 
-	if ( ! is_admin() && ( $query->is_search() || $query->is_post_type_archive( GMR_CONTEST_CPT ) ) && ! $did_filter_expired_contests ) {
+	if ( $query->is_main_query() && ! is_admin() && ( $query->is_search() || $query->is_post_type_archive( GMR_CONTEST_CPT ) ) && ! $did_filter_expired_contests ) {
 		$now           = time();
 		$query_params = array(
 			array(
