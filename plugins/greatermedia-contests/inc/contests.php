@@ -616,7 +616,7 @@ function fix_all_contests_invalidator_cli( $args, $opts = [] ) {
 	if ( empty( $opts['after'] ) ) {
 		$after = $opts['after'];
 	} else {
-		$after = '2019-07-09 12:30:00';
+		$after = '2019-07-09 22:50:00';
 	}
 
 	$sites = get_sites( [
