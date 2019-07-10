@@ -544,6 +544,7 @@ function invalidate_expired_contests() {
 		'post_status'    => 'publish',
 		'posts_per_page' => 500,
 		'meta_query'     => [
+			'relation' => 'OR',
 			array(
 				array(
 					'key'     => 'contest-end',
@@ -558,6 +559,20 @@ function invalidate_expired_contests() {
 					'compare' => '>',
 				),
 			),
+			array(
+				array(
+					'key'     => 'post_expiration',
+					'type'    => 'NUMERIC',
+					'value'   => time(),
+					'compare' => '<=',
+				),
+				array(
+					'key'     => 'post_expiration',
+					'type'    => 'NUMERIC',
+					'value'   => 0,
+					'compare' => '>',
+				),
+			)
 		],
 	] );
 
