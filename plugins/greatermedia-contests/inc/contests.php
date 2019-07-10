@@ -613,7 +613,7 @@ function fix_all_contests_invalidator_cli( $args, $opts = [] ) {
 		return;
 	}
 
-	if ( empty( $opts['after'] ) ) {
+	if ( ! empty( $opts['after'] ) ) {
 		$after = $opts['after'];
 	} else {
 		$after = '2019-07-09 22:50:00';
