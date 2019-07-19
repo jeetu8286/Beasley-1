@@ -11,8 +11,7 @@
 	margin: 0 10px;
 }
 
-.wp-audio-shortcode,
-iframe[src^="https://omny.fm"] {
+.wp-audio-shortcode {
 	display: none;
 }
 
