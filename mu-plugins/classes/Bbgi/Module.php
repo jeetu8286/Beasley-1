@@ -47,6 +47,7 @@ abstract class Module {
 			'firebase'          => new \Bbgi\Integration\Firebase(),
 			'dfp'               => new \Bbgi\Integration\Dfp(),
 			'facebook'          => new \Bbgi\Integration\Facebook(),
+			'webhooks'          => new \Bbgi\Webhooks(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {

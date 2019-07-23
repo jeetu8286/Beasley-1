@@ -5,7 +5,9 @@ namespace Bbgi\Integration;
 class ExperienceEngine extends \Bbgi\Module {
 
 	private static $_fields = array(
-		'ee_host' => 'API host',
+		'ee_host'           => 'API host',
+		'ee_cache_token' => 'Cache Clear Token',
+		'ee_appkey'         => 'EE App Key',
 	);
 
 	/**
@@ -264,8 +266,10 @@ class ExperienceEngine extends \Bbgi\Module {
 		$namespace = 'experience_engine/v1';
 
 		register_rest_route( $namespace, '/purge-cache', array(
-			'methods'  => \WP_REST_Server::READABLE,
-			'callback' => $this( 'rest_purge_cache' ),
+			'methods'             => 'POST',
+			'callback'            => $this( 'rest_purge_cache' ),
+			'permission_callback' => array( $this, 'check_purge_cache_permissions' ),
+			'show_in_index'       => false,
 		) );
 
 		$authorization = array(
@@ -290,8 +294,38 @@ class ExperienceEngine extends \Bbgi\Module {
 		) );
 	}
 
+	/**
+	 * Checks if the current request has permissions to purge cache
+	 *
+	 * @param \WP_REST_Request $request
+	 *
+	 * @return boolean
+	 */
+	public function check_purge_cache_permissions( \WP_REST_Request $request ) {
+		$token = get_site_option( 'ee_cache_token', false );
+
+		if ( empty( $token ) ) {
+			return false;
+		}
+
+		if ( $token === $request->get_header( 'Authorization' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public function rest_purge_cache() {
+		// Clear EE Cache
 		update_option( 'ee_cache_index', time(), 'no' );
+
+		// Clear specific page caches
+		if ( function_exists( 'batcache_clear_url' ) && class_exists( 'batcache' ) ) {
+			$home = trailingslashit( get_option( 'home' ) );
+			batcache_clear_url( $home );
+			batcache_clear_url( $home . 'feed/' );
+		}
+
 		return rest_ensure_response( 'Cache Flushed' );
 	}
 
