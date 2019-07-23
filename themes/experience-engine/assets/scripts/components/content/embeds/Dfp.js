@@ -10,8 +10,10 @@ class Dfp extends PureComponent {
 
 		const self = this;
 
-		self.slot = false;
-		self.interval = false;
+		self.state = {
+			slot     : false,
+			interval : false,
+		};
 
 		self.onVisibilityChange = self.handleVisibilityChange.bind( self );
 		self.refreshSlot = self.refreshSlot.bind( self );
@@ -22,7 +24,6 @@ class Dfp extends PureComponent {
 		const { placeholder } = self.props;
 
 		self.container = document.getElementById( placeholder );
-		// self.context.observe( self.container, self.tryDisplaySlot.bind( self ) );
 		self.tryDisplaySlot();
 
 		if ( 'right-rail' === self.props.unitName ) {
@@ -34,7 +35,6 @@ class Dfp extends PureComponent {
 	componentWillUnmount() {
 		const self = this;
 
-		// self.context.unobserve( self.container );
 		self.destroySlot();
 
 		if ( 'right-rail' === self.props.unitName ) {
@@ -54,14 +54,14 @@ class Dfp extends PureComponent {
 	}
 
 	startInterval() {
-		const self = this;
-		self.interval = setInterval( self.refreshSlot, 20000 ); // 20 sec
+		this.setState( {
+			interval: setInterval( this.refreshSlot, 20000 ), // 20 sec
+		} );
 	}
 
 	stopInterval() {
-		const self = this;
-		clearInterval( self.interval );
-		self.interval = false;
+		clearInterval( this.state.interval );
+		this.setState( { interval: false } );
 	}
 
 	registerSlot() {
@@ -69,12 +69,16 @@ class Dfp extends PureComponent {
 		const { placeholder, unitId, unitName, targeting } = self.props;
 		const { googletag, bbgiconfig } = window;
 
+		if ( ! document.getElementById( placeholder ) ) {
+			return;
+		}
+
 		// If Adblocker is enabled googletag will be absent
 		if ( ! googletag ) {
 			return;
 		}
 
-		if ( !unitId ) {
+		if ( ! unitId ) {
 			return;
 		}
 
@@ -167,13 +171,12 @@ class Dfp extends PureComponent {
 			}
 
 			googletag.display( slot );
-
-			self.slot = slot;
+			self.setState( { slot: slot } );
 		} );
 	}
 
 	refreshSlot() {
-		const { slot } = this;
+		const { slot } = this.state;
 		const { googletag } = window;
 
 		if ( slot ) {
@@ -182,26 +185,20 @@ class Dfp extends PureComponent {
 	}
 
 	destroySlot() {
-		const { slot } = this;
+		const { slot } = this.state;
 		if ( slot ) {
 			const { googletag } = window;
 
-			googletag.cmd.push( () => {
+			if ( googletag && googletag.destroySlots ) {
 				googletag.destroySlots( [slot] );
-			} );
+			}
 		}
 	}
 
 	tryDisplaySlot() {
-		window.requestAnimationFrame( () => {
-			const self = this;
-
-			self.context.unobserve( self.container );
-
-			if ( !self.slot ) {
-				self.registerSlot();
-			}
-		} );
+		if ( ! this.state.slot ) {
+			this.registerSlot();
+		}
 	}
 
 	render() {

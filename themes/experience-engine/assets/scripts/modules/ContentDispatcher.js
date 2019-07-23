@@ -107,6 +107,10 @@ class ContentDispatcher extends Component {
 				const count = carousels[i].classList.contains( '-large' ) ? 2.2 : 4.2;
 				const group = carousels[i].classList.contains( '-large' ) ? 2 : 4;
 
+				if ( ! window.Swiper ) {
+					continue;
+				}
+
 				// @note This comes from handleSliderLoad
 				// eslint-disable-next-line no-undef
 				new Swiper( carousels[i], {
@@ -229,6 +233,16 @@ class ContentDispatcher extends Component {
 			setTimeout( () => window.scrollTo( pageXOffset, pageYOffset ), 100 );
 			this.props.hideModal();
 		}
+	}
+
+	shouldComponentUpdate( nextProps, nextState ) {
+		const currentContent = this.props.content || '';
+		const nextContent    = nextProps.content || '';
+
+		const currentHash = md5( currentContent );
+		const nextHash    = md5( nextContent );
+
+		return currentHash !== nextHash;
 	}
 
 	render() {

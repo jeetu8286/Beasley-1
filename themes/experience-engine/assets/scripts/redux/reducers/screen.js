@@ -46,16 +46,6 @@ function manageBbgiConfig( pageDocument ) {
 
 	try {
 		newconfig = JSON.parse( pageDocument.getElementById( 'bbgiconfig' ).innerHTML );
-
-		const { googletag } = window;
-		const { dfp } = newconfig;
-
-		if ( dfp && Array.isArray( dfp.global ) ) {
-			googletag.pubads().clearTargeting();
-			for ( let i = 0, pairs = dfp.global; i < pairs.length; i++ ) {
-				googletag.pubads().setTargeting( pairs[i][0], pairs[i][1] );
-			}
-		}
 	} catch ( err ) {
 		// do nothing
 	}
@@ -76,6 +66,39 @@ function hideSplashScreen() {
 	}, 2000 );
 }
 
+export function updateTargeting() {
+	let { googletag } = window;
+
+	const { dfp } = window.bbgiconfig;
+
+	if ( dfp && Array.isArray( dfp.global ) ) {
+		for ( let i = 0, pairs = dfp.global; i < pairs.length; i++ ) {
+			googletag.pubads().setTargeting( pairs[i][0], pairs[i][1] );
+		}
+	}
+}
+
+export function clearTargeting() {
+	let googletag = window.googletag;
+
+	if ( googletag && googletag.apiReady ) {
+		googletag.pubads().clearTargeting();
+	}
+}
+
+export function updateCorrelator() {
+	let { googletag } = window;
+
+	/* Extra safety as updateCorrelator is a deprecated function in DFP */
+	try {
+		if ( googletag && googletag.apiReady && googletag.pubads().updateCorrelator ) {
+			googletag.pubads().updateCorrelator();
+		}
+	} catch ( e ) {
+		// no-op
+	}
+}
+
 function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 		case ACTION_INIT_PAGE:
@@ -90,6 +113,11 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_LOADING_PARTIAL:
 		case ACTION_LOADING_PAGE:
+			if ( window.location.href !== action.url ) {
+				updateCorrelator();
+				clearTargeting();
+			}
+
 			NProgress.start();
 			return { ...state, url: action.url };
 
@@ -100,6 +128,10 @@ function reducer( state = {}, action = {} ) {
 			}
 
 			const { document: pageDocument } = action;
+
+			manageBbgiConfig( pageDocument );
+			updateTargeting();
+
 			if ( pageDocument ) {
 				const barId = 'wpadminbar';
 				const wpadminbar = document.getElementById( barId );
@@ -113,7 +145,6 @@ function reducer( state = {}, action = {} ) {
 
 			NProgress.done();
 			manageScripts( action.scripts, state.scripts );
-			manageBbgiConfig( pageDocument );
 			hideSplashScreen();
 
 			return {
