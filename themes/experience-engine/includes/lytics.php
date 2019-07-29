@@ -27,18 +27,24 @@ function lytics_og_tags() {
         }
 
         // Ensure there are no commas in each topic name
+        $filtered_topics = array();
         foreach($topics as $key=>$value){
-            $topics[ $key ] = preg_replace( "/[^A-Za-z0-9? ]/", "", $value );
+            if ( $value != 'Uncategorized' ) {
+                $filtered_topics[] = preg_replace( "/[^A-Za-z0-9? ]/", "", $value );
+            }
         }
 
-        $topics = implode( ", ", $topics);
+        $filtered_topics = implode( ", ", $filtered_topics);
 
         // Publish Lytics topics
-        echo "\n";
-        echo "<meta name=\"lytics:topics\" content=\"" . $topics . "\"/>\n";
+        if ( ! empty( $filtered_topics ) ) {
+            echo "\n";
+            echo "<meta name=\"lytics:topics\" content=\"" . $filtered_topics . "\"/>";
+        }
 
         // Publish author user account
-        echo "<meta name=\"article:author\" content=\"" . get_the_author_meta( 'display_name', $post->post_author ) . "\"/>\n";
+        echo "\n";
+        echo "<meta property=\"article:author\" content=\"" . get_the_author_meta( 'display_name', $post->post_author ) . "\"/>";
 
     }
 }
