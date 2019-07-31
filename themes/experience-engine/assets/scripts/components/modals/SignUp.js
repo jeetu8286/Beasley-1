@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import Header from './elements/Header';
 import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
+import { mapAuthErrorCodeToFriendlyMessage } from '../../library/friendly-error-messages';
 
 import {
 	saveUser,
@@ -162,7 +163,7 @@ class SignUp extends PureComponent {
 						document.body.innerHTML = '';
 					} );
 			} )
-			.catch( error => self.setState( { error: error.message } ) );
+			.catch( error => self.setState( { error: mapAuthErrorCodeToFriendlyMessage( error ) } ) );
 	}
 
 	render() {
