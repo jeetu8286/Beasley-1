@@ -34,7 +34,7 @@ function lytics_og_tags() {
             }
         }
 
-        $filtered_topics = implode( ", ", $filtered_topics);
+        $filtered_topics = str_replace( " amp ", " and ", implode( ", ", $filtered_topics ) );
 
         // Publish Lytics topics
         if ( ! empty( $filtered_topics ) ) {
