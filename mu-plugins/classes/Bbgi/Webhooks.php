@@ -84,7 +84,7 @@ class Webhooks extends \Bbgi\Module {
 	 * @return bool
 	 */
 	public function do_lazy_webhook( $post_id, $opts = [] ) {
-		if ( ! empty( $this->pending ) ) {
+		if ( empty( $this->pending ) ) {
 			$this->pending = [
 				'post_id' => $post_id,
 				'opts'    => $opts,
