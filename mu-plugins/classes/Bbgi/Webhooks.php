@@ -18,7 +18,6 @@ class Webhooks extends \Bbgi\Module {
 		add_action( 'save_post', array( $this, 'do_save_post_webhook' ) );
 		add_action( 'wp_trash_post', array( $this, 'do_trash_post_webhook' ) );
 		add_action( 'delete_post', array( $this, 'do_delete_post_webhook' ) );
-
 		add_action( 'shutdown', [ $this, 'do_shutdown' ] );
 	}
 
@@ -126,8 +125,27 @@ class Webhooks extends \Bbgi\Module {
 		$url = trailingslashit( $base_url ) . 'admin/publishers/' . $publisher . '/build?appkey=' . $appkey;
 
 		wp_remote_post( $url, array(
-			'blocking' => false,
+			'blocking'        => false,
+			'body'            => [
+				'post_id'       => $post_id,
+				'source_action' => ! empty( $opts['source'] ) ? $opts['source'] : 'unknown',
+				'request_uri'   => ! empty( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : 'unknown',
+				'wp_cli'        => defined( 'WP_CLI' ) && WP_CLI ? 'yes' : 'no',
+				'wp_cron'       => defined( 'DOING_CRON' ) && DOING_CRON ? 'yes' : 'no',
+				'wp_ajax'       => defined( 'DOING_AJAX' ) && DOING_AJAX ? 'yes' : 'no',
+				'wp_minions'    => $this->is_wp_minions() ? 'yes' : 'no',
+			]
 		) );
+	}
+
+	/**
+	 * Checks if we are running in WP-Minions Job Runner context.
+	 *
+	 * @return boolean
+	 */
+	public function is_wp_minions() {
+		return class_exists( '\WpMinions\Plugin' ) &&
+			\WpMinions\Plugin::get_instance()->did_run;
 	}
 
 	/**
