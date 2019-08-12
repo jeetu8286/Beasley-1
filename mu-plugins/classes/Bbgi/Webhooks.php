@@ -5,6 +5,11 @@ namespace Bbgi;
 class Webhooks extends \Bbgi\Module {
 
 	/**
+	 * Pending webhook data
+	 */
+	public $pending = false;
+
+	/**
 	 * Registers this module.
 	 *
 	 * @access public
@@ -13,6 +18,8 @@ class Webhooks extends \Bbgi\Module {
 		add_action( 'save_post', array( $this, 'do_save_post_webhook' ) );
 		add_action( 'wp_trash_post', array( $this, 'do_trash_post_webhook' ) );
 		add_action( 'delete_post', array( $this, 'do_delete_post_webhook' ) );
+
+		add_action( 'shutdown', [ $this, 'do_shutdown' ] );
 	}
 
 	/**
@@ -23,7 +30,7 @@ class Webhooks extends \Bbgi\Module {
 	public function do_save_post_webhook( $post_id ) {
 		remove_action( 'save_post', [ $this, 'do_save_post_webhook' ] );
 
-		$this->do_webhook( $post_id, [ 'source' => 'save_post' ] );
+		$this->do_lazy_webhook( $post_id, [ 'source' => 'save_post' ] );
 	}
 
 	/**
@@ -34,7 +41,7 @@ class Webhooks extends \Bbgi\Module {
 	public function do_trash_post_webhook( $post_id ) {
 		remove_action( 'wp_trash_post', [ $this, 'do_trash_post_webhook' ] );
 
-		$this->do_webhook( $post_id, [ 'source' => 'wp_trash_post' ] );
+		$this->do_lazy_webhook( $post_id, [ 'source' => 'wp_trash_post' ] );
 	}
 
 	/**
@@ -45,7 +52,45 @@ class Webhooks extends \Bbgi\Module {
 	public function do_delete_post_webhook( $post_id ) {
 		remove_action( 'delete_post', [ $this, 'do_delete_post_webhook' ] );
 
-		$this->do_webhook( $post_id, [ 'source' => 'delete_post' ] );
+		$this->do_lazy_webhook( $post_id, [ 'source' => 'delete_post' ] );
+	}
+
+	/**
+	 * Triggers any pending webhook before shutdown.
+	 *
+	 * @return bool
+	 */
+	public function do_shutdown() {
+		remove_action( 'shutdown', [ $this, 'do_shutdown' ] );
+
+		if ( ! empty( $this->pending ) ) {
+			$this->pending = false;
+			$this->do_webhook( $post_id, $opts );
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Stores a pending webhook to be triggered later.
+	 *
+	 * @param int $post_id The post that changed.
+	 * @param array $opts The change context
+	 * @return bool
+	 */
+	public function do_lazy_webhook( $post_id, $opts = [] ) {
+		if ( ! empty( $this->pending ) ) {
+			$this->pending = [
+				'post_id' => $post_id,
+				'opts'    => $opts,
+			];
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
