@@ -10,9 +10,42 @@ class Webhooks extends \Bbgi\Module {
 	 * @access public
 	 */
 	public function register() {
-		add_action( 'save_post', array( $this, 'do_webhook' ) );
-		add_action( 'wp_trash_post', array( $this, 'do_webhook' ) );
-		add_action( 'delete_post', array( $this, 'do_webhook' ) );
+		add_action( 'save_post', array( $this, 'do_save_post_webhook' ) );
+		add_action( 'wp_trash_post', array( $this, 'do_trash_post_webhook' ) );
+		add_action( 'delete_post', array( $this, 'do_delete_post_webhook' ) );
+	}
+
+	/**
+	 * Helper to trigger save webhook and unregister self.
+	 *
+	 * @param int $post_id The Post id that changed
+	 */
+	public function do_save_post_webhook( $post_id ) {
+		remove_action( 'save_post', [ $this, 'do_save_post_webhook' ] );
+
+		$this->do_webhook( $post_id, [ 'source' => 'save_post' ] );
+	}
+
+	/**
+	 * Helper to trigger trash webhook and unregister self.
+	 *
+	 * @param int $post_id The Post id that changed
+	 */
+	public function do_trash_post_webhook( $post_id ) {
+		remove_action( 'wp_trash_post', [ $this, 'do_trash_post_webhook' ] );
+
+		$this->do_webhook( $post_id, [ 'source' => 'wp_trash_post' ] );
+	}
+
+	/**
+	 * Helper to trigger delete webhook and unregister self.
+	 *
+	 * @param int $post_id The Post id that changed
+	 */
+	public function do_delete_post_webhook( $post_id ) {
+		remove_action( 'delete_post', [ $this, 'do_delete_post_webhook' ] );
+
+		$this->do_webhook( $post_id, [ 'source' => 'delete_post' ] );
 	}
 
 	/**
@@ -22,8 +55,11 @@ class Webhooks extends \Bbgi\Module {
 	 * @action save_post ($post_id)
 	 * @action wp_trash_post ($post_id)
 	 * @action delete_post ($post_id)
+	 * @param int $post_id The source post that changed
+	 * @param array $opts Optional opts
+	 * @return void
 	 */
-	public function do_webhook( $post_id ) {
+	public function do_webhook( $post_id, $opts = [] ) {
 		if ( ! $this->needs_webhook( $post_id ) ) {
 			return false;
 		}
