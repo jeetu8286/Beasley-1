@@ -64,7 +64,10 @@ class Webhooks extends \Bbgi\Module {
 
 		if ( ! empty( $this->pending ) ) {
 			$this->pending = false;
-			$this->do_webhook( $post_id, $opts );
+			$this->do_webhook(
+				$this->pending['post_id'],
+				$this->pending['opts']
+			);
 
 			return true;
 		} else {
