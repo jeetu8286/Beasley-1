@@ -7,7 +7,7 @@ class Webhooks extends \Bbgi\Module {
 	/**
 	 * Pending webhook data
 	 */
-	public $pending = false;
+	public $pending = [];
 
 	/**
 	 * Registers this module.
@@ -63,12 +63,15 @@ class Webhooks extends \Bbgi\Module {
 		remove_action( 'shutdown', [ $this, 'do_shutdown' ] );
 
 		if ( ! empty( $this->pending ) ) {
-			$this->do_webhook(
-				$this->pending['post_id'],
-				$this->pending['opts']
-			);
+			foreach( $this->pending as $pending_webhook ) {
+				$this->do_webhook(
+					$pending_webhook['publisher'],
+					$pending_webhook['post_id'],
+					$pending_webhook['opts']
+				);
+			}
 
-			$this->pending = false;
+			$this->pending = [];
 
 			return true;
 		} else {
@@ -84,10 +87,13 @@ class Webhooks extends \Bbgi\Module {
 	 * @return bool
 	 */
 	public function do_lazy_webhook( $post_id, $opts = [] ) {
-		if ( empty( $this->pending ) ) {
-			$this->pending = [
-				'post_id' => $post_id,
-				'opts'    => $opts,
+		$site_id = get_current_blog_id();
+
+		if ( ! isset( $this->pending[ $site_id ] ) ) {
+			$this->pending[ $site_id ] = [
+				'publisher' => get_option( 'ee_publisher', false ),
+				'post_id'   => $post_id,
+				'opts'      => $opts,
 			];
 
 			return true;
@@ -103,11 +109,13 @@ class Webhooks extends \Bbgi\Module {
 	 * @action save_post ($post_id)
 	 * @action wp_trash_post ($post_id)
 	 * @action delete_post ($post_id)
+	 *
+	 * @param string $publisher publisher that this webhook should trigger.
 	 * @param int $post_id The source post that changed
 	 * @param array $opts Optional opts
 	 * @return void
 	 */
-	public function do_webhook( $post_id, $opts = [] ) {
+	public function do_webhook( $publisher, $post_id, $opts = [] ) {
 		if ( ! $this->needs_webhook( $post_id ) ) {
 			return false;
 		}
@@ -119,7 +127,6 @@ class Webhooks extends \Bbgi\Module {
 
 		$base_url  = get_site_option( 'ee_host', false );
 		$appkey    = get_site_option( 'ee_appkey', false );
-		$publisher = get_option( 'ee_publisher', false );
 
 		// Abort if notification URL isn't set
 		if ( ! $base_url || ! $publisher || ! $appkey ) {
