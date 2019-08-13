@@ -57,6 +57,10 @@ class Contacts extends PureComponent {
 			return false;
 		}
 
+		const textStyle = {
+			color: colors['--brand-text-color'] || colors['--global-theme-secondary'],
+		};
+
 		const buttonsFillStyle = {
 			fill:
 				colors['--brand-button-color'] || colors['--global-theme-secondary'],
@@ -75,9 +79,6 @@ class Contacts extends PureComponent {
 		if ( isOpen ) {
 
 			const config = window.bbgiconfig;
-			const tel = ( '' !== phone ) ? `<p><a href="tel:${phone}">${phone}</a></p>` : '';
-			const sms = ( '' !== text ) ? `<p><a href="sms://${text}">${text}</a></p>` : '';
-			const mailto = ( '' !== email ) ? `<p><a href="mailto:${email}">${email}</a></p>` : '';
 			let image =
 				config && config.theme && config.theme.logo && config.theme.logo.url;
 
@@ -92,10 +93,10 @@ class Contacts extends PureComponent {
 			contacts = (
 				<Fragment>
 					<img src={image} alt={title} />
-					${tel}
-					${sms}
-					${mailto}
-					<p>{address}</p>
+					<p><a href={`tel:${phone}`} style={textStyle}>{phone}</a></p>
+					<p><a href={`sms://${text}`} style={textStyle}>{text}</a></p>
+					<p><a href={`mailto:${email}`} style={textStyle}>{email}</a></p>
+					<p style={textStyle}>{address}</p>
 				</Fragment>
 			);
 		}
