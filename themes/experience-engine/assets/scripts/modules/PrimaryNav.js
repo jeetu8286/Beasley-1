@@ -215,7 +215,7 @@ class PrimaryNav extends PureComponent {
 					document.body.classList.remove( '-lock' );
 					container.setAttribute(
 						'aria-hidden',
-						'true'
+						'true',
 					);
 				} else {
 					return false;
@@ -236,7 +236,7 @@ class PrimaryNav extends PureComponent {
 				document.body.classList.remove( '-lock' );
 				container.setAttribute(
 					'aria-hidden',
-					'true'
+					'true',
 				);
 			} else {
 				return false;
