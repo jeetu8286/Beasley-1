@@ -145,7 +145,7 @@ class Webhooks extends \Bbgi\Module {
 	 * @return void
 	 */
 	public function do_webhook( $publisher, $post_id, $opts = [] ) {
-		$debbug_params = [
+		$debug_params = [
 			'publisher' => $publisher,
 			'post_id'   => $post_id,
 			'opts'      => $opts
@@ -156,7 +156,7 @@ class Webhooks extends \Bbgi\Module {
 
 		// Abort if notification URL isn't set
 		if ( ! $base_url || ! $publisher || ! $appkey ) {
-			$this->log( 'do_webhook notification url is not set.', $debbug_params );
+			$this->log( 'do_webhook notification url is not set.', $debug_params );
 			return;
 		}
 
