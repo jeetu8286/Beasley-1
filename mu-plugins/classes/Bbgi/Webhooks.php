@@ -19,7 +19,36 @@ class Webhooks extends \Bbgi\Module {
 		add_action( 'wp_trash_post', array( $this, 'do_trash_post_webhook' ) );
 		add_action( 'delete_post', array( $this, 'do_delete_post_webhook' ) );
 		add_action( 'shutdown', [ $this, 'do_shutdown' ] );
+
+		$this->debug =  ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ||
+						( defined( 'WEBHOOKS_LOG_ENABLE' ) && WEBHOOKS_LOG_ENABLE );
 	}
+
+	/**
+	 * Logs a message if debug is enabled.
+	 *
+	 * @param string $message The message log.
+	 * @param array  $params Optional associated params.
+	 *
+	 * @return void
+	 */
+	protected function log( $message, $params = [] ) {
+		if ( $this->debug ) {
+			$blog_id = get_current_blog_id();
+			$details = get_blog_details( $blog_id );
+
+			error_log(
+				sprintf(
+					'[#%d - %s] %s - %s',
+					$blog_id,
+					$details->blogname,
+					$message,
+					print_r( $params, true )
+				)
+			);
+		}
+	}
+
 
 	/**
 	 * Helper to trigger save webhook and unregister self.
@@ -27,8 +56,6 @@ class Webhooks extends \Bbgi\Module {
 	 * @param int $post_id The Post id that changed
 	 */
 	public function do_save_post_webhook( $post_id ) {
-		remove_action( 'save_post', [ $this, 'do_save_post_webhook' ] );
-
 		$this->do_lazy_webhook( $post_id, [ 'source' => 'save_post' ] );
 	}
 
@@ -38,8 +65,6 @@ class Webhooks extends \Bbgi\Module {
 	 * @param int $post_id The Post id that changed
 	 */
 	public function do_trash_post_webhook( $post_id ) {
-		remove_action( 'wp_trash_post', [ $this, 'do_trash_post_webhook' ] );
-
 		$this->do_lazy_webhook( $post_id, [ 'source' => 'wp_trash_post' ] );
 	}
 
@@ -49,8 +74,6 @@ class Webhooks extends \Bbgi\Module {
 	 * @param int $post_id The Post id that changed
 	 */
 	public function do_delete_post_webhook( $post_id ) {
-		remove_action( 'delete_post', [ $this, 'do_delete_post_webhook' ] );
-
 		$this->do_lazy_webhook( $post_id, [ 'source' => 'delete_post' ] );
 	}
 
@@ -63,7 +86,8 @@ class Webhooks extends \Bbgi\Module {
 		remove_action( 'shutdown', [ $this, 'do_shutdown' ] );
 
 		if ( ! empty( $this->pending ) ) {
-			foreach( $this->pending as $pending_webhook ) {
+			foreach( $this->pending as $site_id => $pending_webhook ) {
+				$this->log( 'do_webhook' , [ 'site_id' => $site_id ] );
 				$this->do_webhook(
 					$pending_webhook['publisher'],
 					$pending_webhook['post_id'],
@@ -89,12 +113,18 @@ class Webhooks extends \Bbgi\Module {
 	public function do_lazy_webhook( $post_id, $opts = [] ) {
 		$site_id = get_current_blog_id();
 
-		if ( ! isset( $this->pending[ $site_id ] ) ) {
+		$this->log( 'do_lazy_webook called.', [ 'post_id' => $post_id, 'opts' => $opts ] );
+
+		if ( ! isset( $this->pending[ $site_id ] ) && $this->needs_webhook( $post_id ) ) {
+			$publisher = get_option( 'ee_publisher', false );
+
 			$this->pending[ $site_id ] = [
-				'publisher' => get_option( 'ee_publisher', false ),
+				'publisher' => $publisher,
 				'post_id'   => $post_id,
 				'opts'      => $opts,
 			];
+
+			$this->log( 'pending webook set. ', $this->pending[ $site_id ] );
 
 			return true;
 		} else {
@@ -116,26 +146,24 @@ class Webhooks extends \Bbgi\Module {
 	 * @return void
 	 */
 	public function do_webhook( $publisher, $post_id, $opts = [] ) {
-		if ( ! $this->needs_webhook( $post_id ) ) {
-			return false;
-		}
-
-		$post = get_post( $post_id );
-		if ( $post->post_status !== 'publish' ) {
-			return;
-		}
+		$debbug_params = [
+			'publisher' => $publisher,
+			'post_id'   => $post_id,
+			'opts'      => $opts
+		];
 
 		$base_url  = get_site_option( 'ee_host', false );
 		$appkey    = get_site_option( 'ee_appkey', false );
 
 		// Abort if notification URL isn't set
 		if ( ! $base_url || ! $publisher || ! $appkey ) {
+			$this->log( 'do_webhook notification url is not set.', $debbug_params );
 			return;
 		}
 
 		$url = trailingslashit( $base_url ) . 'admin/publishers/' . $publisher . '/build?appkey=' . $appkey;
 
-		wp_remote_post( $url, array(
+		$request_args = [
 			'blocking'        => false,
 			'body'            => [
 				'post_id'       => $post_id,
@@ -145,8 +173,12 @@ class Webhooks extends \Bbgi\Module {
 				'wp_cron'       => defined( 'DOING_CRON' ) && DOING_CRON ? 'yes' : 'no',
 				'wp_ajax'       => defined( 'DOING_AJAX' ) && DOING_AJAX ? 'yes' : 'no',
 				'wp_minions'    => $this->is_wp_minions() ? 'yes' : 'no',
-			]
-		) );
+			],
+		];
+
+		$this->log( 'calling webohook', $request_args );
+
+		wp_remote_post( $url, $request_args );
 	}
 
 	/**
@@ -173,6 +205,12 @@ class Webhooks extends \Bbgi\Module {
 
 		/** don't webhook bulk edit requests */
 		if ( isset( $_REQUEST['bulk_edit'] ) ) {
+			return false;
+		}
+
+		$post = get_post( $post_id );
+
+		if ( $post->post_status !== 'publish' ) {
 			return false;
 		}
 
