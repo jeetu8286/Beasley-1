@@ -20,8 +20,7 @@ class Webhooks extends \Bbgi\Module {
 		add_action( 'delete_post', array( $this, 'do_delete_post_webhook' ) );
 		add_action( 'shutdown', [ $this, 'do_shutdown' ] );
 
-		$this->debug =  ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ||
-						( defined( 'WEBHOOKS_LOG_ENABLE' ) && WEBHOOKS_LOG_ENABLE );
+		$this->debug = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'WEBHOOKS_LOG_ENABLE' ) && WEBHOOKS_LOG_ENABLE );
 	}
 
 	/**
