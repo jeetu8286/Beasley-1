@@ -2,8 +2,20 @@
 
 namespace Bbgi\Image;
 
+/**
+ * Layout module manages Featured Image display variations. The
+ * currently supported Featured Image layout variations are,
+ *
+ * - Top ( Above title )
+ * - Inline ( Below title )
+ * - None ( Hide Featured Image )
+ * - Poster ( Legacy layout, this is converted to Inline on the fly )
+ */
 class Layout extends \Bbgi\Module {
 
+	/**
+	 * Connects the layout module with WordPress.
+	 */
 	public function register() {
 		add_action( 'post_submitbox_misc_actions', [ $this, 'render' ], 1000 );
 		add_action( 'save_post', [ $this, 'save_layout_if' ] );
@@ -50,6 +62,9 @@ class Layout extends \Bbgi\Module {
 
 	/**
 	 * Returns the label for the feature image layout key
+	 *
+	 * @param string $choice The choice key
+	 * @return string
 	 */
 	public function get_choice_label( $choice ) {
 		$choices = $this->get_choices();
@@ -146,20 +161,50 @@ class Layout extends \Bbgi\Module {
 		<?php
 	}
 
+	/**
+	 * Saves the layout from POST if the current context is valid.
+	 *
+	 * @param int $post_id The post to save
+	 * @return void
+	 */
 	public function save_layout_if( $post_id ) {
 		if ( $this->can_save_layout( $post_id ) ) {
 			$this->save_layout( $post_id );
 		}
 	}
 
+	/**
+	 * Saves the Featured Image Layout preference to post meta
+	 *
+	 * @param int $post_id The post to update
+	 * @return void
+	 */
 	public function save_layout( $post_id ) {
-		$layout = ! empty( $_POST['feature_image_layout'] ) ? sanitize_text_field( $_POST['feature_image_layout'] ) : '';
+		$layout = ! empty( $_POST['feature_image_layout'] )
+			? sanitize_text_field( $_POST['feature_image_layout'] ) : '';
+
 		update_post_meta( $post_id, 'post_feature_image_preference', $layout );
 	}
 
+	/**
+	 * Checks if the current post save context is valid to save layout
+	 * meta.
+	 *
+	 * @param int $post_id The post to save
+	 * @return bool
+	 */
 	public function can_save_layout( $post_id ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return false;
+		}
+
+		if ( wp_is_post_revision( $post_id ) ) {
+			return false;
+		}
+
 		if ( current_user_can( 'edit_post', $post_id ) ) {
-			$nonce = ! empty( $_POST['feature_image_layout_nonce'] ) ? sanitize_text_field( $_POST['feature_image_layout_nonce'] ) : '';
+			$nonce = ! empty( $_POST['feature_image_layout_nonce'] )
+				? sanitize_text_field( $_POST['feature_image_layout_nonce'] ) : '';
 
 			return wp_verify_nonce( $nonce, 'feature_image_layout' );
 		} else {
