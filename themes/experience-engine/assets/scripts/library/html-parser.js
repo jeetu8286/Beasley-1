@@ -134,6 +134,10 @@ function processEmbeds( container, type, selector, callback ) {
 		const extraAttributes = callback ? callback( element ) : {};
 		const placeholder = document.createElement( 'div' );
 
+		if ( 'audio' === type && element.closest( '.description' ) ) {
+			continue;
+		}
+
 		placeholder.setAttribute( 'id', extraAttributes.id || `__cd-${++embedsIndex}` );
 		placeholder.classList.add( 'placeholder' );
 		placeholder.classList.add( `placeholder-${type}` );

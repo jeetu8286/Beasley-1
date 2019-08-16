@@ -57,6 +57,10 @@ class Contacts extends PureComponent {
 			return false;
 		}
 
+		const textStyle = {
+			color: colors['--brand-text-color'] || colors['--global-theme-secondary'],
+		};
+
 		const buttonsFillStyle = {
 			fill:
 				colors['--brand-button-color'] || colors['--global-theme-secondary'],
@@ -68,12 +72,13 @@ class Contacts extends PureComponent {
 			background: colors['--brand-background-color'],
 		};
 
-		const { title, email, phone, address, picture } = stream;
+		const { title, email, phone, text, address, picture } = stream;
 		const { isOpen } = self.state;
 
 		let contacts = false;
 		if ( isOpen ) {
-			let config = window.bbgiconfig;
+
+			const config = window.bbgiconfig;
 			let image =
 				config && config.theme && config.theme.logo && config.theme.logo.url;
 
@@ -87,13 +92,16 @@ class Contacts extends PureComponent {
 			contacts = (
 				<Fragment>
 					<img src={image} alt={title} />
-					<p>
-						<a href={`tel:${phone}`}>{phone}</a>
-					</p>
-					<p>
-						<a href={`mailto:${email}`}>{email}</a>
-					</p>
-					<p>{address}</p>
+					{phone &&
+						<p style={textStyle}>Phone: <a href={`tel:${phone}`} style={textStyle}>{phone}</a></p>
+					}
+					{text &&
+						<p style={textStyle}>Text: <a href={`sms://${text}`} style={textStyle}>{text}</a></p>
+					}
+					{email &&
+						<p><a href={`mailto:${email}`} style={textStyle}>{email}</a></p>
+					}
+					<p style={textStyle}>{address}</p>
 				</Fragment>
 			);
 		}

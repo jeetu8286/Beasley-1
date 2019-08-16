@@ -13,6 +13,7 @@ import Header from './elements/Header';
 import Alert from './elements/Alert';
 import OAuthButtons from './authentication/OAuthButtons';
 import trapHOC from '@10up/react-focus-trap-hoc';
+import { mapAuthErrorCodeToFriendlyMessage } from '../../library/friendly-error-messages';
 
 class SignIn extends PureComponent {
 
@@ -60,7 +61,7 @@ class SignIn extends PureComponent {
 						document.body.innerHTML = '';
 					} );
 			} )
-			.catch( error => self.setState( { message: error.message } ) );
+			.catch( error => self.setState( { message: mapAuthErrorCodeToFriendlyMessage( error ) } ) );
 	}
 
 	render() {

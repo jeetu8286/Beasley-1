@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { isIOS } from '../library/browser';
+import { isAudioAdOnly } from '../library/strings';
 
 import Stations from '../components/player/Stations';
 import Controls from '../components/player/Controls';
@@ -138,7 +139,7 @@ class LivePlayer extends Component {
 			<Fragment>
 				{notification}
 
-				<div className={`preroll-wrapper${adPlayback ? ' -active' : ''}`}>
+				<div className={`preroll-wrapper${adPlayback && !isAudioAdOnly() ? ' -active' : ''}`}>
 					<div className="preroll-container">
 						<div id="td_container" className="preroll-player"></div>
 						<div className="preroll-notification">Live stream will be available after this brief ad from our sponsors</div>
@@ -163,7 +164,7 @@ class LivePlayer extends Component {
 								<RecentSongs colors={customColors} />
 							</ErrorBoundary>
 							<ErrorBoundary>
-								<Controls 
+								<Controls
 									status={status}
 									play={() => play( station )}
 									pause={pause}
@@ -226,7 +227,7 @@ function mapStateToProps( { player } ) {
 		status: player.status,
 		adPlayback: player.adPlayback,
 		adSynced: player.adSynced,
-		duration: player.duration
+		duration: player.duration,
 	};
 }
 
