@@ -95,7 +95,7 @@ class Layout extends \Bbgi\Module {
 
 		?>
 			<div class="misc-pub-section misc-pub-feature-image-layout" id="feature-image-layout">
-				<i class="dashicons dashicons-format-image"></i>
+				<i class="dashicons dashicons-format-image" style="opacity: 0.5"></i>
 				Feature Image Layout:
 				<span id="post-visibility-display" class="selected-feature-image-layout">
 					<?php echo esc_html( $current_label ); ?>
