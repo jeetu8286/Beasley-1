@@ -44,15 +44,22 @@ if ( ! function_exists( 'ee_get_episode_player' ) ) :
 			return null;
 		}
 
+		$podcast = get_post( $episode->post_parent );
+
 		if ( ! empty( $episode->media ) && ! empty( $episode->media['url'] ) ) {
 			$url = explode( '?', $episode->media['url'] );
-			return ee_get_lazy_audio( current( $url ), $episode->post_title, ! empty( $ee_feed_now['title'] ) ? $ee_feed_now['title'] : '' );
+			return ee_get_lazy_audio(
+				current( $url ),
+				$episode->post_title,
+				! empty( $ee_feed_now['title'] ) ? $ee_feed_now['title'] : '',
+				'podcast'
+			);
 		}
+
 
 		if ( $episode->ID ) {
 			$audio = get_post_meta( $episode->ID, 'omny-audio-url', true );
 			if ( filter_var( $audio, FILTER_VALIDATE_URL ) ) {
-				$podcast = get_post( $episode->post_parent );
 				$author = '';
 				if ( is_a( $podcast, '\WP_Post' ) ) {
 					$author = $podcast->post_title;
@@ -60,7 +67,7 @@ if ( ! function_exists( 'ee_get_episode_player' ) ) :
 					$author = $ee_feed_now['title'];
 				}
 
-				return ee_get_lazy_audio( $audio, $episode->post_title, $author );
+				return ee_get_lazy_audio( $audio, $episode->post_title, $author, 'podcast' );
 			}
 		}
 
@@ -72,6 +79,16 @@ if ( ! function_exists( 'ee_get_episode_player' ) ) :
 			remove_filter( 'the_content', 'wpautop' );
 			$content = apply_filters( 'the_content', $shortcode );
 			add_filter( 'the_content', 'wpautop' );
+
+			$content = str_replace(
+				'<audio',
+				sprintf(
+					'<audio data-tracktype="podcast" data-title="%s" data-author="%s"',
+					$episode->post_title,
+					$podcast->post_title
+				),
+				$content
+			);
 
 			return $content;
 		}
@@ -256,12 +273,13 @@ if ( ! function_exists( 'ee_the_episode_download' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_get_lazy_audio' ) ) :
-	function ee_get_lazy_audio( $url, $title, $author ) {
+	function ee_get_lazy_audio( $url, $title, $author, $track_type = 'live' ) {
 		return sprintf(
-			'<div class="lazy-audio" data-src="%s" data-title="%s" data-author="%s"></div>',
+			'<div class="lazy-audio" data-src="%s" data-title="%s" data-author="%s" data-tracktype="%s"></div>',
 			esc_attr( $url ),
 			esc_attr( $title ),
-			esc_attr( $author )
+			esc_attr( $author ),
+			esc_attr( $track_type )
 		);
 	}
 endif;

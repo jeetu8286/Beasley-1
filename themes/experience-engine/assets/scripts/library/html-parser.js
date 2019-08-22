@@ -23,6 +23,9 @@ function getAudioEmbedParams( element ) {
 	return {
 		src: element.getAttribute( 'src' ) || '',
 		sources,
+		title: element.dataset.title,
+		author: element.dataset.author,
+		tracktype: element.dataset.tracktype || '',
 	};
 }
 
@@ -34,6 +37,7 @@ function getOmnyEmbedParams( element ) {
 		title: dataset.title,
 		author: dataset.author,
 		omny: true,
+		tracktype: dataset.tracktype,
 	};
 }
 
@@ -168,7 +172,7 @@ export function getStateFromContent( container ) {
 			...processEmbeds( container, 'dfp', '.dfp-slot', getDfpParams ),
 			...processEmbeds( container, 'secondstreet', '.secondstreet-embed', getSecondStreetEmbedParams ),
 			...processEmbeds( container, 'audio', '.wp-audio-shortcode', getAudioEmbedParams ),
-			...processEmbeds( container, 'audio', '.lazy-audio', getDatasetParams( 'src', 'title', 'author' ) ),
+			...processEmbeds( container, 'audio', '.lazy-audio', getDatasetParams( 'src', 'title', 'author', 'tracktype' ) ),
 			...processEmbeds( container, 'audio', '.omny-embed', getOmnyEmbedParams ),
 			...processEmbeds( container, 'lazyimage', '.lazy-image', getDatasetParams( 'src', 'width', 'height', 'alt', 'tracking', 'attribution', 'autoheight' ) ),
 			...processEmbeds( container, 'share', '.share-buttons', getDatasetParams( 'url', 'title' ) ),
