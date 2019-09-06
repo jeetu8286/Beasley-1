@@ -150,6 +150,8 @@ export const DEFAULT_STATE = {
 function reducer( state = {}, action = {} ) {
 	let interval;
 
+	console.log( 'action type', action.type );
+
 	switch ( action.type ) {
 		case ACTION_INIT_TDPLAYER:
 			tdplayer = action.player;
@@ -175,7 +177,13 @@ function reducer( state = {}, action = {} ) {
 				item => item.stream_call_letters === station,
 			);
 
+			console.log( 'streaming info' );
+			console.log( stream.stream_cmod_domain );
+			console.log( stream.stream_tap_id );
+
 			fullStop();
+
+			console.log( 'make it rain' );
 
 			tdplayer.playAd( 'tap', {
 				host: stream.stream_cmod_domain,
