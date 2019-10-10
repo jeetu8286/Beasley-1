@@ -268,6 +268,11 @@
 			& ul li:last-child {
 				padding-bottom: 0;
 			}
+
+			& > a {
+				color: inherit;
+				text-decoration: underline;
+			}
 		}
 
 		&.-open {
@@ -322,20 +327,6 @@
 		right: calc(50% - 72px);
 		width: 100%;
 		z-index: 100;
-
-		&::after {
-			border: solid transparent;
-			border-top-color: var(--global-theme-secondary);
-			border-width: 8px;
-			content: " ";
-			height: 0;
-			left: 50%;
-			margin-left: -8px;
-			pointer-events: none;
-			position: absolute;
-			top: 100%;
-			width: 0;
-		}
 
 		& h5 {
 			color: var(--brand-secondary);
