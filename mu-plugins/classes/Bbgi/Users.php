@@ -35,6 +35,8 @@ class Users extends \Bbgi\Module {
 			add_filter( 'manage_users_columns', [ $this, 'add_last_login_column' ] );
 			add_filter( 'wpmu_users_columns', [ $this, 'add_last_login_column' ], 1 );
 			add_filter( 'manage_users_custom_column', [ $this, 'manage_users_custom_column' ], 10, 3 );
+			add_filter( 'manage_users_sortable_columns', [ $this, 'add_sortable_column' ] );
+			add_filter( 'manage_users-network_sortable_columns', [ $this, 'add_sortable_column' ] );
 		}
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -225,6 +227,11 @@ class Users extends \Bbgi\Module {
 			return;
 		}
 
+		if ( isset( $query->query_vars['orderby'] ) && self::USER_LAST_LOGIN_META === $query->query_vars['orderby'] ) {
+			$query->set( 'meta_key', self::USER_LAST_LOGIN_META );
+			$query->set( 'orderby', 'meta_value_num' );
+		}
+
 		if ( $user_status === 'disabled' ) {
 			$query->set(
 				'meta_query',
@@ -262,6 +269,19 @@ class Users extends \Bbgi\Module {
 	 */
 	public function add_last_login_column( $columns ) {
 		$columns[ self::USER_LAST_LOGIN_META ] = esc_html__( 'Last Login', 'beasley' );
+
+		return $columns;
+	}
+
+	/**
+	 * Adds our custom columns to the users table.
+	 *
+	 * @param array $columns The default columns
+	 *
+	 * @return array
+	 */
+	public function add_sortable_column( $columns ) {
+		$columns[ self::USER_LAST_LOGIN_META ] = self::USER_LAST_LOGIN_META;
 
 		return $columns;
 	}
