@@ -31,10 +31,15 @@ class Users extends \Bbgi\Module {
 		add_action( 'pre_get_users', [ $this, 'filter_dropdown' ] );
 
 		if ( current_user_can( 'manage_network_users' ) ) {
-			add_action( 'manage_site-users-network_columns', [ $this, 'add_last_login_column' ] );
-			add_action( 'manage_users_columns', [ $this, 'add_last_login_column' ] );
-			add_action( 'wpmu_users_columns', [ $this, 'add_last_login_column' ], 1 );
-			add_action( 'manage_users_custom_column', [ $this, 'manage_users_custom_column' ], 10, 3 );
+			add_filter( 'manage_site-users-network_columns', [ $this, 'add_last_login_column' ] );
+			add_filter( 'manage_users_columns', [ $this, 'add_last_login_column' ] );
+			add_filter( 'wpmu_users_columns', [ $this, 'add_last_login_column' ], 1 );
+			add_filter( 'manage_users_custom_column', [ $this, 'manage_users_custom_column' ], 10, 3 );
+		}
+
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			\WP_CLI::add_command( 'bbgi users set_last_login', [ $this, 'cli_set_last_login' ] );
+			\WP_CLI::add_command( 'bbgi users get_disabled_users', [ $this, 'cli_get_disabled_users' ] );
 		}
 	}
 
@@ -67,7 +72,7 @@ class Users extends \Bbgi\Module {
 	 * @return void
 	 */
 	public function on_login( $user_login, \WP_User $user ) {
-		update_user_meta( $user->ID, self::USER_LAST_LOGIN_META, time() );
+		$this->set_last_login( $user->ID );
 	}
 
 	/**
@@ -89,6 +94,7 @@ class Users extends \Bbgi\Module {
 		$diff       = date_diff( date_create( date( 'Y-m-d', $today ) ), date_create( date( 'Y-m-d', $last_login ) ) );
 
 		if ( $diff->days >= self::INACTIVITY_THRESHOLD ) {
+			update_user_meta( $user_id, self::USER_DISABLED_META, true );
 			return true;
 		}
 
@@ -104,6 +110,17 @@ class Users extends \Bbgi\Module {
 	 */
 	public function get_last_login( $user_id ) {
 		return (int) get_user_meta( $user_id, self::USER_LAST_LOGIN_META, true );
+	}
+
+	/**
+	 * Set the user last login
+	 *
+	 * @param integer $user_id The user's id.
+	 *
+	 * @return void
+	 */
+	public function set_last_login( $user_id ) {
+		update_user_meta( $user_id, self::USER_LAST_LOGIN_META, time() );
 	}
 
 	/**
@@ -264,10 +281,80 @@ class Users extends \Bbgi\Module {
 			$value      = esc_html__( 'Never', 'beasley' );
 
 			if ( $last_login ) {
-				$value = date_i18n( get_option( 'date_format' ), $last_login );
+				$value = date_i18n( 'Y/m/d', $last_login );
 			}
 		}
 
 		return $value;
+	}
+
+	/**
+	 * CLI command to set last login
+	 *
+	 * [--dry-run]
+	 * : Run the command in dry-run mode.
+	 */
+	public function cli_set_last_login( $args, $assoc_args ) {
+		$dry_run = isset( $assoc_args['dry-run'] ) ? true : false;
+
+		$users_ids = get_users(
+			[
+				'blog_id' => 0,
+				'fields'  => 'ID',
+			]
+		);
+
+		$progress = \WP_CLI\Utils\make_progress_bar( 'Updating users with last login', count( $users_ids ) );
+		$updated = 0;
+		foreach ( $users_ids as $user_id ) {
+			if ( ! $this->get_last_login( $user_id ) ) {
+				$updated++;
+				if ( ! $dry_run ) {
+					$this->set_last_login( $user_id );
+				}
+			}
+
+			$progress->tick();
+		}
+
+		$progress->finish();
+
+		\WP_CLI::success( sprintf( '%d users were updated', $updated ) );
+	}
+
+	/**
+	 * CLI command to return disabled users
+	 */
+	public function cli_get_disabled_users( $args, $assoc_args ) {
+		$users = get_users(
+			[
+				'blog_id' => 0,
+				'meta_query' => [
+					[
+						'key'   => self::USER_DISABLED_META,
+						'value' => '1',
+					],
+				]
+			]
+		);
+
+		$data = [];
+
+		/**
+		 * @var \WP_User $user
+		 */
+		foreach ( $users as $user ) {
+			$data[] = [
+				$user->ID,
+				$user->user_firstname . ' ' . $user->user_lastname,
+				$user->user_login,
+				$user->user_email,
+			];
+		}
+
+		$table = new \cli\Table();
+		$table->setHeaders( [ 'User ID', 'User Name', 'User Login', 'User Email' ] );
+		$table->setRows( $data );
+		$table->display();
 	}
 }
