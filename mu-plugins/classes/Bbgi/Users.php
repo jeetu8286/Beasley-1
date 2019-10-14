@@ -10,6 +10,8 @@ namespace Bbgi;
 class Users extends \Bbgi\Module {
 	const USER_DISABLED_META = 'bbgi_is_user_disabled';
 	const FILTER_NAME_FIELD = 'bbgi_user_status';
+	const USER_LAST_LOGIN_META = 'bbgi_user_last_login_meta';
+	const INACTIVITY_THRESHOLD = 60;
 
 	/**
 	 * Register actions and hooks.
@@ -18,6 +20,8 @@ class Users extends \Bbgi\Module {
 	 */
 	public function register() {
 		add_filter( 'authenticate', [ $this, 'filter_authenticate' ], 21, 3 ); // after wp_authenticate_username_password runs.
+		add_action( 'wp_login', [ $this, 'on_login' ], 10, 2 );
+		add_action( 'user_register', [ $this, 'on_register' ], 10, 2 );
 		add_action( 'show_user_profile', [ $this, 'render_fields' ] );
 		add_action( 'edit_user_profile', [ $this, 'render_fields' ] );
 		add_action( 'personal_options_update', [ $this, 'save_fields' ] );
@@ -25,6 +29,13 @@ class Users extends \Bbgi\Module {
 		add_action( 'restrict_manage_users', [ $this, 'filter_users_dropdown' ], 99 );
 		add_action( 'restrict_manage_network_users', [ $this, 'filter_users_dropdown' ], 99 );
 		add_action( 'pre_get_users', [ $this, 'filter_dropdown' ] );
+
+		if ( current_user_can( 'manage_network_users' ) ) {
+			add_action( 'manage_site-users-network_columns', [ $this, 'add_last_login_column' ] );
+			add_action( 'manage_users_columns', [ $this, 'add_last_login_column' ] );
+			add_action( 'wpmu_users_columns', [ $this, 'add_last_login_column' ], 1 );
+			add_action( 'manage_users_custom_column', [ $this, 'manage_users_custom_column' ], 10, 3 );
+		}
 	}
 
 	/**
@@ -48,13 +59,51 @@ class Users extends \Bbgi\Module {
 	}
 
 	/**
+	 * Runs right after a user logs in
+	 *
+	 * @param string   $user_login The user login
+	 * @param \WP_User $user The user object.
+	 *
+	 * @return void
+	 */
+	public function on_login( $user_login, \WP_User $user ) {
+		update_user_meta( $user->ID, self::USER_LAST_LOGIN_META, time() );
+	}
+
+	/**
 	 * Returns whether the user is disabled or not.
 	 *
 	 * @param integer $user_id User id.
 	 * @return boolean
 	 */
 	public function is_user_disabled( $user_id ) {
-		return (bool) get_user_meta( $user_id, self::USER_DISABLED_META, true );
+		$disabled = (bool) get_user_meta( $user_id, self::USER_DISABLED_META, true );
+
+		if ( $disabled ) {
+			return true;
+		}
+
+		// check if the user didn't login in the past 60 days.
+		$last_login = $this->get_last_login( $user_id );
+		$today      = time();
+		$diff       = date_diff( date_create( date( 'Y-m-d', $today ) ), date_create( date( 'Y-m-d', $last_login ) ) );
+
+		if ( $diff->days >= self::INACTIVITY_THRESHOLD ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the user last login.
+	 *
+	 * @param int $user_id
+	 *
+	 * @return int
+	 */
+	public function get_last_login( $user_id ) {
+		return (int) get_user_meta( $user_id, self::USER_LAST_LOGIN_META, true );
 	}
 
 	/**
@@ -185,5 +234,40 @@ class Users extends \Bbgi\Module {
 				]
 			);
 		}
+	}
+
+	/**
+	 * Adds our custom columns to the users table.
+	 *
+	 * @param array $columns The default columns
+	 *
+	 * @return array
+	 */
+	public function add_last_login_column( $columns ) {
+		$columns[ self::USER_LAST_LOGIN_META ] = esc_html__( 'Last Login', 'beasley' );
+
+		return $columns;
+	}
+
+	/**
+	 * Adds the last login column.
+	 *
+	 * @param string $value Value of the custom columm.
+	 * @param string $column_name Name of the custom column.
+	 * @param int    $user_id The user's id.
+	 *
+	 * @return string
+	 */
+	public function manage_users_custom_column( $value, $column_name, $user_id ) {
+		if ( self::USER_LAST_LOGIN_META === $column_name ) {
+			$last_login = $this->get_last_login( $user_id );
+			$value      = esc_html__( 'Never', 'beasley' );
+
+			if ( $last_login ) {
+				$value = date_i18n( get_option( 'date_format' ), $last_login );
+			}
+		}
+
+		return $value;
 	}
 }
