@@ -337,15 +337,8 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_AD_PLAYBACK_ERROR:
 		case ACTION_AD_PLAYBACK_COMPLETE: {
-			const { station, adPlayback } = state;
-			document.body.classList.remove( 'locked' );
+			const { station } = state;
 
-			// start station only if the ad playback is playing now
-			if ( adPlayback ) {
-				tdplayer.skipAd();
-			}
-
-			tdplayer.play( { station } );
 			loadNowPlaying( station );
 
 			return { ...state, adPlayback: false };

@@ -79,7 +79,7 @@ function errorCatcher( prefix ) {
 }
 
 export function initTdPlayer( modules ) {
-	return dispatch => {
+	return ( dispatch, getState ) => {
 		let adPlaybackTimeout = false;
 		let adSyncedTimeout = false;
 
@@ -148,9 +148,31 @@ export function initTdPlayer( modules ) {
 		}
 
 		function dispatchPlaybackStop( type ) {
-			console.log( 'dispatchPlaybackStop: ', adPlaybackTimeout );
+
 			return () => {
+				const { tdplayer } = window; // Global player
+				const { player } = getState(); // player from state
+
+				// Update DOM
+				document.body.classList.remove( 'locked' );
+
+				// If there is a tdplayer and player in state
+				// then continue this portion
+				if( tdplayer && player ) {
+
+					if ( player.adPlayback ) {
+						tdplayer.skipAd();
+					}
+
+					if( player .station ) {
+						tdplayer.play( { station: player.station } );
+					}
+				}
+
+				// Clear existing timeout
 				clearTimeout( adPlaybackTimeout );
+
+				// Finalize dispatch
 				dispatch( { type } );
 			};
 		}
