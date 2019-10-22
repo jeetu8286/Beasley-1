@@ -164,7 +164,7 @@ export function initTdPlayer( modules ) {
 						tdplayer.skipAd();
 					}
 
-					if( player .station ) {
+					if( player.station ) {
 						tdplayer.play( { station: player.station } );
 					}
 				}
