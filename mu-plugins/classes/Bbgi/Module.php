@@ -50,6 +50,7 @@ abstract class Module {
 			'feed-pull'         => new \Bbgi\Integration\FeedPull(),
 			'webhooks'          => new \Bbgi\Webhooks(),
 			'enclosure'         => new \Bbgi\Media\Enclosure(),
+			'users'             => new \Bbgi\Users(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {
