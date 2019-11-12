@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb8125ac87f6f27e71bf054440eca9a6",
+    "content-hash": "5eec8c07ccd3354fa9a4d2c67da50c0c",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -52,20 +52,21 @@
         },
         {
             "name": "10up/wp-minions",
-            "version": "3.0.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/WP-Minions.git",
-                "reference": "fe37083445db4173ae24ee5dc193095298ff968b"
+                "reference": "0f8bd01339efb78cea8ae54b7639ba7ef2722565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/10up/WP-Minions/zipball/fe37083445db4173ae24ee5dc193095298ff968b",
-                "reference": "fe37083445db4173ae24ee5dc193095298ff968b",
+                "url": "https://api.github.com/repos/10up/WP-Minions/zipball/0f8bd01339efb78cea8ae54b7639ba7ef2722565",
+                "reference": "0f8bd01339efb78cea8ae54b7639ba7ef2722565",
                 "shasum": ""
             },
             "require": {
-                "composer/installers": "~1.0"
+                "composer/installers": "~1.0",
+                "php-amqplib/php-amqplib": "2.8.0"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9.0",
@@ -79,7 +80,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPLv2"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -98,20 +99,20 @@
                 }
             ],
             "description": "Job Queue for WordPress",
-            "time": "2017-07-06T22:15:30+00:00"
+            "time": "2018-11-05T20:41:24+00:00"
         },
         {
             "name": "composer/installers",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b"
+                "reference": "141b272484481432cda342727a427dc1e206bfa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/cfcca6b1b60bc4974324efb5783c13dca6932b5b",
-                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b",
+                "url": "https://api.github.com/repos/composer/installers/zipball/141b272484481432cda342727a427dc1e206bfa0",
+                "reference": "141b272484481432cda342727a427dc1e206bfa0",
                 "shasum": ""
             },
             "require": {
@@ -167,6 +168,7 @@
                 "RadPHP",
                 "SMF",
                 "Thelia",
+                "Whmcs",
                 "WolfCMS",
                 "agl",
                 "aimeos",
@@ -189,6 +191,7 @@
                 "installer",
                 "itop",
                 "joomla",
+                "known",
                 "kohana",
                 "laravel",
                 "lavalite",
@@ -218,7 +221,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2018-08-27T06:10:37+00:00"
+            "time": "2019-08-12T15:00:31+00:00"
         },
         {
             "name": "oomphinc/composer-installers-extender",
@@ -263,18 +266,86 @@
             "time": "2017-03-31T16:57:39+00:00"
         },
         {
-            "name": "wpackagist-plugin/advanced-custom-fields",
-            "version": "5.8.1",
+            "name": "php-amqplib/php-amqplib",
+            "version": "v2.8.0",
             "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/advanced-custom-fields/",
-                "reference": "tags/5.8.1"
+                "type": "git",
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
+                "reference": "7df8553bd8b347cf6e919dd4a21e75f371547aa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields.5.8.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/7df8553bd8b347cf6e919dd4a21e75f371547aa0",
+                "reference": "7df8553bd8b347cf6e919dd4a21e75f371547aa0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": ">=5.4.0"
+            },
+            "replace": {
+                "videlalvaro/php-amqplib": "self.version"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "^2.9",
+                "phpunit/phpunit": "^4.8",
+                "scrutinizer/ocular": "^1.1",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpAmqpLib\\": "PhpAmqpLib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla",
+                    "role": "Original Maintainer"
+                },
+                {
+                    "name": "John Kelly",
+                    "email": "johnmkelly86@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Raúl Araya",
+                    "email": "nubeiro@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/php-amqplib/php-amqplib/",
+            "keywords": [
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2018-10-23T18:48:24+00:00"
+        },
+        {
+            "name": "wpackagist-plugin/advanced-custom-fields",
+            "version": "5.8.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/advanced-custom-fields/",
+                "reference": "tags/5.8.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields.5.8.6.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -292,9 +363,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/debug-bar.1.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/debug-bar.1.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -312,9 +381,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/debug-bar-elasticpress.1.4.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/debug-bar-elasticpress.1.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -332,9 +399,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/disable-real-mime-check.1.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/disable-real-mime-check.1.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -344,17 +409,15 @@
         },
         {
             "name": "wpackagist-plugin/duplicate-post",
-            "version": "3.2.2",
+            "version": "3.2.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/duplicate-post/",
-                "reference": "tags/3.2.2"
+                "reference": "tags/3.2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.2.2.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/duplicate-post.3.2.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -364,17 +427,15 @@
         },
         {
             "name": "wpackagist-plugin/edit-flow",
-            "version": "0.9",
+            "version": "0.9.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/edit-flow/",
-                "reference": "tags/0.9"
+                "reference": "tags/0.9.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/edit-flow.0.9.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/edit-flow.0.9.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -384,17 +445,15 @@
         },
         {
             "name": "wpackagist-plugin/elasticpress",
-            "version": "3.0.3",
+            "version": "3.2.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/elasticpress/",
-                "reference": "tags/3.0.3"
+                "reference": "tags/3.2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/elasticpress.3.0.3.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/elasticpress.3.2.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -412,9 +471,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/fb-instant-articles.4.2.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/fb-instant-articles.4.2.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -432,9 +489,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/feed-pull.0.2.6.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/feed-pull.0.2.6.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -444,17 +499,15 @@
         },
         {
             "name": "wpackagist-plugin/public-post-preview",
-            "version": "2.8.0",
+            "version": "2.9.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/public-post-preview/",
-                "reference": "tags/2.8.0"
+                "reference": "tags/2.9.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/public-post-preview.2.8.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/public-post-preview.2.9.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -464,17 +517,15 @@
         },
         {
             "name": "wpackagist-plugin/query-monitor",
-            "version": "3.3.6",
+            "version": "3.4.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/query-monitor/",
-                "reference": "tags/3.3.6"
+                "reference": "tags/3.4.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/query-monitor.3.3.6.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/query-monitor.3.4.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -492,9 +543,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/restricted-site-access.7.1.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/restricted-site-access.7.1.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -512,9 +561,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/rewrite-rules-inspector.1.2.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/rewrite-rules-inspector.1.2.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -532,9 +579,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/safe-redirect-manager.1.9.2.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/safe-redirect-manager.1.9.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -552,9 +597,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/simple-local-avatars.2.1.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/simple-local-avatars.2.1.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -572,9 +615,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/term-management-tools.1.1.4.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/term-management-tools.1.1.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -584,17 +625,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "4.9.3.2",
+            "version": "4.9.10",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/4.9.3.2"
+                "reference": "tags/4.9.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.9.3.2.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.9.10.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -612,9 +651,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-importer.0.6.4.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/wordpress-importer.0.6.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -624,17 +661,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-seo",
-            "version": "11.5",
+            "version": "12.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-seo/",
-                "reference": "tags/11.5"
+                "reference": "tags/12.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.11.5.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/wordpress-seo.12.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -652,9 +687,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-crontrol.1.7.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/wp-crontrol.1.7.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -664,17 +697,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-fail2ban",
-            "version": "4.2.4",
+            "version": "4.2.7.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-fail2ban/",
-                "reference": "tags/4.2.4"
+                "reference": "tags/4.2.7.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-fail2ban.4.2.4.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/wp-fail2ban.4.2.7.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -686,17 +717,15 @@
     "packages-dev": [
         {
             "name": "wpackagist-plugin/user-switching",
-            "version": "1.5.1",
+            "version": "1.5.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/user-switching/",
-                "reference": "tags/1.5.1"
+                "reference": "tags/1.5.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/user-switching.1.5.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/user-switching.1.5.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
