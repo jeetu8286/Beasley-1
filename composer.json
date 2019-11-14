@@ -20,7 +20,7 @@
 		"wpackagist-plugin/the-events-calendar": "*",
 		"wpackagist-plugin/wordpress-importer": "*",
 		"wpackagist-plugin/wp-crontrol": "*",
-		"wpackagist-plugin/wordpress-seo": "*",
+		"wpackagist-plugin/wordpress-seo": "12.5",
 		"wpackagist-plugin/safe-redirect-manager": "*",
 		"wpackagist-plugin/simple-local-avatars": "*",
 		"wpackagist-plugin/wp-fail2ban": "*",
