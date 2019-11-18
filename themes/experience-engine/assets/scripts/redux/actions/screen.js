@@ -50,7 +50,6 @@ export function loadPage( url, options = {} ) {
 
 		function onError( error ) {
 			// eslint-disable-next-line no-console
-			console.error( error.stack );
 			dispatch( { type: ACTION_LOAD_ERROR, error } );
 		}
 
@@ -90,7 +89,13 @@ export function loadPage( url, options = {} ) {
 					document.body.className = pageDocument.body.className;
 				}
 
-				window.scrollTo( 0, 0 );
+				// Get content container
+				const content = document.getElementById( 'content' );
+
+				// Scroll to top of content
+				if( content ) {
+					content.scrollIntoView( true );
+				}
 			}
 
 		}
