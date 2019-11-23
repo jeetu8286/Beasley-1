@@ -180,6 +180,25 @@ class Redirects extends \Bbgi\Module {
 	}
 
 	/**
+	 * Expand nav menu links
+	 *
+	 * @param array $atts
+	 *
+	 * @return array
+	 */
+	public function expand_nav_menu_links_redirects( $atts ) {
+		$url = $atts['href'];
+
+		$new_url = $this->match_redirect( $url );
+
+		if ( $new_url ) {
+			$atts['href'] = $new_url;
+		}
+
+		return $atts;
+	}
+
+	/**
 	 * Checks if there's a cached redirect for this URL.
 	 *
 	 * @param string $url The url we're checking.
