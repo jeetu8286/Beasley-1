@@ -38,7 +38,8 @@ class Redirects extends \Bbgi\Module {
 	}
 
 	/**
-	 * Tries to match a url for a redirect
+	 * Tries to match a url for a redirect.
+	 * This method was created from the maybe_redirect method in the SRM plugin.
 	 *
 	 * @see https://github.com/10up/safe-redirect-manager/blob/develop/inc/classes/class-srm-redirect.php#L58
 	 *
@@ -54,7 +55,8 @@ class Redirects extends \Bbgi\Module {
 			return false;
 		}
 
-		$requested_path = untrailingslashit( stripslashes( $url ) );
+		$parsed_request_path = wp_parse_url( $url );
+		$requested_path = untrailingslashit( stripslashes( $parsed_request_path['path'] ) );
 
 		/**
 		 * If WordPress resides in a directory that is not the public root, we have to chop
@@ -64,6 +66,11 @@ class Redirects extends \Bbgi\Module {
 			$parsed_home_url = wp_parse_url( home_url() );
 		} else {
 			$parsed_home_url = parse_url( home_url() );
+		}
+
+		// no need to check if request path is from another domain.
+		if ( $parsed_home_url['host'] !== $parsed_request_path['host'] ) {
+			return false;
 		}
 
 		if ( isset( $parsed_home_url['path'] ) && '/' !== $parsed_home_url['path'] ) {
@@ -147,11 +154,13 @@ class Redirects extends \Bbgi\Module {
 
 				do_action( 'srm_do_redirect', $requested_path, $sanitized_redirect_to, $status_code );
 
+				$this->redirects_map[ $url ] = $sanitized_redirect_to;
+
 				return $sanitized_redirect_to;
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -189,7 +198,13 @@ class Redirects extends \Bbgi\Module {
 	public function expand_nav_menu_links_redirects( $atts ) {
 		$url = $atts['href'];
 
-		$new_url = $this->match_redirect( $url );
+		$new_url = false;
+
+		if ( $this->has_cached_redirect( $url ) ) {
+			$new_url = $this->get_cached_redirect( $url );
+		} else if ( class_exists( 'SRM_Redirect' ) ) {
+			$new_url = $this->match_redirect( $url );
+		}
 
 		if ( $new_url ) {
 			$atts['href'] = $new_url;
