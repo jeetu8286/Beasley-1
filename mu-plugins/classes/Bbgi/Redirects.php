@@ -175,7 +175,7 @@ class Redirects extends \Bbgi\Module {
 	 * @return string
 	 */
 	public function get_yoast_redirect( $post ) {
-		$new_url = get_post_meta( $post->ID, 'yoast_wpseo_redirect', true );
+		$new_url = get_post_meta( $post->ID, '_yoast_wpseo_redirect', true );
 
 		if ( empty( $new_url ) ) {
 			return false;
