@@ -38,62 +38,95 @@ RelatedPost.propTypes = {
 	published: PropTypes.string.isRequired,
 };
 
-const RelatedPosts = () => {
+const RelatedPosts = ( { posttype, posttitle, categories, url } ) => {
 	const [postsEndpointURL, setPostsEndpointURL] = useState( '' );
 	const [relatedPosts, setRelatedPosts] = useState( [] );
 	const [loading, setLoading] = useState( false );
 	const { bbgiconfig } = window;
 
-	const endpointURL = `${bbgiconfig.eeapi}publishers/${bbgiconfig.publisher.id}/recommendations?categories=sport&posttype=post&url=/`;
+	const endpointURL =  `${bbgiconfig.eeapi}publishers/${bbgiconfig.publisher.id}/recommendations?categories=${categories || ''}&posttype=${posttype}&url=${encodeURIComponent( url )}`;
 
 	useEffect( () => {
 		async function fetchPostsEndpoint() {
-			setLoading( true );
-			const result = await fetch( endpointURL ).then( r => r.json() );
-			let transformedURL = result.url;
+			try {
+				setLoading( true );
+				const result = await fetch( endpointURL ).then( r => r.json() );
+				let transformedURL = result.url;
 
-			if ( 'undefined' !== typeof window.jstag ) {
-				const seerid = window.jstag.ckieGet( 'seerid' );
-				if ( seerid ) {
-					transformedURL = transformedURL.replace( '{userid}', seerid );
+				if ( 'undefined' !== typeof window.jstag ) {
+					const seerid = window.jstag.ckieGet( 'seerid' );
+					if ( seerid ) {
+						transformedURL = transformedURL.replace( '{userid}', seerid );
+					}
 				}
+
+				setPostsEndpointURL( transformedURL );
+			} catch( e ) {
+				setLoading( false );
+				setPostsEndpointURL( '' );
 			}
 
-			setPostsEndpointURL( transformedURL );
 		}
 
 		fetchPostsEndpoint();
-	}, [] );
+	}, [setLoading, setPostsEndpointURL, endpointURL] );
 
 	useEffect( () => {
 		async function fetchPosts() {
 			if ( postsEndpointURL ) {
-				const result = await fetch( postsEndpointURL ).then( r => r.json() );
-				setRelatedPosts( result.data );
-				setLoading( false );
+				try {
+					const result = await fetch( postsEndpointURL ).then( r => r.json() );
+					setRelatedPosts( result.data );
+					setLoading( false );
+				} catch ( e ) {
+					setLoading( false );
+					setRelatedPosts( [] );
+				}
+
 			}
 		}
 
 		fetchPosts();
-	}, [ postsEndpointURL] );
+	}, [ postsEndpointURL], setLoading, setRelatedPosts );
 
 	if ( loading ) {
 		return <div>Loading...</div>;
 	}
 
 	if ( relatedPosts && 0 < relatedPosts.length ) {
+		const deduplicate = ( relatedPost ) => {
+			const normalizedUrl = url.replace( 'https://', '' ).replace( 'http://', '' );
+
+			return posttitle !== relatedPost.title && normalizedUrl !== relatedPost.url;
+		};
 		return (
 			<div className="related-articles content-wrap">
 				<h2 className="section-head"><span>You Might Also Like</span></h2>
 
 				<div className="archive-tiles -list">
-					{relatedPosts.map( relatedPost => <RelatedPost key={relatedPost.id} {...relatedPost} /> )}
+					{relatedPosts.filter( deduplicate ).map( relatedPost => <RelatedPost key={relatedPost.id} {...relatedPost} /> )}
 				</div>
 			</div>
 		);
 	}
 
 	return null;
+};
+
+RelatedPosts.propTypes = {
+	posttype: PropTypes.string,
+	categories: PropTypes.string,
+	posttitle: PropTypes.string,
+	postid: PropTypes.number,
+	url: PropTypes.string,
+};
+
+RelatedPosts.defaultProps = {
+	posttype: 'all',
+	categories: '',
+	posttitle: '',
+	postid: 0,
+	url: '/',
 };
 
 export default RelatedPosts;
