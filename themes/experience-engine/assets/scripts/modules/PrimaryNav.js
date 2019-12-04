@@ -33,6 +33,7 @@ class PrimaryNav extends PureComponent {
 		self.detectScrollbar = self.detectScrollbar.bind( self );
 		self.handleEscapeKey = self.handleEscapeKey.bind( self );
 		self.handleClickOutSide = self.handleClickOutSide.bind( self );
+		self.closeMenus = self.closeMenus.bind( self );
 
 		removeChildren( navRoot );
 	}
@@ -84,6 +85,8 @@ class PrimaryNav extends PureComponent {
 		const { primaryNavRef } = self;
 		const { setNavigationCurrent, hideModal } = self.props;
 		const container = primaryNavRef.current;
+		let linkToActivate;
+		let parent;
 
 		const { href, pathname } = window.location;
 
@@ -93,6 +96,7 @@ class PrimaryNav extends PureComponent {
 
 		for ( let i = 0; i < previouslySelected.length; i++ ) {
 			previouslySelected[i].classList.remove( 'current-menu-item' );
+			parent = previouslySelected[i].parentNode;
 		}
 
 		const links = container.querySelectorAll( '.menu-item > a' );
@@ -102,6 +106,7 @@ class PrimaryNav extends PureComponent {
 			if ( href === link || pathname === link ) {
 				element.parentNode.classList.add( 'current-menu-item' );
 				setNavigationCurrent( element.parentNode.id );
+				linkToActivate = element;
 			}
 		}
 
@@ -111,6 +116,12 @@ class PrimaryNav extends PureComponent {
 		) {
 			self.handleMobileNav();
 		}
+
+		if ( parent.classList.contains( 'sub-menu' ) && parent.contains( linkToActivate ) ) {
+			return;
+		}
+
+		self.closeMenus();
 	}
 
 	handleSubMenu( e ) {
@@ -171,17 +182,6 @@ class PrimaryNav extends PureComponent {
 				subMenu.classList.contains( 'is-active' ),
 			);
 			subMenu.classList.toggle( 'is-active' );
-		}
-
-		const actives = container.querySelectorAll(
-			'.menu-item-has-children .is-active',
-		);
-		for ( let i = 0; i < actives.length; i++ ) {
-			const element = actives[i];
-			if ( element !== toggler && element !== subMenu ) {
-				element.classList.remove( 'is-active' );
-				element.setAttribute( 'aria-hidden', true );
-			}
 		}
 	}
 
@@ -296,6 +296,26 @@ class PrimaryNav extends PureComponent {
 		} );
 	}
 
+	closeMenus() {
+		const container = this.primaryNavRef.current;
+		const actives = container.querySelectorAll(
+			'.menu-item-has-children .is-active',
+		);
+
+		const currentMenu = document.querySelector( `.${this.props.currentMenu}` );
+
+		for ( let i = 0; i < actives.length; i++ ) {
+			const element = actives[i];
+
+			if ( element.contains( currentMenu ) ) {
+				continue;
+			}
+
+			element.classList.remove( 'is-active' );
+			element.setAttribute( 'aria-hidden', true );
+		}
+	}
+
 	render() {
 		const self = this;
 		const { navHtml } = self.state;
@@ -316,11 +336,13 @@ PrimaryNav.propTypes = {
 	showDiscover: PropTypes.func.isRequired,
 	showSignin: PropTypes.func.isRequired,
 	setNavigationCurrent: PropTypes.func.isRequired,
+	currentMenu: PropTypes.string.isRequired,
 };
 
-function mapStateToProps( { auth } ) {
+function mapStateToProps( { auth, navigation } ) {
 	return {
 		signedIn: !!auth.user,
+		currentMenu: navigation.current,
 	};
 }
 
