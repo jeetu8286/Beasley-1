@@ -126,15 +126,17 @@ class ContentDispatcher extends Component {
 						1280: {
 							slidesPerView: count,
 							slidesPerGroup: group,
+							spaceBetween: 27,
 						},
-						900: {
-							slidesPerView: 2.2,
+						767: {
+							slidesPerView: 2.7,
 							slidesPerGroup: 2,
+							spaceBetween: 4,
 						},
 						480: {
-							slidesPerView: 1.2,
-							slidesPerGroup: 1,
-							spaceBetween: 27,
+							slidesPerView: 2.7,
+							slidesPerGroup: 2,
+							spaceBetween: 4,
 						},
 					},
 					navigation: {
