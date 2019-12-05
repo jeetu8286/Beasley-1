@@ -20,7 +20,7 @@ class PushNotifications extends \Bbgi\Module {
 		$this->register_custom_cap();
 		add_filter( 'post_row_actions', [ $this, 'send_notification_link' ], 10, 2 );
 		add_action( 'admin_menu', [ $this, 'register_notification_menu' ] );
-		// register push notifiation link/button in the admin.
+		add_action( 'add_meta_boxes', [ $this, 'register_meta_box' ] );
 	}
 
 	/**
@@ -102,6 +102,40 @@ class PushNotifications extends \Bbgi\Module {
 			'dashicons-share',
 			5
 		);
+	}
+
+	/**
+	 * Register the notifications metabox.
+	 *
+	 * @return void
+	 */
+	public function register_meta_box( ) {
+		add_meta_box(
+			'bbgi-notifications-metabox',
+			esc_html__( 'Push Notifications', 'bbgi' ),
+			[ $this, 'render_metabox' ],
+			get_post_types(),
+			'side'
+		);
+	}
+
+	/**
+	 * Renders the notifications metabox
+	 *
+	 * @param \WP_Post $post The post object.
+	 *
+	 * @return void
+	 */
+	public function render_metabox( \WP_Post $post ) {
+		?>
+		<a class="button"
+		   style="width: 100%; text-align:center;height: 50px; line-height: 50px;"
+		   href="<?php echo esc_url( $this->get_send_notifications_url( $post->ID ) ); ?>"
+		   <?php if ( ! $this->can_send_notifications( $post->ID ) ) { echo 'disabled'; } ?>
+		   >
+			<?php echo esc_html__( 'Send Notification', 'bbgi' ); ?>
+		</a>
+		<?php
 	}
 
 	/**
