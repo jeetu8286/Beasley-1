@@ -9,6 +9,7 @@ namespace Bbgi\Integration;
 
 class PushNotifications extends \Bbgi\Module {
 
+	const MENU_SLUG = 'bbgi-send-notifications-menu';
 
 	/**
 	 * Register actions and hooks.
@@ -17,6 +18,9 @@ class PushNotifications extends \Bbgi\Module {
 	 */
 	public function register() {
 		$this->register_custom_cap();
+		add_filter( 'post_row_actions', [ $this, 'send_notification_link' ], 10, 2 );
+		add_action( 'admin_menu', [ $this, 'register_notification_menu' ] );
+		// register push notifiation link/button in the admin.
 	}
 
 	/**
@@ -34,5 +38,99 @@ class PushNotifications extends \Bbgi\Module {
 				$role_obj->add_cap( 'send_notifications', true );
 			}
 		}
+	}
+
+	/**
+	 * Builds the url to link to the notifications screen.
+	 *
+	 * @param int $post_id The id of the post to send a notification
+	 *
+	 * @return void
+	 */
+	public function get_send_notifications_url( $post_id ) {
+		return wp_nonce_url(
+			admin_url(
+				sprintf(
+					'admin.php?page=%s&post_id=%d',
+					self::MENU_SLUG,
+					$post_id
+					)
+			),
+			'send_notifications'
+		);
+	}
+
+	/**
+	 * Check if the current user can send notifications for a given post.
+	 *
+	 * @param int $post_id The post id.
+	 * @return boolean
+	 */
+	public function can_send_notifications( $post_id ) {
+		return current_user_can( 'edit_post', $post_id ) && current_user_can( 'send_notifications' );
+	}
+
+	/**
+	 * Sends notification link
+	 *
+	 * @return array
+	 */
+	public function send_notification_link( $actions, \WP_Post $post ) {
+		if ( $this->can_send_notifications( $post->ID ) ) {
+			$actions['send_notification'] = sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( $this->get_send_notifications_url( $post->ID ) ),
+				esc_html__( 'Send Notification', 'bbgi' )
+			);
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * Register the notifications menu
+	 *
+	 * @return void
+	 */
+	public function register_notification_menu() {
+		add_menu_page(
+			esc_html__( 'Notifications', 'bbgi' ),
+			esc_html__( 'Notifications', 'bbgi' ),
+			'send_notifications',
+			self::MENU_SLUG,
+			[ $this, 'render_notifications_page' ],
+			'dashicons-share',
+			5
+		);
+	}
+
+	/**
+	 * Renders the notification page.
+	 *
+	 * @return void
+	 */
+	public function render_notifications_page() {
+		$post_id = (int) filter_input( INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( $post_id > 0 ) {
+			if ( ! $this->can_send_notifications( $post_id ) ) {
+				wp_die( 'Not allowed' );
+			}
+			// additional security check if coming from a post.
+			check_admin_referer( 'send_notifications' );
+		} else {
+			if ( ! current_user_can( 'send_notifications' ) ) {
+				wp_die( 'Not allowed' );
+			}
+		}
+
+
+		?>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Notifications', 'bbgi' ); ?></h1>
+
+			<!-- iframe to come here -->
+		</div>
+		<?php
 	}
 }
