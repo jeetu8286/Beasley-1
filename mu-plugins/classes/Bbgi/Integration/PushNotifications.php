@@ -139,14 +139,70 @@ class PushNotifications extends \Bbgi\Module {
 	}
 
 	/**
+	 * Gets the Security Token Service params.
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array
+	 */
+	public function get_sts_params( $post_id = false ) {
+		$args = [
+			'callletters' => get_option( 'ee_publisher'),
+			'user'        => wp_get_current_user()->user_login,
+			'userip'      => $_SERVER['REMOTE_ADDR'],
+		];
+
+		if ( $post_id ) {
+			$post = get_post( $post_id );
+
+			if ( $post ) {
+				$args = array_merge(
+					$args,
+					[
+						'title'       => get_the_title( $post ),
+						'imageurl'    => '', // TODO
+						'description' => get_the_excerpt( $post ),
+						'link'        => get_permalink( $post ),
+					]
+				);
+			}
+
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Calls the STS service to get the iframe URL.
+	 *
+	 * @param array $params The security token service params.
+	 *
+	 * @return string|bool
+	 */
+	public function get_sts_url( $params ) {
+		$ee_host                 = get_site_option( 'ee_host' );
+		$ee_notification_app_key = get_site_option( 'ee_notification_key' );
+		$ee_endpoint             = trailingslashit( $ee_host ) . 'admin/notifications/gettoken';
+
+		$request = wp_remote_post(
+			$ee_endpoint,
+			[
+				'body' => $params
+			]
+		);
+
+		// process response
+	}
+
+	/**
 	 * Renders the notification page.
 	 *
 	 * @return void
 	 */
 	public function render_notifications_page() {
-		$post_id = (int) filter_input( INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+		$post_id = filter_input( INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 
-		if ( $post_id > 0 ) {
+		if ( $post_id ) {
 			if ( ! $this->can_send_notifications( $post_id ) ) {
 				wp_die( 'Not allowed' );
 			}
@@ -158,6 +214,7 @@ class PushNotifications extends \Bbgi\Module {
 			}
 		}
 
+		// $iframe_url = $this->get_sts_url( $this->get_sts_params( $post_id ) );
 
 		?>
 		<div class="wrap">
