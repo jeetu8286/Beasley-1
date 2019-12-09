@@ -54,7 +54,7 @@ class PushNotifications extends \Bbgi\Module {
 					'admin.php?page=%s&post_id=%d',
 					self::MENU_SLUG,
 					$post_id
-					)
+				)
 			),
 			'send_notifications'
 		);
