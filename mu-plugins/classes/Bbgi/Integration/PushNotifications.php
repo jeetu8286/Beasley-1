@@ -156,17 +156,17 @@ class PushNotifications extends \Bbgi\Module {
 			$post = get_post( $post_id );
 
 			if ( $post ) {
+				$image_url = wp_get_attachment_url( get_post_thumbnail_id( $post ) );
 				$args = array_merge(
 					$args,
 					[
 						'title'       => get_the_title( $post ),
-						'imageurl'    => '', // TODO
-						'description' => get_the_excerpt( $post ),
+						'imageurl'    => $image_url ? $image_url : '',
+						'description' => apply_filters( 'the_excerpt', get_the_excerpt( $post ) ),
 						'link'        => get_permalink( $post ),
 					]
 				);
 			}
-
 		}
 
 		return $args;
@@ -184,14 +184,27 @@ class PushNotifications extends \Bbgi\Module {
 		$ee_notification_app_key = get_site_option( 'ee_notification_key' );
 		$ee_endpoint             = trailingslashit( $ee_host ) . 'admin/notifications/gettoken';
 
-		$request = wp_remote_post(
-			$ee_endpoint,
+		$response = wp_remote_post(
+			$ee_endpoint . '?appkey=' . $ee_notification_app_key,
 			[
-				'body' => $params
+				'headers' => [
+					'Content-Type' => 'application/json'
+				],
+				'body' => wp_json_encode( $params ),
 			]
 		);
 
-		// process response
+		if ( is_wp_error( $response ) ) {
+			return false;
+		}
+
+		$body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		if ( ! $body['success'] || ! isset( $body['url'] ) ) {
+			return false;
+		}
+
+		return $body['url'];
 	}
 
 	/**
@@ -214,13 +227,18 @@ class PushNotifications extends \Bbgi\Module {
 			}
 		}
 
-		// $iframe_url = $this->get_sts_url( $this->get_sts_params( $post_id ) );
+		$iframe_url = $this->get_sts_url( $this->get_sts_params( $post_id ) );
 
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Notifications', 'bbgi' ); ?></h1>
 
-			<!-- iframe to come here -->
+			<?php if ( $iframe_url ) : ?>
+				<iframe src="<?php echo esc_url( $iframe_url ); ?>" style="width: 100%; height: 80vh;"></iframe>
+			<?php else: ?>
+				<p><?php esc_html_e( 'Unable to connect to the notification service.', 'bbgi' ); ?></p>
+			<?php endif; ?>
+
 		</div>
 		<?php
 	}
