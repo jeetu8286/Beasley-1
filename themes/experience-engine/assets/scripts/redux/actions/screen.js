@@ -4,6 +4,7 @@ import { getStateFromContent, parseHtml } from '../../library/html-parser';
 import { pageview } from '../../library/google-analytics';
 import slugify from '../../library/slugify';
 import { isIE11 } from '../../library/browser';
+import { trailingslashit } from '../../library/strings';
 /**
  * We use this approach to minify action names in the production bundle and have
  * human friendly actions in the dev bundle. Use "s{x}" format to create new actions.
@@ -119,6 +120,8 @@ export function loadPage( url, options = {} ) {
 			return response;
 		};
 
+		const fetchUrl = options.fetchUrlOverride || url;
+
 		/**
 		 * Given external redirects were not properly implemented within the hybrid theme approach. (see https://tenup.teamwork.com/#/tasks/18645110).
 		 * A little hack was implemented to get them working. We do a fetch request with 'redirect: "manual"' which
@@ -126,7 +129,7 @@ export function loadPage( url, options = {} ) {
 		 * (opaqueredirect, or to be more generic anything different than basic).
 		 * In that case we simply force a full page refresh to let the server properly handle redirects.
 		 */
-		fetch( options.fetchUrlOverride || url, options.fetchParams || {
+		fetch( trailingslashit( fetchUrl ), options.fetchParams || {
 			redirect: isIE11() ? 'follow' : 'manual', // IE11 does not support this work around.
 		} )
 			.then( maybeRedirect )
