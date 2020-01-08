@@ -199,6 +199,14 @@ export function initTdPlayer( modules ) {
 					'ad-playback-error',
 
 					() => {
+						/*
+						* the beforeStreamStart function may be injected onto the window
+						* object from google tag manager. This function provides a callback
+						* when it is completed. Currently we are using it to play a preroll
+						* from kubient when there is no preroll provided by triton. To ensure
+						* that we do not introduce unforeseen issues we return the original
+						* ACTION_AD_PLAYBACK_ERROR type.
+						* */
 						if ( window.beforeStreamStart ) {
 							window.beforeStreamStart( ( result ) => {
 								dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
