@@ -152,6 +152,7 @@ export function initTdPlayer( modules ) {
 				// If there is a tdplayer and player in state
 				// then continue this portion
 				if( tdplayer && player ) {
+					console.log( player );
 
 					if ( player.adPlayback ) {
 						tdplayer.skipAd();
@@ -192,11 +193,20 @@ export function initTdPlayer( modules ) {
 				player.addEventListener( 'ad-playback-start', dispatchPlaybackStart );
 				player.addEventListener(
 					'ad-playback-complete',
-					dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ),
+					dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE )
 				);
 				player.addEventListener(
 					'ad-playback-error',
-					dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR ),
+
+					() => {
+						if ( window.beforeStreamStart ) {
+							window.beforeStreamStart( ( result ) => {
+								dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
+							} );
+						} else {
+							dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
+						}
+					}
 				);
 
 				player.addEventListener( 'stream-start', dispatchStreamStart );
@@ -207,6 +217,9 @@ export function initTdPlayer( modules ) {
 		} );
 	};
 }
+
+
+
 
 export function playAudio( audio, cueTitle = '', artistName = '', trackType = 'live' ) {
 	return dispatch => {
