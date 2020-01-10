@@ -31,6 +31,8 @@ export const ACTION_NOW_PLAYING_LOADED =
 	'production' === process.env.NODE_ENV ? 'pc' : 'PLAYER_NOW_PLAYING_LOADED';
 export const ACTION_AD_PLAYBACK_START =
 	'production' === process.env.NODE_ENV ? 'pd' : 'PLAYER_AD_PLAYBACK_START';
+export const ACTION_AD_PLAYBACK_STOP =
+	'production' === process.env.NODE_ENV ? 'pz' : 'PLAYER_AD_PLAYBACK_STOP';
 export const ACTION_AD_PLAYBACK_COMPLETE =
 	'production' === process.env.NODE_ENV ? 'pe' : 'PLAYER_AD_PLAYBACK_COMPLETE';
 export const ACTION_AD_PLAYBACK_ERROR =
@@ -47,6 +49,7 @@ export const ACTION_AUDIO_START =
 	'production' === process.env.NODE_ENV ? 'pk' : 'PLAYER_AUDIO_START';
 export const ACTION_AUDIO_STOP =
 	'production' === process.env.NODE_ENV ? 'pl' : 'PLAYER_AUDIO_STOP';
+
 
 export const STATUSES = {
 	LIVE_BUFFERING: 'LIVE_BUFFERING',
@@ -140,38 +143,12 @@ export function initTdPlayer( modules ) {
 			dispatch( { type: ACTION_AD_PLAYBACK_START } );
 		}
 
-		function dispatchPlaybackStop( type ) {
-
+		function dispatchPlaybackStop( actionType ) {
 			return () => {
-				const { tdplayer } = window; // Global player
-				try {
-					const { player } = getState(); // player from state
+				// Clear existing timeout
+				clearTimeout( adPlaybackTimeout );
 
-					// Update DOM
-					document.body.classList.remove( 'locked' );
-
-					// If there is a tdplayer and player in state
-					// then continue this portion
-					if( tdplayer && player ) {
-						console.log( player );
-
-						if ( player.adPlayback ) {
-							tdplayer.skipAd();
-						}
-
-						if( player.station ) {
-							tdplayer.play( { station: player.station } );
-						}
-						// Clear existing timeout
-						clearTimeout( adPlaybackTimeout );
-
-						// Finalize dispatch
-						dispatch( { type } );
-					}
-				} catch( e ) {
-					console.log( 'unable to call get state', e );
-				}
-
+				dispatch( { type: ACTION_AD_PLAYBACK_STOP, payload: { actionType }  } );
 			};
 		}
 
@@ -213,10 +190,10 @@ export function initTdPlayer( modules ) {
 						* */
 						if ( window.beforeStreamStart ) {
 							window.beforeStreamStart( ( result ) => {
-								dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
+								dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )();
 							} );
 						} else {
-							dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
+							dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )();
 						}
 					},
 				);
