@@ -139,12 +139,62 @@ if ( ! function_exists( 'ee_dfp_slot' ) ) :
 		}
 
 		$targeting = apply_filters( 'dfp_single_targeting', $targeting, $slot );
-		$html = sprintf(
-			'<div class="dfp-slot" data-unit-id="%s" data-unit-name="%s" data-targeting="%s"></div>',
-			esc_attr( $unit_id ),
-			esc_attr( $slot ),
-			esc_attr( json_encode( $targeting ) )
-		);
+
+		// When not jacapps, render react ready attributes
+		if( ! ee_is_jacapps() ) {
+			$html = sprintf(
+				'<div class="dfp-slot" data-unit-id="%s" data-unit-name="%s" data-targeting="%s"></div>',
+				esc_attr( $unit_id ),
+				esc_attr( $slot ),
+				esc_attr( json_encode( $targeting ) )
+			);
+		}
+
+		// When is jacapps, render standard div and script for display
+		// We do this since the ad units are currently embedded in the react app
+		// So fallback for jacapps is to add the script inline for display adds
+		// along with an alternative DFP slot
+		if ( ee_is_jacapps() ) {
+
+			$uuid = $slot . '_' . wp_generate_uuid4();
+
+			$html = '<script>
+				window.googletag = window.googletag || { cmd: [] };
+
+				googletag.cmd.push( function() {
+
+					var jacappsAdSizes = [[320,100], [320,50]];
+
+					var jacappsMapping = googletag.sizeMapping()
+						.addSize( [0, 0], jacappsAdSizes ) //other
+						.build();
+
+					googletag.defineSlot("' . esc_attr( $unit_id ) . '", jacappsAdSizes, "' . esc_attr( $uuid ) . '")
+						.defineSizeMapping( jacappsMapping )
+						.addService( googletag.pubads() )';
+
+						forEach( $targeting as $value ) {
+							$html .= '.setTargeting("' . $value[ 0 ] . '", "' . $value[ 1 ] . '")';
+						}
+
+					$html .= ';
+
+					googletag.pubads().enableSingleRequest();
+					googletag.enableServices();
+				} );
+			</script>';
+
+			$html .= sprintf(
+				'<div class="dfp-slot" id="%s">
+					<script>
+						googletag.cmd.push( function() {
+							googletag.display("' . esc_attr( $uuid ) . '");
+						} );
+					</script>
+				</div>',
+				esc_attr( $uuid )
+			);
+		}
 
 		if ( $echo ) {
 			echo $html;
