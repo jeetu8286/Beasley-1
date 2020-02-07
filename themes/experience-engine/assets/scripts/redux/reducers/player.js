@@ -33,20 +33,35 @@ import {
 	ACTION_STREAM_STOP,
 	ACTION_AUDIO_START,
 	ACTION_AUDIO_STOP,
+	ACTION_AD_PLAYBACK_STOP,
 	STATUSES,
 } from '../actions/player';
 
 const localStorage = getStorage( 'liveplayer' );
 const { streams } = window.bbgiconfig || {};
 
-let tdplayer = null;
-let mp3player = null;
-let omnyplayer = null;
+// Destructure players from global
+// Set defaults if required
+let {
+	tdplayer,
+	mp3player,
+	omnyplayer,
+	liveStreamInterval = 0,
+	userInteraction = false,
+} = window;
 
-let liveStreamInterval = 0;
+// Destructure liveStreamInterval from global
+// default 0
 let inlineAudioInterval = 0;
 
-function parseVolume( value ) {
+/**
+ * @function parseVolume
+ * Returns a parsed number from 0 to 100
+ *
+ * @param {Number} value - default 50 //TODO See if OK to set default
+ * @returns {Number} volume
+ */
+export function parseVolume( value = 50 ) {
 	let volume = parseInt( value, 10 );
 	if ( Number.isNaN( volume ) || 100 < volume ) {
 		volume = 100;
@@ -57,13 +72,24 @@ function parseVolume( value ) {
 	return volume;
 }
 
-function loadNowPlaying( station ) {
-	if ( station && tdplayer && !omnyplayer && !mp3player ) {
-		tdplayer.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
+/**
+ * @function loadNowPlaying
+ * Used to load a configuration to the NowPlaying API
+ *
+ * @param {Object} player Player instance
+ * @param {String} station Station identifier
+ */
+export function loadNowPlaying( station, player ) {
+	if ( station && player && !omnyplayer && !mp3player ) {
+		player.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
 	}
 }
 
-function fullStop() {
+/**
+ * @function fullStop
+ * Stop all players (mp3Player, omnyplayer and tdplayer)
+ */
+export function fullStop() {
 	if ( mp3player ) {
 		mp3player.pause();
 		mp3player = null;
@@ -87,19 +113,41 @@ function fullStop() {
 	}
 }
 
+/**
+ * @function getInitialStation
+ * Returns a matching stream if local storage
+ * station value matches the stream.stream_call_letters
+ *
+ * @param {Array} streamsList Array of streams
+ * @returns First match || undefined
+ */
 function getInitialStation( streamsList ) {
 	const station = localStorage.getItem( 'station' );
 	return streamsList.find( stream => stream.stream_call_letters === station );
 }
 
-function lyticsTrack( action, params ) {
+/**
+ * @function lyticsTrack
+ * Used to interact with the LyticsTrackAudio window object
+ * which is provided by the GTM implementation.
+ *
+ * @param {String} action The action to take (ie. play, pause, end)
+ * @param {Object} params Set of parameters
+ */
+export function lyticsTrack( action, params ) {
+
+	// Check for googletag
 	if ( window.googletag && window.googletag.cmd ) {
+
+		// Push to the CMD queue
 		window.googletag.cmd.push( () => {
 
+			// Abandon if no LyticsTrackAudio global
 			if ( 'undefined' === typeof window.LyticsTrackAudio ) {
 				return;
 			}
 
+			// If action play
 			if ( 'play' === action && window.LyticsTrackAudio.set_podcastPayload ) {
 				window.LyticsTrackAudio.set_podcastPayload( {
 					type: 'podcast',
@@ -110,10 +158,12 @@ function lyticsTrack( action, params ) {
 				} );
 			}
 
+			// If action pause
 			if ( 'pause' === action && window.LyticsTrackAudio.pausePodcast ) {
 				window.LyticsTrackAudio.pausePodcast();
 			}
 
+			// If action end
 			if ( 'end' === action && window.LyticsTrackAudio.endOfPodcast ) {
 				window.LyticsTrackAudio.endOfPodcast();
 			}
@@ -137,7 +187,6 @@ const stateReset = {
 };
 
 let initialStation = getInitialStation( streams );
-let userInteraction = false;
 
 export const DEFAULT_STATE = {
 	...stateReset,
@@ -151,124 +200,101 @@ function reducer( state = {}, action = {} ) {
 	let interval;
 
 	switch ( action.type ) {
+
+		// Catches in Saga Middleware
+		// Returns unaffected state
 		case ACTION_INIT_TDPLAYER:
-			tdplayer = action.player;
-			tdplayer.setVolume( state.volume / 100 );
+			console.log( 'reducer: init tdplayer' );
+			return state;
 
-			loadNowPlaying( state.station );
-
-			window.tdplayer = tdplayer;
-			break;
-
+		// Catches in Saga Middleware
 		case ACTION_PLAY_AUDIO:
-			fullStop();
+			console.log( 'reducer: play audio' );
+			return {
+				...state,
+				...stateReset,
+				audio: action.audio,
+				trackType: action.trackType,
+			};
 
-			mp3player = action.player;
-			mp3player.volume = state.volume / 100;
-			mp3player.play();
+		// Catches in Saga Middleware
+		case ACTION_PLAY_STATION:
+			console.log( 'reducer: play station' );
+			return {
+				...state,
+				...stateReset,
+				station: action.station,
+			};
 
-			return { ...state, ...stateReset, audio: action.audio, trackType: action.trackType };
+		// Catches in Saga Middleware
+		// Returns unaffected state
+		case ACTION_AD_PLAYBACK_STOP:
+			console.log( 'reducer: playback stop' );
+			return state;
 
-		case ACTION_PLAY_STATION: {
-			const { station } = action;
-			const stream = state.streams.find(
-				item => item.stream_call_letters === station,
-			);
-
-			console.log( 'streaming info' );
-			console.log( stream.stream_cmod_domain );
-			console.log( stream.stream_tap_id );
-
-			fullStop();
-
-			console.log( 'make it rain' );
-
-			tdplayer.playAd( 'tap', {
-				host: stream.stream_cmod_domain,
-				type: 'preroll',
-				format: 'vast',
-				stationId: stream.stream_tap_id,
-			} );
-
-			localStorage.setItem( 'station', station );
-
-			return { ...state, ...stateReset, station };
-		}
-
+		// Catches in Saga Middleware
 		case ACTION_PLAY_OMNY:
-			fullStop();
+			console.log( 'reducer: play omny' );
+			return {
+				...state,
+				...stateReset,
+				audio: action.audio,
+				trackType: action.trackType,
+			};
 
-			omnyplayer = action.player;
-			omnyplayer.play();
-			// Omny doesn't support sound provider, thus we can't change/control volume :(
-			// omnyplayer.setVolume( state.volume );
-
-			return { ...state, ...stateReset, audio: action.audio, trackType: action.trackType };
-
+		// Catches in Saga Middleware
 		case ACTION_PAUSE:
-			if ( mp3player ) {
-				mp3player.pause();
-			} else if ( omnyplayer ) {
-				omnyplayer.pause();
-			} else if ( tdplayer ) {
-				tdplayer.stop();
-			}
+			console.log( 'reducer: pause' );
+			return {
+				...state,
+				...adReset,
+			};
 
-			if ( 'podcast' === state.trackType ) {
-				lyticsTrack( 'pause', state.cuePoint );
-			}
-
-			return { ...state, ...adReset };
-
+		// Catches in Saga Middleware
+		// TODO: Where is this called from
 		case ACTION_RESUME:
-			if ( mp3player ) {
-				mp3player.play();
-			} else if ( omnyplayer ) {
-				omnyplayer.play();
-			} else if ( tdplayer ) {
-				tdplayer.resume();
-			}
+			console.log( 'reducer: resume' );
+			return {
+				...state,
+				...adReset,
+			};
 
-			if ( 'podcast' === state.trackType ){
-				lyticsTrack( 'play', state.cuePoint );
-			}
-
-			return { ...state, ...adReset };
-
+		// NOTE: Nothing mod'd here
+		// adding console for logging purposes
 		case ACTION_STATUS_CHANGE:
-			return { ...state, status: action.status };
+			console.log( 'reducer: status change' );
+			return {
+				...state,
+				status: action.status,
+			};
 
+		// Catches in Saga Middleware
 		case ACTION_SET_VOLUME: {
+			console.log( 'reducer: set volume' );
 			const volume = parseVolume( action.volume );
-			localStorage.setItem( 'volume', volume );
-
-			const value = volume / 100;
-			if ( mp3player ) {
-				mp3player.volume = value;
-			} else if ( omnyplayer ) {
-				// omnyplayer.setVolume( volume );
-			} else if ( tdplayer ) {
-				tdplayer.setVolume( value );
-			}
-
-			return { ...state, volume };
+			return {
+				...state,
+				volume,
+			};
 		}
 
+		// Catches in Saga Middleware
 		case ACTION_CUEPOINT_CHANGE:
-			loadNowPlaying( state.station );
+			console.log( 'reducer: cuepoint change' );
+			return {
+				...state,
+				...adReset,
+				cuePoint: action.cuePoint,
+			};
 
-			//todo remove me
-			console.log( 'cue point', action.cuePoint );
-
-			if ( 'podcast' === state.trackType ) {
-				userInteraction = false;
-				lyticsTrack( 'play', action.cuePoint );
-			}
-
-			return { ...state, ...adReset, cuePoint: action.cuePoint };
-
+		// NOTE: Nothing mod'd here
+		// adding console for logging purposes
 		case ACTION_DURATION_CHANGE:
-			return { ...state, duration: +action.duration };
+			console.log( 'reducer: duration change' );
+			return {
+				...state,
+				duration: +action.duration,
+			};
 
 		case ACTION_TIME_CHANGE: {
 			const override = { time: +action.time };
@@ -279,22 +305,28 @@ function reducer( state = {}, action = {} ) {
 			return { ...state, ...override };
 		}
 
+		//TODO: not pure / no state returned properly?
 		case ACTION_SEEK_POSITION: {
 			const { position } = action;
 			userInteraction = true;
 			if ( mp3player ) {
 				mp3player.currentTime = position;
+
+				// TODO: Return spread
 				return Object.assign( {}, state, { time: +position } );
 			} else if ( omnyplayer ) {
 				omnyplayer.setCurrentTime( position );
+
+				// TODO: Return spread
 				return Object.assign( {}, state, { time: +position } );
 			}
-			break;
+			return state;
 		}
 
 		case ACTION_NOW_PLAYING_LOADED:
 			return { ...state, songs: action.list };
 
+		//TODO: not pure / no state returned?
 		case ACTION_STREAM_START:
 			interval = window.bbgiconfig.intervals.live_streaming;
 
@@ -305,12 +337,14 @@ function reducer( state = {}, action = {} ) {
 					sendLiveStreamPlaying();
 				}, interval * 60 * 1000 );
 			}
-			break;
 
+			return state;
+
+		//Catches in Saga Middleware
 		case ACTION_STREAM_STOP:
-			clearInterval( liveStreamInterval );
-			break;
+			return state;
 
+		//TODO: not pure / no state returned
 		case ACTION_AUDIO_START:
 			interval = window.bbgiconfig.intervals.inline_audio;
 
@@ -321,21 +355,24 @@ function reducer( state = {}, action = {} ) {
 					sendInlineAudioPlaying();
 				}, interval * 60 * 1000 );
 			}
-			break;
+			return state;
 
+		//TODO: not pure / no state returned
 		case ACTION_AUDIO_STOP:
 			clearInterval( inlineAudioInterval );
 			if ( 'podcast' === state.trackType && 1 >= Math.abs( state.duration - state.time ) && !userInteraction ) {
 				lyticsTrack( 'end', state.cuePoint );
 			}
-			break;
+			return state;
 
+		//TODO: not pure
 		case ACTION_AD_PLAYBACK_START:
 			if ( !isAudioAdOnly() ) {
 				document.body.classList.add( 'locked' );
 			}
 			return { ...state, adPlayback: true };
 
+		//TODO: not pure / should both catch the same?
 		case ACTION_AD_PLAYBACK_ERROR:
 		case ACTION_AD_PLAYBACK_COMPLETE: {
 			const { station } = state;
@@ -351,6 +388,7 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_AD_BREAK_SYNCED_HIDE:
 			return { ...state, ...adReset };
 
+		//TODO: should both catch the same?
 		case ACTION_UPDATE_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS: {
 			const newstreams = ( action.feeds || [] )
@@ -382,11 +420,9 @@ function reducer( state = {}, action = {} ) {
 			};
 
 		default:
-			// do nothing
-			break;
+			return state;
 	}
 
-	return state;
 }
 
 export default reducer;

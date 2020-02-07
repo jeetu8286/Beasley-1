@@ -1,54 +1,28 @@
 /* eslint-disable sort-keys */
-/**
- * We use this approach to minify action names in the production bundle and have
- * human friendly actions in the dev bundle. Use "p{x}" format to create new actions.
- */
-export const ACTION_INIT_TDPLAYER =
-	'production' === process.env.NODE_ENV ? 'p0' : 'PLAYER_INIT_TDPLAYER';
-export const ACTION_STATUS_CHANGE =
-	'production' === process.env.NODE_ENV ? 'p1' : 'PLAYER_STATUS_CHANGE';
-export const ACTION_CUEPOINT_CHANGE =
-	'production' === process.env.NODE_ENV ? 'p2' : 'PLAYER_CUEPOINT_CHANGE';
-export const ACTION_SET_VOLUME =
-	'production' === process.env.NODE_ENV ? 'p3' : 'PLAYER_SET_VOLUME';
-export const ACTION_PLAY_AUDIO =
-	'production' === process.env.NODE_ENV ? 'p4' : 'PLAYER_PLAY_AUDIO';
-export const ACTION_PLAY_STATION =
-	'production' === process.env.NODE_ENV ? 'p5' : 'PLAYER_PLAY_STATION';
-export const ACTION_PLAY_OMNY =
-	'production' === process.env.NODE_ENV ? 'p6' : 'PLAYER_PLAY_OMNY';
-export const ACTION_PAUSE =
-	'production' === process.env.NODE_ENV ? 'p7' : 'PLAYER_PAUSE';
-export const ACTION_RESUME =
-	'production' === process.env.NODE_ENV ? 'p8' : 'PLAYER_RESUME';
-export const ACTION_DURATION_CHANGE =
-	'production' === process.env.NODE_ENV ? 'p9' : 'PLAYER_DURATION_CHANGE';
-export const ACTION_TIME_CHANGE =
-	'production' === process.env.NODE_ENV ? 'pa' : 'PLAYER_TIME_CHANGE';
-export const ACTION_SEEK_POSITION =
-	'production' === process.env.NODE_ENV ? 'pb' : 'PLAYER_SEEK_POSITION';
-export const ACTION_NOW_PLAYING_LOADED =
-	'production' === process.env.NODE_ENV ? 'pc' : 'PLAYER_NOW_PLAYING_LOADED';
-export const ACTION_AD_PLAYBACK_START =
-	'production' === process.env.NODE_ENV ? 'pd' : 'PLAYER_AD_PLAYBACK_START';
-export const ACTION_AD_PLAYBACK_STOP =
-	'production' === process.env.NODE_ENV ? 'pz' : 'PLAYER_AD_PLAYBACK_STOP';
-export const ACTION_AD_PLAYBACK_COMPLETE =
-	'production' === process.env.NODE_ENV ? 'pe' : 'PLAYER_AD_PLAYBACK_COMPLETE';
-export const ACTION_AD_PLAYBACK_ERROR =
-	'production' === process.env.NODE_ENV ? 'pf' : 'PLAYER_AD_PLAYBACK_ERROR';
-export const ACTION_AD_BREAK_SYNCED =
-	'production' === process.env.NODE_ENV ? 'pg' : 'PLAYER_AD_BREAK_SYNCED';
-export const ACTION_AD_BREAK_SYNCED_HIDE =
-	'production' === process.env.NODE_ENV ? 'ph' : 'PLAYER_AD_BREAK_SYNCED_HIDE';
-export const ACTION_STREAM_START =
-	'production' === process.env.NODE_ENV ? 'pi' : 'PLAYER_STREAM_START';
-export const ACTION_STREAM_STOP =
-	'production' === process.env.NODE_ENV ? 'pj' : 'PLAYER_STREAM_STOP';
-export const ACTION_AUDIO_START =
-	'production' === process.env.NODE_ENV ? 'pk' : 'PLAYER_AUDIO_START';
-export const ACTION_AUDIO_STOP =
-	'production' === process.env.NODE_ENV ? 'pl' : 'PLAYER_AUDIO_STOP';
+
+export const ACTION_INIT_TDPLAYER = 'PLAYER_INIT_TDPLAYER';
+export const ACTION_STATUS_CHANGE = 'PLAYER_STATUS_CHANGE';
+export const ACTION_CUEPOINT_CHANGE = 'PLAYER_CUEPOINT_CHANGE';
+export const ACTION_SET_VOLUME = 'PLAYER_SET_VOLUME';
+export const ACTION_PLAY_AUDIO = 'PLAYER_PLAY_AUDIO';
+export const ACTION_PLAY_STATION = 'PLAYER_PLAY_STATION';
+export const ACTION_PLAY_OMNY = 'PLAYER_PLAY_OMNY';
+export const ACTION_PAUSE = 'PLAYER_PAUSE';
+export const ACTION_RESUME = 'PLAYER_RESUME';
+export const ACTION_DURATION_CHANGE = 'PLAYER_DURATION_CHANGE';
+export const ACTION_TIME_CHANGE = 'PLAYER_TIME_CHANGE';
+export const ACTION_SEEK_POSITION = 'PLAYER_SEEK_POSITION';
+export const ACTION_NOW_PLAYING_LOADED = 'PLAYER_NOW_PLAYING_LOADED';
+export const ACTION_AD_PLAYBACK_START = 'PLAYER_AD_PLAYBACK_START';
+export const ACTION_AD_PLAYBACK_STOP = 'PLAYER_AD_PLAYBACK_STOP';
+export const ACTION_AD_PLAYBACK_COMPLETE = 'PLAYER_AD_PLAYBACK_COMPLETE';
+export const ACTION_AD_PLAYBACK_ERROR = 'PLAYER_AD_PLAYBACK_ERROR';
+export const ACTION_AD_BREAK_SYNCED = 'PLAYER_AD_BREAK_SYNCED';
+export const ACTION_AD_BREAK_SYNCED_HIDE = 'PLAYER_AD_BREAK_SYNCED_HIDE';
+export const ACTION_STREAM_START = 'PLAYER_STREAM_START';
+export const ACTION_STREAM_STOP = 'PLAYER_STREAM_STOP';
+export const ACTION_AUDIO_START = 'PLAYER_AUDIO_START';
+export const ACTION_AUDIO_STOP = 'PLAYER_AUDIO_STOP';
 
 
 export const STATUSES = {

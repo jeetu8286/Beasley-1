@@ -1,50 +1,31 @@
-import { all, put, takeLatest, select } from 'redux-saga/effects';
-import { ACTION_AD_PLAYBACK_STOP } from './actions/player';
+// Sagas Controller
 
-/**
- * Runs whenever ACTION_AD_PLAYBACK_STOP is dispatches
- */
-function* yieldPlaybackStop( action ) {
-	const player = yield select( store => store.player );
-	const { actionType } = action.payload;
-	console.log( 'saga playback stop', player, actionType );
-	const { tdplayer } = window; // Global player
-
-	// Update DOM
-	document.body.classList.remove( 'locked' );
-
-	// If there is a tdplayer and player in state
-	// then continue this portion
-	if( tdplayer && player ) {
-		console.log( player );
-
-		if ( player.adPlayback ) {
-			tdplayer.skipAd();
-		}
-
-		if( player.station ) {
-			tdplayer.play( { station: player.station } );
-		}
-
-		// finalize dispatch
-		yield put( {type: actionType} );
-	}
-}
-
-/**
- * Watches for playback stop.
- */
-function* watchPlaybackStop() {
-	yield takeLatest( [ACTION_AD_PLAYBACK_STOP], yieldPlaybackStop );
-}
+import { all } from 'redux-saga/effects';
+import {
+	watchPlaybackStop,
+	watchInitTdPlayer,
+	watchPlayAudio,
+	watchPlayStation,
+	watchPlayOmny,
+	watchPause,
+	watchResume,
+	watchSetVolume,
+	watchCuePointChange,
+} from './sagas/';
 
 /**
  * Root saga that watches for side effects.
  */
-function* rootSaga() {
+export default function* rootSaga() {
 	yield all( [
 		watchPlaybackStop(),
+		watchInitTdPlayer(),
+		watchPlayAudio(),
+		watchPlayStation(),
+		watchPlayOmny(),
+		watchPause(),
+		watchResume(),
+		watchSetVolume(),
+		watchCuePointChange(),
 	] );
 }
-
-export default rootSaga;
