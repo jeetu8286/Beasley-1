@@ -1,15 +1,14 @@
 /* eslint-disable sort-keys */
 import { getStorage } from '../../library/local-storage';
-import {
-	sendLiveStreamPlaying,
-	sendInlineAudioPlaying,
-} from '../../library/google-analytics';
-import { isAudioAdOnly } from '../../library/strings';
+
+// Auth action imports
 import {
 	ACTION_SET_USER_FEEDS,
 	ACTION_UPDATE_USER_FEEDS,
 	ACTION_RESET_USER,
 } from '../actions/auth';
+
+// Player action imports
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_STATUS_CHANGE,
@@ -41,18 +40,11 @@ const localStorage = getStorage( 'liveplayer' );
 const { streams } = window.bbgiconfig || {};
 
 // Destructure players from global
-// Set defaults if required
 let {
 	tdplayer,
 	mp3player,
 	omnyplayer,
-	liveStreamInterval = 0,
-	userInteraction = false,
 } = window;
-
-// Destructure liveStreamInterval from global
-// default 0
-let inlineAudioInterval = 0;
 
 /**
  * @function parseVolume
@@ -119,11 +111,22 @@ export function fullStop() {
  * station value matches the stream.stream_call_letters
  *
  * @param {Array} streamsList Array of streams
- * @returns First match || undefined
+ * @returns {String|Undefined} First match || undefined
  */
 function getInitialStation( streamsList ) {
 	const station = localStorage.getItem( 'station' );
 	return streamsList.find( stream => stream.stream_call_letters === station );
+}
+
+/**
+ * @function getNewsStreamsFromFeeds
+ * Helper method to return News Streams
+ *
+ * @param {Array} feeds An array of feeds
+ * @returns {Array} An array of items that match stream type
+ */
+function getNewsStreamsFromFeeds( feeds = [] ) {
+	return feeds.filter( item => 'stream' === item.type && 0 < ( item.content || [] ).length ).map( item => item.content[0] );
 }
 
 /**
@@ -197,7 +200,6 @@ export const DEFAULT_STATE = {
 };
 
 function reducer( state = {}, action = {} ) {
-	let interval;
 
 	switch ( action.type ) {
 
@@ -293,122 +295,142 @@ function reducer( state = {}, action = {} ) {
 			console.log( 'reducer: duration change' );
 			return {
 				...state,
-				duration: +action.duration,
+				duration: +action.duration, // +converts to number unary plus
 			};
 
+		// Cleaned up checks
+		// adding console for logging purposes
 		case ACTION_TIME_CHANGE: {
-			const override = { time: +action.time };
-			if ( action.duration ) {
+			console.log( 'reducer: time change' );
+			// Initialize override
+			let override = null;
+
+			// If time
+			if( action.time ) {
+				// +converts to number unary plus
+				override.time = +action.time;
+			}
+
+			// If duration
+			if( action.duration ) {
+				// +converts to number unary plus
 				override.duration = +action.duration;
 			}
 
-			return { ...state, ...override };
-		}
-
-		//TODO: not pure / no state returned properly?
-		case ACTION_SEEK_POSITION: {
-			const { position } = action;
-			userInteraction = true;
-			if ( mp3player ) {
-				mp3player.currentTime = position;
-
-				// TODO: Return spread
-				return Object.assign( {}, state, { time: +position } );
-			} else if ( omnyplayer ) {
-				omnyplayer.setCurrentTime( position );
-
-				// TODO: Return spread
-				return Object.assign( {}, state, { time: +position } );
+			// If override is defined
+			if( override ) {
+				return {
+					...state,
+					...override,
+				};
 			}
+
+			// Otherwise, return default state
 			return state;
 		}
 
-		case ACTION_NOW_PLAYING_LOADED:
-			return { ...state, songs: action.list };
+		// Catches in Saga Middleware
+		case ACTION_SEEK_POSITION:
+			console.log( 'reducer: seek position' );
 
-		//TODO: not pure / no state returned?
-		case ACTION_STREAM_START:
-			interval = window.bbgiconfig.intervals.live_streaming;
-
-			if ( 0 < interval ) {
-				clearInterval( liveStreamInterval );
-
-				liveStreamInterval = setInterval( function() {
-					sendLiveStreamPlaying();
-				}, interval * 60 * 1000 );
+			// If mp3player or omnyplayer defined
+			if ( mp3player || omnyplayer ) {
+				return {
+					...state,
+					time: +action.position,
+				};
 			}
+			return state;
 
+		case ACTION_NOW_PLAYING_LOADED:
+			console.log( 'reducer: now playing loaded' );
+			return {
+				...state,
+				songs: action.list,
+			};
+
+		//Catches in Saga Middleware
+		case ACTION_STREAM_START:
+			console.log( 'reducer: stream start' );
 			return state;
 
 		//Catches in Saga Middleware
 		case ACTION_STREAM_STOP:
+			console.log( 'reducer: stream stop' );
 			return state;
 
-		//TODO: not pure / no state returned
+		//Catches in Saga Middleware
 		case ACTION_AUDIO_START:
-			interval = window.bbgiconfig.intervals.inline_audio;
-
-			if ( 0 < interval ) {
-				clearInterval( inlineAudioInterval );
-
-				inlineAudioInterval = setInterval( function() {
-					sendInlineAudioPlaying();
-				}, interval * 60 * 1000 );
-			}
+			console.log( 'reducer: audio start' );
 			return state;
 
-		//TODO: not pure / no state returned
+		//Catches in Saga Middleware
 		case ACTION_AUDIO_STOP:
-			clearInterval( inlineAudioInterval );
-			if ( 'podcast' === state.trackType && 1 >= Math.abs( state.duration - state.time ) && !userInteraction ) {
-				lyticsTrack( 'end', state.cuePoint );
-			}
+			console.log( 'reducer: audio stop' );
 			return state;
 
-		//TODO: not pure
+		//Catches in Saga Middleware
 		case ACTION_AD_PLAYBACK_START:
-			if ( !isAudioAdOnly() ) {
-				document.body.classList.add( 'locked' );
-			}
-			return { ...state, adPlayback: true };
+			console.log( 'reducer: ad playback start' );
+			return {
+				...state,
+				adPlayback: true,
+			};
 
-		//TODO: not pure / should both catch the same?
+		//Catches in Saga Middleware
 		case ACTION_AD_PLAYBACK_ERROR:
 		case ACTION_AD_PLAYBACK_COMPLETE: {
-			const { station } = state;
-
-			loadNowPlaying( station );
-
-			return { ...state, adPlayback: false };
+			console.log( 'reducer: ad playback complete (or ad playback error)' );
+			return {
+				...state,
+				adPlayback: false,
+			};
 		}
 
 		case ACTION_AD_BREAK_SYNCED:
-			return { ...state, ...adReset, adSynced: true };
+			console.log( 'reducer: ad break synced' );
+			return {
+				...state,
+				...adReset,
+				adSynced: true,
+			};
 
 		case ACTION_AD_BREAK_SYNCED_HIDE:
-			return { ...state, ...adReset };
+			console.log( 'reducer: ad break synced hide' );
+			return {
+				...state,
+				...adReset,
+			};
 
 		//TODO: should both catch the same?
 		case ACTION_UPDATE_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS: {
-			const newstreams = ( action.feeds || [] )
-				.filter(
-					item => 'stream' === item.type && 0 < ( item.content || [] ).length,
-				)
-				.map( item => item.content[0] );
 
+			// Set newstreams from action.feeds
+			const newstreams = getNewsStreamsFromFeeds( action.feeds );
+
+			// Create new state object
 			const newstate = {
 				...state,
 				streams: newstreams.length ? newstreams : DEFAULT_STATE.streams,
 			};
 
+			// If no initialStation, define one
 			if ( !initialStation ) {
+
+				// Set initialStation
 				initialStation = getInitialStation( newstate.streams );
-				if ( initialStation ) {
+
+				// If one returned and has stream_call_letters
+				if (
+					initialStation &&
+					initialStation.stream_call_letters
+				) {
+
+					// Update newState object
 					newstate.station = initialStation.stream_call_letters;
 				}
 			}
-
 			return newstate;
 		}
 
@@ -422,7 +444,6 @@ function reducer( state = {}, action = {} ) {
 		default:
 			return state;
 	}
-
 }
 
 export default reducer;

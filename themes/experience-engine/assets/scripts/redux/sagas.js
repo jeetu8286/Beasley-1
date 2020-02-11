@@ -11,6 +11,13 @@ import {
 	watchResume,
 	watchSetVolume,
 	watchCuePointChange,
+	watchSeekPosition,
+	watchStreamStart,
+	watchStreamStop,
+	watchAudioStart,
+	watchAudioStop,
+	watchAdPlaybackStart,
+	watchAdPlaybackComplete,
 } from './sagas/';
 
 /**
@@ -27,5 +34,12 @@ export default function* rootSaga() {
 		watchResume(),
 		watchSetVolume(),
 		watchCuePointChange(),
+		watchSeekPosition(),
+		watchStreamStart(),
+		watchStreamStop(),
+		watchAudioStart(),
+		watchAudioStop(),
+		watchAdPlaybackStart(),
+		watchAdPlaybackComplete(),
 	] );
 }

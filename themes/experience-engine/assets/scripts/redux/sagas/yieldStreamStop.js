@@ -12,17 +12,15 @@ function* yieldStreamStop() {
 	console.log( 'yieldStreamStop' );
 
 	// Destructure from window
-	const { liveStreamInterval } = window;
+	const { liveStreamInterval = null } = window;
 
 	// If global is set, run window clearInterval method
 	if(
-		liveStreamInterval &&
-		'function' === typeof window.clearInterval
+		liveStreamInterval
 	) {
 		yield call( [ window, 'clearInterval' ], liveStreamInterval );
 	}
 }
-
 
 /**
  * @function watchStreamStop

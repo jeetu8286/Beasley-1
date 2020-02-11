@@ -39,13 +39,13 @@ function* yieldCuePointChange( { cuePoint } ) {
 	if (
 		cuePoint &&
 		'podcast' === trackType &&
-		'function' === typeof lyticsTrack.play
+		'function' === typeof lyticsTrack
 	) {
 		// TODO: Look at storing UI state in Redux Store
 		window.userInteraction = false;
 
 		// Call lyticsTrack
-		yield call( [ lyticsTrack, 'play' ], cuePoint );
+		yield call( lyticsTrack, 'play', cuePoint );
 	}
 }
 

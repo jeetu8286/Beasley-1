@@ -35,10 +35,14 @@ function* yieldPlayAudio( { player } ) {
 		window.mp3player = player;
 
 		// Set volume prop
-		yield call( [ player, 'setVolume' ], ( volume / 100 ) );
+		if( 'function' === typeof player.setVolume ) {
+			yield call( [ player, 'setVolume' ], ( volume / 100 ) );
+		}
 
 		// Play
-		yield call( [ player, 'play' ] );
+		if( 'function' === typeof player.play ) {
+			yield call( [ player, 'play' ] );
+		}
 	}
 }
 

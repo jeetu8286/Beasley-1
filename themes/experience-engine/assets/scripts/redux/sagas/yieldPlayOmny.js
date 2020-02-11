@@ -20,7 +20,7 @@ function* yieldPlayOmny( { player } ) {
 	// Call fullStop
 	yield call( fullStop );
 
-	// TODO: Do we need this window reference // Set global
+	// Set global onmyplayer // TODO: Do we need this window reference
 	window.omnyplayer = player;
 
 	// Trigger play

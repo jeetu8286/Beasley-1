@@ -52,7 +52,8 @@ function* yieldPause() {
 
 	if (
 		cuePoint &&
-		'podcast' === trackType
+		'podcast' === trackType &&
+		'function' === typeof lyticsTrack
 	) {
 		yield call( lyticsTrack, 'pause', cuePoint );
 	}

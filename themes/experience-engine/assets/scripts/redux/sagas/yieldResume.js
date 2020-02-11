@@ -52,7 +52,8 @@ function* yieldResume() {
 
 	if (
 		cuePoint &&
-		'podcast' === trackType
+		'podcast' === trackType &&
+		'function' === typeof lyticsTrack
 	) {
 		yield call( lyticsTrack, 'play', cuePoint );
 	}
