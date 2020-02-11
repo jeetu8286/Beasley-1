@@ -324,30 +324,30 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_TIME_CHANGE: {
 			console.log( 'reducer: time change' );
 			// Initialize override
-			let override = null;
+			let override = {};
+
+			// Destructure from action
+			const {
+				time,
+				duration,
+			} = action;
 
 			// If time
 			if( action.time ) {
 				// +converts to number unary plus
-				override.time = +action.time;
+				override.time = +time;
 			}
 
 			// If duration
 			if( action.duration ) {
 				// +converts to number unary plus
-				override.duration = +action.duration;
+				override.duration = +duration;
 			}
 
-			// If override is defined
-			if( override ) {
-				return {
-					...state,
-					...override,
-				};
-			}
-
-			// Otherwise, return default state
-			return state;
+			return {
+				...state,
+				...override,
+			};
 		}
 
 		// Catches in Saga Middleware
