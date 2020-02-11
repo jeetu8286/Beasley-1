@@ -1,4 +1,5 @@
 import NProgress from 'nprogress';
+import cssVars from 'css-vars-ponyfill';
 
 import { loadAssets, unloadScripts } from '../../library/dom';
 import {
@@ -60,8 +61,10 @@ function hideSplashScreen() {
 			splashScreen.parentNode.removeChild( splashScreen );
 		}
 
-		if ( 'function' === typeof window['cssVars'] ) {
-			window['cssVars']( window.bbgiconfig.cssvars );
+		if ( window.bbgiconfig && window.bbgiconfig.cssvars ) {
+			// used to enable css vars support for IE9-11.
+			// TODO: Unsure why this is here, need to move it to place that makes more sense.
+			cssVars( window.bbgiconfig.cssvars );
 		}
 	}, 2000 );
 }

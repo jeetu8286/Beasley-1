@@ -33,20 +33,9 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_script_add_data( 'google-webfont', 'async', true );
 		wp_script_add_data( 'google-webfont', 'noscript', '<link href="//fonts.googleapis.com/css?family=Libre+Franklin:300,400,500,600,700%7COpen+Sans:600" rel="stylesheet">' );
 
-		/**
-		 * CSS vars polyfill
-		 */
-		wp_enqueue_script( 'css-vars-ponyfill', 'https://unpkg.com/css-vars-ponyfill@1.16.1/dist/css-vars-ponyfill.min.js', null, null, false );
-		wp_script_add_data( 'css-vars-ponyfill', 'async', true );
-
-		/**
-		 * External libraries
-		 */
+		// used to play omnyAudio programatically
 		wp_register_script( 'embedly-player.js', "//cdn.embed.ly/player-0.1.0{$min}.js", null, null, true );
 		wp_script_add_data( 'embedly-player.js', 'async', true );
-
-		wp_register_script( 'embedly-plataform.js', "//cdn.embedly.com/widgets/platform.js", null, null, true );
-		wp_script_add_data( 'embedly-plataform.js', 'async', true );
 
 		// This is being used in Content Shortcodes https://gitlab.10up.com/beasley/beasley/blob/master/mu-plugins/classes/Bbgi/Shortcodes.php
 		wp_register_script( 'iframe-resizer', '//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.min.js', null, null );
@@ -55,6 +44,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'td-sdk', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
 		wp_script_add_data( 'td-sdk', 'async', true );
 
+		// Google Tag Manager;
 		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, true ); // must be loaded in the footer
 		wp_script_add_data( 'googletag', 'async', true );
 
@@ -79,9 +69,7 @@ EOL;
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", $deps, GREATERMEDIA_VERSION, true );
 		wp_add_inline_script( 'ee-app', $bbgiconfig, 'before' );
 
-		/**
-		 * Deregister useless scripts
-		 */
+		// Deregister useless scripts
 		wp_dequeue_script( 'elasticpress-facets' );
 		wp_dequeue_style( 'elasticpress-facets' );
 	}
