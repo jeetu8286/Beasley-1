@@ -73,16 +73,12 @@ function coreConfig( options = {} ) {
 	};
 
 	return {
+		entry: [ './assets/scripts/index.js' ],
 		output: {
 			path: path.resolve( __dirname, 'bundle' ),
-			filename: '[name].js',
+			filename: 'app.js',
 			chunkFilename: '[name].js',
 			publicPath: '/wp-content/themes/experience-engine/bundle/',
-		},
-		externals: {
-			firebase: 'firebase',
-			react: 'React',
-			'react-dom': 'ReactDOM',
 		},
 		module: {
 			rules: [eslintRule, babelRule, cssRule],

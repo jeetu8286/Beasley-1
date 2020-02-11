@@ -22,7 +22,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		$base = untrailingslashit( get_template_directory_uri() );
 		$min = $is_script_debug ? '' : '.min';
 
-		wp_enqueue_style( 'ee-app', "{$base}/bundle/app.css", null, GREATERMEDIA_VERSION );
+		wp_enqueue_style( 'ee-app', "{$base}/bundle/main.css", null, GREATERMEDIA_VERSION );
 
 		/**
 		 * Google WebFont scripts
@@ -58,18 +58,12 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, true ); // must be loaded in the footer
 		wp_script_add_data( 'googletag', 'async', true );
 
-		wp_register_script( 'firebase-app', '//www.gstatic.com/firebasejs/6.0.2/firebase-app.js', null, null, true );
-		wp_register_script( 'firebase-auth', '//www.gstatic.com/firebasejs/6.0.2/firebase-auth.js', array( 'firebase-app' ), null, true );
+		// wp_register_script( 'firebase-app', '//www.gstatic.com/firebasejs/6.0.2/firebase-app.js', null, null, true );
+		// wp_register_script( 'firebase-auth', '//www.gstatic.com/firebasejs/6.0.2/firebase-auth.js', array( 'firebase-app' ), null, true );
 
 		wp_register_script( 'intersection-observer', '//polyfill.io/v2/polyfill.min.js?features=IntersectionObserver', null, null, true );
 
 		$react_mode = $is_script_debug ? 'development' : 'production.min';
-
-		wp_register_script( 'react', "//cdnjs.cloudflare.com/ajax/libs/react/16.10.2/umd/react.production.min.js", null, null, true );
-		wp_script_add_data( 'react', 'crossorigin', true );
-
-		wp_register_script( 'react-dom', "//cdnjs.cloudflare.com/ajax/libs/react-dom/16.10.2/umd/react-dom.production.min.js", null, null, true );
-		wp_script_add_data( 'react-dom', 'crossorigin', true );
 
 		/**
 		 * Application script
@@ -84,10 +78,6 @@ try {
 EOL;
 
 		$deps = array(
-			'react',
-			'react-dom',
-			'firebase-app',
-			'firebase-auth',
 			'googletag',
 			'embedly-player.js',
 			'td-sdk',

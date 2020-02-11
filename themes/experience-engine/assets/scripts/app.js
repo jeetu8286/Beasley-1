@@ -1,13 +1,4 @@
-import '../styles/main.css';
-
-import es6promise from 'es6-promise';
-import 'isomorphic-unfetch';
-
-import React, { PureComponent, Fragment } from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-
-import createStore from './redux/store';
+import React, { useEffect, Fragment } from 'react';
 
 import IntersectionObserverContext, {
 	Observable,
@@ -23,65 +14,35 @@ import BackToTop from './components/BackToTop';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import { isSafari, isWindowsBrowser } from './library/browser';
-import './library/geotargetly';
-import './polyfills/closest';
 
-es6promise.polyfill();
+const observer = new Observable();
 
-
-class Application extends PureComponent {
-	constructor( props ) {
-		super( props );
-		this.observer = new Observable();
-	}
-
-	componentDidMount() {
+const App = () => {
+	useEffect( () => {
 		if ( isSafari() ) {
 			document.body.classList.add( 'is-safari' );
 		} else if ( isWindowsBrowser() ) {
 			document.body.classList.add( 'is-windows' );
 		}
-	}
+	}, [] );
 
-	render() {
-		return (
-			<Fragment>
-				<IntersectionObserverContext.Provider value={this.observer}>
-					<ErrorBoundary>
-						<ContentDispatcher />
-					</ErrorBoundary>
-					<ErrorBoundary>
-						<ModalDispatcher />
-					</ErrorBoundary>
-					<ErrorBoundary>
-						<LivePlayer />
-					</ErrorBoundary>
-					<ErrorBoundary>
-						<PrimaryNav />
-					</ErrorBoundary>
-					<ErrorBoundary>
-						<UserNav suppressUserCheck={false} />
-					</ErrorBoundary>
-					<ErrorBoundary>
-						<SearchForm />
-					</ErrorBoundary>
-				</IntersectionObserverContext.Provider>
-
+	return (
+		<Fragment>
+			<IntersectionObserverContext.Provider value={observer}>
 				<ErrorBoundary>
-					<BackToTop />
+					<ContentDispatcher />
+					<ModalDispatcher />
+					<LivePlayer />
+					<PrimaryNav />
+					<UserNav suppressUserCheck={false} />
+					<SearchForm />
 				</ErrorBoundary>
-			</Fragment>
-		);
-	}
-}
+			</IntersectionObserverContext.Provider>
+			<ErrorBoundary>
+				<BackToTop />
+			</ErrorBoundary>
+		</Fragment>
+	);
+};
 
-const root = document.createElement( 'div' );
-document.body.appendChild( root );
-
-const app = (
-	<Provider store={createStore()}>
-		<Application />
-	</Provider>
-);
-
-ReactDOM.render( app, root );
+export default App;

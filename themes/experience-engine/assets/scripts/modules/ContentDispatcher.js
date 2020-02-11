@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import firebase from 'firebase';
+
 import md5 from 'md5';
 
+import { firebaseAuth } from '../library/firebase';
 import ErrorBoundary from '../components/ErrorBoundary';
 import ContentBlock from '../components/content/ContentBlock';
 
@@ -81,6 +82,7 @@ class ContentDispatcher extends Component {
 		const self = this;
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
+		// TODO: Include this in package.json and load via webpack.
 		const scripts = [
 			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js',
 		];
@@ -196,12 +198,11 @@ class ContentDispatcher extends Component {
 
 		// load user homepage if token is not empty and the next page is a homepage
 		// otherwise just load the next page
-		const auth = firebase.auth();
 		if (
 			untrailingslashit( origin ) === untrailingslashit( link.split( /[?#]/ )[0] ) &&
-			auth.currentUser
+			firebaseAuth.currentUser
 		) {
-			auth.currentUser
+			firebaseAuth.currentUser
 				.getIdToken()
 				.then( token => {
 					loadPage( link, {

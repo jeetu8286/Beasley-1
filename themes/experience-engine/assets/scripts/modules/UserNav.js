@@ -3,17 +3,15 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import firebase from 'firebase';
 import md5 from 'md5';
 
+
+import { firebaseAuth } from '../library/firebase';
 import {
-	getUser,
 	ensureUserHasCurrentChannel,
 	userHasProfile,
 } from '../library/experience-engine';
-
 import ErrorBoundary from '../components/ErrorBoundary';
-
 import {
 	showSignInModal,
 	showCompleteSignupModal,
@@ -46,19 +44,13 @@ class UserNav extends Component {
 
 	componentDidMount() {
 		const { firebase: config } = window.bbgiconfig;
-		const self = this;
-
 		if ( config.projectId ) {
-			firebase.initializeApp( config );
-
-			const auth = firebase.auth();
-
-			auth.onAuthStateChanged( this.didAuthStateChange );
-			auth
+			firebaseAuth.onAuthStateChanged( this.didAuthStateChange );
+			firebaseAuth
 				.getRedirectResult()
 				.then( result => {
 					if ( result.user ) {
-						self.setState( { didRedirect: true } );
+						this.setState( { didRedirect: true } );
 					}
 				} )
 				.catch( err => {
@@ -167,7 +159,7 @@ class UserNav extends Component {
 	}
 
 	handleSignOut() {
-		firebase.auth().signOut();
+		firebaseAuth.signOut();
 		if ( UserNav.isHomepage() ) {
 			window.location.reload();
 		}
