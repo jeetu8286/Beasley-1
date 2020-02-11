@@ -36,8 +36,17 @@ import {
 	STATUSES,
 } from '../actions/player';
 
-const localStorage = getStorage( 'liveplayer' );
+// Set livePlayerLocalStorage to utility helper object
+// namespaced with liveplayer. Will return an
+// object with a get and set using the namespace
+// as a prefix shortcut
+export const livePlayerLocalStorage = getStorage( 'liveplayer' );
+
+// Destructure streams from window global
 const { streams } = window.bbgiconfig || {};
+
+// Set initialStation
+let initialStation = getInitialStation( streams );
 
 // Destructure players from global
 let {
@@ -60,13 +69,13 @@ export function parseVolume( value = 50 ) {
 	} else if ( 0 > volume ) {
 		volume = 0;
 	}
-
 	return volume;
 }
 
 /**
  * @function loadNowPlaying
  * Used to load a configuration to the NowPlaying API
+ * TODO: Is this asynchronous??? Need docs
  *
  * @param {Object} player Player instance
  * @param {String} station Station identifier
@@ -82,23 +91,32 @@ export function loadNowPlaying( station, player ) {
  * Stop all players (mp3Player, omnyplayer and tdplayer)
  */
 export function fullStop() {
+	// Destructure window globals
+	let {
+		tdplayer,
+		mp3player,
+		omnyplayer,
+	} = window;
+
+	// If mp3player
 	if ( mp3player ) {
 		mp3player.pause();
 		mp3player = null;
 	}
 
+	// If omnyplayer
 	if ( omnyplayer ) {
 		omnyplayer.off( 'ready' );
 		omnyplayer.off( 'play' );
 		omnyplayer.off( 'pause' );
 		omnyplayer.off( 'ended' );
 		omnyplayer.off( 'timeupdate' );
-
 		omnyplayer.pause();
 		omnyplayer.elem.parentNode.removeChild( omnyplayer.elem );
 		omnyplayer = null;
 	}
 
+	// If tdplayer
 	if ( tdplayer ) {
 		tdplayer.stop();
 		tdplayer.skipAd();
@@ -114,7 +132,7 @@ export function fullStop() {
  * @returns {String|Undefined} First match || undefined
  */
 function getInitialStation( streamsList ) {
-	const station = localStorage.getItem( 'station' );
+	const station = livePlayerLocalStorage.getItem( 'station' );
 	return streamsList.find( stream => stream.stream_call_letters === station );
 }
 
@@ -174,11 +192,15 @@ export function lyticsTrack( action, params ) {
 	}
 }
 
+// Helper object to reset some state
+// Good for re-use in the reducers
 const adReset = {
 	adPlayback: false,
 	adSynced: false,
 };
 
+// Helper object to reset state
+// Good for re-use in the reducers
 const stateReset = {
 	audio: '',
 	station: '',
@@ -189,13 +211,12 @@ const stateReset = {
 	...adReset,
 };
 
-let initialStation = getInitialStation( streams );
-
+// Default state object
 export const DEFAULT_STATE = {
 	...stateReset,
 	status: STATUSES.LIVE_STOP,
 	station: ( initialStation || streams[0] || {} ).stream_call_letters,
-	volume: parseVolume( localStorage.getItem( 'volume' ) || 100 ),
+	volume: parseVolume( livePlayerLocalStorage.getItem( 'volume' ) || 100 ),
 	streams,
 };
 
@@ -405,6 +426,7 @@ function reducer( state = {}, action = {} ) {
 		//TODO: should both catch the same?
 		case ACTION_UPDATE_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS: {
+			console.log( 'reducer: update user feeds (and set user feeds)' );
 
 			// Set newstreams from action.feeds
 			const newstreams = getNewsStreamsFromFeeds( action.feeds );

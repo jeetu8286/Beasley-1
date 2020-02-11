@@ -1,6 +1,9 @@
 
 import { call, takeLatest, select } from 'redux-saga/effects';
-import { fullStop } from '../reducers/player';
+import {
+	fullStop,
+	livePlayerLocalStorage,
+} from '../reducers/player';
 import {
 	ACTION_PLAY_STATION,
 } from '../actions/player';
@@ -41,7 +44,6 @@ function* yieldPlayStation( { station } ) {
 	// Destructure from window
 	const {
 		tdplayer, // Global player
-		localStorage, // Local Storage
 	} = window;
 
 	// Call fullStop
@@ -65,12 +67,12 @@ function* yieldPlayStation( { station } ) {
 		);
 	}
 
-	// Call localStorage
+	// Call livePlayerLocalStorage
 	if(
-		localStorage &&
-		'function' === typeof localStorage.setItem
+		livePlayerLocalStorage &&
+		'function' === typeof livePlayerLocalStorage.setItem
 	) {
-		yield call( [ localStorage, 'setItem' ], 'station', station );
+		yield call( [ livePlayerLocalStorage, 'setItem' ], 'station', station );
 	}
 }
 

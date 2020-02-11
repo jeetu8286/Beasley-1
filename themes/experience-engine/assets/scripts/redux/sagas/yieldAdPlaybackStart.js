@@ -12,7 +12,7 @@ function* yieldAdPlaybackStart() {
 
 	console.log( 'yieldAdPlaybackStart' );
 
-	// If FALSE isAudioAdOnly
+	// Check for falsey isAudioAdOnly
 	if ( !isAudioAdOnly() ) {
 
 		// Add class to body

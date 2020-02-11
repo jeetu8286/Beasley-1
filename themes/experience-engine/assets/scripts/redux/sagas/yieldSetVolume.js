@@ -1,5 +1,8 @@
 import { call, takeLatest } from 'redux-saga/effects';
-import { parseVolume } from '../reducers/player';
+import {
+	parseVolume,
+	livePlayerLocalStorage,
+} from '../reducers/player';
 import {
 	ACTION_SET_VOLUME,
 } from '../actions/player';
@@ -24,17 +27,16 @@ function* yieldSetVolume( { volume } ) {
 
 	// Destructures
 	const {
-		localStorage,
 		mp3player,
 		tdplayer,
 	} = window;
 
-	// If localStorage
+	// If livePlayerLocalStorage
 	if(
-		localStorage &&
-		'function' === typeof localStorage.setItem
+		livePlayerLocalStorage &&
+		'function' === typeof livePlayerLocalStorage.setItem
 	) {
-		yield call( [ localStorage, 'setItem' ], 'volume', getVolume );
+		yield call( [ livePlayerLocalStorage, 'setItem' ], 'volume', getVolume );
 	}
 
 	// If mp3player
