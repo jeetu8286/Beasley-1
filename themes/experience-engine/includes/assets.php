@@ -48,7 +48,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'embedly-plataform.js', "//cdn.embedly.com/widgets/platform.js", null, null, true );
 		wp_script_add_data( 'embedly-plataform.js', 'async', true );
 
-
+		// This is being used in Content Shortcodes https://gitlab.10up.com/beasley/beasley/blob/master/mu-plugins/classes/Bbgi/Shortcodes.php
 		wp_register_script( 'iframe-resizer', '//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.min.js', null, null );
 		wp_script_add_data( 'iframe-resizer', 'async', true );
 
@@ -57,13 +57,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 
 		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, true ); // must be loaded in the footer
 		wp_script_add_data( 'googletag', 'async', true );
-
-		// wp_register_script( 'firebase-app', '//www.gstatic.com/firebasejs/6.0.2/firebase-app.js', null, null, true );
-		// wp_register_script( 'firebase-auth', '//www.gstatic.com/firebasejs/6.0.2/firebase-auth.js', array( 'firebase-app' ), null, true );
-
-		wp_register_script( 'intersection-observer', '//polyfill.io/v2/polyfill.min.js?features=IntersectionObserver', null, null, true );
-
-		$react_mode = $is_script_debug ? 'development' : 'production.min';
 
 		/**
 		 * Application script
@@ -81,8 +74,6 @@ EOL;
 			'googletag',
 			'embedly-player.js',
 			'td-sdk',
-			'intersection-observer',
-			'iframe-resizer',
 		);
 
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", $deps, GREATERMEDIA_VERSION, true );

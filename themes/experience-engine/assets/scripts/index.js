@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import es6promise from 'es6-promise';
 import 'isomorphic-unfetch';
+import 'intersection-observer';
 
 import createStore from './redux/store';
 import App from './app';
