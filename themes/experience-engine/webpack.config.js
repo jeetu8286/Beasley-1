@@ -19,6 +19,7 @@ function coreConfig( options = {} ) {
 		},
 	};
 
+	// TODO: move the babel config to .babelrc
 	const babelRule = {
 		test: /\.js$/,
 		exclude: /node_modules/,
@@ -26,7 +27,17 @@ function coreConfig( options = {} ) {
 			loader: 'babel-loader',
 			options: {
 				cacheDirectory: true,
-				presets: ['@babel/preset-react', '@babel/preset-env'],
+				presets: [
+					'@babel/preset-react',
+					[
+						'@babel/preset-env',
+						{
+							useBuiltIns: 'entry',
+							modules: false,
+							corejs: 3,
+						},
+					],
+				],
 				plugins: ['@babel/transform-runtime', '@babel/plugin-syntax-dynamic-import'],
 			},
 		},
@@ -95,7 +106,7 @@ function development() {
 		...coreConfig(),
 		name: 'dev-config',
 		mode: 'development',
-		devtool: 'inline-source-map',
+		devtool: 'source-map',
 	};
 
 	const concatenation = new ModuleConcatenationPlugin();
@@ -109,7 +120,7 @@ function watch() {
 		...coreConfig(),
 		name: 'watch-config',
 		mode: 'development',
-		devtool: 'inline-source-map',
+		devtool: 'source-map',
 		watch: true,
 	};
 }

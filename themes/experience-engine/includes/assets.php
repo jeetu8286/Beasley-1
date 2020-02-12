@@ -2,7 +2,6 @@
 
 add_action( 'wp_enqueue_scripts', 'ee_enqueue_front_scripts', 20 );
 
-add_action( 'wp_head', 'ee_load_polyfills', 0 );
 add_action( 'beasley_after_body', 'ee_the_bbgiconfig' );
 
 add_filter( 'wp_audio_shortcode_library', '__return_false' );
@@ -33,24 +32,20 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_script_add_data( 'google-webfont', 'async', true );
 		wp_script_add_data( 'google-webfont', 'noscript', '<link href="//fonts.googleapis.com/css?family=Libre+Franklin:300,400,500,600,700%7COpen+Sans:600" rel="stylesheet">' );
 
-		// used to play omnyAudio programatically
-		wp_register_script( 'embedly-player.js', "//cdn.embed.ly/player-0.1.0{$min}.js", null, null, true );
-		wp_script_add_data( 'embedly-player.js', 'async', true );
-
 		// This is being used in Content Shortcodes https://gitlab.10up.com/beasley/beasley/blob/master/mu-plugins/classes/Bbgi/Shortcodes.php
 		wp_register_script( 'iframe-resizer', '//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.min.js', null, null );
 		wp_script_add_data( 'iframe-resizer', 'async', true );
 
+		// Triton Player SDK
+		// Documentation: https://userguides.tritondigital.com/spc/tdplay2/
 		wp_register_script( 'td-sdk', '//sdk.listenlive.co/web/2.9/td-sdk.min.js', null, null, true );
 		wp_script_add_data( 'td-sdk', 'async', true );
 
-		// Google Tag Manager;
+		// Google Tag Manager
 		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, true ); // must be loaded in the footer
 		wp_script_add_data( 'googletag', 'async', true );
 
-		/**
-		 * Application script
-		 */
+		// TODO: refactor this to use wp_localize_script.
 $bbgiconfig = <<<EOL
 window.bbgiconfig = {};
 try {
@@ -62,7 +57,6 @@ EOL;
 
 		$deps = array(
 			'googletag',
-			'embedly-player.js',
 			'td-sdk',
 		);
 
@@ -96,21 +90,6 @@ if ( ! function_exists( 'ee_get_css_colors' ) ) :
 		}
 
 		return $vars;
-	}
-endif;
-
-if ( ! function_exists( 'ee_load_polyfills' ) ) :
-	function ee_load_polyfills() {
-		?><script id="polyfills">
-			(function() {
-				if (!Array.prototype.find) {
-					var s = document.createElement('script');
-					s.src = 'https://unpkg.com/core-js@2.6.2/client/core.min.js';
-					var p = document.getElementById('polyfills')
-					p.parentNode.replaceChild(s, p);
-				}
-			})();
-		</script><?php
 	}
 endif;
 

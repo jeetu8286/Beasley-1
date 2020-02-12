@@ -1,18 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import es6promise from 'es6-promise';
+// polyfills
+import 'core-js/stable'; // used by babel-preset-env
+import 'regenerator-runtime/runtime'; // used by babel-preset-env
 import 'isomorphic-unfetch';
 import 'intersection-observer';
 
-import createStore from './redux/store';
-import App from './app';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
+// playerjs gets added to the window object
+// and is used to play omnyAudio programatically
+import 'player.js';
 
 import './library/geotargetly';
 import './polyfills/closest';
 import '../styles/main.css';
 
-es6promise.polyfill();
+import createStore from './redux/store';
+import App from './app';
 
 const root = document.createElement( 'div' );
 document.body.appendChild( root );
