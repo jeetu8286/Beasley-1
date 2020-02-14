@@ -1,7 +1,8 @@
-import { call, takeLatest, select } from 'redux-saga/effects';
+import { call, takeLatest, select, put } from 'redux-saga/effects';
 import { fullStop } from '../utilities/';
 import {
 	ACTION_PLAY_AUDIO,
+	ACTION_SET_PLAYER_TYPE,
 } from '../actions/player';
 
 /**
@@ -33,6 +34,9 @@ function* yieldPlayAudio( { player } ) {
 		// Set global reference
 		// TODO: Is global reference required? Reference player
 		window.mp3player = player;
+
+		// Store player type in state
+		yield put( { type: ACTION_SET_PLAYER_TYPE, payload: 'mp3player' } );
 
 		// Set volume prop
 		if( 'function' === typeof player.setVolume ) {

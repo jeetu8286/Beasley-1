@@ -38,6 +38,7 @@ import {
 	ACTION_AUDIO_START,
 	ACTION_AUDIO_STOP,
 	ACTION_AD_PLAYBACK_STOP,
+	ACTION_SET_PLAYER_TYPE,
 	STATUSES,
 } from '../actions/player';
 
@@ -69,6 +70,7 @@ export const DEFAULT_STATE = {
 	status: STATUSES.LIVE_STOP,
 	station: ( getInitialStation( streams ) || streams[0] || {} ).stream_call_letters,
 	volume: parseVolume( livePlayerLocalStorage.getItem( 'volume' ) || 100 ),
+	playerType: null,
 	streams,
 };
 
@@ -127,7 +129,6 @@ function reducer( state = {}, action = {} ) {
 			};
 
 		// Catches in Saga Middleware
-		// TODO: Where is this called from
 		case ACTION_RESUME:
 			console.log( 'reducer: resume' );
 			return {
@@ -321,6 +322,12 @@ function reducer( state = {}, action = {} ) {
 				...state,
 				station: DEFAULT_STATE.station,
 				streams: DEFAULT_STATE.streams,
+			};
+
+		case ACTION_SET_PLAYER_TYPE:
+			return {
+				...state,
+				playerType: action.payload,
 			};
 
 		default:

@@ -1,5 +1,5 @@
 // Import saga effects
-import { call, takeLatest, select } from 'redux-saga/effects';
+import { call, takeLatest, select, put } from 'redux-saga/effects';
 
 // Import helper method(s)
 import { loadNowPlaying } from '../utilities/';
@@ -7,6 +7,7 @@ import { loadNowPlaying } from '../utilities/';
 // Import action constant(s)
 import {
 	ACTION_INIT_TDPLAYER,
+	ACTION_SET_PLAYER_TYPE,
 } from '../actions/player';
 
 /**
@@ -14,14 +15,17 @@ import {
  * Generator runs whenever ACTION_INIT_TDPLAYER is dispatched
  *
  * @param {Object} action dispatched action
- * @param {Object} action.player player in payload
+ * @param {Object|null} action.player player in payload
  */
-function* yieldInitTdPlayer( { player } ) {
+function* yieldInitTdPlayer( { player = null } ) {
 
 	console.log( 'yieldInitTdPlayer' );
 
-	// TODO: See if required globally - Set global instance
-	window.tdplayer = player || null;
+	// Set tdplayer global access
+	window.tdplayer = player;
+
+	// Store player type in state
+	yield put( { type: ACTION_SET_PLAYER_TYPE, payload: 'tdplayer' } );
 
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
