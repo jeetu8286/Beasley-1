@@ -21,9 +21,6 @@ function* yieldSeekPosition( { position } ) {
 		omnyplayer,
 	} = window;
 
-	// TODO: Look at storing UI state in Redux Store
-	window.userInteraction = true;
-
 	if ( mp3player ) {
 		mp3player.currentTime = position;
 

@@ -21,10 +21,8 @@ function* yieldAudioStop() {
 		duration,
 		time,
 		cuePoint,
+		userInteraction,
 	} = playerStore;
-
-	// Destructure from window // TODO: Might use redux to store this value
-	const { userInteraction } = window;
 
 	// Get inlineAudioInterval from window, default null
 	let { inlineAudioInterval = null } = window;

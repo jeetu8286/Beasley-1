@@ -61,6 +61,8 @@ const stateReset = {
 	cuePoint: false,
 	time: 0,
 	duration: 0,
+	playerType: null, // Store player type (omny, mp3, td)
+	userInteraction: false, // Store userInteraction state
 	...adReset,
 };
 
@@ -70,7 +72,6 @@ export const DEFAULT_STATE = {
 	status: STATUSES.LIVE_STOP,
 	station: ( getInitialStation( streams ) || streams[0] || {} ).stream_call_letters,
 	volume: parseVolume( livePlayerLocalStorage.getItem( 'volume' ) || 100 ),
-	playerType: null,
 	streams,
 };
 
@@ -162,6 +163,7 @@ function reducer( state = {}, action = {} ) {
 				...state,
 				...adReset,
 				cuePoint: action.cuePoint,
+				userInteraction: false,
 			};
 
 		// NOTE: Nothing mod'd here
@@ -214,14 +216,20 @@ function reducer( state = {}, action = {} ) {
 				omnyplayer,
 			} = window;
 
+			// Set initialUpdate userInteraction to true
+			// This will always happen here
+			let stateUpdate = {
+				userIneraction: true,
+			};
+
 			// If mp3player or omnyplayer defined
 			if ( mp3player || omnyplayer ) {
-				return {
-					...state,
-					time: +action.position,
-				};
+				stateUpdate.time = +action.position;
 			}
-			return state;
+			return {
+				...state,
+				...stateUpdate,
+			};
 		}
 
 		case ACTION_NOW_PLAYING_LOADED:

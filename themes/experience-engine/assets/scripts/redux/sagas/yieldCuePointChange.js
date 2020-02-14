@@ -41,8 +41,6 @@ function* yieldCuePointChange( { cuePoint } ) {
 		'podcast' === trackType &&
 		'function' === typeof lyticsTrack
 	) {
-		// TODO: Look at storing UI state in Redux Store
-		window.userInteraction = false;
 
 		// Call lyticsTrack
 		yield call( lyticsTrack, 'play', cuePoint );
