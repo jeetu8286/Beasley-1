@@ -1,5 +1,5 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
-import { loadNowPlaying } from '../reducers/player';
+import { loadNowPlaying } from '../utilities/';
 import {
 	ACTION_AD_PLAYBACK_COMPLETE,
 	ACTION_AD_PLAYBACK_ERROR,

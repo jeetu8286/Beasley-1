@@ -1,6 +1,6 @@
 
 import { call, takeLatest } from 'redux-saga/effects';
-import { fullStop } from '../reducers/player';
+import { fullStop } from '../utilities/';
 import {
 	ACTION_PLAY_OMNY,
 } from '../actions/player';

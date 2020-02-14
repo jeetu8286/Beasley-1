@@ -3,7 +3,7 @@ import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	fullStop,
 	livePlayerLocalStorage,
-} from '../reducers/player';
+} from '../utilities/';
 import {
 	ACTION_PLAY_STATION,
 } from '../actions/player';

@@ -1,8 +1,8 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
 import {
-	loadNowPlaying,
 	lyticsTrack,
-} from '../reducers/player';
+	loadNowPlaying,
+} from '../utilities/';
 import {
 	ACTION_CUEPOINT_CHANGE,
 } from '../actions/player';

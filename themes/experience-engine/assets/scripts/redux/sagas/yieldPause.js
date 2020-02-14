@@ -1,5 +1,5 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
-import { lyticsTrack } from '../reducers/player';
+import { lyticsTrack } from '../utilities/';
 import {
 	ACTION_PAUSE,
 } from '../actions/player';

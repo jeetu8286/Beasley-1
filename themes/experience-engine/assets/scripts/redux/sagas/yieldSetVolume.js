@@ -2,7 +2,7 @@ import { call, takeLatest } from 'redux-saga/effects';
 import {
 	parseVolume,
 	livePlayerLocalStorage,
-} from '../reducers/player';
+} from '../utilities/';
 import {
 	ACTION_SET_VOLUME,
 } from '../actions/player';

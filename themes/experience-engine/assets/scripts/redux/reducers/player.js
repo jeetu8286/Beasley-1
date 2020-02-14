@@ -1,5 +1,10 @@
 /* eslint-disable sort-keys */
-import { getStorage } from '../../library/local-storage';
+import {
+	livePlayerLocalStorage,
+	getInitialStation,
+	parseVolume,
+	getNewsStreamsFromFeeds,
+} from '../utilities/';
 
 // Auth action imports
 import {
@@ -36,161 +41,8 @@ import {
 	STATUSES,
 } from '../actions/player';
 
-// Set livePlayerLocalStorage to utility helper object
-// namespaced with liveplayer. Will return an
-// object with a get and set using the namespace
-// as a prefix shortcut
-export const livePlayerLocalStorage = getStorage( 'liveplayer' );
-
 // Destructure streams from window global
 const { streams } = window.bbgiconfig || {};
-
-// Set initialStation
-let initialStation = getInitialStation( streams );
-
-// Destructure players from global
-let {
-	tdplayer,
-	mp3player,
-	omnyplayer,
-} = window;
-
-/**
- * @function parseVolume
- * Returns a parsed number from 0 to 100
- *
- * @param {Number} value - default 50 //TODO See if OK to set default
- * @returns {Number} volume
- */
-export function parseVolume( value = 50 ) {
-	let volume = parseInt( value, 10 );
-	if ( Number.isNaN( volume ) || 100 < volume ) {
-		volume = 100;
-	} else if ( 0 > volume ) {
-		volume = 0;
-	}
-	return volume;
-}
-
-/**
- * @function loadNowPlaying
- * Used to load a configuration to the NowPlaying API
- * TODO: Is this asynchronous??? Need docs
- *
- * @param {Object} player Player instance
- * @param {String} station Station identifier
- */
-export function loadNowPlaying( station, player ) {
-	if ( station && player && !omnyplayer && !mp3player ) {
-		player.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
-	}
-}
-
-/**
- * @function fullStop
- * Stop all players (mp3Player, omnyplayer and tdplayer)
- */
-export function fullStop() {
-	// Destructure window globals
-	let {
-		tdplayer,
-		mp3player,
-		omnyplayer,
-	} = window;
-
-	// If mp3player
-	if ( mp3player ) {
-		mp3player.pause();
-		mp3player = null;
-	}
-
-	// If omnyplayer
-	if ( omnyplayer ) {
-		omnyplayer.off( 'ready' );
-		omnyplayer.off( 'play' );
-		omnyplayer.off( 'pause' );
-		omnyplayer.off( 'ended' );
-		omnyplayer.off( 'timeupdate' );
-		omnyplayer.pause();
-		omnyplayer.elem.parentNode.removeChild( omnyplayer.elem );
-		omnyplayer = null;
-	}
-
-	// If tdplayer
-	if ( tdplayer ) {
-		tdplayer.stop();
-		tdplayer.skipAd();
-	}
-}
-
-/**
- * @function getInitialStation
- * Returns a matching stream if local storage
- * station value matches the stream.stream_call_letters
- *
- * @param {Array} streamsList Array of streams
- * @returns {String|Undefined} First match || undefined
- */
-function getInitialStation( streamsList ) {
-	const station = livePlayerLocalStorage.getItem( 'station' );
-	return streamsList.find( stream => stream.stream_call_letters === station );
-}
-
-/**
- * @function getNewsStreamsFromFeeds
- * Helper method to return News Streams
- *
- * @param {Array} feeds An array of feeds
- * @returns {Array} An array of items that match stream type
- */
-function getNewsStreamsFromFeeds( feeds = [] ) {
-	return feeds.filter( item => 'stream' === item.type && 0 < ( item.content || [] ).length ).map( item => item.content[0] );
-}
-
-/**
- * @function lyticsTrack
- * Used to interact with the LyticsTrackAudio window object
- * which is provided by the GTM implementation.
- *
- * @param {String} action The action to take (ie. play, pause, end)
- * @param {Object} params Set of parameters
- */
-export function lyticsTrack( action, params ) {
-
-	// Check for googletag
-	if ( window.googletag && window.googletag.cmd ) {
-
-		// Push to the CMD queue
-		window.googletag.cmd.push( () => {
-
-			// Abandon if no LyticsTrackAudio global
-			if ( 'undefined' === typeof window.LyticsTrackAudio ) {
-				return;
-			}
-
-			// If action play
-			if ( 'play' === action && window.LyticsTrackAudio.set_podcastPayload ) {
-				window.LyticsTrackAudio.set_podcastPayload( {
-					type: 'podcast',
-					name: params.artistName,
-					episode: params.cueTitle,
-				}, () => {
-					window.LyticsTrackAudio.playPodcast();
-				} );
-			}
-
-			// If action pause
-			if ( 'pause' === action && window.LyticsTrackAudio.pausePodcast ) {
-				window.LyticsTrackAudio.pausePodcast();
-			}
-
-			// If action end
-			if ( 'end' === action && window.LyticsTrackAudio.endOfPodcast ) {
-				window.LyticsTrackAudio.endOfPodcast();
-			}
-		} );
-	}
-}
 
 // Helper object to reset some state
 // Good for re-use in the reducers
@@ -215,11 +67,12 @@ const stateReset = {
 export const DEFAULT_STATE = {
 	...stateReset,
 	status: STATUSES.LIVE_STOP,
-	station: ( initialStation || streams[0] || {} ).stream_call_letters,
+	station: ( getInitialStation( streams ) || streams[0] || {} ).stream_call_letters,
 	volume: parseVolume( livePlayerLocalStorage.getItem( 'volume' ) || 100 ),
 	streams,
 };
 
+// Reducer
 function reducer( state = {}, action = {} ) {
 
 	switch ( action.type ) {
@@ -351,8 +204,14 @@ function reducer( state = {}, action = {} ) {
 		}
 
 		// Catches in Saga Middleware
-		case ACTION_SEEK_POSITION:
+		case ACTION_SEEK_POSITION: {
 			console.log( 'reducer: seek position' );
+
+			// Destructure from window
+			const {
+				mp3player,
+				omnyplayer,
+			} = window;
 
 			// If mp3player or omnyplayer defined
 			if ( mp3player || omnyplayer ) {
@@ -362,6 +221,7 @@ function reducer( state = {}, action = {} ) {
 				};
 			}
 			return state;
+		}
 
 		case ACTION_NOW_PLAYING_LOADED:
 			console.log( 'reducer: now playing loaded' );
@@ -423,13 +283,13 @@ function reducer( state = {}, action = {} ) {
 				...adReset,
 			};
 
-		//TODO: should both catch the same?
 		case ACTION_UPDATE_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS: {
 			console.log( 'reducer: update user feeds (and set user feeds)' );
 
 			// Set newstreams from action.feeds
 			const newstreams = getNewsStreamsFromFeeds( action.feeds );
+			let initialStation = getInitialStation( streams );
 
 			// Create new state object
 			const newstate = {

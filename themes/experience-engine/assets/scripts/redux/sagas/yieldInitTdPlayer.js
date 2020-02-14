@@ -2,7 +2,7 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
 
 // Import helper method(s)
-import { loadNowPlaying } from '../reducers/player';
+import { loadNowPlaying } from '../utilities/';
 
 // Import action constant(s)
 import {

@@ -1,5 +1,5 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
-import { fullStop } from '../reducers/player';
+import { fullStop } from '../utilities/';
 import {
 	ACTION_PLAY_AUDIO,
 } from '../actions/player';
