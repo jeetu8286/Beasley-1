@@ -22,6 +22,12 @@ function* yieldPause() {
 	} = playerStore;
 
 	// Destructure from window
+	// TODO: Open new PR for Handling Players.
+	// Brief discussion we abstract with a high level
+	// player API that can sniff the methods available
+	// and handle without the need to know what "type"
+	// of player is stored. Also considering storing player
+	// in state, but seems these libs add to global scope???
 	const {
 		mp3player,
 		omnyplayer,
