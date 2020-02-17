@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import Swiper from 'swiper';
 import md5 from 'md5';
 
 import { firebaseAuth } from '../library/firebase';
@@ -17,7 +17,6 @@ import {
 	updatePage,
 } from '../redux/actions/screen';
 
-import { loadAssets, unloadScripts } from '../library/dom';
 import { untrailingslashit } from '../library/strings';
 import slugify from '../library/slugify';
 
@@ -79,25 +78,10 @@ class ContentDispatcher extends Component {
 	}
 
 	handleSliderLoad() {
-		const self = this;
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
-		// TODO: Include this in package.json and load via webpack.
-		const scripts = [
-			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js',
-		];
-
-		const styles = [
-			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css',
-		];
-
 		if ( carousels.length ) {
-			loadAssets( scripts, styles )
-				.then( self.handleSliders.bind( self ) )
-				.catch( error => console.error( error ) ); // eslint-disable-line no-console
-		} else {
-			unloadScripts( scripts );
-			unloadScripts( styles );
+			this.handleSliders();
 		}
 	}
 
@@ -109,12 +93,6 @@ class ContentDispatcher extends Component {
 				const count = carousels[i].classList.contains( '-large' ) ? 2.2 : 4.2;
 				const group = carousels[i].classList.contains( '-large' ) ? 2 : 4;
 
-				if ( ! window.Swiper ) {
-					continue;
-				}
-
-				// @note This comes from handleSliderLoad
-				// eslint-disable-next-line no-undef
 				new Swiper( carousels[i], {
 					slidesPerView: count + 2,
 					slidesPerGroup: group + 2,
@@ -237,30 +215,6 @@ class ContentDispatcher extends Component {
 			this.props.hideModal();
 		}
 	}
-
-	/*
-	shouldComponentUpdate( nextProps, nextState ) {
-		const currentContent = this.props.content || '';
-		const nextContent    = nextProps.content || '';
-
-		let currentEmbeds = this.props.embeds || [];
-		let nextEmbeds = nextProps.embeds || [];
-
-		currentEmbeds = JSON.stringify( currentEmbeds );
-		nextEmbeds    = JSON.stringify( nextEmbeds );
-
-		let currentPartials = this.props.partials || [];
-		let nextPartials = nextProps.partials || [];
-
-		currentPartials = JSON.stringify( currentPartials );
-		nextPartials    = JSON.stringify( nextPartials );
-
-		const currentHash = md5( currentContent + currentEmbeds + currentPartials );
-		const nextHash    = md5( nextContent + nextEmbeds + nextPartials );
-
-		return currentHash !== nextHash;
-	}
-	*/
 
 	render() {
 		const { content, embeds, partials, isHome } = this.props;

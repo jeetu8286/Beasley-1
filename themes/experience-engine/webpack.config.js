@@ -22,7 +22,14 @@ function coreConfig( options = {} ) {
 	// TODO: move the babel config to .babelrc
 	const babelRule = {
 		test: /\.js$/,
-		exclude: /node_modules/,
+		// exclude: /node_modules/,
+		include: [
+			path.resolve( __dirname, 'assets/scripts' ),
+			// swiper needs babel transpiling for dom7 and ssr-window
+			path.resolve( __dirname, 'node_modules/swiper' ),
+			path.resolve( __dirname, 'node_modules/dom7' ),
+			path.resolve( __dirname, 'node_modules/ssr-window' ),
+		],
 		use: {
 			loader: 'babel-loader',
 			options: {
