@@ -26,7 +26,7 @@ class Page extends Module {
 	 */
 	public function register_routes() {
 		register_rest_route(
-			'bbgi/v1',
+			'experience_engine/v1',
 			'page',
 			[
 				'methods'  => \WP_REST_Server::READABLE,
@@ -53,7 +53,7 @@ class Page extends Module {
 	 * @return string|false
 	 */
 	public function fetch_page( $url ) {
-		$page_response = wp_remote_request( $url );
+		$page_response = wp_remote_get( $url, [ 'timeout' => 30 ] );
 
 		if ( is_wp_error( $page_response ) ) {
 			return false;
@@ -84,6 +84,7 @@ class Page extends Module {
 		];
 
 		$page_response = $this->fetch_page( $url );
+
 		// check if url is internal.
 		$response['html'] = wp_remote_retrieve_body( $page_response );
 		$response['status'] = $page_response['response']['code'];

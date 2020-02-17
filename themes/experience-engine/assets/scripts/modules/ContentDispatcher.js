@@ -10,6 +10,7 @@ import {
 	initPage,
 	initPageLoaded,
 	loadPage,
+	fetchPage,
 } from '../redux/actions/screen';
 import { untrailingslashit } from '../library/strings';
 import slugify from '../library/slugify';
@@ -137,7 +138,7 @@ class ContentDispatcher extends Component {
 	 * @param {event} e
 	 */
 	handleClick( e ) {
-		const { loadPage } = this.props;
+		const { loadPage, fetchPage } = this.props;
 
 		const { target } = e;
 		let linkNode = target;
@@ -205,7 +206,7 @@ class ContentDispatcher extends Component {
 					loadPage( link );
 				} );
 		} else {
-			loadPage( link );
+			fetchPage( link );
 		}
 	}
 
@@ -240,6 +241,7 @@ ContentDispatcher.propTypes = {
 	isHome: PropTypes.bool.isRequired,
 	loadPage: PropTypes.func.isRequired,
 	initPageLoaded: PropTypes.func.isRequired,
+	fetchPage: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -253,5 +255,6 @@ export default connect(
 		initPage,
 		initPageLoaded,
 		loadPage,
+		fetchPage,
 	},
 )( ContentDispatcher );

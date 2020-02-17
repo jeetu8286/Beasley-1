@@ -42,6 +42,70 @@ export function initPageLoaded( uuid, html ) {
 	return { type: ACTION_HISTORY_HTML_SNAPSHOT, uuid, html };
 }
 
+/**
+ * Fetches a page by calling the page endpoint.
+ *
+ * @param {string} url
+ */
+export const fetchPage = ( url ) => async dispatch => {
+	const pageEndpoint = `${window.bbgiconfig.wpapi}\page?url=${encodeURIComponent( url )}&redirects=true`;
+
+	try {
+		dispatch( { type: ACTION_LOADING_PAGE, url } );
+
+		const response = await fetch( pageEndpoint ).then( response => response.json() );
+
+		if ( response.redirects ) {
+			// handle redirects
+		}
+
+		if ( 200 === response.status || 201 === response.status ) {
+			const urlSlugified = slugify( url );
+			const parsed = parseHtml( response.html );
+			const pageDocument = parsed.document;
+
+			dispatch( {
+				type: ACTION_LOADED_PAGE,
+				url,
+				...parsed,
+				isHome: pageDocument.body.classList.contains( 'home' ),
+			} );
+
+			history.replaceState(
+				{ ...history.state, pageXOffset, pageYOffset },
+				document.title,
+				location.href,
+			);
+			history.pushState(
+				{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
+				pageDocument.title,
+				url,
+			);
+			dispatch( {
+				type: ACTION_HISTORY_HTML_SNAPSHOT,
+				uuid: urlSlugified,
+				data: response.html,
+			} );
+
+			dispatchEvent( 'pushstate' );
+
+			document.title = pageDocument.title;
+			document.body.className = pageDocument.body.className;
+
+			// Get content container
+			const content = document.getElementById( 'content' );
+
+			// Scroll to top of content
+			if( content ) {
+				content.scrollIntoView( true );
+			}
+		}
+	} catch( error ) {
+		dispatch( { type: ACTION_LOAD_ERROR, error } );
+	}
+
+};
+
 export function loadPage( url, options = {} ) {
 	const urlSlugified = slugify( url );
 	return dispatch => {
@@ -98,7 +162,6 @@ export function loadPage( url, options = {} ) {
 					content.scrollIntoView( true );
 				}
 			}
-
 		}
 
 		/**
