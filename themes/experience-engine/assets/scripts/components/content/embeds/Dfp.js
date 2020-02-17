@@ -1,7 +1,8 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import IntersectionObserverContext from '../../../context/intersection-observer';
+// TODO: update to the new context api.
+import { IntersectionObserverContext } from '../../../context/intersection-observer';
 
 class Dfp extends PureComponent {
 

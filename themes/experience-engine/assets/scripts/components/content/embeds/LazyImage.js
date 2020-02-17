@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import IntersectionObserverContext from '../../../context/intersection-observer';
+// TODO: update this to thew new context API
+import { IntersectionObserverContext } from '../../../context/intersection-observer';
 import { pageview } from '../../../library/google-analytics';
 
 class LazyImage extends PureComponent {

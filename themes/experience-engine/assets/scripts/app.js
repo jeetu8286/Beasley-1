@@ -1,8 +1,6 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect } from 'react';
 
-import IntersectionObserverContext, {
-	Observable,
-} from './context/intersection-observer';
+import IntersectionObserverProvider from './context/intersection-observer';
 
 import ContentDispatcher from './modules/ContentDispatcher';
 import ModalDispatcher from './modules/ModalDispatcher';
@@ -15,8 +13,10 @@ import BackToTop from './components/BackToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 import { isSafari, isWindowsBrowser } from './library/browser';
 
-const observer = new Observable();
 
+/**
+ * The App's entry point.
+ */
 const App = () => {
 	useEffect( () => {
 		if ( isSafari() ) {
@@ -27,8 +27,8 @@ const App = () => {
 	}, [] );
 
 	return (
-		<Fragment>
-			<IntersectionObserverContext.Provider value={observer}>
+		<>
+			<IntersectionObserverProvider>
 				<ErrorBoundary>
 					<ContentDispatcher />
 					<ModalDispatcher />
@@ -37,11 +37,11 @@ const App = () => {
 					<UserNav suppressUserCheck={false} />
 					<SearchForm />
 				</ErrorBoundary>
-			</IntersectionObserverContext.Provider>
+			</IntersectionObserverProvider>
 			<ErrorBoundary>
 				<BackToTop />
 			</ErrorBoundary>
-		</Fragment>
+		</>
 	);
 };
 
