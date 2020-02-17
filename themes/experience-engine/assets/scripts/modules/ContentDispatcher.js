@@ -26,18 +26,15 @@ class ContentDispatcher extends Component {
 	constructor( props ) {
 		super( props );
 
-		const self = this;
-		self.onClick = self.handleClick.bind( self );
-		self.onPageChange = self.handlePageChange.bind( self );
-		self.handleSliders = self.handleSliders.bind( self );
-		self.handleSliderLoad = self.handleSliderLoad.bind( self );
+		this.onClick = this.handleClick.bind( this );
+		this.onPageChange = this.handlePageChange.bind( this );
+		this.handleSliders = this.handleSliders.bind( this );
+		this.handleSliderLoad = this.handleSliderLoad.bind( this );
 	}
 
 	componentDidMount() {
-		const self = this;
-
-		window.addEventListener( 'click', self.onClick );
-		window.addEventListener( 'popstate', self.onPageChange );
+		window.addEventListener( 'click', this.onClick );
+		window.addEventListener( 'popstate', this.onPageChange );
 
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
@@ -51,13 +48,12 @@ class ContentDispatcher extends Component {
 		history.replaceState( state, document.title, location.href );
 
 		// load current page into the state
-		self.props.initPage();
-		self.props.initPageLoaded( uuid, data );
-		self.handleSliderLoad();
+		this.props.initPage();
+		this.props.initPageLoaded( uuid, data );
+		this.handleSliderLoad();
 	}
 
 	componentDidUpdate() {
-		const self = this;
 		const element = document.querySelector( '.scroll-to' );
 		if ( element ) {
 			let top = element.offsetTop;
@@ -69,7 +65,7 @@ class ContentDispatcher extends Component {
 
 			setTimeout( () => window.scrollTo( 0, top ), 500 );
 		}
-		self.handleSliderLoad();
+		this.handleSliderLoad();
 	}
 
 	componentWillUnmount() {
@@ -129,8 +125,7 @@ class ContentDispatcher extends Component {
 	}
 
 	handleClick( e ) {
-		const self = this;
-		const { loadPage } = self.props;
+		const { loadPage } = this.props;
 
 		const { target } = e;
 		let linkNode = target;
@@ -255,6 +250,7 @@ ContentDispatcher.propTypes = {
 	initPage: PropTypes.func.isRequired,
 	isHome: PropTypes.bool.isRequired,
 	loadPage: PropTypes.func.isRequired,
+	initPageLoaded: PropTypes.func.isRequired,
 	updatePage: PropTypes.func.isRequired,
 };
 
