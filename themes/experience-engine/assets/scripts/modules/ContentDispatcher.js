@@ -22,12 +22,15 @@ import slugify from '../library/slugify';
 
 const specialPages = ['/wp-admin/', '/wp-signup.php', '/wp-login.php'];
 
+/**
+ * The ContentDispatcher component is responsible for catching click on intenral links
+ * and trigger the page loading logic.
+ */
 class ContentDispatcher extends Component {
 	constructor( props ) {
 		super( props );
 
 		this.onClick = this.handleClick.bind( this );
-		this.onPageChange = this.handlePageChange.bind( this );
 		this.handleSliders = this.handleSliders.bind( this );
 		this.handleSliderLoad = this.handleSliderLoad.bind( this );
 	}
@@ -73,6 +76,9 @@ class ContentDispatcher extends Component {
 		window.removeEventListener( 'popstate', this.onPageChange );
 	}
 
+	/**
+	 * Handles setting up the sliders.
+	 */
 	handleSliderLoad() {
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
@@ -81,6 +87,9 @@ class ContentDispatcher extends Component {
 		}
 	}
 
+	/**
+	 * Setup the sliders with Swiper.js
+	 */
 	handleSliders() {
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
@@ -124,6 +133,11 @@ class ContentDispatcher extends Component {
 		}
 	}
 
+	/**
+	 * Handle the click links and if it's an internal links trigger the page loading process.
+	 *
+	 * @param {event} e
+	 */
 	handleClick( e ) {
 		const { loadPage } = this.props;
 
@@ -194,20 +208,6 @@ class ContentDispatcher extends Component {
 				} );
 		} else {
 			loadPage( link );
-		}
-	}
-
-	handlePageChange( event ) {
-		if ( event && event.state ) {
-			const { uuid, pageXOffset, pageYOffset } = event.state;
-			// @jerome may not be needed and above can get const
-			// const { location } = window;
-			// const uuidOverride = slugify( location.href );
-			const { data } = this.props.history[uuid];
-			this.props.updatePage( data );
-			// scroll to the top of the page and remove modal (one way or other)
-			setTimeout( () => window.scrollTo( pageXOffset, pageYOffset ), 100 );
-			this.props.hideModal();
 		}
 	}
 
