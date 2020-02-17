@@ -6,15 +6,12 @@ import Swiper from 'swiper';
 import md5 from 'md5';
 
 import { firebaseAuth } from '../library/firebase';
-import ErrorBoundary from '../components/ErrorBoundary';
 import ContentBlock from '../components/content/ContentBlock';
 
-import { hideModal } from '../redux/actions/modal';
 import {
 	initPage,
 	initPageLoaded,
 	loadPage,
-	updatePage,
 } from '../redux/actions/screen';
 
 import { untrailingslashit } from '../library/strings';
@@ -220,7 +217,7 @@ class ContentDispatcher extends Component {
 		}
 
 		blocks.push(
-			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
+			// the composed key is needed to make sure we use a new ContentBlock component when we replace the content of the current page
 			<ContentBlock key={`${window.location.href}-${md5( content )}`} content={content} embeds={embeds} isHome={isHome} />,
 		);
 
@@ -237,43 +234,23 @@ class ContentDispatcher extends Component {
 ContentDispatcher.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
-	history: PropTypes.shape( {
-		uuid: PropTypes.shape( { data: PropTypes.shape( {} ) } ),
-		replaceState: PropTypes.func,
-	} ),
 	partials: PropTypes.shape( {} ).isRequired,
-	hideModal: PropTypes.func.isRequired,
 	initPage: PropTypes.func.isRequired,
 	isHome: PropTypes.bool.isRequired,
 	loadPage: PropTypes.func.isRequired,
 	initPageLoaded: PropTypes.func.isRequired,
-	updatePage: PropTypes.func.isRequired,
 };
 
-function mapStateToProps( { screen } ) {
-	return {
-		history: screen.history,
+export default connect(
+	( { screen } ) => ( {
 		content: screen.content,
 		embeds: screen.embeds,
 		isHome: screen.isHome,
 		partials: screen.partials,
-	};
-}
-
-function mapDispatchToProps( dispatch ) {
-	return bindActionCreators(
-		{
-			hideModal,
-			initPage,
-			initPageLoaded,
-			loadPage,
-			updatePage,
-		},
-		dispatch,
-	);
-}
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
+	} ),
+	{
+		initPage,
+		initPageLoaded,
+		loadPage,
+	},
 )( ContentDispatcher );
