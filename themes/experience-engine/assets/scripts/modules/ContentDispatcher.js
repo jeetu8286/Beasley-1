@@ -216,21 +216,17 @@ class ContentDispatcher extends Component {
 		const blocks = [];
 
 		if ( !content || !content.length ) {
-			return false;
+			return null;
 		}
 
 		blocks.push(
 			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
-			<ErrorBoundary key={`${window.location.href}-${md5( content )}`}>
-				<ContentBlock content={content} embeds={embeds} isHome={isHome} />,
-			</ErrorBoundary>,
+			<ContentBlock key={`${window.location.href}-${md5( content )}`} content={content} embeds={embeds} isHome={isHome} />,
 		);
 
 		Object.keys( partials ).forEach( key => {
 			blocks.push(
-				<ErrorBoundary key={key}>
-					<ContentBlock {...partials[key]} partial />
-				</ErrorBoundary>,
+				<ContentBlock key={key} {...partials[key]} partial />,
 			);
 		} );
 
