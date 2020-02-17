@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-// TODO: update this to thew new context API
 import { IntersectionObserverContext } from '../../../context/intersection-observer';
 import { pageview } from '../../../library/google-analytics';
 
@@ -9,8 +8,6 @@ class LazyImage extends PureComponent {
 
 	constructor( props ) {
 		super( props );
-
-		const self = this;
 
 		self.loading = false;
 		self.boxRef = React.createRef();
@@ -20,7 +17,7 @@ class LazyImage extends PureComponent {
 	}
 
 	componentDidMount() {
-		const self = this;
+
 		const { placeholder } = self.props;
 
 		self.container = document.getElementById( placeholder );
@@ -32,7 +29,6 @@ class LazyImage extends PureComponent {
 	}
 
 	handleIntersectionChange() {
-		const self = this;
 		const { tracking } = self.props;
 
 		// disable intersection observing
@@ -51,7 +47,6 @@ class LazyImage extends PureComponent {
 	}
 
 	getDimensions() {
-		const self = this;
 		const { container } = self;
 
 		let parent = container;
@@ -73,7 +68,6 @@ class LazyImage extends PureComponent {
 			quality = 95;
 		}
 
-		const self = this;
 		let { src, width, height } = self.props;
 		const { containerWidth, containerHeight } = self.getDimensions();
 
@@ -127,7 +121,6 @@ class LazyImage extends PureComponent {
 	}
 
 	loadImage() {
-		const self = this;
 		const { autoheight } = self.props;
 
 		// load image and update state
@@ -159,7 +152,6 @@ class LazyImage extends PureComponent {
 	}
 
 	render() {
-		const self = this;
 		const { image } = self.state;
 		const { alt, attribution } = self.props;
 
