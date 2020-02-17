@@ -27,21 +27,17 @@ const App = () => {
 	}, [] );
 
 	return (
-		<>
-			<IntersectionObserverProvider>
-				<ErrorBoundary>
-					<ContentDispatcher />
-					<ModalDispatcher />
-					<LivePlayer />
-					<PrimaryNav />
-					<UserNav suppressUserCheck={false} />
-					<SearchForm />
-				</ErrorBoundary>
-			</IntersectionObserverProvider>
+		<IntersectionObserverProvider>
 			<ErrorBoundary>
+				<ContentDispatcher />
+				<ModalDispatcher />
+				<LivePlayer />
+				<PrimaryNav />
+				<UserNav suppressUserCheck={false} />
+				<SearchForm />
 				<BackToTop />
 			</ErrorBoundary>
-		</>
+		</IntersectionObserverProvider>
 	);
 };
 

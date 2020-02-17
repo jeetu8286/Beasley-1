@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Swiper from 'swiper';
 import md5 from 'md5';
 
 import { firebaseAuth } from '../library/firebase';
 import ContentBlock from '../components/content/ContentBlock';
-
 import {
 	initPage,
 	initPageLoaded,
 	loadPage,
 } from '../redux/actions/screen';
-
 import { untrailingslashit } from '../library/strings';
 import slugify from '../library/slugify';
 
@@ -39,17 +36,21 @@ class ContentDispatcher extends Component {
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
 		const uuid = slugify( location.href );
-		const data = document.documentElement.outerHTML;
-		const state = {
-			uuid,
-			pageXOffset,
-			pageYOffset,
-		};
-		history.replaceState( state, document.title, location.href );
+		const html = document.documentElement.outerHTML;
+
+		history.replaceState(
+			{
+				uuid,
+				pageXOffset,
+				pageYOffset,
+			},
+			document.title,
+			location.href,
+		);
 
 		// load current page into the state
 		this.props.initPage();
-		this.props.initPageLoaded( uuid, data );
+		this.props.initPageLoaded( uuid, html );
 		this.handleSliderLoad();
 	}
 

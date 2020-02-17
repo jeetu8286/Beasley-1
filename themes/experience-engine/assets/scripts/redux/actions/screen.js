@@ -1,44 +1,45 @@
-/* eslint-disable sort-keys */
-import { removeChildren, dispatchEvent } from '../../library/dom';
-import { getStateFromContent, parseHtml } from '../../library/html-parser';
-import { pageview } from '../../library/google-analytics';
-import slugify from '../../library/slugify';
-import { isIE11 } from '../../library/browser';
-import { trailingslashit } from '../../library/strings';
-/**
- * We use this approach to minify action names in the production bundle and have
- * human friendly actions in the dev bundle. Use "s{x}" format to create new actions.
- */
-export const ACTION_INIT_PAGE =
-	'production' === process.env.NODE_ENV ? 's0' : 'PAGE_INIT';
-export const ACTION_LOADING_PAGE =
-	'production' === process.env.NODE_ENV ? 's1' : 'PAGE_LOADING';
-export const ACTION_LOADED_PAGE =
-	'production' === process.env.NODE_ENV ? 's2' : 'PAGE_LOADED';
-export const ACTION_LOADING_PARTIAL =
-	'production' === process.env.NODE_ENV ? 's3' : 'PARTIAL_LOADING';
-export const ACTION_LOADED_PARTIAL =
-	'production' === process.env.NODE_ENV ? 's4' : 'PARTIAL_LOADED';
-export const ACTION_LOAD_ERROR =
-	'production' === process.env.NODE_ENV ? 's5' : 'LOADING_ERROR';
-export const ACTION_HIDE_SPLASH_SCREEN =
-	'production' === process.env.NODE_ENV ? 's6' : 'HIDE_SPLASH_SCREEN';
-export const ACTION_UPDATE_NOTICE =
-	'production' === process.env.NODE_ENV ? 's7' : 'UPDATE_NOTICE ';
-export const ACTION_HISTORY_HTML_SNAPSHOT =
-	'production' === process.env.NODE_ENV ? 's10' : 'HISTORY_HTML_SNAPSHOT';
+import {
+	removeChildren,
+	dispatchEvent,
+	getStateFromContent,
+	parseHtml,
+	pageview,
+	slugify,
+	isIE11,
+	trailingslashit,
+} from '../../library';
 
+export const ACTION_INIT_PAGE = 'PAGE_INIT';
+export const ACTION_LOADING_PAGE = 'PAGE_LOADING';
+export const ACTION_LOADED_PAGE = 'PAGE_LOADED';
+export const ACTION_LOADING_PARTIAL = 'PARTIAL_LOADING';
+export const ACTION_LOADED_PARTIAL = 'PARTIAL_LOADED';
+export const ACTION_LOAD_ERROR = 'LOADING_ERROR';
+export const ACTION_HIDE_SPLASH_SCREEN = 'HIDE_SPLASH_SCREEN';
+export const ACTION_UPDATE_NOTICE = 'UPDATE_NOTICE ';
+export const ACTION_HISTORY_HTML_SNAPSHOT = 'HISTORY_HTML_SNAPSHOT';
+
+/**
+ * Parses the current content blocks for redux.
+ */
 export function initPage() {
 	const content = document.getElementById( 'content' );
 	const parsed = getStateFromContent( content );
+
 	// clean up content block for now, it will be poplated in the render function
 	removeChildren( content );
 
 	return { type: ACTION_INIT_PAGE, ...parsed };
 }
 
-export function initPageLoaded( uuid, data ) {
-	return { type: ACTION_HISTORY_HTML_SNAPSHOT, uuid, data };
+/**
+ * Sets the html snapshot of the given page.
+ *
+ * @param {string} uuid A slugifyed representation of the url
+ * @param {string} html The html of the page.
+ */
+export function initPageLoaded( uuid, html ) {
+	return { type: ACTION_HISTORY_HTML_SNAPSHOT, uuid, html };
 }
 
 export function loadPage( url, options = {} ) {
@@ -143,8 +144,13 @@ export function loadPage( url, options = {} ) {
 	};
 }
 
-export function updatePage( data ) {
-	const parsed = parseHtml( data );
+/**
+ * Parses the HTML and updated the current page.
+ *
+ * @param {string} Html of the page.
+ */
+export function updatePage( html ) {
+	const parsed = parseHtml( html );
 	const pageDocument = parsed.document;
 
 	document.body.className = pageDocument.body.className;
@@ -179,10 +185,16 @@ export function loadPartialPage( url, placeholder ) {
 	};
 }
 
+/**
+ * Hides the splash screen
+ */
 export function hideSplashScreen() {
 	return { type: ACTION_HIDE_SPLASH_SCREEN };
 }
 
+/**
+ * Updates the Notice component message.
+ */
 export function updateNotice( { isOpen, message } ) {
 	return {
 		type: ACTION_UPDATE_NOTICE,
