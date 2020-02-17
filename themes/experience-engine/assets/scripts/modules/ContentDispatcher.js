@@ -292,11 +292,13 @@ class ContentDispatcher extends Component {
 ContentDispatcher.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
-	history: PropTypes.arrayOf( PropTypes.object ),
+	history: PropTypes.shape( {
+		uuid: PropTypes.shape( { data: PropTypes.shape( {} ) } ),
+		replaceState: PropTypes.func,
+	} ),
 	partials: PropTypes.shape( {} ).isRequired,
 	hideModal: PropTypes.func.isRequired,
 	initPage: PropTypes.func.isRequired,
-	initPageHistory: PropTypes.func.isRequired,
 	isHome: PropTypes.bool.isRequired,
 	loadPage: PropTypes.func.isRequired,
 	updatePage: PropTypes.func.isRequired,

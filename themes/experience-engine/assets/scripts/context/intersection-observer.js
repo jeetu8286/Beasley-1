@@ -42,7 +42,9 @@ export class Observable {
 export const observer = new Observable();
 
 /**
- * A provider components that makes the obverser object avaliable to any child component.
+ * A provider components that makes the intersection obverser object avaliable to any child component.
+ *
+ * This intersection observer notifies whenever a elements gets into view.
  */
 const IntersectionObserverProvider = ( {children} ) => {
 	return (
@@ -58,6 +60,5 @@ IntersectionObserverProvider.propTypes = {
 		PropTypes.node,
 	] ).isRequired,
 };
-
 
 export default IntersectionObserverProvider;
