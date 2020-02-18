@@ -67,6 +67,23 @@ class Page extends Module {
 	}
 
 	/**
+	 * Checks if the provided URL is internal or not.
+	 *
+	 * @param string $url The URL to check for.
+	 *
+	 * @return boolean
+	 */
+	protected function is_internal_url( $url ) {
+		$parsed_home_url = parse_url( home_url() );
+		$parsed_url      = parse_url( $url );
+
+		return apply_filters(
+			'bbgi_page_endpoint_is_internal_url',
+			$parsed_home_url['host'] === $parsed_url['host']
+		);
+	}
+
+	/**
 	 * Fetches a page for react.
 	 *
 	 * @param \WP_REST_Request $request
@@ -83,14 +100,28 @@ class Page extends Module {
 			'html'      => false,
 		];
 
+		if ( ! $this->is_internal_url( $url ) ) {
+			$response['status'] = 403;
+
+			return $response;
+		}
+
 		$page_response = $this->fetch_page( $url );
 
-		// check if url is internal.
-		$response['html'] = wp_remote_retrieve_body( $page_response );
+		$response['html']   = wp_remote_retrieve_body( $page_response );
 		$response['status'] = $page_response['response']['code'];
 
 		if ( $redirects ) {
-			// fetch redirects
+			/**
+			 * @var \Bbgi\Redirects $redirects
+			 */
+			$redirects = self::get( 'redirects' );
+
+			$matched_redirect = $redirects->match_redirect( $url );
+
+			if ( $matched_redirect ) {
+				$response['redirects'][] = $matched_redirect;
+			}
 		}
 
 		return rest_ensure_response( $response );
