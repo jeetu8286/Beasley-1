@@ -44,7 +44,31 @@ function* yieldPlayStation( { station } ) {
 	// Destructure from window
 	const {
 		tdplayer, // Global player
+		authwatcher, // Triton
 	} = window;
+
+	// Setup adConfig used by player and triton call
+	const adConfig = {
+		host: stream.stream_cmod_domain,
+		type: 'preroll',
+		format: 'vast',
+		stationId: stream.stream_tap_id,
+	};
+
+	// Call triton, must live here since it modifies the adConfig object
+	// before being sent to the player API
+	if ( authwatcher && authwatcher.lastLoggedInUser ) {
+		if (  'undefined' !== typeof authwatcher.lastLoggedInUser.demographicsset ) {
+			if ( authwatcher.lastLoggedInUser.demographicsset ) {
+				console.log( 'triton','params sent' );
+				adConfig['trackingParameters'] = {
+					postalcode: authwatcher.lastLoggedInUser.zipcode,
+					gender: authwatcher.lastLoggedInUser.gender,
+					dob: authwatcher.lastLoggedInUser.dateofbirth,
+				};
+			}
+		}
+	}
 
 	// Call fullStop
 	yield call( fullStop );
@@ -58,12 +82,7 @@ function* yieldPlayStation( { station } ) {
 		yield call(
 			[ tdplayer, 'playAd' ],
 			'tap',
-			{
-				host: stream.stream_cmod_domain,
-				type: 'preroll',
-				format: 'vast',
-				stationId: stream.stream_tap_id,
-			},
+			adConfig,
 		);
 	}
 
@@ -74,6 +93,8 @@ function* yieldPlayStation( { station } ) {
 	) {
 		yield call( [ livePlayerLocalStorage, 'setItem' ], 'station', station );
 	}
+
+
 }
 
 /**
