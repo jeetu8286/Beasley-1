@@ -9,24 +9,15 @@ import { trailingslashit } from '../../library/strings';
  * We use this approach to minify action names in the production bundle and have
  * human friendly actions in the dev bundle. Use "s{x}" format to create new actions.
  */
-export const ACTION_INIT_PAGE =
-	'production' === process.env.NODE_ENV ? 's0' : 'PAGE_INIT';
-export const ACTION_LOADING_PAGE =
-	'production' === process.env.NODE_ENV ? 's1' : 'PAGE_LOADING';
-export const ACTION_LOADED_PAGE =
-	'production' === process.env.NODE_ENV ? 's2' : 'PAGE_LOADED';
-export const ACTION_LOADING_PARTIAL =
-	'production' === process.env.NODE_ENV ? 's3' : 'PARTIAL_LOADING';
-export const ACTION_LOADED_PARTIAL =
-	'production' === process.env.NODE_ENV ? 's4' : 'PARTIAL_LOADED';
-export const ACTION_LOAD_ERROR =
-	'production' === process.env.NODE_ENV ? 's5' : 'LOADING_ERROR';
-export const ACTION_HIDE_SPLASH_SCREEN =
-	'production' === process.env.NODE_ENV ? 's6' : 'HIDE_SPLASH_SCREEN';
-export const ACTION_UPDATE_NOTICE =
-	'production' === process.env.NODE_ENV ? 's7' : 'UPDATE_NOTICE ';
-export const ACTION_HISTORY_HTML_SNAPSHOT =
-	'production' === process.env.NODE_ENV ? 's10' : 'HISTORY_HTML_SNAPSHOT';
+export const ACTION_INIT_PAGE = 'PAGE_INIT';
+export const ACTION_LOADING_PAGE = 'PAGE_LOADING';
+export const ACTION_LOADED_PAGE = 'PAGE_LOADED';
+export const ACTION_LOADING_PARTIAL = 'PARTIAL_LOADING';
+export const ACTION_LOADED_PARTIAL = 'PARTIAL_LOADED';
+export const ACTION_LOAD_ERROR = 'LOADING_ERROR';
+export const ACTION_HIDE_SPLASH_SCREEN = 'HIDE_SPLASH_SCREEN';
+export const ACTION_UPDATE_NOTICE = 'UPDATE_NOTICE ';
+export const ACTION_HISTORY_HTML_SNAPSHOT = 'HISTORY_HTML_SNAPSHOT';
 
 export function initPage() {
 	const content = document.getElementById( 'content' );

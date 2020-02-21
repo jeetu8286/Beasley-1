@@ -46,8 +46,10 @@ export const DEFAULT_STATE = {
  */
 function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
+
+		// Catch in Sagas
 		case ACTION_INIT_PAGE:
-			manageScripts( action.scripts, state.scripts );
+			console.log( 'reducer: init page' );
 
 			return {
 				...state,
@@ -58,13 +60,12 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_LOADING_PARTIAL:
 		case ACTION_LOADING_PAGE:
-			if ( window.location.href !== action.url ) {
-				updateCorrelator();
-				clearTargeting();
-			}
+			console.log( 'reducer: loading page' );
 
-			NProgress.start();
-			return { ...state, url: action.url };
+			return {
+				...state,
+				url: action.url,
+			};
 
 		case ACTION_LOADED_PAGE: {
 			// do not accept action if user goes to another page before current page is loaded
