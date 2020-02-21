@@ -2,7 +2,6 @@
 
 import { all } from 'redux-saga/effects';
 import {
-	watchPlaybackStop,
 	watchInitTdPlayer,
 	watchPlayAudio,
 	watchPlayStation,
@@ -18,6 +17,7 @@ import {
 	watchAudioStop,
 	watchAdPlaybackStart,
 	watchAdPlaybackComplete,
+	watchAdPlaybackStop,
 } from './sagas/';
 
 /**
@@ -25,7 +25,6 @@ import {
  */
 export default function* rootSaga() {
 	yield all( [
-		watchPlaybackStop(),
 		watchInitTdPlayer(),
 		watchPlayAudio(),
 		watchPlayStation(),
@@ -41,5 +40,6 @@ export default function* rootSaga() {
 		watchAudioStop(),
 		watchAdPlaybackStart(),
 		watchAdPlaybackComplete(),
+		watchAdPlaybackStop(),
 	] );
 }

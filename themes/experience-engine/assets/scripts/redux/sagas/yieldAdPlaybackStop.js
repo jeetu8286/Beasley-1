@@ -1,5 +1,5 @@
 // Import saga effects
-import { put, takeLatest, select, call, fork, cancel } from 'redux-saga/effects';
+import { put, takeLatest, select, call } from 'redux-saga/effects';
 
 // Import action constant(s)
 import {
@@ -7,15 +7,15 @@ import {
 } from '../actions/player';
 
 /**
- * @function yieldPlaybackStop
+ * @function yieldAdPlaybackStop
  * Runs whenever ACTION_AD_PLAYBACK_STOP is dispatches
  *
  * @param {Object} action dispatched action
  * @param {Object} action.payload payload from dispatch
  */
-function* yieldPlaybackStop( { payload } ) {
+function* yieldAdPlaybackStop( { payload } ) {
 
-	console.log( 'yieldPlaybackStop' );
+	console.log( 'yieldAdPlaybackStop' );
 
 	// Destructure from payload
 	const { actionType } = payload;
@@ -59,9 +59,9 @@ function* yieldPlaybackStop( { payload } ) {
 }
 
 /**
- * @function watchPlaybackStop
+ * @function watchAdPlaybackStop
  * Watches for playback stop.
  */
-export default function* watchPlaybackStop() {
-	yield takeLatest( [ACTION_AD_PLAYBACK_STOP], yieldPlaybackStop );
+export default function* watchAdPlaybackStop() {
+	yield takeLatest( [ACTION_AD_PLAYBACK_STOP], yieldAdPlaybackStop );
 }

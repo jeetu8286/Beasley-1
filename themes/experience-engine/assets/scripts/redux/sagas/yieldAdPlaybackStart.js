@@ -2,8 +2,6 @@ import { call, takeLatest, put, delay } from 'redux-saga/effects';
 import { isAudioAdOnly } from '../../library/strings';
 import {
 	ACTION_AD_PLAYBACK_START,
-	ACTION_AD_PLAYBACK_STOP,
-	ACTION_AD_PLAYBACK_ERROR,
 } from '../actions/player';
 
 /**

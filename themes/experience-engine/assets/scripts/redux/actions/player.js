@@ -45,11 +45,12 @@ export const STATUSES = {
  * @param {*} actionType
  * @returns {Object} action payload
  * TODO: Originally this was clearing the timeout that was
- * set by the playbackStart action creator. I believe this was
+ * set by the adPlaybackStart action creator. I believe this was
  * explicitly called in order to clear the global timeout if
  * this was called directly.
  */
-function playbackStop( actionType ) {
+export function adPlaybackStop( actionType ) {
+	console.log( 'action: adPlaybackStop' );
 	return {
 		type: ACTION_AD_PLAYBACK_STOP,
 		payload: {
@@ -62,9 +63,10 @@ function playbackStop( actionType ) {
  * playbackStart action creator
  * @returns {Object} action payload
  * TODO: Originally this was setting a timeout that would
- * dispatch the playbackStop action creator after 70 seconds
+ * dispatch the adPlaybackStop action creator after 70 seconds
  */
-function playbackStart() {
+export function adPlaybackStart() {
+	console.log( 'action: adPlaybackStart' );
 	return {
 		type: ACTION_AD_PLAYBACK_START,
 	};
@@ -91,7 +93,7 @@ function errorCatcher( prefix ) {
 
 export function initTdPlayer( modules ) {
 	return ( dispatch, getState ) => {
-		let adPlaybackTimeout = false;
+
 		let adSyncedTimeout = false;
 
 		function dispatchStatusChange( { data } ) {
@@ -159,10 +161,10 @@ export function initTdPlayer( modules ) {
 				);
 				player.addEventListener( 'ad-break-synced-element', dispatchSyncedStart );
 
-				player.addEventListener( 'ad-playback-start', playbackStart );
+				player.addEventListener( 'ad-playback-start', adPlaybackStart );
 				player.addEventListener(
 					'ad-playback-complete',
-					playbackStop( ACTION_AD_PLAYBACK_COMPLETE ),
+					adPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ),
 				);
 				player.addEventListener(
 					'ad-playback-error',
@@ -178,10 +180,10 @@ export function initTdPlayer( modules ) {
 						* */
 						if ( window.beforeStreamStart ) {
 							window.beforeStreamStart( ( result ) => {
-								playbackStop( ACTION_AD_PLAYBACK_ERROR )();
+								adPlaybackStop( ACTION_AD_PLAYBACK_ERROR );
 							} );
 						} else {
-							playbackStop( ACTION_AD_PLAYBACK_ERROR )();
+							adPlaybackStop( ACTION_AD_PLAYBACK_ERROR );
 						}
 					},
 				);
