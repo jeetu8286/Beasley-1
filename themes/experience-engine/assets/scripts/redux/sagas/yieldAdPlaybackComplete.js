@@ -21,8 +21,7 @@ function* yieldAdPlaybackComplete() {
 
 	// Call loadNowPlaying after check
 	if (
-		station &&
-		'function' === typeof loadNowPlaying
+		station
 	) {
 		yield call( loadNowPlaying, station );
 	}
