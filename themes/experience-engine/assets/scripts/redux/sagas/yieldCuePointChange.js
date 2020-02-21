@@ -39,7 +39,7 @@ function* yieldCuePointChange( { cuePoint } ) {
 	if (
 		cuePoint &&
 		'podcast' === trackType &&
-		'function' === typeof lyticsTrack
+		'function' === typeof lyticsTrack.play
 	) {
 
 		// Call lyticsTrack
