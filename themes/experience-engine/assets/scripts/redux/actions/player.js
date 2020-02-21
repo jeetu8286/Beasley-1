@@ -1,3 +1,5 @@
+import store from '../store';
+
 /* eslint-disable sort-keys */
 
 export const ACTION_INIT_TDPLAYER = 'PLAYER_INIT_TDPLAYER';
@@ -37,6 +39,31 @@ export const STATUSES = {
 	STATION_NOT_FOUND: 'STATION_NOT_FOUND',
 	STREAM_GEO_BLOCKED: 'STREAM_GEO_BLOCKED',
 };
+
+/**
+ * playbackStop action creator
+ * @param {*} actionType
+ * @returns {Object} action payload
+ */
+function playbackStop( actionType ) {
+	return {
+		type: ACTION_AD_PLAYBACK_STOP,
+		payload: {
+			actionType,
+		},
+	};
+}
+
+/**
+ * playbackStart action creator
+ * @returns {Object} action payload
+ */
+function playbackStart() {
+	return {
+		type: ACTION_AD_PLAYBACK_START,
+	};
+}
+
 
 function dispatchStatusUpdate( dispatch, status ) {
 	return () => {
@@ -107,26 +134,6 @@ export function initTdPlayer( modules ) {
 			dispatch( { type: ACTION_AD_BREAK_SYNCED } );
 		}
 
-		function dispatchPlaybackStart() {
-			// hide after 1 min if it hasn't been hidden yet
-			clearTimeout( adPlaybackTimeout );
-			adPlaybackTimeout = setTimeout(
-				() => dispatchPlaybackStop( { type: ACTION_AD_PLAYBACK_ERROR } ),
-				70000,
-			);
-
-			dispatch( { type: ACTION_AD_PLAYBACK_START } );
-		}
-
-		function dispatchPlaybackStop( actionType ) {
-			return () => {
-				// Clear existing timeout
-				clearTimeout( adPlaybackTimeout );
-
-				dispatch( { type: ACTION_AD_PLAYBACK_STOP, payload: { actionType }  } );
-			};
-		}
-
 		const player = new window.TDSdk( {
 			configurationError: errorCatcher( 'Configuration Error' ),
 			coreModules: modules,
@@ -146,10 +153,10 @@ export function initTdPlayer( modules ) {
 				);
 				player.addEventListener( 'ad-break-synced-element', dispatchSyncedStart );
 
-				player.addEventListener( 'ad-playback-start', dispatchPlaybackStart );
+				player.addEventListener( 'ad-playback-start', playbackStart );
 				player.addEventListener(
 					'ad-playback-complete',
-					dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ),
+					playbackStop( ACTION_AD_PLAYBACK_COMPLETE ),
 				);
 				player.addEventListener(
 					'ad-playback-error',
@@ -165,10 +172,10 @@ export function initTdPlayer( modules ) {
 						* */
 						if ( window.beforeStreamStart ) {
 							window.beforeStreamStart( ( result ) => {
-								dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )();
+								playbackStop( ACTION_AD_PLAYBACK_ERROR )();
 							} );
 						} else {
-							dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )();
+							playbackStop( ACTION_AD_PLAYBACK_ERROR )();
 						}
 					},
 				);

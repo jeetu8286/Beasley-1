@@ -55,7 +55,6 @@ const adReset = {
 // Default state object
 export const DEFAULT_STATE = {
 	audio: '',
-	station: '',
 	trackType: '',
 	cuePoint: false,
 	time: 0,

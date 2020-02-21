@@ -1,5 +1,6 @@
 // Import saga effects
-import { put, takeLatest, select, call } from 'redux-saga/effects';
+import { put, takeLatest, select, call, fork, cancel } from 'redux-saga/effects';
+import { beginAdPlaybackStopTimer } from './index';
 
 // Import action constant(s)
 import {
@@ -16,6 +17,14 @@ import {
 function* yieldPlaybackStop( { payload } ) {
 
 	console.log( 'yieldPlaybackStop' );
+
+	// Fork the adPlaybackTimer spawned from yieldAdPlaybackStart
+	const adPlaybackTimer = yield fork( beginAdPlaybackStopTimer );
+
+	console.log( 'cancel adPlaybackTimer' );
+
+	// Cancel the adPlaybackTimer fork (similar to clearTimeout)
+	yield cancel( adPlaybackTimer );
 
 	// Destructure from payload
 	const { actionType } = payload;

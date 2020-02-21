@@ -15,4 +15,5 @@ export { default as watchSeekPosition } from './yieldSeekPosition';
 export { default as watchAudioStart } from './yieldAudioStart';
 export { default as watchAudioStop } from './yieldAudioStop';
 export { default as watchAdPlaybackStart } from './yieldAdPlaybackStart';
+export { beginAdPlaybackStopTimer } from './yieldAdPlaybackStart';
 export { default as watchAdPlaybackComplete } from './yieldAdPlaybackComplete';
