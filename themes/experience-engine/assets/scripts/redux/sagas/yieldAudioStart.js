@@ -32,7 +32,13 @@ function* yieldAudioStart() {
 		}
 
 		// Set inlineAudioInterval
-		inlineAudioInterval = yield call( [ window, 'setInterval' ], function() { sendInlineAudioPlaying(); }, interval * 60 * 1000 );
+		inlineAudioInterval = yield call(
+			[ window, 'setInterval' ],
+			function() {
+				sendInlineAudioPlaying();
+			},
+			interval * 60 * 1000,
+		);
 	}
 }
 
