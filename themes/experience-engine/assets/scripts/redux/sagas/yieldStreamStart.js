@@ -32,7 +32,13 @@ function* yieldStreamStart() {
 		}
 
 		// Set liveStreamInterval
-		liveStreamInterval = yield call ( [ window, 'setInterval' ], function() { sendLiveStreamPlaying(); }, interval * 60 * 1000 );
+		liveStreamInterval = yield call (
+			[ window, 'setInterval' ],
+			function() {
+				sendLiveStreamPlaying();
+			},
+			interval * 60 * 1000,
+		);
 	}
 }
 
