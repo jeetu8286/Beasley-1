@@ -52,9 +52,8 @@ const adReset = {
 	adSynced: false,
 };
 
-// Helper object to reset state
-// Good for re-use in the reducers
-const stateReset = {
+// Default state object
+export const DEFAULT_STATE = {
 	audio: '',
 	station: '',
 	trackType: '',
@@ -63,16 +62,11 @@ const stateReset = {
 	duration: 0,
 	playerType: null, // Store player type (omny, mp3, td)
 	userInteraction: false, // Store userInteraction state
-	...adReset,
-};
-
-// Default state object
-export const DEFAULT_STATE = {
-	...stateReset,
 	status: STATUSES.LIVE_STOP,
 	station: ( getInitialStation( streams ) || streams[0] || {} ).stream_call_letters,
 	volume: parseVolume( livePlayerLocalStorage.getItem( 'volume' ) || 100 ),
 	streams,
+	...adReset,
 };
 
 // Reducer
@@ -91,7 +85,6 @@ function reducer( state = {}, action = {} ) {
 			console.log( 'reducer: play audio' );
 			return {
 				...state,
-				...stateReset,
 				audio: action.audio,
 				trackType: action.trackType,
 			};
@@ -101,7 +94,6 @@ function reducer( state = {}, action = {} ) {
 			console.log( 'reducer: play station' );
 			return {
 				...state,
-				...stateReset,
 				station: action.station,
 			};
 
@@ -116,7 +108,6 @@ function reducer( state = {}, action = {} ) {
 			console.log( 'reducer: play omny' );
 			return {
 				...state,
-				...stateReset,
 				audio: action.audio,
 				trackType: action.trackType,
 			};
