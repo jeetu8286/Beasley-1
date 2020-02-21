@@ -44,6 +44,10 @@ export const STATUSES = {
  * playbackStop action creator
  * @param {*} actionType
  * @returns {Object} action payload
+ * TODO: Originally this was clearing the timeout that was
+ * set by the playbackStart action creator. I believe this was
+ * explicitly called in order to clear the global timeout if
+ * this was called directly.
  */
 function playbackStop( actionType ) {
 	return {
@@ -57,6 +61,8 @@ function playbackStop( actionType ) {
 /**
  * playbackStart action creator
  * @returns {Object} action payload
+ * TODO: Originally this was setting a timeout that would
+ * dispatch the playbackStop action creator after 70 seconds
  */
 function playbackStart() {
 	return {
