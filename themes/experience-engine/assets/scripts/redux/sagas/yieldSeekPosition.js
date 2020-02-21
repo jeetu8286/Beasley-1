@@ -3,8 +3,6 @@ import {
 	ACTION_SEEK_POSITION,
 } from '../actions/player';
 
-// TODO: Why no tdplayer here, but in others?
-
 /**
  * @function yieldSeekPosition
  * Generator runs whenever ACTION_SEEK_POSITION is dispatched
