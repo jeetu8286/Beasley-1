@@ -8,7 +8,7 @@ import {
 
 /**
  * @function yieldAdPlaybackStop
- * Runs whenever ACTION_AD_PLAYBACK_STOP is dispatches
+ * Runs whenever ACTION_AD_PLAYBACK_STOP is dispatched
  *
  * @param {Object} action dispatched action
  * @param {Object} action.payload payload from dispatch
@@ -33,7 +33,6 @@ function* yieldAdPlaybackStop( { payload } ) {
 	yield call( [ document.body.classList, 'remove' ], 'locked' );
 
 	// If global tdplayer exists
-	// TODO: Can't we just reference the state player?
 	if( tdplayer ) {
 
 		// If adPlayback and player.skipAd
@@ -49,6 +48,7 @@ function* yieldAdPlaybackStop( { payload } ) {
 			station &&
 			'function' === typeof tdplayer.play
 		) {
+			console.log( 'going to play station' );
 			yield call( [ tdplayer, 'play' ], { station } );
 		}
 

@@ -103,6 +103,8 @@ class LivePlayer extends Component {
 		}
 
 		const { online } = state;
+
+		console.log( 'hmmmm', props );
 		const {
 			station,
 			status,

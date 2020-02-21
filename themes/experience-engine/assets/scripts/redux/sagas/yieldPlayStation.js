@@ -30,7 +30,7 @@ const getStreamByStation = station =>
  */
 function* yieldPlayStation( { station } ) {
 
-	console.log( 'yieldPlayAudio' );
+	console.log( 'yieldPlayStation' );
 
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );

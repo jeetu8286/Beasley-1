@@ -7,7 +7,7 @@ import {
 } from '../actions/player';
 
 /**
- * @function yieldPlayStation
+ * @function yieldPlayOmny
  * Generator runs whenever ACTION_PLAY_OMNY is dispatched
  * NOTE: Omny doesn't support sound provider, thus we can't change/control volume :(
  *

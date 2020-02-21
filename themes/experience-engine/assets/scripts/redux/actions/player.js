@@ -149,11 +149,9 @@ export function initTdPlayer( modules ) {
 			playerReady() {
 				player.addEventListener( 'stream-status', dispatchStatusChange );
 				player.addEventListener( 'list-loaded', dispatchListLoaded );
-
 				player.addEventListener( 'track-cue-point', dispatchCuePoint );
 				player.addEventListener( 'speech-cue-point', dispatchCuePoint );
 				player.addEventListener( 'custom-cue-point', dispatchCuePoint );
-
 				player.addEventListener( 'ad-break-cue-point', dispatchCuePoint );
 				player.addEventListener(
 					'ad-break-cue-point-complete',
@@ -161,10 +159,10 @@ export function initTdPlayer( modules ) {
 				);
 				player.addEventListener( 'ad-break-synced-element', dispatchSyncedStart );
 
-				player.addEventListener( 'ad-playback-start', adPlaybackStart );
+				player.addEventListener( 'ad-playback-start', () => dispatch( adPlaybackStart() ) );
 				player.addEventListener(
 					'ad-playback-complete',
-					adPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ),
+					dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ) ),
 				);
 				player.addEventListener(
 					'ad-playback-error',
@@ -179,11 +177,9 @@ export function initTdPlayer( modules ) {
 						* ACTION_AD_PLAYBACK_ERROR type.
 						* */
 						if ( window.beforeStreamStart ) {
-							window.beforeStreamStart( ( result ) => {
-								adPlaybackStop( ACTION_AD_PLAYBACK_ERROR );
-							} );
+							window.beforeStreamStart( () => dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) ) );
 						} else {
-							adPlaybackStop( ACTION_AD_PLAYBACK_ERROR );
+							dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) );
 						}
 					},
 				);
