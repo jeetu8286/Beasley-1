@@ -17,7 +17,7 @@ import {
 	showCompleteSignupModal,
 } from '../redux/actions/modal';
 import { setUser, resetUser } from '../redux/actions/auth';
-import { loadPage, hideSplashScreen } from '../redux/actions/screen';
+import { fetchFeedsContent, hideSplashScreen } from '../redux/actions/screen';
 
 class UserNav extends Component {
 	static isHomepage() {
@@ -140,17 +140,7 @@ class UserNav extends Component {
 
 		/* eslint-disable sort-keys */
 		return user.getIdToken().then( token => {
-			return self.props.loadPage(
-				`${window.bbgiconfig.wpapi}feeds-content?device=other`,
-				{
-					suppressHistory: true,
-					fetchParams: {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-						body: `format=raw&authorization=${encodeURIComponent( token )}`,
-					},
-				},
-			);
+			return self.props.fetchFeedsContent( token );
 		} );
 	}
 
@@ -255,7 +245,7 @@ class UserNav extends Component {
 
 UserNav.propTypes = {
 	hideSplashScreen: PropTypes.func.isRequired,
-	loadPage: PropTypes.func.isRequired,
+	fetchFeedsContent: PropTypes.func.isRequired,
 	resetUser: PropTypes.func.isRequired,
 	setUser: PropTypes.func.isRequired,
 	showCompleteSignup: PropTypes.func.isRequired,
@@ -277,7 +267,7 @@ function mapDispatchToProps( dispatch ) {
 	return bindActionCreators(
 		{
 			hideSplashScreen,
-			loadPage,
+			fetchFeedsContent,
 			resetUser,
 			setUser,
 			showCompleteSignup: showCompleteSignupModal,

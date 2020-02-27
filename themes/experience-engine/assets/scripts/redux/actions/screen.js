@@ -5,8 +5,6 @@ import {
 	parseHtml,
 	pageview,
 	slugify,
-	isIE11,
-	trailingslashit,
 } from '../../library';
 
 export const ACTION_INIT_PAGE = 'PAGE_INIT';
@@ -18,6 +16,48 @@ export const ACTION_LOAD_ERROR = 'LOADING_ERROR';
 export const ACTION_HIDE_SPLASH_SCREEN = 'HIDE_SPLASH_SCREEN';
 export const ACTION_UPDATE_NOTICE = 'UPDATE_NOTICE ';
 export const ACTION_HISTORY_HTML_SNAPSHOT = 'HISTORY_HTML_SNAPSHOT';
+
+
+/**
+ * Parses and dispatches the raw's HTML responde to the store
+ *
+ * @param {function} dispatch Redux dispatch function
+ * @param {string} url The URL of the page
+ * @param {object} response The page raw HTMl responde
+ */
+function parseHtmlToStore( dispatch, url, response ) {
+	const urlSlugified = slugify( url );
+	const parsed = parseHtml( response.html );
+	const pageDocument = parsed.document;
+
+	dispatch( {
+		type: ACTION_LOADED_PAGE,
+		url,
+		...parsed,
+		isHome: pageDocument.body.classList.contains( 'home' ),
+	} );
+
+	dispatch( {
+		type: ACTION_HISTORY_HTML_SNAPSHOT,
+		uuid: urlSlugified,
+		data: response.html,
+	} );
+
+	return { urlSlugified, pageDocument };
+}
+
+/**
+ * Scrolls to the top of content.
+ */
+function scrollIntoView() {
+	// Get content container
+	const content = document.getElementById( 'content' );
+
+	// Scroll to top of content
+	if( content ) {
+		content.scrollIntoView( true );
+	}
+}
 
 /**
  * Parses the current content blocks for redux.
@@ -43,12 +83,39 @@ export function initPageLoaded( uuid, html ) {
 }
 
 /**
+ * Fetches the feed content for a user.
+ *
+ * @param {string} token Firease ID token
+ * @param {string} url   Optional URL to associate the feeds content to.
+ */
+export const fetchFeedsContent = ( token, url = 'feeds-content' ) => async dispatch => {
+	dispatch( { type: ACTION_LOADING_PAGE, url } );
+
+	try {
+		const response = await fetch(
+			`${window.bbgiconfig.wpapi}feeds-content?device=other`,
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: `authorization=${encodeURIComponent( token )}`,
+			},
+		).then( res => res.json() );
+
+		parseHtmlToStore( dispatch, url, response );
+
+		scrollIntoView();
+	} catch( error ) {
+		dispatch( { type: ACTION_LOAD_ERROR, error } );
+	}
+};
+
+/**
  * Fetches a page by calling the page endpoint.
  *
  * @param {string} url
  */
-export const fetchPage = ( url ) => async dispatch => {
-	const { history } = window;
+export const fetchPage = ( url, options = {} ) => async dispatch => {
+	const { history, location, pageXOffset, pageYOffset } = window;
 	const pageEndpoint = `${window.bbgiconfig.wpapi}\page?url=${encodeURIComponent( url )}&redirects=true`;
 
 	try {
@@ -63,159 +130,34 @@ export const fetchPage = ( url ) => async dispatch => {
 		}
 
 		if ( 200 === response.status || 201 === response.status ) {
-			const urlSlugified = slugify( url );
-			const parsed = parseHtml( response.html );
-			const pageDocument = parsed.document;
-
-			dispatch( {
-				type: ACTION_LOADED_PAGE,
-				url,
-				...parsed,
-				isHome: pageDocument.body.classList.contains( 'home' ),
-			} );
-
-			dispatch( {
-				type: ACTION_HISTORY_HTML_SNAPSHOT,
-				uuid: urlSlugified,
-				data: response.html,
-			} );
+			const { urlSlugified, pageDocument } = parseHtmlToStore( dispatch, url, response );
 
 			// TODO: move side effects to redux-saga.
-			dispatchEvent( 'pushstate' );
-			history.replaceState(
-				{ ...history.state, pageXOffset, pageYOffset },
-				document.title,
-				location.href,
-			);
-			history.pushState(
-				{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
-				pageDocument.title,
-				url,
-			);
+			if ( ! options.suppressHistory ) {
+				history.replaceState(
+					{ ...history.state, pageXOffset, pageYOffset },
+					document.title,
+					location.href,
+				);
+				history.pushState(
+					{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
+					pageDocument.title,
+					url,
+				);
 
-			document.title = pageDocument.title;
-			document.body.className = pageDocument.body.className;
+				dispatchEvent( 'pushstate' );
 
-			// Get content container
-			const content = document.getElementById( 'content' );
-
-			// Scroll to top of content
-			if( content ) {
-				content.scrollIntoView( true );
+				document.title = pageDocument.title;
+				document.body.className = pageDocument.body.className;
 			}
+
+			scrollIntoView();
 		}
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );
 	}
 
 };
-
-/**
- * @deprecated
- *
- * @param {*} url
- * @param {*} options
- */
-export function loadPage( url, options = {} ) {
-	const urlSlugified = slugify( url );
-	return dispatch => {
-		const { history, location, pageXOffset, pageYOffset } = window;
-		let redirecting = false;
-
-		dispatch( { type: ACTION_LOADING_PAGE, url } );
-
-		function onError( error ) {
-			// eslint-disable-next-line no-console
-			dispatch( { type: ACTION_LOAD_ERROR, error } );
-		}
-
-		function onSuccess( data ) {
-			if ( ! redirecting ) {
-				const parsed = parseHtml( data );
-				const pageDocument = parsed.document;
-
-				dispatch( {
-					type: ACTION_LOADED_PAGE,
-					url,
-					...parsed,
-					isHome: pageDocument.body.classList.contains( 'home' ),
-				} );
-
-				if ( !options.suppressHistory ) {
-					history.replaceState(
-						{ ...history.state, pageXOffset, pageYOffset },
-						document.title,
-						location.href,
-					);
-					history.pushState(
-						{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
-						pageDocument.title,
-						url,
-					);
-					dispatch( {
-						type: ACTION_HISTORY_HTML_SNAPSHOT,
-						uuid: urlSlugified,
-						data,
-					} );
-
-					dispatchEvent( 'pushstate' );
-
-					document.title = pageDocument.title;
-					document.body.className = pageDocument.body.className;
-				}
-
-				// Get content container
-				const content = document.getElementById( 'content' );
-
-				// Scroll to top of content
-				if( content ) {
-					content.scrollIntoView( true );
-				}
-			}
-		}
-
-		/**
-		 * If the fetch response is anything different than basic (very likely a opaqueredirect)
-		 * we force a full page refresh. 'basic' response type is the only request we can safely use to proceed
-		 * with our load page logic.
-		 *
-		 * @param {*} response
-		 */
-		const maybeRedirect = ( response ) => {
-			if ( isIE11() ) {
-				return response;
-			}
-
-			if ( 'basic' !== response.type ) {
-				window.location.href = response.url;
-				redirecting = true;
-			}
-			return response;
-		};
-
-		const fetchUrl = options.fetchUrlOverride || url;
-		let trailingslash = true;
-
-		if ( 'undefined' !== typeof options.trailingslash ) {
-			trailingslash = !!options.trailingslash;
-		}
-
-		/**
-		 * Given external redirects were not properly implemented within the hybrid theme approach. (see https://tenup.teamwork.com/#/tasks/18645110).
-		 * A little hack was implemented to get them working. We do a fetch request with 'redirect: "manual"' which
-		 * means fetch will not follow the redirect, if present. Then we check if the response was indeed a redirect
-		 * (opaqueredirect, or to be more generic anything different than basic).
-		 * In that case we simply force a full page refresh to let the server properly handle redirects.
-		 */
-		fetch( trailingslash ? trailingslashit( fetchUrl ) : fetchUrl, options.fetchParams || {
-			redirect: isIE11() ? 'follow' : 'manual', // IE11 does not support this work around.
-		} )
-			.then( maybeRedirect )
-			.then( response => response.text() )
-			.then( onSuccess )
-			.catch( onError );
-	};
-}
 
 /**
  * Parses the HTML and updated the current page.

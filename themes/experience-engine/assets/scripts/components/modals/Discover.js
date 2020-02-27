@@ -16,7 +16,7 @@ import DiscoveryFilters from './discovery/Filters';
 import { discovery } from '../../library/experience-engine';
 
 import { modifyUserFeeds, deleteUserFeed } from '../../redux/actions/auth';
-import { loadPage } from '../../redux/actions/screen';
+import { fetchFeedsContent } from '../../redux/actions/screen';
 
 class Discover extends Component {
 
@@ -110,14 +110,7 @@ class Discover extends Component {
 
 		if ( self.needReload && document.body.classList.contains( 'home' ) ) {
 			firebaseAuth.currentUser.getIdToken().then( ( token ) => {
-				self.props.loadPage( `${window.bbgiconfig.wpapi}feeds-content?device=other`, {
-					suppressHistory: true,
-					fetchParams: {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-						body: `format=raw&authorization=${encodeURIComponent( token )}`,
-					},
-				} );
+				self.props.fetchFeedsContent( token );
 			} );
 		}
 
@@ -242,7 +235,7 @@ Discover.propTypes = {
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 	close: PropTypes.func.isRequired,
-	loadPage: PropTypes.func.isRequired,
+	fetchFeedsContent: PropTypes.func.isRequired,
 	modifyUserFeeds: PropTypes.func.isRequired,
 	deleteUserFeed: PropTypes.func.isRequired,
 };
@@ -256,7 +249,7 @@ function mapStateToProps( { auth, screen } ) {
 
 function mapDispatchToProps( dispatch ) {
 	return bindActionCreators( {
-		loadPage,
+		fetchFeedsContent,
 		modifyUserFeeds,
 		deleteUserFeed,
 	}, dispatch );

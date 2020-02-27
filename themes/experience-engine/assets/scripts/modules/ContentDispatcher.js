@@ -9,8 +9,8 @@ import ContentBlock from '../components/content/ContentBlock';
 import {
 	initPage,
 	initPageLoaded,
-	loadPage,
 	fetchPage,
+	fetchFeedsContent,
 } from '../redux/actions/screen';
 import { untrailingslashit } from '../library/strings';
 import slugify from '../library/slugify';
@@ -138,7 +138,7 @@ class ContentDispatcher extends Component {
 	 * @param {event} e
 	 */
 	handleClick( e ) {
-		const { loadPage, fetchPage } = this.props;
+		const { fetchPage, fetchFeedsContent } = this.props;
 
 		const { target } = e;
 		let linkNode = target;
@@ -191,19 +191,10 @@ class ContentDispatcher extends Component {
 			firebaseAuth.currentUser
 				.getIdToken()
 				.then( token => {
-					loadPage( link, {
-						fetchUrlOverride: `${
-							window.bbgiconfig.wpapi
-						}feeds-content?device=other`,
-						fetchParams: {
-							method: 'POST',
-							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-							body: `format=raw&authorization=${encodeURIComponent( token )}`,
-						},
-					} );
+					fetchFeedsContent( token, link );
 				} )
 				.catch( () => {
-					loadPage( link );
+					fetchPage( link );
 				} );
 		} else {
 			fetchPage( link );
@@ -239,9 +230,9 @@ ContentDispatcher.propTypes = {
 	partials: PropTypes.shape( {} ).isRequired,
 	initPage: PropTypes.func.isRequired,
 	isHome: PropTypes.bool.isRequired,
-	loadPage: PropTypes.func.isRequired,
 	initPageLoaded: PropTypes.func.isRequired,
 	fetchPage: PropTypes.func.isRequired,
+	fetchFeedsContent: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -254,7 +245,7 @@ export default connect(
 	{
 		initPage,
 		initPageLoaded,
-		loadPage,
 		fetchPage,
+		fetchFeedsContent,
 	},
 )( ContentDispatcher );
