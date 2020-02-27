@@ -94,24 +94,6 @@ function updateDOM( pageDocument ) {
 }
 
 /**
- * Handles redirects
- *
- * @param {object} response
- */
-function handleRedirects( response ) {
-	let redirected = false;
-
-	if ( response.redirects && 0 < response.redirects.length ) {
-		redirected = true;
-		// handle redirects
-		// if internal redirect update history appropriately.
-		// if external use window.location.href to redirect the user.
-	}
-
-	return redirected;
-}
-
-/**
  * Parses the current content blocks for redux.
  */
 export function initPage() {
@@ -173,7 +155,6 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 		dispatch( { type: ACTION_LOADING_PAGE, url } );
 
 		const response = await fetch( pageEndpoint ).then( response => response.json() );
-		let redirected = handleRedirects( response );
 
 		// external redirect
 		if ( 403 === response.status ) {
@@ -187,16 +168,24 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 		}
 
 		const { pageDocument } = parseHtmlToStore( dispatch, url, response );
+		const { redirect } = response;
 
-		if ( ! options.suppressHistory && ! redirected ) {
+		scrollIntoView();
+
+		// last step is update history, return early if it's not needed.
+		if ( options.suppressHistory ) {
+			return;
+		}
+
+		// we want to update history with the redirected url.
+		if ( redirect && redirect.redirect_to ) {
+			updateHistory( redirect.redirect_to, pageDocument.title );
+		} else {
+			// otherwise update history with the regular url.
 			updateHistory( url, pageDocument.title );
 		}
 
-		if ( ! options.suppressHistory ) {
-			updateDOM( pageDocument );
-		}
-
-		scrollIntoView();
+		updateDOM( pageDocument );
 
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );

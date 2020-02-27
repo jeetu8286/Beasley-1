@@ -36,10 +36,6 @@ class Page extends Module {
 						'type'     => 'string',
 						'required' => true,
 					],
-					'redirects' => [
-						'type'     => 'boolean',
-						'required' => false,
-					]
 				]
 			]
 		);
@@ -92,11 +88,10 @@ class Page extends Module {
 	 */
 	public function get_page( \WP_REST_Request $request ) {
 		$url       = $request->get_param( 'url' );
-		$redirects = (bool) $request->get_param( 'redirects' );
 
 		$response = [
 			'status'    => '',
-			'redirects' => [],
+			'redirect'  => [],
 			'html'      => false,
 		];
 
@@ -106,22 +101,25 @@ class Page extends Module {
 			return $response;
 		}
 
-		$page_response = $this->fetch_page( $url );
+		/**
+		 * @var \Bbgi\Redirects $redirects
+		 */
+		$redirects = self::get( 'redirects' );
 
-		$response['html']   = wp_remote_retrieve_body( $page_response );
-		$response['status'] = $page_response['response']['code'];
+		$matched_redirect = $redirects->match_redirect( $url );
 
-		if ( $redirects ) {
-			/**
-			 * @var \Bbgi\Redirects $redirects
-			 */
-			$redirects = self::get( 'redirects' );
+		if ( $matched_redirect ) {
+			$response['redirect'] = $matched_redirect;
+		}
 
-			$matched_redirect = $redirects->match_redirect( $url );
+		// only fetch page if there's no redirect or we're redirecting to an internal page.
+		if ( ! $matched_redirect || $this->is_internal_url( $matched_redirect['redirect_to'] ) ) {
+			$page_response = $this->fetch_page( $url );
 
-			if ( $matched_redirect ) {
-				$response['redirects'][] = $matched_redirect;
-			}
+			$response['html']   = wp_remote_retrieve_body( $page_response );
+			$response['status'] = $page_response['response']['code'];
+		} else {
+			$response['status'] = 403;
 		}
 
 		return rest_ensure_response( $response );
