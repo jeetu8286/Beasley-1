@@ -156,12 +156,13 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 
 		const response = await fetch( pageEndpoint ).then( response => response.json() );
 
-		// external redirect
+		// external redirect.
 		if ( 403 === response.status ) {
 			window.location.href = url;
 			return;
 		}
 
+		// unsuccessful status code.
 		if ( 200 !== response.status && 201 !== response.status ) {
 			dispatch( { type: ACTION_LOAD_ERROR } );
 			return;
