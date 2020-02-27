@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import firebase from 'firebase';
 import trapHOC from '@10up/react-focus-trap-hoc';
 
+import { firebaseAuth } from '../../library/firebase';
 import Header from './elements/Header';
 import Alert from './elements/Alert';
 import CloseButton from './elements/Close';
@@ -109,9 +109,7 @@ class Discover extends Component {
 		const self = this;
 
 		if ( self.needReload && document.body.classList.contains( 'home' ) ) {
-			const auth = firebase.auth();
-
-			auth.currentUser.getIdToken().then( ( token ) => {
+			firebaseAuth.currentUser.getIdToken().then( ( token ) => {
 				self.props.loadPage( `${window.bbgiconfig.wpapi}feeds-content?device=other`, {
 					suppressHistory: true,
 					fetchParams: {

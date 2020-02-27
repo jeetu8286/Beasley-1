@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import firebase from 'firebase';
+import Swiper from 'swiper';
 import md5 from 'md5';
 
+import { firebaseAuth } from '../library/firebase';
 import ErrorBoundary from '../components/ErrorBoundary';
 import ContentBlock from '../components/content/ContentBlock';
 
@@ -16,7 +17,6 @@ import {
 	updatePage,
 } from '../redux/actions/screen';
 
-import { loadAssets, unloadScripts } from '../library/dom';
 import { untrailingslashit } from '../library/strings';
 import slugify from '../library/slugify';
 
@@ -78,24 +78,10 @@ class ContentDispatcher extends Component {
 	}
 
 	handleSliderLoad() {
-		const self = this;
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
-		const scripts = [
-			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js',
-		];
-
-		const styles = [
-			'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css',
-		];
-
 		if ( carousels.length ) {
-			loadAssets( scripts, styles )
-				.then( self.handleSliders.bind( self ) )
-				.catch( error => console.error( error ) ); // eslint-disable-line no-console
-		} else {
-			unloadScripts( scripts );
-			unloadScripts( styles );
+			this.handleSliders();
 		}
 	}
 
@@ -107,12 +93,6 @@ class ContentDispatcher extends Component {
 				const count = carousels[i].classList.contains( '-large' ) ? 2.2 : 4.2;
 				const group = carousels[i].classList.contains( '-large' ) ? 2 : 4;
 
-				if ( ! window.Swiper ) {
-					continue;
-				}
-
-				// @note This comes from handleSliderLoad
-				// eslint-disable-next-line no-undef
 				new Swiper( carousels[i], {
 					slidesPerView: count + 2,
 					slidesPerGroup: group + 2,
@@ -196,12 +176,11 @@ class ContentDispatcher extends Component {
 
 		// load user homepage if token is not empty and the next page is a homepage
 		// otherwise just load the next page
-		const auth = firebase.auth();
 		if (
 			untrailingslashit( origin ) === untrailingslashit( link.split( /[?#]/ )[0] ) &&
-			auth.currentUser
+			firebaseAuth.currentUser
 		) {
-			auth.currentUser
+			firebaseAuth.currentUser
 				.getIdToken()
 				.then( token => {
 					loadPage( link, {
@@ -237,30 +216,6 @@ class ContentDispatcher extends Component {
 		}
 	}
 
-	/*
-	shouldComponentUpdate( nextProps, nextState ) {
-		const currentContent = this.props.content || '';
-		const nextContent    = nextProps.content || '';
-
-		let currentEmbeds = this.props.embeds || [];
-		let nextEmbeds = nextProps.embeds || [];
-
-		currentEmbeds = JSON.stringify( currentEmbeds );
-		nextEmbeds    = JSON.stringify( nextEmbeds );
-
-		let currentPartials = this.props.partials || [];
-		let nextPartials = nextProps.partials || [];
-
-		currentPartials = JSON.stringify( currentPartials );
-		nextPartials    = JSON.stringify( nextPartials );
-
-		const currentHash = md5( currentContent + currentEmbeds + currentPartials );
-		const nextHash    = md5( nextContent + nextEmbeds + nextPartials );
-
-		return currentHash !== nextHash;
-	}
-	*/
-
 	render() {
 		const { content, embeds, partials, isHome } = this.props;
 		const blocks = [];
@@ -291,11 +246,13 @@ class ContentDispatcher extends Component {
 ContentDispatcher.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
-	history: PropTypes.arrayOf( PropTypes.object ),
+	history: PropTypes.shape( {
+		uuid: PropTypes.shape( { data: PropTypes.shape( {} ) } ),
+		replaceState: PropTypes.func,
+	} ),
 	partials: PropTypes.shape( {} ).isRequired,
 	hideModal: PropTypes.func.isRequired,
 	initPage: PropTypes.func.isRequired,
-	initPageHistory: PropTypes.func.isRequired,
 	isHome: PropTypes.bool.isRequired,
 	loadPage: PropTypes.func.isRequired,
 	updatePage: PropTypes.func.isRequired,
