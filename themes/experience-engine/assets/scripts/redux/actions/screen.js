@@ -48,6 +48,7 @@ export function initPageLoaded( uuid, html ) {
  * @param {string} url
  */
 export const fetchPage = ( url ) => async dispatch => {
+	const { history } = window;
 	const pageEndpoint = `${window.bbgiconfig.wpapi}\page?url=${encodeURIComponent( url )}&redirects=true`;
 
 	try {
@@ -55,8 +56,10 @@ export const fetchPage = ( url ) => async dispatch => {
 
 		const response = await fetch( pageEndpoint ).then( response => response.json() );
 
-		if ( response.redirects ) {
+		if ( response.redirects && 0 < response.redirects.length ) {
 			// handle redirects
+			// if internal redirect update history appropriately.
+			// if external use window.location.href to redirect the user.
 		}
 
 		if ( 200 === response.status || 201 === response.status ) {
@@ -71,6 +74,14 @@ export const fetchPage = ( url ) => async dispatch => {
 				isHome: pageDocument.body.classList.contains( 'home' ),
 			} );
 
+			dispatch( {
+				type: ACTION_HISTORY_HTML_SNAPSHOT,
+				uuid: urlSlugified,
+				data: response.html,
+			} );
+
+			// TODO: move side effects to redux-saga.
+			dispatchEvent( 'pushstate' );
 			history.replaceState(
 				{ ...history.state, pageXOffset, pageYOffset },
 				document.title,
@@ -81,13 +92,6 @@ export const fetchPage = ( url ) => async dispatch => {
 				pageDocument.title,
 				url,
 			);
-			dispatch( {
-				type: ACTION_HISTORY_HTML_SNAPSHOT,
-				uuid: urlSlugified,
-				data: response.html,
-			} );
-
-			dispatchEvent( 'pushstate' );
 
 			document.title = pageDocument.title;
 			document.body.className = pageDocument.body.className;
@@ -106,6 +110,12 @@ export const fetchPage = ( url ) => async dispatch => {
 
 };
 
+/**
+ * @deprecated
+ *
+ * @param {*} url
+ * @param {*} options
+ */
 export function loadPage( url, options = {} ) {
 	const urlSlugified = slugify( url );
 	return dispatch => {
