@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchPage } from '../redux/actions/screen';
 
 /**
- * Renders a empty component that listens to the SearchForm input.
+ * Renders an empty component that listens to the SearchForm input.
  *
  * This component does not mount or render anything into the dom, so it
  *
@@ -38,7 +38,7 @@ const SearchForm = ( { fetchPage } ) => {
 				searchForm.removeEventListener( 'submit', onSearchSubmit );
 			}
 		};
-	} );
+	}, [] );
 
 	return null;
 };
