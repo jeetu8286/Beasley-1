@@ -152,6 +152,8 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 			}
 
 			scrollIntoView();
+		} else {
+			dispatch( { type: ACTION_LOAD_ERROR } );
 		}
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );
@@ -177,6 +179,12 @@ export function updatePage( html ) {
 	};
 }
 
+/**
+ * Loads a partial page (e.g for LoadMode)
+ *
+ * @param {string} url
+ * @param {*} placeholder
+ */
 export function loadPartialPage( url, placeholder ) {
 	return dispatch => {
 		dispatch( { type: ACTION_LOADING_PARTIAL, url } );
@@ -223,7 +231,6 @@ export default {
 	hideSplashScreen,
 	initPage,
 	initPageLoaded,
-	loadPage,
 	loadPartialPage,
 	updateNotice,
 };
