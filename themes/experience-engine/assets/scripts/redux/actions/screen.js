@@ -60,6 +60,58 @@ function scrollIntoView() {
 }
 
 /**
+ * Updates window.history with new url and title
+ *
+ * @param {string} url The URL to update history with
+ * @param {object} pageDocument
+ */
+function updateHistory( url, title ) {
+	const { history, location, pageXOffset, pageYOffset } = window;
+	const uuid = slugify( url );
+
+	history.replaceState(
+		{ ...history.state, pageXOffset, pageYOffset },
+		document.title,
+		location.href,
+	);
+	history.pushState(
+		{ uuid, pageXOffset: 0, pageYOffset: 0 },
+		title,
+		url,
+	);
+
+	dispatchEvent( 'pushstate' );
+}
+
+/**
+ * Updates DOM related stuff for the loaded page document.
+ *
+ * @param {object} pageDocument
+ */
+function updateDOM( pageDocument ) {
+	document.title = pageDocument.title;
+	document.body.className = pageDocument.body.className;
+}
+
+/**
+ * Handles redirects
+ *
+ * @param {object} response
+ */
+function handleRedirects( response ) {
+	let redirected = false;
+
+	if ( response.redirects && 0 < response.redirects.length ) {
+		redirected = true;
+		// handle redirects
+		// if internal redirect update history appropriately.
+		// if external use window.location.href to redirect the user.
+	}
+
+	return redirected;
+}
+
+/**
  * Parses the current content blocks for redux.
  */
 export function initPage() {
@@ -115,46 +167,37 @@ export const fetchFeedsContent = ( token, url = 'feeds-content' ) => async dispa
  * @param {string} url
  */
 export const fetchPage = ( url, options = {} ) => async dispatch => {
-	const { history, location, pageXOffset, pageYOffset } = window;
 	const pageEndpoint = `${window.bbgiconfig.wpapi}\page?url=${encodeURIComponent( url )}&redirects=true`;
 
 	try {
 		dispatch( { type: ACTION_LOADING_PAGE, url } );
 
 		const response = await fetch( pageEndpoint ).then( response => response.json() );
+		let redirected = handleRedirects( response );
 
-		if ( response.redirects && 0 < response.redirects.length ) {
-			// handle redirects
-			// if internal redirect update history appropriately.
-			// if external use window.location.href to redirect the user.
+		// external redirect
+		if ( 403 === response.status ) {
+			window.location.href = url;
+			return;
 		}
 
-		if ( 200 === response.status || 201 === response.status ) {
-			const { urlSlugified, pageDocument } = parseHtmlToStore( dispatch, url, response );
-
-			// TODO: move side effects to redux-saga.
-			if ( ! options.suppressHistory ) {
-				history.replaceState(
-					{ ...history.state, pageXOffset, pageYOffset },
-					document.title,
-					location.href,
-				);
-				history.pushState(
-					{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
-					pageDocument.title,
-					url,
-				);
-
-				dispatchEvent( 'pushstate' );
-
-				document.title = pageDocument.title;
-				document.body.className = pageDocument.body.className;
-			}
-
-			scrollIntoView();
-		} else {
+		if ( 200 !== response.status && 201 !== response.status ) {
 			dispatch( { type: ACTION_LOAD_ERROR } );
+			return;
 		}
+
+		const { pageDocument } = parseHtmlToStore( dispatch, url, response );
+
+		if ( ! options.suppressHistory && ! redirected ) {
+			updateHistory( url, pageDocument.title );
+		}
+
+		if ( ! options.suppressHistory ) {
+			updateDOM( pageDocument );
+		}
+
+		scrollIntoView();
+
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );
 	}
