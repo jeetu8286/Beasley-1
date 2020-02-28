@@ -1,14 +1,3 @@
-import NProgress from 'nprogress';
-
-import {
-	manageScripts,
-	manageBbgiConfig,
-	hideSplashScreen,
-	updateTargeting,
-	clearTargeting,
-	updateCorrelator,
-} from '../utilities/';
-
 import {
 	ACTION_INIT_PAGE,
 	ACTION_LOADING_PARTIAL,
@@ -68,30 +57,12 @@ function reducer( state = {}, action = {} ) {
 			};
 
 		case ACTION_LOADED_PAGE: {
+
+			console.log( 'reducer: loaded page' );
 			// do not accept action if user goes to another page before current page is loaded
 			if ( state.url !== action.url && !action.force ) {
 				return state;
 			}
-
-			const { document: pageDocument } = action;
-
-			manageBbgiConfig( pageDocument );
-			updateTargeting();
-
-			if ( pageDocument ) {
-				const barId = 'wpadminbar';
-				const wpadminbar = document.getElementById( barId );
-				if ( wpadminbar ) {
-					const newbar = pageDocument.getElementById( barId );
-					if ( newbar ) {
-						wpadminbar.parentNode.replaceChild( newbar, wpadminbar );
-					}
-				}
-			}
-
-			NProgress.done();
-			manageScripts( action.scripts, state.scripts );
-			hideSplashScreen();
 
 			return {
 				...state,
@@ -105,16 +76,12 @@ function reducer( state = {}, action = {} ) {
 		}
 
 		case ACTION_LOADED_PARTIAL: {
+			console.log( 'reducer: loaded partial' );
+
 			// do not accept action if user goes to another page before current page is loaded
 			if ( state.url !== action.url ) {
 				return state;
 			}
-
-			const { document: pageDocument } = action;
-
-			NProgress.done();
-			manageBbgiConfig( pageDocument );
-			hideSplashScreen();
 
 			return {
 				...state,
@@ -130,19 +97,27 @@ function reducer( state = {}, action = {} ) {
 		}
 
 		case ACTION_LOAD_ERROR:
-			return { ...state, error: action.error };
-
-		case ACTION_HIDE_SPLASH_SCREEN:
-			hideSplashScreen();
-			return { ...state, splashScreen: false };
-
-		case ACTION_UPDATE_NOTICE: {
-			const notice = {
-				isOpen: action.isOpen,
-				message: action.message,
+			return {
+				...state,
+				error: action.error,
 			};
 
-			return { ...state, notice: notice };
+		case ACTION_HIDE_SPLASH_SCREEN:
+			console.log( 'reducer: hide splash screen' );
+
+			return {
+				...state,
+				splashScreen: false,
+			};
+
+		case ACTION_UPDATE_NOTICE: {
+			return {
+				...state,
+				notice: {
+					isOpen: action.isOpen,
+					message: action.message,
+				},
+			};
 		}
 
 		case ACTION_HISTORY_HTML_SNAPSHOT:

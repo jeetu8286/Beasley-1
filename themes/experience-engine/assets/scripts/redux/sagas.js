@@ -4,6 +4,9 @@ import { all } from 'redux-saga/effects';
 import {
 	watchInitPage,
 	watchLoadingPage,
+	watchLoadedPage,
+	watchLoadedPartial,
+	watchHideSplashScreen,
 } from './sagas/';
 
 /**
@@ -13,5 +16,8 @@ export default function* rootSaga() {
 	yield all( [
 		watchInitPage(),
 		watchLoadingPage(),
+		watchLoadedPage(),
+		watchLoadedPartial(),
+		watchHideSplashScreen(),
 	] );
 }
