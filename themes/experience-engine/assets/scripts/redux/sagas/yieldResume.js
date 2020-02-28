@@ -19,35 +19,20 @@ function* yieldResume() {
 	const {
 		trackType,
 		cuePoint,
+		player,
 	} = playerStore;
 
-	// Destructure from window
-	const {
-		mp3player,
-		omnyplayer,
-		tdplayer,
-	} = window;
+	// If player
+	if ( player ) {
 
-	// If mp3player
-	if (
-		mp3player &&
-		'function' === typeof mp3player.play
-	) {
-		yield call( [ mp3player, 'play' ] );
+		// If has play (omny mp3)
+		if ( 'function' === typeof player.play ) {
+			yield call( [ player, 'play' ] );
 
-	// Else if omnyplayer
-	} else if (
-		omnyplayer &&
-		'function' === typeof omnyplayer.play
-	) {
-		yield call( [ omnyplayer, 'play' ] );
-
-	// Else if tdplayer
-	} else if (
-		tdplayer &&
-		'function' === typeof tdplayer.resume
-	) {
-		yield call( [ tdplayer, 'resume' ] );
+		// If has resume (tdplayer)
+		} else if ( 'function' === typeof player.resume ) {
+			yield call( [ player, 'resume' ] );
+		}
 	}
 
 	if (
