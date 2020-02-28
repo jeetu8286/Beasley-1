@@ -19,43 +19,21 @@ function* yieldPause() {
 	const {
 		trackType,
 		cuePoint,
+		player,
 	} = playerStore;
 
-	// Destructure from window
-	// TODO: Open new PR for Handling Players.
-	// Brief discussion we abstract with a high level
-	// player API that can sniff the methods available
-	// and handle without the need to know what "type"
-	// of player is stored. Also considering storing player
-	// in state, but seems these libs add to global scope???
-	const {
-		mp3player,
-		omnyplayer,
-		tdplayer,
-	} = window;
-
-	// If mp3player
-	if (
-		mp3player &&
-		'function' === typeof mp3player.pause
-	) {
-		yield call( [ mp3player, 'pause' ] );
-
-	// Else if omnyplayer
-	} else if (
-		omnyplayer &&
-		'function' === typeof omnyplayer.pause
-	) {
-		yield call( [ omnyplayer, 'pause' ] );
-
-	// Else if tdplayer
-	} else if (
-		tdplayer &&
-		'function' === typeof tdplayer.stop
-	) {
-		yield call( [ tdplayer, 'stop' ] );
+	// Simplifying, by calling the state player and
+	// sniffing for its function type, we can call
+	// what is available (tdplayer has stop, omny mp3 have pause)
+	if ( player ) {
+		if ( 'function' === typeof player.pause ) {
+			yield call( [ player, 'pause' ] );
+		} else if ( 'function' === typeof player.stop ) {
+			yield call( [ player, 'stop' ] );
+		}
 	}
 
+	// Call lyticsTrack
 	if (
 		cuePoint &&
 		'podcast' === trackType &&
