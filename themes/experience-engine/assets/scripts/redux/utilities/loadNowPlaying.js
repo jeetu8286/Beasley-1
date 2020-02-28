@@ -3,10 +3,12 @@
  * Used to load a configuration to the NowPlaying API
  * TODO: Is this asynchronous??? Need docs
  *
- * @param {Object} player Player instance
  * @param {String} station Station identifier
+ * @param {Object} player Player instance
  */
 export default function loadNowPlaying( station, player ) {
+
+	console.log( 'loadNowPlaying', player );
 
 	// Destructure from window
 	const {
@@ -15,6 +17,7 @@ export default function loadNowPlaying( station, player ) {
 	} = window;
 
 	if ( station && player && !omnyplayer && !mp3player ) {
+		console.log( 'has station and player, fire player.NowPlayingApi' );
 		player.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
 	}
 }

@@ -26,11 +26,15 @@ function* yieldCuePointChange( { cuePoint } ) {
 	const {
 		station,
 		trackType,
+		player,
 	} = playerStore;
 
 	// If station
-	if( station ) {
-		yield call( loadNowPlaying, station );
+	if(
+		station &&
+		player
+	) {
+		yield call( loadNowPlaying, station, player );
 	}
 
 	// If action passes cuePoint

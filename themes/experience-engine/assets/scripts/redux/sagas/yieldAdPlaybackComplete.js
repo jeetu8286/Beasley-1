@@ -16,14 +16,20 @@ function* yieldAdPlaybackComplete() {
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
 
+	console.log( '???????????', playerStore.player );
+
 	// Get station from store
-	const { station } = playerStore;
+	const {
+		station,
+		player,
+	} = playerStore;
 
 	// Call loadNowPlaying after check
 	if (
-		station
+		station &&
+		player
 	) {
-		yield call( loadNowPlaying, station );
+		yield call( loadNowPlaying, station, player );
 	}
 }
 

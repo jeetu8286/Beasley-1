@@ -19,7 +19,7 @@ import {
  */
 function* yieldInitTdPlayer( { player = null } ) {
 
-	console.log( 'yieldInitTdPlayer' );
+	console.log( 'yieldInitTdPlayer', player );
 
 	// Set tdplayer global access
 	window.tdplayer = player;
@@ -42,7 +42,10 @@ function* yieldInitTdPlayer( { player = null } ) {
 	}
 
 	// If station, execute loadNowPlaying method
-	if ( station ) {
+	if (
+		station &&
+		player
+	) {
 
 		// Call loadNowPlaying and pass station and player
 		yield call( loadNowPlaying, station, player );

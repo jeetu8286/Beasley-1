@@ -77,7 +77,10 @@ function reducer( state = {}, action = {} ) {
 		// Returns unaffected state
 		case ACTION_INIT_TDPLAYER:
 			console.log( 'reducer: init tdplayer' );
-			return state;
+			return {
+				...state,
+				player: action.player,
+			};
 
 		// Catches in Saga Middleware
 		case ACTION_PLAY_AUDIO:
@@ -260,7 +263,7 @@ function reducer( state = {}, action = {} ) {
 		//Catches in Saga Middleware
 		case ACTION_AD_PLAYBACK_ERROR:
 		case ACTION_AD_PLAYBACK_COMPLETE: {
-			console.log( 'reducer: ad playback complete (or ad playback error)' );
+			console.log( 'reducer: ad playback complete or error' );
 			return {
 				...state,
 				adPlayback: false,
@@ -284,7 +287,7 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_UPDATE_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS: {
-			console.log( 'reducer: update user feeds (and set user feeds)' );
+			console.log( 'reducer: update or set user feeds' );
 
 			// Set newstreams from action.feeds
 			const newstreams = getNewsStreamsFromFeeds( action.feeds );

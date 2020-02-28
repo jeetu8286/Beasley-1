@@ -51,7 +51,7 @@ function* yieldPlayAudio( { player } ) {
 }
 
 /**
- * @function watchInitTdPlayer
+ * @function watchPlayAudio
  * Generator used to bind action and callback
  */
 export default function* watchPlayAudio() {
