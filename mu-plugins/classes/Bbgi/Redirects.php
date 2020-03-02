@@ -24,7 +24,6 @@ class Redirects extends \Bbgi\Module {
 	 * @return void
 	 */
 	public function register() {
-		return;
 		add_filter( 'post_link', [ $this, 'expand_redirect' ], 10, 2 );
 		add_filter( 'page_link', [ $this, 'expand_redirect' ], 10, 2);
 		add_filter( 'post_type_link', [ $this, 'expand_redirect' ], 10, 2 );
