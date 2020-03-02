@@ -104,8 +104,8 @@ class Page extends Module {
 			$response['status']               = 301;
 		}
 
-		// only fetch page if there's no redirect or we're redirecting to an internal page.
-		if ( ! $matched_redirect || $this->is_internal_url( $response['redirect']['url'] ) ) {
+		// only fetch page if there's no redirect
+		if ( ! $matched_redirect ) {
 			$page_response = $this->fetch_page( $url );
 
 			$response['html']   = wp_remote_retrieve_body( $page_response );
