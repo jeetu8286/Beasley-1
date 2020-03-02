@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import trapHOC from '@10up/react-focus-trap-hoc';
 
 import { firebaseAuth } from '../../library/firebase';
