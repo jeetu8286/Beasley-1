@@ -5,7 +5,6 @@ import {
 	parseHtml,
 	pageview,
 	slugify,
-	isAbsoluteUrl,
 } from '../../library';
 
 export const ACTION_INIT_PAGE = 'PAGE_INIT';
@@ -150,7 +149,7 @@ export const fetchFeedsContent = ( token, url = 'feeds-content' ) => async dispa
  * @param {string} url
  */
 export const fetchPage = ( url, options = {} ) => async dispatch => {
-	const pageEndpoint = `${window.bbgiconfig.wpapi}\page?url=${encodeURIComponent( url )}&redirects=true`;
+	const pageEndpoint = `${window.bbgiconfig.wpapi}\page?url=${encodeURIComponent( url )}`;
 
 	try {
 		dispatch( { type: ACTION_LOADING_PAGE, url } );
