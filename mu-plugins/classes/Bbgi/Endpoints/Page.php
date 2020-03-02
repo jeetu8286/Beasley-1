@@ -63,6 +63,22 @@ class Page extends Module {
 	}
 
 	/**
+	 * Checks if a URL is absoltue or not
+	 *
+	 * @param string $url
+	 *
+	 * @return boolean
+	 */
+	protected function is_absolute_url( $url ) {
+		$pattern = "/^(?:ftp|https?|feed)?:?\/\/(?:(?:(?:[\w\.\-\+!$&'\(\)*\+,;=]|%[0-9a-f]{2})+:)*
+		(?:[\w\.\-\+%!$&'\(\)*\+,;=]|%[0-9a-f]{2})+@)?(?:
+		(?:[a-z0-9\-\.]|%[0-9a-f]{2})+|(?:\[(?:[0-9a-f]{0,4}:)*(?:[0-9a-f]{0,4})\]))(?::[0-9]+)?(?:[\/|\?]
+		(?:[\w#!:\.\?\+\|=&@$'~*,;\/\(\)\[\]\-]|%[0-9a-f]{2})*)?$/xi";
+
+		return (bool) preg_match( $pattern, $url );
+	}
+
+	/**
 	 * Checks if the provided URL is internal or not.
 	 *
 	 * @param string $url The URL to check for.
@@ -91,7 +107,10 @@ class Page extends Module {
 
 		$response = [
 			'status'    => '',
-			'redirect'  => [],
+			'redirect'  => [
+				'internal' => false,
+				'url'      => '',
+			],
 			'html'      => false,
 		];
 
@@ -109,7 +128,11 @@ class Page extends Module {
 		$matched_redirect = $redirects->match_redirect( $url );
 
 		if ( $matched_redirect ) {
-			$response['redirect'] = $matched_redirect;
+			$is_absolute = $this->is_absolute_url( $matched_redirect );
+
+			$response['redirect']['url']      = $is_absolute ? $matched_redirect : home_url( $matched_redirect );
+			$response['redirect']['internal'] = ! $is_absolute;
+			$response['status']               = 301;
 		}
 
 		// only fetch page if there's no redirect or we're redirecting to an internal page.
@@ -118,8 +141,6 @@ class Page extends Module {
 
 			$response['html']   = wp_remote_retrieve_body( $page_response );
 			$response['status'] = $page_response['response']['code'];
-		} else {
-			$response['status'] = 403;
 		}
 
 		return rest_ensure_response( $response );

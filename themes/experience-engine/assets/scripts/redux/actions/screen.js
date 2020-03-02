@@ -5,6 +5,7 @@ import {
 	parseHtml,
 	pageview,
 	slugify,
+	isAbsoluteUrl,
 } from '../../library';
 
 export const ACTION_INIT_PAGE = 'PAGE_INIT';
@@ -156,9 +157,15 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 
 		const response = await fetch( pageEndpoint ).then( response => response.json() );
 
-		// external redirect.
-		if ( 403 === response.status ) {
-			window.location.href = url;
+		// redirects.
+		if ( [301, 302, 303,307, 308].includes( response.status ) ) {
+			if ( response.redirect.url && ! response.redirect.internal ) {
+				window.location.href = response.redirect;
+			} else{
+				// internal redirect
+				dispatch( fetchPage( response.redirect.url, options ) );
+			}
+
 			return;
 		}
 
