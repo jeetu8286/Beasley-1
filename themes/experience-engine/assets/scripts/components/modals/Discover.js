@@ -145,12 +145,11 @@ class Discover extends Component {
 	}
 
 	render() {
-		const { error, loading } = this.state;
+		const { error, loading, pageNum, pageSize } = this.state;
 		const { notice } = this.props;
 		const noticeClass = !notice.isOpen ? '' : '-visible';
 
 		let { filteredFeeds }       = this.state;
-		const { pageNum, pageSize } = this.state;
 		let totalPages              = filteredFeeds.length / pageSize;
 		let hasNextPage             = pageNum < totalPages;
 
