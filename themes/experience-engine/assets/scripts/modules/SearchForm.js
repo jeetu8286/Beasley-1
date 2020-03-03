@@ -12,7 +12,7 @@ import { fetchPage } from '../redux/actions/screen';
  * @param {object} props
  */
 const SearchForm = ( { fetchPage } ) => {
-	const onSearchSubmit = ( e ) => {
+	const onSearchSubmit = e => {
 		const { target } = e;
 
 		e.preventDefault();
