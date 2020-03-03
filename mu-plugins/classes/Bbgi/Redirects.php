@@ -228,6 +228,10 @@ class Redirects extends \Bbgi\Module {
 	 * @return array
 	 */
 	public function expand_nav_menu_links_redirects( $atts, \WP_Post $item ) {
+		if ( ! apply_filters( 'bbgi_expand_redirects', true ) ) {
+			return $atts;
+		}
+
 		$url = $atts['href'];
 
 		if ( $this->has_cached_redirect( $url ) ) {
