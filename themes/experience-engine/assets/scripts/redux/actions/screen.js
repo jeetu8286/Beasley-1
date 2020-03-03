@@ -155,14 +155,15 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 		dispatch( { type: ACTION_LOADING_PAGE, url } );
 
 		const response = await fetch( pageEndpoint ).then( response => response.json() );
+		const { redirect } = response;
 
 		// redirects.
 		if ( [301, 302, 303,307, 308].includes( response.status ) ) {
-			if ( response.redirect.url && ! response.redirect.internal ) {
+			if ( redirect.url && ! redirect.internal ) {
 				window.location.href = response.redirect;
 			} else{
 				// internal redirect
-				dispatch( fetchPage( response.redirect.url, options ) );
+				dispatch( fetchPage( redirect.url, options ) );
 			}
 
 			return;
@@ -175,7 +176,6 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 		}
 
 		const { pageDocument } = parseHtmlToStore( dispatch, url, response );
-		const { redirect } = response;
 
 		scrollIntoView();
 
@@ -184,14 +184,7 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 			return;
 		}
 
-		// we want to update history with the redirected url.
-		if ( redirect && redirect.redirect_to ) {
-			updateHistory( redirect.redirect_to, pageDocument.title );
-		} else {
-			// otherwise update history with the regular url.
-			updateHistory( url, pageDocument.title );
-		}
-
+		updateHistory( url, pageDocument.title );
 		updateDOM( pageDocument );
 
 	} catch( error ) {
