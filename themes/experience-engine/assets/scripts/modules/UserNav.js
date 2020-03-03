@@ -130,11 +130,7 @@ class UserNav extends Component {
 	 * Loads the Homepage feeds from the EE API proxy.
 	 */
 	loadHomepage( user ) {
-
-		/* eslint-disable sort-keys */
-		return user.getIdToken().then( token => {
-			return this.props.fetchFeedsContent( token );
-		} );
+		return user.getIdToken().then( this.props.fetchFeedsContent );
 	}
 
 	handleSignIn() {
