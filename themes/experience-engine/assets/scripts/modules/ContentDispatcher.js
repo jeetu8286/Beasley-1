@@ -31,6 +31,8 @@ class ContentDispatcher extends Component {
 	}
 
 	componentDidMount() {
+		const { initPage, initPageLoaded } = this.props;
+
 		window.addEventListener( 'click', this.onClick );
 		window.addEventListener( 'popstate', this.onPageChange );
 
@@ -50,8 +52,9 @@ class ContentDispatcher extends Component {
 		);
 
 		// load current page into the state
-		this.props.initPage();
-		this.props.initPageLoaded( uuid, html );
+		initPage();
+		initPageLoaded( uuid, html );
+
 		this.handleSliderLoad();
 	}
 
