@@ -14,7 +14,7 @@ export const DEFAULT_STATE = {
 	content: '',
 	embeds: [],
 	error: '',
-	history: [],
+	history: {},
 	isHome: false,
 	partials: {},
 	scripts: {},
