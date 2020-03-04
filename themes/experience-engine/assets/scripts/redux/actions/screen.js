@@ -1,14 +1,12 @@
-/* eslint-disable sort-keys */
-import { removeChildren, dispatchEvent } from '../../library/dom';
-import { getStateFromContent, parseHtml } from '../../library/html-parser';
-import { pageview } from '../../library/google-analytics';
-import slugify from '../../library/slugify';
-import { isIE11 } from '../../library/browser';
-import { trailingslashit } from '../../library/strings';
-/**
- * We use this approach to minify action names in the production bundle and have
- * human friendly actions in the dev bundle. Use "s{x}" format to create new actions.
- */
+import {
+	removeChildren,
+	dispatchEvent,
+	getStateFromContent,
+	parseHtml,
+	pageview,
+	slugify,
+} from '../../library';
+
 export const ACTION_INIT_PAGE = 'PAGE_INIT';
 export const ACTION_LOADING_PAGE = 'PAGE_LOADING';
 export const ACTION_LOADED_PAGE = 'PAGE_LOADED';
@@ -19,123 +17,189 @@ export const ACTION_HIDE_SPLASH_SCREEN = 'HIDE_SPLASH_SCREEN';
 export const ACTION_UPDATE_NOTICE = 'UPDATE_NOTICE ';
 export const ACTION_HISTORY_HTML_SNAPSHOT = 'HISTORY_HTML_SNAPSHOT';
 
+
+/**
+ * Parses and dispatches the raw's HTML responde to the store
+ *
+ * @param {function} dispatch Redux dispatch function
+ * @param {string} url The URL of the page
+ * @param {object} response The page raw HTMl responde
+ */
+function parseHtmlToStore( dispatch, url, response ) {
+	const urlSlugified = slugify( url );
+	const parsed = parseHtml( response.html );
+	const pageDocument = parsed.document;
+
+	dispatch( {
+		type: ACTION_LOADED_PAGE,
+		url,
+		...parsed,
+		isHome: pageDocument.body.classList.contains( 'home' ),
+	} );
+
+	dispatch( {
+		type: ACTION_HISTORY_HTML_SNAPSHOT,
+		uuid: urlSlugified,
+		data: response.html,
+	} );
+
+	return { urlSlugified, pageDocument };
+}
+
+/**
+ * Scrolls to the top of content.
+ */
+function scrollIntoView() {
+	// Get content container
+	const content = document.getElementById( 'content' );
+
+	// Scroll to top of content
+	if( content ) {
+		content.scrollIntoView( true );
+	}
+}
+
+/**
+ * Updates window.history with new url and title
+ *
+ * @param {string} url The URL to update history with
+ * @param {object} pageDocument
+ */
+function updateHistory( url, title ) {
+	const { history, location, pageXOffset, pageYOffset } = window;
+	const uuid = slugify( url );
+
+	history.replaceState(
+		{ ...history.state, pageXOffset, pageYOffset },
+		document.title,
+		location.href,
+	);
+	history.pushState(
+		{ uuid, pageXOffset: 0, pageYOffset: 0 },
+		title,
+		url,
+	);
+
+	dispatchEvent( 'pushstate' );
+}
+
+/**
+ * Updates DOM related stuff for the loaded page document.
+ *
+ * @param {object} pageDocument
+ */
+function updateDOM( pageDocument ) {
+	document.title = pageDocument.title;
+	document.body.className = pageDocument.body.className;
+}
+
+/**
+ * Parses the current content blocks for redux.
+ */
 export function initPage() {
 	const content = document.getElementById( 'content' );
 	const parsed = getStateFromContent( content );
+
 	// clean up content block for now, it will be poplated in the render function
 	removeChildren( content );
 
 	return { type: ACTION_INIT_PAGE, ...parsed };
 }
 
-export function initPageLoaded( uuid, data ) {
-	return { type: ACTION_HISTORY_HTML_SNAPSHOT, uuid, data };
+/**
+ * Sets the html snapshot of the given page.
+ *
+ * @param {string} uuid A slugifyed representation of the url
+ * @param {string} html The html of the page.
+ */
+export function initPageLoaded( uuid, html ) {
+	return { type: ACTION_HISTORY_HTML_SNAPSHOT, uuid, html };
 }
 
-export function loadPage( url, options = {} ) {
-	const urlSlugified = slugify( url );
-	return dispatch => {
-		const { history, location, pageXOffset, pageYOffset } = window;
-		let redirecting = false;
+/**
+ * Fetches the feed content for a user.
+ *
+ * @param {string} token Firease ID token
+ * @param {string} url   Optional URL to associate the feeds content to.
+ */
+export const fetchFeedsContent = ( token, url = 'feeds-content' ) => async dispatch => {
+	dispatch( { type: ACTION_LOADING_PAGE, url } );
 
+	try {
+		const response = await fetch(
+			`${window.bbgiconfig.wpapi}feeds-content?device=other`,
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: `authorization=${encodeURIComponent( token )}`,
+			},
+		).then( res => res.json() );
+
+		parseHtmlToStore( dispatch, url, response );
+
+		scrollIntoView();
+	} catch( error ) {
+		dispatch( { type: ACTION_LOAD_ERROR, error } );
+	}
+};
+
+/**
+ * Fetches a page by calling the page endpoint.
+ *
+ * @param {string} url
+ */
+export const fetchPage = ( url, options = {} ) => async dispatch => {
+	const pageEndpoint = `${window.bbgiconfig.wpapi}\page?url=${encodeURIComponent( url )}`;
+
+	try {
 		dispatch( { type: ACTION_LOADING_PAGE, url } );
 
-		function onError( error ) {
-			// eslint-disable-next-line no-console
-			dispatch( { type: ACTION_LOAD_ERROR, error } );
-		}
+		const response = await fetch( pageEndpoint ).then( response => response.json() );
+		const { redirect } = response;
 
-		function onSuccess( data ) {
-			if ( ! redirecting ) {
-				const parsed = parseHtml( data );
-				const pageDocument = parsed.document;
-
-				dispatch( {
-					type: ACTION_LOADED_PAGE,
-					url,
-					...parsed,
-					isHome: pageDocument.body.classList.contains( 'home' ),
-				} );
-
-				if ( !options.suppressHistory ) {
-					history.replaceState(
-						{ ...history.state, pageXOffset, pageYOffset },
-						document.title,
-						location.href,
-					);
-					history.pushState(
-						{ uuid: urlSlugified, pageXOffset: 0, pageYOffset: 0 },
-						pageDocument.title,
-						url,
-					);
-					dispatch( {
-						type: ACTION_HISTORY_HTML_SNAPSHOT,
-						uuid: urlSlugified,
-						data,
-					} );
-
-					dispatchEvent( 'pushstate' );
-
-					document.title = pageDocument.title;
-					document.body.className = pageDocument.body.className;
-				}
-
-				// Get content container
-				const content = document.getElementById( 'content' );
-
-				// Scroll to top of content
-				if( content ) {
-					content.scrollIntoView( true );
-				}
+		// redirects.
+		if ( [301, 302, 303,307, 308].includes( response.status ) ) {
+			if ( redirect.url && ! redirect.internal ) {
+				window.location.href = response.redirect;
+			} else{
+				// internal redirect
+				dispatch( fetchPage( redirect.url, options ) );
 			}
 
+			return;
 		}
 
-		/**
-		 * If the fetch response is anything different than basic (very likely a opaqueredirect)
-		 * we force a full page refresh. 'basic' response type is the only request we can safely use to proceed
-		 * with our load page logic.
-		 *
-		 * @param {*} response
-		 */
-		const maybeRedirect = ( response ) => {
-			if ( isIE11() ) {
-				return response;
-			}
-
-			if ( 'basic' !== response.type ) {
-				window.location.href = response.url;
-				redirecting = true;
-			}
-			return response;
-		};
-
-		const fetchUrl = options.fetchUrlOverride || url;
-		let trailingslash = true;
-
-		if ( 'undefined' !== typeof options.trailingslash ) {
-			trailingslash = !!options.trailingslash;
+		// unsuccessful status code.
+		if ( 200 !== response.status && 201 !== response.status ) {
+			dispatch( { type: ACTION_LOAD_ERROR } );
+			return;
 		}
 
-		/**
-		 * Given external redirects were not properly implemented within the hybrid theme approach. (see https://tenup.teamwork.com/#/tasks/18645110).
-		 * A little hack was implemented to get them working. We do a fetch request with 'redirect: "manual"' which
-		 * means fetch will not follow the redirect, if present. Then we check if the response was indeed a redirect
-		 * (opaqueredirect, or to be more generic anything different than basic).
-		 * In that case we simply force a full page refresh to let the server properly handle redirects.
-		 */
-		fetch( trailingslash ? trailingslashit( fetchUrl ) : fetchUrl, options.fetchParams || {
-			redirect: isIE11() ? 'follow' : 'manual', // IE11 does not support this work around.
-		} )
-			.then( maybeRedirect )
-			.then( response => response.text() )
-			.then( onSuccess )
-			.catch( onError );
-	};
-}
+		const { pageDocument } = parseHtmlToStore( dispatch, url, response );
 
-export function updatePage( data ) {
-	const parsed = parseHtml( data );
+		scrollIntoView();
+
+		// last step is update history, return early if it's not needed.
+		if ( options.suppressHistory ) {
+			return;
+		}
+
+		updateHistory( url, pageDocument.title );
+		updateDOM( pageDocument );
+
+	} catch( error ) {
+		dispatch( { type: ACTION_LOAD_ERROR, error } );
+	}
+
+};
+
+/**
+ * Parses the HTML and updated the current page.
+ *
+ * @param {string} Html of the page.
+ */
+export function updatePage( html ) {
+	const parsed = parseHtml( html );
 	const pageDocument = parsed.document;
 
 	document.body.className = pageDocument.body.className;
@@ -147,6 +211,12 @@ export function updatePage( data ) {
 	};
 }
 
+/**
+ * Loads a partial page (e.g for LoadMode)
+ *
+ * @param {string} url
+ * @param {*} placeholder
+ */
 export function loadPartialPage( url, placeholder ) {
 	return dispatch => {
 		dispatch( { type: ACTION_LOADING_PARTIAL, url } );
@@ -170,10 +240,16 @@ export function loadPartialPage( url, placeholder ) {
 	};
 }
 
+/**
+ * Hides the splash screen
+ */
 export function hideSplashScreen() {
 	return { type: ACTION_HIDE_SPLASH_SCREEN };
 }
 
+/**
+ * Updates the Notice component message.
+ */
 export function updateNotice( { isOpen, message } ) {
 	return {
 		type: ACTION_UPDATE_NOTICE,
@@ -187,7 +263,6 @@ export default {
 	hideSplashScreen,
 	initPage,
 	initPageLoaded,
-	loadPage,
 	loadPartialPage,
 	updateNotice,
 };

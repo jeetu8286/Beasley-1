@@ -11,13 +11,15 @@ import { Provider } from 'react-redux';
 // playerjs gets added to the window object
 // and is used to play omnyAudio programatically
 import 'player.js';
-
 import './library/geotargetly';
-import './polyfills/closest';
 import '../styles/main.css';
+import { closestPolyfill } from './library';
+
+closestPolyfill();
 
 import createStore from './redux/store';
 import App from './app';
+
 
 const root = document.createElement( 'div' );
 document.body.appendChild( root );

@@ -1,63 +1,64 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Swiper from 'swiper';
 import md5 from 'md5';
 
 import { firebaseAuth } from '../library/firebase';
-import ErrorBoundary from '../components/ErrorBoundary';
 import ContentBlock from '../components/content/ContentBlock';
-
-import { hideModal } from '../redux/actions/modal';
 import {
 	initPage,
 	initPageLoaded,
-	loadPage,
-	updatePage,
+	fetchPage,
+	fetchFeedsContent,
 } from '../redux/actions/screen';
-
 import { untrailingslashit } from '../library/strings';
 import slugify from '../library/slugify';
 
 const specialPages = ['/wp-admin/', '/wp-signup.php', '/wp-login.php'];
 
+/**
+ * The ContentDispatcher component is responsible for catching click on intenral links
+ * and trigger the page loading logic.
+ */
 class ContentDispatcher extends Component {
 	constructor( props ) {
 		super( props );
 
-		const self = this;
-		self.onClick = self.handleClick.bind( self );
-		self.onPageChange = self.handlePageChange.bind( self );
-		self.handleSliders = self.handleSliders.bind( self );
-		self.handleSliderLoad = self.handleSliderLoad.bind( self );
+		this.onClick = this.handleClick.bind( this );
+		this.handleSliders = this.handleSliders.bind( this );
+		this.handleSliderLoad = this.handleSliderLoad.bind( this );
 	}
 
 	componentDidMount() {
-		const self = this;
+		const { initPage, initPageLoaded } = this.props;
 
-		window.addEventListener( 'click', self.onClick );
-		window.addEventListener( 'popstate', self.onPageChange );
+		window.addEventListener( 'click', this.onClick );
+		window.addEventListener( 'popstate', this.onPageChange );
 
 		// replace current state with proper markup
 		const { history, location, pageXOffset, pageYOffset } = window;
 		const uuid = slugify( location.href );
-		const data = document.documentElement.outerHTML;
-		const state = {
-			uuid,
-			pageXOffset,
-			pageYOffset,
-		};
-		history.replaceState( state, document.title, location.href );
+		const html = document.documentElement.outerHTML;
+
+		history.replaceState(
+			{
+				uuid,
+				pageXOffset,
+				pageYOffset,
+			},
+			document.title,
+			location.href,
+		);
 
 		// load current page into the state
-		self.props.initPage();
-		self.props.initPageLoaded( uuid, data );
-		self.handleSliderLoad();
+		initPage();
+		initPageLoaded( uuid, html );
+
+		this.handleSliderLoad();
 	}
 
 	componentDidUpdate() {
-		const self = this;
 		const element = document.querySelector( '.scroll-to' );
 		if ( element ) {
 			let top = element.offsetTop;
@@ -69,7 +70,7 @@ class ContentDispatcher extends Component {
 
 			setTimeout( () => window.scrollTo( 0, top ), 500 );
 		}
-		self.handleSliderLoad();
+		this.handleSliderLoad();
 	}
 
 	componentWillUnmount() {
@@ -77,6 +78,9 @@ class ContentDispatcher extends Component {
 		window.removeEventListener( 'popstate', this.onPageChange );
 	}
 
+	/**
+	 * Handles setting up the sliders.
+	 */
 	handleSliderLoad() {
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
@@ -85,6 +89,9 @@ class ContentDispatcher extends Component {
 		}
 	}
 
+	/**
+	 * Setup the sliders with Swiper.js
+	 */
 	handleSliders() {
 		const carousels = document.querySelectorAll( '.swiper-container' );
 
@@ -128,9 +135,13 @@ class ContentDispatcher extends Component {
 		}
 	}
 
+	/**
+	 * Handle the click links and if it's an internal links trigger the page loading process.
+	 *
+	 * @param {event} e
+	 */
 	handleClick( e ) {
-		const self = this;
-		const { loadPage } = self.props;
+		const { fetchPage, fetchFeedsContent } = this.props;
 
 		const { target } = e;
 		let linkNode = target;
@@ -183,36 +194,13 @@ class ContentDispatcher extends Component {
 			firebaseAuth.currentUser
 				.getIdToken()
 				.then( token => {
-					loadPage( link, {
-						fetchUrlOverride: `${
-							window.bbgiconfig.wpapi
-						}feeds-content?device=other`,
-						fetchParams: {
-							method: 'POST',
-							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-							body: `format=raw&authorization=${encodeURIComponent( token )}`,
-						},
-					} );
+					fetchFeedsContent( token, link );
 				} )
 				.catch( () => {
-					loadPage( link );
+					fetchPage( link );
 				} );
 		} else {
-			loadPage( link );
-		}
-	}
-
-	handlePageChange( event ) {
-		if ( event && event.state ) {
-			const { uuid, pageXOffset, pageYOffset } = event.state;
-			// @jerome may not be needed and above can get const
-			// const { location } = window;
-			// const uuidOverride = slugify( location.href );
-			const { data } = this.props.history[uuid];
-			this.props.updatePage( data );
-			// scroll to the top of the page and remove modal (one way or other)
-			setTimeout( () => window.scrollTo( pageXOffset, pageYOffset ), 100 );
-			this.props.hideModal();
+			fetchPage( link );
 		}
 	}
 
@@ -221,21 +209,17 @@ class ContentDispatcher extends Component {
 		const blocks = [];
 
 		if ( !content || !content.length ) {
-			return false;
+			return null;
 		}
 
 		blocks.push(
-			// the composed ke is needed to make sure we use a new ContentBlock component when we replace the content of the current page
-			<ErrorBoundary key={`${window.location.href}-${md5( content )}`}>
-				<ContentBlock content={content} embeds={embeds} isHome={isHome} />,
-			</ErrorBoundary>,
+			// the composed key is needed to make sure we use a new ContentBlock component when we replace the content of the current page
+			<ContentBlock key={`${window.location.href}-${md5( content )}`} content={content} embeds={embeds} isHome={isHome} />,
 		);
 
 		Object.keys( partials ).forEach( key => {
 			blocks.push(
-				<ErrorBoundary key={key}>
-					<ContentBlock {...partials[key]} partial />
-				</ErrorBoundary>,
+				<ContentBlock key={key} {...partials[key]} partial />,
 			);
 		} );
 
@@ -246,42 +230,25 @@ class ContentDispatcher extends Component {
 ContentDispatcher.propTypes = {
 	content: PropTypes.string.isRequired,
 	embeds: PropTypes.arrayOf( PropTypes.object ).isRequired,
-	history: PropTypes.shape( {
-		uuid: PropTypes.shape( { data: PropTypes.shape( {} ) } ),
-		replaceState: PropTypes.func,
-	} ),
 	partials: PropTypes.shape( {} ).isRequired,
-	hideModal: PropTypes.func.isRequired,
 	initPage: PropTypes.func.isRequired,
 	isHome: PropTypes.bool.isRequired,
-	loadPage: PropTypes.func.isRequired,
-	updatePage: PropTypes.func.isRequired,
+	initPageLoaded: PropTypes.func.isRequired,
+	fetchPage: PropTypes.func.isRequired,
+	fetchFeedsContent: PropTypes.func.isRequired,
 };
 
-function mapStateToProps( { screen } ) {
-	return {
-		history: screen.history,
+export default connect(
+	( { screen } ) => ( {
 		content: screen.content,
 		embeds: screen.embeds,
 		isHome: screen.isHome,
 		partials: screen.partials,
-	};
-}
-
-function mapDispatchToProps( dispatch ) {
-	return bindActionCreators(
-		{
-			hideModal,
-			initPage,
-			initPageLoaded,
-			loadPage,
-			updatePage,
-		},
-		dispatch,
-	);
-}
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
+	} ),
+	{
+		initPage,
+		initPageLoaded,
+		fetchPage,
+		fetchFeedsContent,
+	},
 )( ContentDispatcher );
