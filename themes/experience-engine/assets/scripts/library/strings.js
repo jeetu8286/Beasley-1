@@ -10,6 +10,25 @@ export function untrailingslashit( url ) {
 export function trailingslashit( url ) {
 	return untrailingslashit( url ) + '/';
 }
+/**
+ * Checks if a URL is absolute or not.
+ *
+ * @param {string} url
+ */
+export function isAbsoluteUrl( url ) {
+	if ( 'string' !== typeof url ) {
+		throw new TypeError( `Expected a \`string\`, got \`${typeof url}\`` );
+	}
+
+	// Don't match Windows paths `c:\`
+	if ( /^[a-zA-Z]:\\/.test( url ) ) {
+		return false;
+	}
+
+	// Scheme: https://tools.ietf.org/html/rfc3986#section-3.1
+	// Absolute URL: https://tools.ietf.org/html/rfc3986#section-4.3
+	return /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test( url );
+}
 
 export function isAudioAdOnly() {
 	const { currentAdModule } = window.tdplayer.MediaPlayer.adManager || false;
