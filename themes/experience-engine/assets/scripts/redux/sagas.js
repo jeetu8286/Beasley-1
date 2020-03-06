@@ -18,6 +18,11 @@ import {
 	watchAdPlaybackStart,
 	watchAdPlaybackComplete,
 	watchAdPlaybackStop,
+	watchInitPage,
+	watchLoadingPage,
+	watchLoadedPage,
+	watchLoadedPartial,
+	watchHideSplashScreen,
 } from './sagas/';
 
 /**
@@ -41,5 +46,10 @@ export default function* rootSaga() {
 		watchAdPlaybackStart(),
 		watchAdPlaybackComplete(),
 		watchAdPlaybackStop(),
+		watchInitPage(),
+		watchLoadingPage(),
+		watchLoadedPage(),
+		watchLoadedPartial(),
+		watchHideSplashScreen(),
 	] );
 }
