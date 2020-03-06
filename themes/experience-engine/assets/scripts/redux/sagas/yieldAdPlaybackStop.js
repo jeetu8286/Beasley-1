@@ -24,32 +24,34 @@ function* yieldAdPlaybackStop( { payload } ) {
 	const playerStore = yield select( ( { player } ) => player );
 
 	// Destructure from playerStore
-	const { adPlayback, station } = playerStore;
-
-	// Destructure tdplayer from window
-	const { tdplayer } = window; // Global player
+	const {
+		adPlayback,
+		station,
+		player,
+		playerType,
+	} = playerStore;
 
 	// Update DOM
 	yield call( [ document.body.classList, 'remove' ], 'locked' );
 
 	// If global tdplayer exists
-	if( tdplayer ) {
+	if( 'tdplayer' === playerType ) {
 
 		// If adPlayback and player.skipAd
 		if(
 			adPlayback &&
-			'function' === typeof tdplayer.skipAd
+			'function' === typeof player.skipAd
 		) {
-			yield call( [ tdplayer, 'skipAd' ] );
+			yield call( [ player, 'skipAd' ] );
 		}
 
 		// If station and player.skipAd
 		if(
 			station &&
-			'function' === typeof tdplayer.play
+			'function' === typeof player.play
 		) {
 			console.log( 'going to play station' );
-			yield call( [ tdplayer, 'play' ], { station } );
+			yield call( [ player, 'play' ], { station } );
 		}
 
 	}

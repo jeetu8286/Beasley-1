@@ -8,11 +8,8 @@ import {
 /**
  * @function yieldPlayAudio
  * Generator runs whenever ACTION_PLAY_AUDIO is dispatched
- *
- * @param {Object} action dispatched action
- * @param {Object} action.player player from action payload
  */
-function* yieldPlayAudio( { player } ) {
+function* yieldPlayAudio() {
 
 	console.log( 'yieldPlayAudio' );
 
@@ -20,20 +17,19 @@ function* yieldPlayAudio( { player } ) {
 	const playerStore = yield select( ( { player } ) => player );
 
 	// Destructure playerStore
-	const { volume = null } = playerStore;
+	const {
+		volume = null,
+		player,
+	} = playerStore;
 
 	// Call fullStop method
-	yield call( fullStop );
+	yield call( fullStop, playerStore );
 
-	// If player exists from dispatch
+	// If player and volume
 	if(
 		player &&
 		volume
 	) {
-
-		// Set global reference
-		// TODO: Is global reference required? Reference player
-		window.mp3player = player;
 
 		// Store player type in state
 		yield put( { type: ACTION_SET_PLAYER_TYPE, payload: 'mp3player' } );

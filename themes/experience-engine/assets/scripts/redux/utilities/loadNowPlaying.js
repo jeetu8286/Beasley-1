@@ -6,17 +6,28 @@
  * @param {String} station Station identifier
  * @param {Object} player Player instance
  */
-export default function loadNowPlaying( station, player ) {
+export default function loadNowPlaying( { station = null, player = null, playerType = null } ) {
 
-	console.log( 'loadNowPlaying', player );
+	console.log( 'loadNowPlaying', player, playerType, station );
 
-	// Destructure from window
-	const {
-		omnyplayer,
-		mp3player,
-	} = window;
+	// If not tdplayer type, abandon
+	// Only tdplayer contains the NowPlayingApi
+	if (
+		!playerType ||
+		'tdplayer' !== playerType
+	) {
+		return;
+	}
 
-	if ( station && player && !omnyplayer && !mp3player ) {
+	// If station and player
+	// If player.NowPlayingApi
+	// If load function exists
+	if (
+		station &&
+		player &&
+		player.NowPlayingApi &&
+		'function' === typeof player.NowPlayingApi.load
+	) {
 		console.log( 'has station and player, fire player.NowPlayingApi' );
 		player.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
 	}

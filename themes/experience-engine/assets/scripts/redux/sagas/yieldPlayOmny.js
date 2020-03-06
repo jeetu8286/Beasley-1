@@ -1,5 +1,5 @@
 
-import { call, takeLatest, put } from 'redux-saga/effects';
+import { call, takeLatest, put, select } from 'redux-saga/effects';
 import { fullStop } from '../utilities/';
 import {
 	ACTION_PLAY_OMNY,
@@ -18,11 +18,11 @@ function* yieldPlayOmny( { player } ) {
 
 	console.log( 'yieldPlayOmny' );
 
-	// Call fullStop
-	yield call( fullStop );
+	// Player store from state
+	const playerStore = yield select( ( { player } ) => player );
 
-	// Set global onmyplayer // TODO: Do we need this window reference
-	window.omnyplayer = player;
+	// Call fullStop
+	yield call( fullStop, playerStore );
 
 	// Store player type in state
 	yield put( { type: ACTION_SET_PLAYER_TYPE, payload: 'omnyplayer' } );

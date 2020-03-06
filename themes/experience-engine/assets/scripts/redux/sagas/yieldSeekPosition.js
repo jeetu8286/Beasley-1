@@ -13,20 +13,22 @@ import {
 function* yieldSeekPosition( { position } ) {
 	console.log( 'yieldSeekPosition' );
 
-	// Destructure from window
+	// Get player from state
+	const playerStore = yield select( ( { player } ) => player );
+
+	// Destructure player and type
 	const {
-		mp3player,
-		omnyplayer,
-	} = window;
+		player,
+		playerType,
+	} = playerStore;
 
-	if ( mp3player ) {
-		mp3player.currentTime = position;
+	// If mp3player
+	if ( 'mp3player' === playerType ) {
+		player.currentTime = position;
 
-	} else if ( omnyplayer ) {
-
-		if( 'function' === typeof omnyplayer.setCurrentTime ) {
-			yield call( [ omnyplayer, 'setCurrentTime' ], position );
-		}
+	// If omnyplayer
+	} else if ( 'omnyplayer' === playerType ) {
+		yield call( [ player, 'setCurrentTime' ], position );
 	}
 
 }

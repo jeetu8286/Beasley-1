@@ -22,20 +22,13 @@ function* yieldCuePointChange( { cuePoint } ) {
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 
+	// Call loadNowPlaying
+	yield call( loadNowPlaying, playerStore );
+
 	// Destructure
 	const {
-		station,
 		trackType,
-		player,
 	} = playerStore;
-
-	// If station
-	if(
-		station &&
-		player
-	) {
-		yield call( loadNowPlaying, station, player );
-	}
 
 	// If action passes cuePoint
 	// If trackType in state is podcast

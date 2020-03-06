@@ -36,14 +36,17 @@ function* yieldPlayStation( { station } ) {
 	const playerStore = yield select( ( { player } ) => player );
 
 	// Get streams from state
-	const { streams = [] } = playerStore;
+	const {
+		streams = [],
+		player,
+		playerType,
+	} = playerStore;
 
 	// Find matching stream
 	const stream = yield call( [ streams, 'find' ], getStreamByStation( station ) );
 
 	// Destructure from window
 	const {
-		tdplayer, // Global player
 		authwatcher, // Triton
 	} = window;
 
@@ -71,16 +74,16 @@ function* yieldPlayStation( { station } ) {
 	}
 
 	// Call fullStop
-	yield call( fullStop );
+	yield call( fullStop, playerStore );
 
 	// Call tdplayer.playAd
 	if (
-		tdplayer &&
+		'tdplayer' === playerType &&
 		stream &&
-		'function' === typeof tdplayer.playAd
+		'function' === typeof player.playAd
 	) {
 		yield call(
-			[ tdplayer, 'playAd' ],
+			[ player, 'playAd' ],
 			'tap',
 			adConfig,
 		);

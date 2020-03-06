@@ -13,16 +13,10 @@ import {
 /**
  * @function yieldInitTdPlayer
  * Generator runs whenever ACTION_INIT_TDPLAYER is dispatched
- *
- * @param {Object} action dispatched action
- * @param {Object|null} action.player player in payload
  */
-function* yieldInitTdPlayer( { player = null } ) {
+function* yieldInitTdPlayer() {
 
-	console.log( 'yieldInitTdPlayer', player );
-
-	// Set tdplayer global access
-	window.tdplayer = player;
+	console.log( 'yieldInitTdPlayer' );
 
 	// Store player type in state
 	yield put( { type: ACTION_SET_PLAYER_TYPE, payload: 'tdplayer' } );
@@ -30,8 +24,12 @@ function* yieldInitTdPlayer( { player = null } ) {
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
 
-	// Destructure playerStore
-	const { volume, station } = playerStore;
+	// Destructure
+	const {
+		volume,
+		player,
+	} = playerStore;
+
 
 	// If player and volume, set volume
 	if (
@@ -41,15 +39,8 @@ function* yieldInitTdPlayer( { player = null } ) {
 		yield call( [ player, 'setVolume' ], ( volume / 100 ) );
 	}
 
-	// If station, execute loadNowPlaying method
-	if (
-		station &&
-		player
-	) {
-
-		// Call loadNowPlaying and pass station and player
-		yield call( loadNowPlaying, station, player );
-	}
+	// Call loadNowPlaying
+	yield call( loadNowPlaying, playerStore );
 }
 
 /**

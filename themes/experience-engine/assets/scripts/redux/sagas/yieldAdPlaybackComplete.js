@@ -16,21 +16,9 @@ function* yieldAdPlaybackComplete() {
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
 
-	console.log( '???????????', playerStore.player );
+	// Call loadNowPlaying
+	yield call( loadNowPlaying, playerStore );
 
-	// Get station from store
-	const {
-		station,
-		player,
-	} = playerStore;
-
-	// Call loadNowPlaying after check
-	if (
-		station &&
-		player
-	) {
-		yield call( loadNowPlaying, station, player );
-	}
 }
 
 /**

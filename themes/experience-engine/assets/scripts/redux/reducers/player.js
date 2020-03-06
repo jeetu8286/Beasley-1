@@ -76,7 +76,7 @@ function reducer( state = {}, action = {} ) {
 		// Catches in Saga Middleware
 		// Returns unaffected state
 		case ACTION_INIT_TDPLAYER:
-			console.log( 'reducer: init tdplayer' );
+			console.log( 'reducer: init tdplayer', state );
 			return {
 				...state,
 				player: action.player,
@@ -203,11 +203,8 @@ function reducer( state = {}, action = {} ) {
 		case ACTION_SEEK_POSITION: {
 			console.log( 'reducer: seek position' );
 
-			// Destructure from window
-			const {
-				mp3player,
-				omnyplayer,
-			} = window;
+			// Destructure for playerType check
+			const { playerType } = state;
 
 			// Set initialUpdate userInteraction to true
 			// This will always happen here
@@ -216,7 +213,10 @@ function reducer( state = {}, action = {} ) {
 			};
 
 			// If mp3player or omnyplayer defined
-			if ( mp3player || omnyplayer ) {
+			if (
+				'mp3player' === playerType ||
+				'omnyplayer' === playerType
+			) {
 				stateUpdate.time = +action.position;
 			}
 			return {

@@ -102,6 +102,8 @@ class LivePlayer extends Component {
 			return false;
 		}
 
+		console.log( 'fdhfkjslkjfsdkjhflskjdfh ', this.props.player );
+
 		const { online } = state;
 
 		const {
@@ -113,6 +115,8 @@ class LivePlayer extends Component {
 			pause,
 			resume,
 			duration,
+			player,
+			playerType,
 		} = props;
 
 		let notification = false;
@@ -140,7 +144,7 @@ class LivePlayer extends Component {
 			<Fragment>
 				{notification}
 
-				<div className={`preroll-wrapper${adPlayback && !isAudioAdOnly() ? ' -active' : ''}`}>
+				<div className={`preroll-wrapper${adPlayback && !isAudioAdOnly( { player, playerType } ) ? ' -active' : ''}`}>
 					<div className="preroll-container">
 						<div id="td_container" className="preroll-player"></div>
 						<div className="preroll-notification">Live stream will be available after this brief ad from our sponsors</div>
@@ -220,10 +224,14 @@ LivePlayer.propTypes = {
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
 	duration: PropTypes.number.isRequired,
+	player: PropTypes.object,
+	playerType: PropTypes.string,
 };
 
 function mapStateToProps( { player } ) {
 	return {
+		player: player.player,
+		playerType: player.playerType,
 		station: player.station,
 		status: player.status,
 		adPlayback: player.adPlayback,
