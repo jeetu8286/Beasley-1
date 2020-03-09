@@ -60,17 +60,7 @@ class LivePlayer extends Component {
 	 * Sets up the TdPlayer
 	 */
 	setUpPlayer() {
-		const {
-			dispatchStatusUpdate,
-			dispatchNowPlayingLoaded,
-			dispatchCuePoint ,
-			dispatchAdPlaybackStart,
-			dispatchAdPlaybackStop,
-			dispatchStreamStart,
-			dispatchStreamStop,
-			dispatchLiveStreamSyncedStart,
-			setPlayer,
-		} = this.props;
+		const { initTdPlayer } = this.props;
 
 		// @see: https://userguides.tritondigital.com/spc/tdplay2/
 		const tdmodules = [];
@@ -102,44 +92,7 @@ class LivePlayer extends Component {
 			elements: [{ id: 'sync-banner', width: 320, height: 50 }],
 		} );
 
-		this.livePlayer = new window.TDSdk( {
-			configurationError: actions.errorCatcher( 'Configuration Error' ),
-			coreModules: tdmodules,
-			moduleError: actions.errorCatcher( 'Module Error' ),
-		} );
-
-		this.livePlayer.addEventListener( 'stream-status', ( { data } ) => dispatchStatusUpdate( data.code ) );
-		this.livePlayer.addEventListener( 'list-loaded', ( { data } ) => dispatchNowPlayingLoaded( data ) );
-		this.livePlayer.addEventListener( 'track-cue-point', ( { data } ) => dispatchCuePoint( data ) );
-		this.livePlayer.addEventListener( 'speech-cue-point', ( { data } ) => dispatchCuePoint( data ) );
-		this.livePlayer.addEventListener( 'custom-cue-point', ( { data } ) => dispatchCuePoint( data ) );
-		this.livePlayer.addEventListener( 'ad-break-cue-point', ( { data } ) => dispatchCuePoint( data ) );
-		this.livePlayer.addEventListener( 'ad-break-cue-point-complete', ( { data } ) => dispatchCuePoint( data ) );
-		this.livePlayer.addEventListener( 'ad-break-synced-element', dispatchLiveStreamSyncedStart );
-		this.livePlayer.addEventListener( 'ad-playback-start', () => dispatchAdPlaybackStart() ); // used to dispatchPlaybackStart
-		this.livePlayer.addEventListener( 'ad-playback-complete', () => dispatchAdPlaybackStop( actions.ACTION_AD_PLAYBACK_COMPLETE ) );
-		this.livePlayer.addEventListener( 'stream-start', ( { data } ) => dispatchStreamStart( data ) );
-		this.livePlayer.addEventListener( 'stream-stop', ( { data } ) => dispatchStreamStop( data ) );
-		this.livePlayer.addEventListener(
-			'ad-playback-error',
-			() => {
-				/*
-				 * the beforeStreamStart function may be injected onto the window
-				 * object from google tag manager. This function provides a callback
-				 * when it is completed. Currently we are using it to play a preroll
-				 * from kubient when there is no preroll provided by triton. To ensure
-				 * that we do not introduce unforeseen issues we return the original
-				 * ACTION_AD_PLAYBACK_ERROR type.
-				 * */
-				if ( window.beforeStreamStart ) {
-					window.beforeStreamStart( () => dispatchAdPlaybackStop( actions.ACTION_AD_PLAYBACK_ERROR ) );
-				} else {
-					dispatchAdPlaybackStop( actions.ACTION_AD_PLAYBACK_ERROR ); // used to dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) );
-				}
-			},
-		);
-
-		setPlayer( this.livePlayer, 'tdplayer' );
+		this.props.initTdPlayer( tdmodules );
 	}
 
 	handleOnline() {
@@ -151,14 +104,8 @@ class LivePlayer extends Component {
 	}
 
 	handlePlay() {
-		const { station, play, setPlayer, playerType } = this.props;
-
-		// Live Streams are played with tdplayer
-		if ( 'tdplayer' !== playerType ) {
-			setPlayer( this.livePlayer, 'tdplayer' );
-		}
-
-		play( station );
+		const { station, playStation } = this.props;
+		playStation( station );
 	}
 
 	render() {
@@ -279,21 +226,13 @@ LivePlayer.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
-	setPlayer: PropTypes.func.isRequired,
-	play: PropTypes.func.isRequired,
+	initTdPlayer: PropTypes.func.isRequired,
+	playStation: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
 	duration: PropTypes.number.isRequired,
 	player: PropTypes.object,
 	playerType: PropTypes.string,
-	dispatchStatusUpdate: PropTypes.func.isRequired,
-	dispatchNowPlayingLoaded: PropTypes.func.isRequired,
-	dispatchCuePoint: PropTypes.func.isRequired,
-	dispatchAdPlaybackStart: PropTypes.func.isRequired,
-	dispatchAdPlaybackStop: PropTypes.func.isRequired,
-	dispatchStreamStart: PropTypes.func.isRequired,
-	dispatchStreamStop: PropTypes.func.isRequired,
-	dispatchLiveStreamSyncedStart: PropTypes.func.isRequired,
 };
 
 
@@ -307,16 +246,8 @@ export default connect(
 		adSynced: player.adSynced,
 		duration: player.duration,
 	} ), {
-		setPlayer: actions.setPlayer,
-		dispatchStatusUpdate: actions.statusUpdate,
-		dispatchNowPlayingLoaded: actions.nowPlayingLoaded,
-		dispatchCuePoint: actions.cuePoint,
-		dispatchAdPlaybackStart: actions.adPlaybackStart,
-		dispatchAdPlaybackStop: actions.adPlaybackStop,
-		dispatchStreamStart: actions.streamStart,
-		dispatchStreamStop: actions.streamStop,
-		dispatchLiveStreamSyncedStart: actions.liveStreamSyncedStart,
-		play: actions.playStation,
+		initTdPlayer: actions.initTdPlayer,
+		playStation: actions.playStation,
 		pause: actions.pause,
 		resume: actions.resume,
 	},

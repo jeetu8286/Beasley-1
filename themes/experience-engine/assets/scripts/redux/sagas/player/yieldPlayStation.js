@@ -1,11 +1,11 @@
 
-import { call, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import {
 	fullStop,
 	livePlayerLocalStorage,
 } from '../../utilities';
 import {
-	ACTION_PLAY_STATION,
+	ACTION_PLAY_STATION, setPlayer,
 } from '../../actions/player';
 
 /**
@@ -28,19 +28,23 @@ const getStreamByStation = station =>
  * @param {Object} action dispatched action
  * @param {String} action.station station from action
  */
-function* yieldPlayStation( { station } ) {
+function* yieldPlayStation( { player, station } ) {
 
 	console.log( 'yieldPlayStation' );
 
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 
+	// Stop any running player
+	yield call( fullStop, playerStore );
+
 	// Get streams from state
 	const {
 		streams = [],
-		player,
-		playerType,
 	} = playerStore;
+
+	// set the tdplayer
+	yield put( setPlayer( player, 'tdplayer' ) );
 
 	// Find matching stream
 	const stream = yield call( [ streams, 'find' ], getStreamByStation( station ) );
@@ -49,9 +53,6 @@ function* yieldPlayStation( { station } ) {
 	const {
 		authwatcher, // Triton
 	} = window;
-
-	// Call fullStop
-	yield call( fullStop, playerStore );
 
 	// Setup adConfig used by player and triton call
 	const adConfig = {
@@ -82,7 +83,6 @@ function* yieldPlayStation( { station } ) {
 
 	// Call tdplayer.playAd
 	if (
-		'tdplayer' === playerType &&
 		stream &&
 		'function' === typeof player.playAd
 	) {
