@@ -50,21 +50,28 @@ function* yieldPlayStation( { station } ) {
 		authwatcher, // Triton
 	} = window;
 
+	// Call fullStop
+	yield call( fullStop, playerStore );
+
 	// Setup adConfig used by player and triton call
 	const adConfig = {
 		host: stream.stream_cmod_domain,
 		type: 'preroll',
 		format: 'vast',
 		stationId: stream.stream_tap_id,
+		trackingParameters: {
+			dist: 'beasleyweb',
+		},
 	};
 
 	// Call triton, must live here since it modifies the adConfig object
 	// before being sent to the player API
 	if ( authwatcher && authwatcher.lastLoggedInUser ) {
-		if (  'undefined' !== typeof authwatcher.lastLoggedInUser.demographicsset ) {
+		if ( 'undefined' !== typeof authwatcher.lastLoggedInUser.demographicsset ) {
 			if ( authwatcher.lastLoggedInUser.demographicsset ) {
 				console.log( 'triton','params sent' );
-				adConfig['trackingParameters'] = {
+				adConfig.trackingParameters = {
+					...adConfig.trackingParameters,
 					postalcode: authwatcher.lastLoggedInUser.zipcode,
 					gender: authwatcher.lastLoggedInUser.gender,
 					dob: authwatcher.lastLoggedInUser.dateofbirth,
@@ -72,9 +79,6 @@ function* yieldPlayStation( { station } ) {
 			}
 		}
 	}
-
-	// Call fullStop
-	yield call( fullStop, playerStore );
 
 	// Call tdplayer.playAd
 	if (
