@@ -6,8 +6,7 @@ export const ACTION_SET_PLAYER = 'SET_PLAYER';
 export const ACTION_STATUS_CHANGE = 'PLAYER_STATUS_CHANGE';
 export const ACTION_CUEPOINT_CHANGE = 'PLAYER_CUEPOINT_CHANGE';
 export const ACTION_SET_VOLUME = 'PLAYER_SET_VOLUME';
-export const ACTION_PLAY_AUDIO = 'PLAYER_PLAY_AUDIO';
-export const ACTION_PLAY_STATION = 'PLAYER_PLAY_STATION';
+export const ACTION_PLAY = 'PLAYER_PLAY';
 export const ACTION_PLAY_OMNY = 'PLAYER_PLAY_OMNY';
 export const ACTION_PAUSE = 'PLAYER_PAUSE';
 export const ACTION_RESUME = 'PLAYER_RESUME';
@@ -140,11 +139,11 @@ export function streamStop( data ) {
  * cuePoint action creator
  * @param {Object} data - Payload from player event
  */
-export function cuePoint( data = {} ) {
+export function cuePoint( cuePoint = {} ) {
 	console.log( 'action: cuePoint' );
 	return {
 		type: ACTION_CUEPOINT_CHANGE,
-		cuePoint: data.cuePoint || false,
+		cuePoint,
 	};
 }
 
@@ -291,11 +290,11 @@ export function initTdPlayer( modules ) {
 
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-status', ( { data } ) => dispatch( statusUpdate( data.code ) ) );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'list-loaded', ( { data } ) => dispatch( nowPlayingLoaded( data ) ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'track-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'speech-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'custom-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-cue-point-complete', ( { data } ) => dispatch( cuePoint( data ) ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'track-cue-point', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'speech-cue-point', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'custom-cue-point', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-cue-point', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-cue-point-complete', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-synced-element', dispatchSyncedStart );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-playback-start', () => dispatch( adPlaybackStart() ) ); // used to dispatchPlaybackStart
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-playback-complete', () => dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ) ) ); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE )
@@ -322,21 +321,6 @@ export function initTdPlayer( modules ) {
 	};
 }
 
-
-/**
- * doPlayAudio action creator
- * @param {Object} player
- * @param {*} audio
- * @param {*} trackType
- */
-function doPlayAudio( player, audio, trackType ) {
-	return {
-		type: ACTION_PLAY_AUDIO,
-		player,
-		audio,
-		trackType,
-	};
-}
 
 /**
  * doPlayOmny action creator
@@ -399,28 +383,15 @@ function setUpAudioPlayer( dispatch, src ) {
  * @param {*} artistName
  * @param {*} trackType
  */
-export function playAudio( src, cueTitle = '', artistName = '', trackType = 'live' ) {
-	return ( dispatch ) => {
-		if ( null === PLAYERS_REGISTRY.audioPlayer ){
-			setUpAudioPlayer( dispatch, src );
-		} else {
-			PLAYERS_REGISTRY.audioPlayer.src = src;
-		}
-
-		dispatch( doPlayAudio( PLAYERS_REGISTRY.audioPlayer, src, trackType ) );
-		dispatch( cuePoint( { cuePoint: { type: 'track', cueTitle, artistName } } ) );
-	};
-}
+export const playAudio = ( src, cueTitle = '', artistName = '', trackType = 'live' ) => dispatch =>
+	play( 'mp3player', src, cueTitle, artistName, trackType )( dispatch );
 
 /**
  * playStation action creator
  * @param {String} station
  */
-export const playStation = ( station ) => ( {
-	type: ACTION_PLAY_STATION,
-	player: PLAYERS_REGISTRY.tdPlayer,
-	station,
-} );
+export const playStation = ( station ) => dispatch =>
+	play( 'tdplayer', station )( dispatch );
 
 
 /**
@@ -447,7 +418,7 @@ export function playOmny( audio, cueTitle = '', artistName = '', trackType = 'li
 
 		player.on( 'ready', () => {
 			dispatch( doPlayOmny( player, audio, trackType ) );
-			dispatch( cuePoint( { cuePoint: { type: 'track', cueTitle, artistName } } ) );
+			dispatch( cuePoint( { type: 'track', cueTitle, artistName } ) );
 			dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) );
 		} );
 
@@ -458,6 +429,45 @@ export function playOmny( audio, cueTitle = '', artistName = '', trackType = 'li
 		player.on( 'timeupdate', ( { seconds: time, duration } ) => dispatch( timeChange( time, duration ) ) );
 	};
 }
+
+/**
+ * Low-level play action creator
+ *
+ * @param {string} playerType Which player to use.
+ * @param {*} source Audior source or station name.
+ * @param {*} type
+ * @param {*} cueTitle
+ * @param {*} artistName
+ * @param {*} trackType
+ */
+const play = ( playerType, source, cueTitle = '', artistName = '', trackType = '' ) => dispatch => {
+	if ( 'tdplayer' === playerType ) {
+		dispatch( setPlayer( PLAYERS_REGISTRY.tdPlayer, 'tdplayer' ) );
+		dispatch( {
+			type: ACTION_PLAY,
+			payload: {
+				source,
+			},
+		} );
+	} else if ( 'mp3player' === playerType ) {
+		if ( null === PLAYERS_REGISTRY.audioPlayer ){
+			setUpAudioPlayer( dispatch, source );
+		} else {
+			PLAYERS_REGISTRY.audioPlayer.src = source;
+		}
+		dispatch( setPlayer( PLAYERS_REGISTRY.audioPlayer, 'mp3player' ) );
+		dispatch( {
+			type: ACTION_PLAY,
+			payload: {
+				source,
+				trackType,
+			},
+		} );
+		dispatch( cuePoint( { type: 'track', cueTitle, artistName } ) );
+	} else if( 'omnyplayer' === playerType ) {
+		// todo
+	}
+};
 
 export default {
 	setPlayer,

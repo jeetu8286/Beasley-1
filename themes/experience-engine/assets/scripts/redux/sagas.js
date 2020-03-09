@@ -1,9 +1,6 @@
 import { all } from 'redux-saga/effects';
 import {
 	watchSetPlayer,
-	watchPlayAudio,
-	watchPlayStation,
-	watchPlayOmny,
 	watchPause,
 	watchResume,
 	watchSetVolume,
@@ -22,6 +19,7 @@ import {
 	watchLoadedPartial,
 	watchHideSplashScreen,
 } from './sagas/';
+import watchPlay from './sagas/player/yieldPlay';
 
 /**
  * Root saga that watches for side effects.
@@ -29,9 +27,7 @@ import {
 export default function* rootSaga() {
 	yield all( [
 		watchSetPlayer(),
-		watchPlayAudio(),
-		watchPlayStation(),
-		watchPlayOmny(),
+		watchPlay(),
 		watchPause(),
 		watchResume(),
 		watchSetVolume(),

@@ -4,9 +4,8 @@
 // Player
 export { default as watchSetPlayer } from './player/yieldSetPlayer';
 export { default as watchAdPlaybackStop } from './player/yieldAdPlaybackStop';
-export { default as watchPlayAudio } from './player/yieldPlayAudio';
-export { default as watchPlayStation } from './player/yieldPlayStation';
-export { default as watchPlayOmny } from './player/yieldPlayOmny';
+/* export { default as watchPlayOmny } from './player/yieldPlayOmny'; */
+export { default as watchPlay } from './player/yieldPlay';
 export { default as watchPause } from './player/yieldPause';
 export { default as watchStreamStart } from './player/yieldStreamStart';
 export { default as watchStreamStop } from './player/yieldStreamStop';

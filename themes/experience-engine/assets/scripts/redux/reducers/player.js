@@ -19,9 +19,6 @@ import {
 	ACTION_STATUS_CHANGE,
 	ACTION_CUEPOINT_CHANGE,
 	ACTION_SET_VOLUME,
-	ACTION_PLAY_AUDIO,
-	ACTION_PLAY_STATION,
-	ACTION_PLAY_OMNY,
 	ACTION_PAUSE,
 	ACTION_RESUME,
 	ACTION_DURATION_CHANGE,
@@ -35,6 +32,7 @@ import {
 	ACTION_AD_BREAK_SYNCED_HIDE,
 	ACTION_SET_PLAYER_TYPE,
 	STATUSES,
+	ACTION_PLAY,
 } from '../actions/player';
 
 // Destructure streams from window global
@@ -80,33 +78,19 @@ function reducer( state = {}, action = {} ) {
 				player,
 			};
 		}
+		case ACTION_PLAY: {
+			const { source, trackType } = action.payload;
+			const newState = { ...state };
 
-		// Catches in Saga Middleware
-		case ACTION_PLAY_AUDIO:
-			console.log( 'reducer: play audio' );
-			return {
-				...state,
-				audio: action.audio,
-				trackType: action.trackType,
-			};
+			if ( 'tdplayer' === state.playerType ) {
+				newState.station = source;
+			} else if ( ['mp3player', 'omnyplayer'].includes( state.playerType ) ) {
+				newState.audio = source;
+				newState.trackType = trackType;
+			}
 
-		// Catches in Saga Middleware
-		case ACTION_PLAY_STATION:
-			console.log( 'reducer: play station' );
-			return {
-				...state,
-				station: action.station,
-			};
-
-		// Catches in Saga Middleware
-		case ACTION_PLAY_OMNY:
-			console.log( 'reducer: play omny' );
-			return {
-				...state,
-				audio: action.audio,
-				trackType: action.trackType,
-			};
-
+			return newState;
+		}
 		// Catches in Saga Middleware
 		case ACTION_PAUSE:
 			console.log( 'reducer: pause' );

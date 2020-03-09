@@ -2,7 +2,7 @@
 import { call, takeLatest, select, put } from 'redux-saga/effects';
 
 // Import helper method(s)
-import { loadNowPlaying } from '../../utilities';
+import { loadNowPlaying, fullStop } from '../../utilities';
 
 // Import action constant(s)
 import {
@@ -20,6 +20,10 @@ function* yieldSetPlayer() {
 
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
+
+	// before setting a new player, let's ensure to stop any running player.
+	// TODO: maybe dispath a PLAYER_STOP action.
+	yield call( fullStop, playerStore );
 
 	// Destructure
 	const {
