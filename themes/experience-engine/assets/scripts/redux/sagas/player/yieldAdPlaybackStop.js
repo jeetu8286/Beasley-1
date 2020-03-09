@@ -4,7 +4,7 @@ import { put, takeLatest, select, call } from 'redux-saga/effects';
 // Import action constant(s)
 import {
 	ACTION_AD_PLAYBACK_STOP,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldAdPlaybackStop

@@ -1,8 +1,8 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
-import { lyticsTrack } from '../utilities/';
+import { lyticsTrack } from '../../utilities';
 import {
 	ACTION_AUDIO_STOP,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldAudioStop

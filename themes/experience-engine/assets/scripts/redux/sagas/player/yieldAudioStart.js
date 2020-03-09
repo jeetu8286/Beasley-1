@@ -1,10 +1,10 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	sendInlineAudioPlaying,
-} from '../../library/google-analytics';
+} from '../../../library/google-analytics';
 import {
 	ACTION_AUDIO_START,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldAudioStart

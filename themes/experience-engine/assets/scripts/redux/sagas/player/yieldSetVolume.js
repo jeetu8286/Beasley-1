@@ -2,10 +2,10 @@ import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	parseVolume,
 	livePlayerLocalStorage,
-} from '../utilities/';
+} from '../../utilities';
 import {
 	ACTION_SET_VOLUME,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldSetVolume

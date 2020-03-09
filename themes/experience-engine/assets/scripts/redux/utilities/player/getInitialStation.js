@@ -1,4 +1,5 @@
-import { livePlayerLocalStorage } from '../utilities/';
+import { livePlayerLocalStorage } from '..';
+
 /**
  * @function getInitialStation
  * Returns a matching stream if local storage

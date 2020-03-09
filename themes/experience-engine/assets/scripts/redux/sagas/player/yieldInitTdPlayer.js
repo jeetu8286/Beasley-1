@@ -2,13 +2,13 @@
 import { call, takeLatest, select, put } from 'redux-saga/effects';
 
 // Import helper method(s)
-import { loadNowPlaying } from '../utilities/';
+import { loadNowPlaying } from '../../utilities';
 
 // Import action constant(s)
 import {
 	ACTION_INIT_TDPLAYER,
 	ACTION_SET_PLAYER_TYPE,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldInitTdPlayer

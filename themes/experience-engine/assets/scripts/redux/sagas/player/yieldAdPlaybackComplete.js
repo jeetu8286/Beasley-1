@@ -1,9 +1,9 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
-import { loadNowPlaying } from '../utilities/';
+import { loadNowPlaying } from '../../utilities';
 import {
 	ACTION_AD_PLAYBACK_COMPLETE,
 	ACTION_AD_PLAYBACK_ERROR,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldAdPlaybackComplete

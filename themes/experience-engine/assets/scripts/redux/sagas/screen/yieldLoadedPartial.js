@@ -3,8 +3,8 @@ import NProgress from 'nprogress';
 import {
 	manageBbgiConfig,
 	hideSplashScreen,
-} from '../utilities/';
-import { ACTION_LOADED_PARTIAL } from '../actions/screen';
+} from '../../utilities';
+import { ACTION_LOADED_PARTIAL } from '../../actions/screen';
 
 /**
  * @function yieldLoadedPartial

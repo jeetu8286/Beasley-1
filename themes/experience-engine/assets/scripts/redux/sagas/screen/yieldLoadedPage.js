@@ -5,9 +5,9 @@ import {
 	manageBbgiConfig,
 	hideSplashScreen,
 	updateTargeting,
-} from '../utilities/';
-import { ACTION_LOADED_PAGE, ACTION_HISTORY_HTML_SNAPSHOT } from '../actions/screen';
-import { slugify, parseHtml } from '../../library';
+} from '../../utilities';
+import { ACTION_LOADED_PAGE, ACTION_HISTORY_HTML_SNAPSHOT } from '../../actions/screen';
+import { slugify, dispatchEvent } from '../../../library';
 
 /**
  * Scrolls to the top of content.
@@ -66,11 +66,10 @@ function updateDOM( pageDocument ) {
 function* yieldLoadedPage( action ) {
 	console.log( 'yieldLoadedPage' );
 
-	const { url, response, options } = action.payload;
+	const { url, response, options, parsedHtml } = action;
 
 	const urlSlugified = slugify( url );
-	const parsed = parseHtml( response.html );
-	const pageDocument = parsed.document;
+	const pageDocument = parsedHtml.document;
 
 	// Screen store from state
 	const screenStore = yield select( ( { screen } ) => screen );
@@ -104,7 +103,7 @@ function* yieldLoadedPage( action ) {
 	yield call( [ NProgress, 'done' ] );
 
 	// Call manageScripts
-	yield call( manageScripts, parsed.scripts, screenStore.scripts );
+	yield call( manageScripts, parsedHtml.scripts, screenStore.scripts );
 
 	yield call( scrollIntoView );
 

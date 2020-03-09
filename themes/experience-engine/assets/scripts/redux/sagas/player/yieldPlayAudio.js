@@ -1,9 +1,9 @@
 import { call, takeLatest, select, put } from 'redux-saga/effects';
-import { fullStop } from '../utilities/';
+import { fullStop } from '../../utilities';
 import {
 	ACTION_PLAY_AUDIO,
 	ACTION_SET_PLAYER_TYPE,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldPlayAudio

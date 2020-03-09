@@ -57,8 +57,6 @@ function reducer( state = {}, action = {} ) {
 			};
 
 		case ACTION_LOADED_PAGE: {
-
-			console.log( 'reducer: loaded page' );
 			// do not accept action if user goes to another page before current page is loaded
 			if ( state.url !== action.url && !action.force ) {
 				return state;
@@ -66,12 +64,12 @@ function reducer( state = {}, action = {} ) {
 
 			return {
 				...state,
-				content: action.content,
-				isHome: action.isHome,
-				embeds: action.embeds,
+				content: action.parsedHtml.content,
+				isHome: action.parsedHtml.isHome,
+				embeds: action.parsedHtml.embeds,
 				error: '',
 				partials: {},
-				scripts: action.scripts,
+				scripts: action.parsedHtml.scripts,
 			};
 		}
 

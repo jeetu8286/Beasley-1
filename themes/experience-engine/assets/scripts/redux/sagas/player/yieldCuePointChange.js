@@ -2,10 +2,10 @@ import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	lyticsTrack,
 	loadNowPlaying,
-} from '../utilities/';
+} from '../../utilities';
 import {
 	ACTION_CUEPOINT_CHANGE,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldCuePointChange

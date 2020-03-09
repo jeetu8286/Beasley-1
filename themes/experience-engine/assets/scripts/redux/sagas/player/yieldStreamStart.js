@@ -1,10 +1,10 @@
 import { call, takeLatest } from 'redux-saga/effects';
 import {
 	sendLiveStreamPlaying,
-} from '../../library/google-analytics';
+} from '../../../library/google-analytics';
 import {
 	ACTION_STREAM_START,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldStreamStart

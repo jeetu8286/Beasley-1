@@ -1,10 +1,10 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	manageScripts,
-} from '../utilities/';
+} from '../../utilities';
 import {
 	ACTION_INIT_PAGE,
-} from '../actions/screen';
+} from '../../actions/screen';
 
 /**
  * @function yieldInitPage

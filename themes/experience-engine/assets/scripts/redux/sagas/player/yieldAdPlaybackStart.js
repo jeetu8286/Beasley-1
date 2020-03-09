@@ -1,8 +1,8 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
-import { isAudioAdOnly } from '../../library/strings';
+import { isAudioAdOnly } from '../../../library/strings';
 import {
 	ACTION_AD_PLAYBACK_START,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldAdPlaybackStart

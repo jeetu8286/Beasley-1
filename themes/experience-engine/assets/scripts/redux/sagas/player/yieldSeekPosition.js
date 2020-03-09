@@ -1,7 +1,7 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	ACTION_SEEK_POSITION,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldSeekPosition

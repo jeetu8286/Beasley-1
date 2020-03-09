@@ -1,7 +1,7 @@
 import {
 	loadAssets,
 	unloadScripts,
-} from '../../library/dom';
+} from '../../../library/dom';
 
 /**
  * @function manageScripts

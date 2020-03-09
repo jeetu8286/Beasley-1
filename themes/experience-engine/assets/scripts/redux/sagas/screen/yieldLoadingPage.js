@@ -3,11 +3,11 @@ import NProgress from 'nprogress';
 import {
 	updateCorrelator,
 	clearTargeting,
-} from '../utilities/';
+} from '../../utilities';
 import {
 	ACTION_LOADING_PAGE,
 	ACTION_LOADING_PARTIAL,
-} from '../actions/screen';
+} from '../../actions/screen';
 
 /**
  * @function yieldLoadingPage

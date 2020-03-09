@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys */
-import { getStorage } from '../../library/local-storage';
+import { getStorage } from '../../../library/local-storage';
 
 // Set livePlayerLocalStorage to utility helper object
 // namespaced with liveplayer. Will return an

@@ -3,10 +3,10 @@ import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	fullStop,
 	livePlayerLocalStorage,
-} from '../utilities/';
+} from '../../utilities';
 import {
 	ACTION_PLAY_STATION,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function getStreamByStation

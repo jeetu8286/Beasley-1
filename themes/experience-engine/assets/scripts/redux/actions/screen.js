@@ -59,7 +59,17 @@ export const fetchFeedsContent = ( token, url = 'feeds-content' ) => async dispa
 			},
 		).then( res => res.json() );
 
-		dispatch( { type: ACTION_LOADED_PAGE, payload: { url, response, options: { suppressHistory: true } }} );
+		const parsedHtml = parseHtml( response.html );
+		dispatch( {
+			type: ACTION_LOADED_PAGE,
+			url,
+			response,
+			options: {
+				suppressHistory: false,
+			},
+			parsedHtml,
+
+		} );
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );
 	}
@@ -96,8 +106,17 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 			dispatch( { type: ACTION_LOAD_ERROR } );
 			return;
 		}
+		const parsedHtml = parseHtml( response.html );
 
-		dispatch( { type: ACTION_LOADED_PAGE, payload: { url, response, options }} );
+		dispatch( {
+			type: ACTION_LOADED_PAGE,
+			url,
+			response,
+			options,
+			isHome: parsedHtml.document.body.classList.contains( 'home' ),
+			parsedHtml,
+
+		} );
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );
 	}

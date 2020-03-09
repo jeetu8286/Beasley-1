@@ -1,5 +1,3 @@
-// Sagas Controller
-
 import { all } from 'redux-saga/effects';
 import {
 	watchInitTdPlayer,

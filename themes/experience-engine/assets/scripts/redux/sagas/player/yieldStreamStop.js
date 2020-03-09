@@ -1,7 +1,7 @@
 import { call, takeLatest } from 'redux-saga/effects';
 import {
 	ACTION_STREAM_STOP,
-} from '../actions/player';
+} from '../../actions/player';
 
 /**
  * @function yieldStreamStop
