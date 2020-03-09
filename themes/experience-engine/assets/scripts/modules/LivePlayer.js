@@ -2,7 +2,6 @@ import React, { Fragment, Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { isIOS } from '../library/browser';
 import { isAudioAdOnly } from '../library/strings';
@@ -28,17 +27,50 @@ class LivePlayer extends Component {
 	constructor( props ) {
 		super( props );
 
-		const self = this;
+		this.container = document.getElementById( 'live-player' );
+		this.state = { online: window.navigator.onLine };
 
-		self.container = document.getElementById( 'live-player' );
-		self.state = { online: window.navigator.onLine };
-
-		self.onOnline = self.handleOnline.bind( self );
-		self.onOffline = self.handleOffline.bind( self );
+		this.onOnline = this.handleOnline.bind( this );
+		this.onOffline = this.handleOffline.bind( this );
+		this.handlePlay = this.handlePlay.bind( this );
 	}
 
 	componentDidMount() {
-		const self = this;
+		// TDSdk is loaded asynchronously, so we need to wait till its loaded and
+		// parsed by browser, and only then start initializing the player
+		const tdinterval = setInterval( () => {
+			if ( window.TDSdk ) {
+				// this.props.initPlayer( tdmodules );
+				this.setUpPlayer();
+				clearInterval( tdinterval );
+			}
+		}, 500 );
+
+
+		window.addEventListener( 'online',  this.onOnline );
+		window.addEventListener( 'offline', this.onOffline );
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener( 'online',  this.onOnline );
+		window.removeEventListener( 'offline', this.onOffline );
+	}
+
+	/**
+	 * Sets up the TdPlayer
+	 */
+	setUpPlayer() {
+		const {
+			dispatchStatusUpdate,
+			dispatchNowPlayingLoaded,
+			dispatchCuePoint ,
+			dispatchAdPlaybackStart,
+			dispatchAdPlaybackStop,
+			dispatchStreamStart,
+			dispatchStreamStop,
+			dispatchLiveStreamSyncedStart,
+			setPlayer,
+		} = this.props;
 
 		// @see: https://userguides.tritondigital.com/spc/tdplay2/
 		const tdmodules = [];
@@ -48,7 +80,7 @@ class LivePlayer extends Component {
 			playerId: 'td_container',
 			techPriority: ['Html5'],
 			idSync: {
-				station: this.props.station
+				station: this.props.station,
 			},
 			geoTargeting: {
 				desktop: { isActive: false },
@@ -70,24 +102,44 @@ class LivePlayer extends Component {
 			elements: [{ id: 'sync-banner', width: 320, height: 50 }],
 		} );
 
-		// TDSdk is loaded asynchronously, so we need to wait till its loaded and
-		// parsed by browser, and only then start initializing the player
-		const tdinterval = setInterval( () => {
-			if ( window.TDSdk ) {
-				this.props.initPlayer( tdmodules );
-				clearInterval( tdinterval );
-			}
-		}, 500 );
+		this.livePlayer = new window.TDSdk( {
+			configurationError: actions.errorCatcher( 'Configuration Error' ),
+			coreModules: tdmodules,
+			moduleError: actions.errorCatcher( 'Module Error' ),
+		} );
 
+		this.livePlayer.addEventListener( 'stream-status', ( { data } ) => dispatchStatusUpdate( data.code ) );
+		this.livePlayer.addEventListener( 'list-loaded', ( { data } ) => dispatchNowPlayingLoaded( data ) );
+		this.livePlayer.addEventListener( 'track-cue-point', ( { data } ) => dispatchCuePoint( data ) );
+		this.livePlayer.addEventListener( 'speech-cue-point', ( { data } ) => dispatchCuePoint( data ) );
+		this.livePlayer.addEventListener( 'custom-cue-point', ( { data } ) => dispatchCuePoint( data ) );
+		this.livePlayer.addEventListener( 'ad-break-cue-point', ( { data } ) => dispatchCuePoint( data ) );
+		this.livePlayer.addEventListener( 'ad-break-cue-point-complete', ( { data } ) => dispatchCuePoint( data ) );
+		this.livePlayer.addEventListener( 'ad-break-synced-element', dispatchLiveStreamSyncedStart );
+		this.livePlayer.addEventListener( 'ad-playback-start', () => dispatchAdPlaybackStart() ); // used to dispatchPlaybackStart
+		this.livePlayer.addEventListener( 'ad-playback-complete', () => dispatchAdPlaybackStop( actions.ACTION_AD_PLAYBACK_COMPLETE ) );
+		this.livePlayer.addEventListener( 'stream-start', ( { data } ) => dispatchStreamStart( data ) );
+		this.livePlayer.addEventListener( 'stream-stop', ( { data } ) => dispatchStreamStop( data ) );
+		this.livePlayer.addEventListener(
+			'ad-playback-error',
+			() => {
+				/*
+				 * the beforeStreamStart function may be injected onto the window
+				 * object from google tag manager. This function provides a callback
+				 * when it is completed. Currently we are using it to play a preroll
+				 * from kubient when there is no preroll provided by triton. To ensure
+				 * that we do not introduce unforeseen issues we return the original
+				 * ACTION_AD_PLAYBACK_ERROR type.
+				 * */
+				if ( window.beforeStreamStart ) {
+					window.beforeStreamStart( () => dispatchAdPlaybackStop( actions.ACTION_AD_PLAYBACK_ERROR ) );
+				} else {
+					dispatchAdPlaybackStop( actions.ACTION_AD_PLAYBACK_ERROR ); // used to dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) );
+				}
+			},
+		);
 
-		window.addEventListener( 'online',  self.onOnline );
-		window.addEventListener( 'offline', self.onOffline );
-	}
-
-	componentWillUnmount() {
-		const self = this;
-		window.removeEventListener( 'online',  self.onOnline );
-		window.removeEventListener( 'offline', self.onOffline );
+		setPlayer( this.livePlayer, 'tdplayer' );
 	}
 
 	handleOnline() {
@@ -98,27 +150,34 @@ class LivePlayer extends Component {
 		this.setState( { online: false } );
 	}
 
+	handlePlay() {
+		const { station, play, setPlayer, playerType } = this.props;
+
+		// Live Streams are played with tdplayer
+		if ( 'tdplayer' !== playerType ) {
+			setPlayer( this.livePlayer, 'tdplayer' );
+		}
+
+		play( station );
+	}
+
 	render() {
-		const self = this;
-		const { container, state, props } = self;
-		if ( !container ) {
+		if ( !this.container ) {
 			return false;
 		}
 
-		const { online } = state;
+		const { online } = this.state;
 
 		const {
-			station,
 			status,
 			adPlayback,
 			adSynced,
-			play,
 			pause,
 			resume,
 			duration,
 			player,
 			playerType,
-		} = props;
+		} = this.props;
 
 		let notification = false;
 		if ( ! online ) {
@@ -126,7 +185,7 @@ class LivePlayer extends Component {
 		}
 
 		const progressClass = ! duration ? '-live' : '-podcast';
-		let { customColors } = container.dataset;
+		let { customColors } = this.container.dataset;
 		const controlsStyle = {};
 		const buttonsBackgroundStyle = {};
 		const buttonsFillStyle = {};
@@ -172,7 +231,7 @@ class LivePlayer extends Component {
 							<ErrorBoundary>
 								<Controls
 									status={status}
-									play={() => play( station )}
+									play={this.handlePlay}
 									pause={pause}
 									resume={resume}
 									colors={buttonsBackgroundStyle}
@@ -210,7 +269,7 @@ class LivePlayer extends Component {
 			</Fragment>
 		);
 
-		return ReactDOM.createPortal( children, container );
+		return ReactDOM.createPortal( children, this.container );
 	}
 
 }
@@ -220,17 +279,26 @@ LivePlayer.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
-	initPlayer: PropTypes.func.isRequired,
+	setPlayer: PropTypes.func.isRequired,
 	play: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
 	duration: PropTypes.number.isRequired,
 	player: PropTypes.object,
 	playerType: PropTypes.string,
+	dispatchStatusUpdate: PropTypes.func.isRequired,
+	dispatchNowPlayingLoaded: PropTypes.func.isRequired,
+	dispatchCuePoint: PropTypes.func.isRequired,
+	dispatchAdPlaybackStart: PropTypes.func.isRequired,
+	dispatchAdPlaybackStop: PropTypes.func.isRequired,
+	dispatchStreamStart: PropTypes.func.isRequired,
+	dispatchStreamStop: PropTypes.func.isRequired,
+	dispatchLiveStreamSyncedStart: PropTypes.func.isRequired,
 };
 
-function mapStateToProps( { player } ) {
-	return {
+
+export default connect(
+	( {player} ) => ( {
 		player: player.player,
 		playerType: player.playerType,
 		station: player.station,
@@ -238,16 +306,18 @@ function mapStateToProps( { player } ) {
 		adPlayback: player.adPlayback,
 		adSynced: player.adSynced,
 		duration: player.duration,
-	};
-}
-
-function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( {
-		initPlayer: actions.initTdPlayer,
+	} ), {
+		setPlayer: actions.setPlayer,
+		dispatchStatusUpdate: actions.statusUpdate,
+		dispatchNowPlayingLoaded: actions.nowPlayingLoaded,
+		dispatchCuePoint: actions.cuePoint,
+		dispatchAdPlaybackStart: actions.adPlaybackStart,
+		dispatchAdPlaybackStop: actions.adPlaybackStop,
+		dispatchStreamStart: actions.streamStart,
+		dispatchStreamStop: actions.streamStop,
+		dispatchLiveStreamSyncedStart: actions.liveStreamSyncedStart,
 		play: actions.playStation,
 		pause: actions.pause,
 		resume: actions.resume,
-	}, dispatch );
-}
-
-export default connect( mapStateToProps, mapDispatchToProps )( LivePlayer );
+	},
+)( LivePlayer );

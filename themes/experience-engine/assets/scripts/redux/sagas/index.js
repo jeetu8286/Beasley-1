@@ -2,7 +2,7 @@
 // Sagas are used to avoid side effects in Redux
 
 // Player
-export { default as watchInitTdPlayer } from './player/yieldInitTdPlayer';
+export { default as watchSetPlayer } from './player/yieldSetPlayer';
 export { default as watchAdPlaybackStop } from './player/yieldAdPlaybackStop';
 export { default as watchPlayAudio } from './player/yieldPlayAudio';
 export { default as watchPlayStation } from './player/yieldPlayStation';

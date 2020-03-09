@@ -2,8 +2,7 @@
 // and is used to play omnyAudio programatically
 import playerjs from 'player.js';
 
-export const ACTION_INIT_TDPLAYER = 'PLAYER_INIT_TDPLAYER';
-export const ACTION_INIT_PLAYER = 'PLAYER_INIT';
+export const ACTION_SET_PLAYER = 'SET_PLAYER';
 export const ACTION_STATUS_CHANGE = 'PLAYER_STATUS_CHANGE';
 export const ACTION_CUEPOINT_CHANGE = 'PLAYER_CUEPOINT_CHANGE';
 export const ACTION_SET_VOLUME = 'PLAYER_SET_VOLUME';
@@ -74,7 +73,7 @@ export function adPlaybackStart() {
 /**
  * adBreakSynced action creator
  */
-function adBreakSynced() {
+export function adBreakSynced() {
 	console.log( 'action: adBreakSynced' );
 	return {
 		type: ACTION_AD_BREAK_SYNCED,
@@ -84,7 +83,7 @@ function adBreakSynced() {
 /**
  * adBreakSyncedHide action creator
  */
-function adBreakSyncedHide() {
+export function adBreakSyncedHide() {
 	console.log( 'action: adBreakSyncedHide' );
 	return {
 		type: ACTION_AD_BREAK_SYNCED_HIDE,
@@ -95,7 +94,7 @@ function adBreakSyncedHide() {
  * statusUpdate action creator
  * @param {String} status
  */
-function statusUpdate( status ) {
+export function statusUpdate( status ) {
 	console.log( 'action: statusUpdate' );
 	return {
 		type: ACTION_STATUS_CHANGE,
@@ -107,7 +106,7 @@ function statusUpdate( status ) {
  * streamStart action creator
  * @param {Object} data - Payload from player event
  */
-function streamStart( data ) {
+export function streamStart( data ) {
 	console.log( 'action: streamStart' );
 	return {
 		type: ACTION_STREAM_START,
@@ -119,7 +118,7 @@ function streamStart( data ) {
  * streamStop action creator
  * @param {Object} data - Payload from player event
  */
-function streamStop( data ) {
+export function streamStop( data ) {
 	console.log( 'action: streamStop' );
 	return {
 		type: ACTION_STREAM_STOP,
@@ -131,7 +130,7 @@ function streamStop( data ) {
  * cuePoint action creator
  * @param {Object} data - Payload from player event
  */
-function cuePoint( data = {} ) {
+export function cuePoint( data = {} ) {
 	console.log( 'action: cuePoint' );
 	return {
 		type: ACTION_CUEPOINT_CHANGE,
@@ -143,7 +142,7 @@ function cuePoint( data = {} ) {
  * nowPlayingLoaded action creator
  * @param {Object} data - Payload from player event
  */
-function nowPlayingLoaded( data ) {
+export function nowPlayingLoaded( data ) {
 	console.log( 'action: nowPlayingLoaded', data );
 	return {
 		type: ACTION_NOW_PLAYING_LOADED,
@@ -154,7 +153,7 @@ function nowPlayingLoaded( data ) {
 /**
  * audioStart action creator
  */
-function audioStart() {
+export function audioStart() {
 	console.log( 'action: audioStart' );
 	return {
 		type: ACTION_AUDIO_START,
@@ -164,7 +163,7 @@ function audioStart() {
 /**
  * audioStop action creator
  */
-function audioStop() {
+export function audioStop() {
 	console.log( 'action: audioStop' );
 	return {
 		type: ACTION_AUDIO_STOP,
@@ -175,7 +174,7 @@ function audioStop() {
  * durationChange action creator
  * @param {String} duration - Payload from player
  */
-function durationChange( duration ) {
+export function durationChange( duration ) {
 	console.log( 'action: durationChange' );
 	return {
 		type: ACTION_DURATION_CHANGE,
@@ -188,7 +187,7 @@ function durationChange( duration ) {
  * @param {String} time - Payload from player
  * @param {String|null} duration - Payload from player
  */
-function timeChange( time, duration = null ) {
+export function timeChange( time, duration = null ) {
 	console.log( 'action: timeChange' );
 	return {
 		type: ACTION_TIME_CHANGE,
@@ -199,13 +198,14 @@ function timeChange( time, duration = null ) {
 
 /**
  * initializeTdPlayer action creator
+ *
  * @param {Object} player - player object reference
  */
-function initializeTdPlayer( player ) {
-	console.log( 'action: initializeTdPlayer' );
+export function setPlayer( player, playerType ) {
+	console.log( 'action: setPlayer' );
 	return {
-		type: ACTION_INIT_TDPLAYER,
-		player,
+		type: ACTION_SET_PLAYER,
+		payload: { player, playerType },
 	};
 }
 
@@ -300,7 +300,7 @@ function doPlayOmny( player, audio, trackType ) {
  * errorCatcher outputs helper console messages
  * @param {String} prefix
  */
-function errorCatcher( prefix = '' ) {
+export function errorCatcher( prefix = '' ) {
 	return e => {
 		const { data } = e;
 		const { errors = [] } = data;
@@ -312,66 +312,22 @@ function errorCatcher( prefix = '' ) {
 	};
 }
 
-export function initTdPlayer( modules ) {
-	console.log( 'initTdPlayer initialized' );
-	return ( dispatch ) => {
-		let adSyncedTimeout = false;
+let adSyncedTimeout = false;
 
-		function dispatchSyncedStart() {
-			// hide after 35 seconds if it hasn't been hidden yet
-			clearTimeout( adSyncedTimeout );
-			adSyncedTimeout = setTimeout(
-				() => dispatch( adBreakSyncedHide() ),
-				35000,
-			);
-			dispatch( adBreakSynced() );
-		}
-
-		const player = new window.TDSdk( {
-			configurationError: errorCatcher( 'Configuration Error' ),
-			coreModules: modules,
-			moduleError: errorCatcher( 'Module Error' ),
-			playerReady() {
-				console.log( 'player is ready, assigning listeners' );
-				player.addEventListener( 'stream-status', ( { data } ) => dispatch( statusUpdate( data.code ) ) );
-				player.addEventListener( 'list-loaded', ( { data } ) => dispatch( nowPlayingLoaded( data ) ) );
-				player.addEventListener( 'track-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-				player.addEventListener( 'speech-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-				player.addEventListener( 'custom-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-				player.addEventListener( 'ad-break-cue-point', ( { data } ) => dispatch( cuePoint( data ) ) );
-				player.addEventListener( 'ad-break-cue-point-complete', ( { data } ) => dispatch( cuePoint( data ) ) );
-				player.addEventListener( 'ad-break-synced-element', dispatchSyncedStart );
-				player.addEventListener( 'ad-playback-start', () => dispatch( adPlaybackStart() ) ); // used to dispatchPlaybackStart
-				player.addEventListener( 'ad-playback-complete', () => dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ) ) ); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE )
-				player.addEventListener( 'stream-start', ( { data } ) => dispatch( streamStart( data ) ) );
-				player.addEventListener( 'stream-stop', ( { data } ) => dispatch( streamStop( data ) ) );
-				player.addEventListener(
-					'ad-playback-error',
-					() => {
-						/*
-						* the beforeStreamStart function may be injected onto the window
-						* object from google tag manager. This function provides a callback
-						* when it is completed. Currently we are using it to play a preroll
-						* from kubient when there is no preroll provided by triton. To ensure
-						* that we do not introduce unforeseen issues we return the original
-						* ACTION_AD_PLAYBACK_ERROR type.
-						* */
-						if ( window.beforeStreamStart ) {
-							window.beforeStreamStart( () => dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) ) ); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
-						} else {
-							dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) ); // used to dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) );
-						}
-					},
-				);
-				dispatch( initializeTdPlayer( player ) );
-			},
-		} );
-	};
-}
+export const liveStreamSyncedStart = () => dispatch => {
+	// hide after 35 seconds if it hasn't been hidden yet
+	clearTimeout( adSyncedTimeout );
+	adSyncedTimeout = setTimeout(
+		() => dispatch( adBreakSyncedHide() ),
+		35000,
+	);
+	dispatch( adBreakSynced() );
+};
 
 export function playAudio( audio, cueTitle = '', artistName = '', trackType = 'live' ) {
 	return ( dispatch ) => {
 		const player = new Audio( audio );
+
 		console.log( 'timeChange can activate here', player );
 		player.addEventListener( 'loadstart', () => dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) ) );
 		player.addEventListener( 'pause', () => dispatch( statusUpdate( STATUSES.LIVE_PAUSE ) ) );
@@ -417,8 +373,7 @@ export function playOmny( audio, cueTitle = '', artistName = '', trackType = 'li
 }
 
 export default {
-	initTdPlayer,
-	initializeTdPlayer,
+	setPlayer,
 	pause,
 	playAudio,
 	playOmny,

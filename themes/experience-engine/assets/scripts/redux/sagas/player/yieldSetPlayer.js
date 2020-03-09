@@ -6,20 +6,17 @@ import { loadNowPlaying } from '../../utilities';
 
 // Import action constant(s)
 import {
-	ACTION_INIT_TDPLAYER,
-	ACTION_SET_PLAYER_TYPE,
+	ACTION_SET_PLAYER,
 } from '../../actions/player';
 
 /**
- * @function yieldInitTdPlayer
- * Generator runs whenever ACTION_INIT_TDPLAYER is dispatched
+ * @function yieldSetPlayer
+ *
+ * Generator runs whenever ACTION_SET_PLAYER is dispatched
  */
-function* yieldInitTdPlayer() {
+function* yieldSetPlayer() {
 
-	console.log( 'yieldInitTdPlayer' );
-
-	// Store player type in state
-	yield put( { type: ACTION_SET_PLAYER_TYPE, payload: 'tdplayer' } );
+	console.log( 'yieldSetPlayer' );
 
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
@@ -29,7 +26,6 @@ function* yieldInitTdPlayer() {
 		volume,
 		player,
 	} = playerStore;
-
 
 	// If player and volume, set volume
 	if (
@@ -44,9 +40,10 @@ function* yieldInitTdPlayer() {
 }
 
 /**
- * @function watchInitTdPlayer
+ * @function watchSetPlayer
+ *
  * Generator used to bind action and callback
  */
-export default function* watchInitTdPlayer() {
-	yield takeLatest( [ACTION_INIT_TDPLAYER], yieldInitTdPlayer );
+export default function* watchSetPlayer() {
+	yield takeLatest( [ACTION_SET_PLAYER], yieldSetPlayer );
 }

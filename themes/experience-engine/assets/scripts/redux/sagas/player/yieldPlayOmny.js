@@ -4,7 +4,7 @@ import { fullStop } from '../../utilities';
 import {
 	ACTION_PLAY_OMNY,
 	ACTION_SET_PLAYER_TYPE,
-	ACTION_INIT_PLAYER,
+	setPlayer,
 } from '../../actions/player';
 
 /**
@@ -26,10 +26,7 @@ function* yieldPlayOmny( { player } ) {
 	yield call( fullStop, playerStore );
 
 	// Update state player
-	yield put( { type: ACTION_INIT_PLAYER, player } );
-
-	// Store player type in state
-	yield put( { type: ACTION_SET_PLAYER_TYPE, payload: 'omnyplayer' } );
+	yield put( setPlayer( player, 'omnyplayer' ) );
 
 	// Trigger play
 	if(

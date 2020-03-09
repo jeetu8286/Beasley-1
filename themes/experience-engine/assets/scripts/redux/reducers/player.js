@@ -15,8 +15,7 @@ import {
 
 // Player action imports
 import {
-	ACTION_INIT_TDPLAYER,
-	ACTION_INIT_PLAYER,
+	ACTION_SET_PLAYER,
 	ACTION_STATUS_CHANGE,
 	ACTION_CUEPOINT_CHANGE,
 	ACTION_SET_VOLUME,
@@ -70,19 +69,17 @@ function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 
 		// Catches in Saga Middleware
-		case ACTION_INIT_TDPLAYER:
-			console.log( 'reducer: init tdplayer', state );
-			return {
-				...state,
-				player: action.player,
-			};
+		case ACTION_SET_PLAYER: {
+			console.log( 'reducer: set player', state );
 
-		case ACTION_INIT_PLAYER:
-			console.log( 'reducer: init player', state );
+			const { playerType, player } = action.payload;
+
 			return {
 				...state,
-				player: action.player,
+				playerType,
+				player,
 			};
+		}
 
 		// Catches in Saga Middleware
 		case ACTION_PLAY_AUDIO:
