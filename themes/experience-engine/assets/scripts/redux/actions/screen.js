@@ -65,7 +65,7 @@ export const fetchFeedsContent = ( token, url = 'feeds-content' ) => async dispa
 			url,
 			response,
 			options: {
-				suppressHistory: false,
+				suppressHistory: true,
 			},
 			parsedHtml,
 

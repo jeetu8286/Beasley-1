@@ -1,6 +1,6 @@
-import store from '../store';
-
 /* eslint-disable sort-keys */
+// and is used to play omnyAudio programatically
+import playerjs from 'player.js';
 
 export const ACTION_INIT_TDPLAYER = 'PLAYER_INIT_TDPLAYER';
 export const ACTION_STATUS_CHANGE = 'PLAYER_STATUS_CHANGE';
@@ -306,7 +306,7 @@ function errorCatcher( prefix = '' ) {
 
 		errors.forEach( error =>
 			// eslint-disable-next-line no-console
-			console.error( `${prefix}: [${error.code}] ${error.message}` )
+			console.error( `${prefix}: [${error.code}] ${error.message}` ),
 		);
 	};
 }
@@ -393,7 +393,6 @@ export function playOmny( audio, cueTitle = '', artistName = '', trackType = 'li
 			return;
 		}
 
-		const { playerjs } = window;
 		const iframe = document.createElement( 'iframe' );
 		iframe.id = id;
 		iframe.src = audio;
