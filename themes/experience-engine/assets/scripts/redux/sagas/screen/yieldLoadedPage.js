@@ -47,16 +47,6 @@ function updateHistory( url, title ) {
 }
 
 /**
- * Updates DOM related stuff for the loaded page document.
- *
- * @param {object} pageDocument
- */
-function updateDOM( pageDocument ) {
-	document.title = pageDocument.title;
-	document.body.className = pageDocument.body.className;
-}
-
-/**
  * @function yieldLoadedPage
  * Generator runs whenever [ ACTION_LOADED_PAGE ]
  * is dispatched
@@ -64,8 +54,6 @@ function updateDOM( pageDocument ) {
  * @param { Object } action Dispatched action
  */
 function* yieldLoadedPage( action ) {
-	console.log( 'yieldLoadedPage' );
-
 	const { url, response, options, parsedHtml } = action;
 
 	const urlSlugified = slugify( url );
@@ -74,13 +62,13 @@ function* yieldLoadedPage( action ) {
 	// Screen store from state
 	const screenStore = yield select( ( { screen } ) => screen );
 
-	// Call manageBbgiConfig
+	// Update BBGI Config
 	yield call( manageBbgiConfig, pageDocument );
 
-	// Call updateTargeting
+	// Update Ad Targeting
 	yield call( updateTargeting );
 
-	// DOM mods
+	// Fix WP Admin Bar
 	if ( pageDocument ) {
 		const barId = 'wpadminbar';
 		const wpadminbar = document.getElementById( barId );
@@ -99,15 +87,16 @@ function* yieldLoadedPage( action ) {
 		data: response.html,
 	} );
 
-	// Call NProgress
+	// Start the loading progress bar.
 	yield call( [ NProgress, 'done' ] );
 
-	// Call manageScripts
+	// Update Scripts.
 	yield call( manageScripts, parsedHtml.scripts, screenStore.scripts );
 
+	// make sure the user scroll bar is into view.
 	yield call( scrollIntoView );
 
-	// Call hideSplashScreen
+	// make sure to hide splash screen.
 	yield call( hideSplashScreen );
 
 	// last step is update history, return early if it's not needed.
@@ -117,7 +106,8 @@ function* yieldLoadedPage( action ) {
 
 	yield call( updateHistory, url, pageDocument.title );
 
-	yield call( updateDOM, pageDocument );
+	document.title = pageDocument.title;
+	document.body.className = pageDocument.body.className;
 }
 
 

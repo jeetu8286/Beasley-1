@@ -14,19 +14,16 @@ import { ACTION_LOADED_PARTIAL } from '../../actions/screen';
  * @param { Object } action Dispatched action
  */
 function* yieldLoadedPartial( action ) {
-
-	console.log( 'yieldLoadedPartial' );
-
 	// Destructure from action payload
 	const { document: pageDocument } = action;
 
-	// Call NProgress
+	// Start the loading progress bar.
 	yield call( [ NProgress, 'done' ] );
 
-	// Call manageBbgiConfig
+	// Update BBGI Config
 	yield call( manageBbgiConfig, pageDocument );
 
-	// Call hideSplashScreen
+	// make sure to hide splash screen.
 	yield call( hideSplashScreen );
 }
 

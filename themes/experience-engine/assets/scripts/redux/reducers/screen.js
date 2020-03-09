@@ -38,8 +38,6 @@ function reducer( state = {}, action = {} ) {
 
 		// Catch in Sagas
 		case ACTION_INIT_PAGE:
-			console.log( 'reducer: init page' );
-
 			return {
 				...state,
 				content: action.content,
@@ -49,8 +47,6 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_LOADING_PARTIAL:
 		case ACTION_LOADING_PAGE:
-			console.log( 'reducer: loading page' );
-
 			return {
 				...state,
 				url: action.url,
@@ -74,8 +70,6 @@ function reducer( state = {}, action = {} ) {
 		}
 
 		case ACTION_LOADED_PARTIAL: {
-			console.log( 'reducer: loaded partial' );
-
 			// do not accept action if user goes to another page before current page is loaded
 			if ( state.url !== action.url ) {
 				return state;
@@ -101,8 +95,6 @@ function reducer( state = {}, action = {} ) {
 			};
 
 		case ACTION_HIDE_SPLASH_SCREEN:
-			console.log( 'reducer: hide splash screen' );
-
 			return {
 				...state,
 				splashScreen: false,

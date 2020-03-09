@@ -18,9 +18,6 @@ import {
  * @param { Object } action.url url from action
  */
 function* yieldLoadingPage( { url } ) {
-
-	console.log( 'yieldLoadingPage' );
-
 	if ( window.location.href !== url ) {
 
 		// Call updateCorrelator
