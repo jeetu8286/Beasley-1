@@ -34,7 +34,7 @@ function* yieldAdPlaybackStop( { payload } ) {
 	// Update DOM
 	yield call( [ document.body.classList, 'remove' ], 'locked' );
 
-	// If global tdplayer exists
+	// If the current player is a tdplayer
 	if( 'tdplayer' === playerType ) {
 
 		// If adPlayback and player.skipAd

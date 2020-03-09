@@ -27,7 +27,7 @@ function* yieldSetPlayer() {
 		player,
 	} = playerStore;
 
-	// If player and volume, set volume
+	// makes that whenever a new player is set, we recalculate the current volume.
 	if (
 		player &&
 		'function' === typeof player.setVolume
