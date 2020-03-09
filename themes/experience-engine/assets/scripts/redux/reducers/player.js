@@ -74,7 +74,6 @@ function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 
 		// Catches in Saga Middleware
-		// Returns unaffected state
 		case ACTION_INIT_TDPLAYER:
 			console.log( 'reducer: init tdplayer', state );
 			return {
@@ -98,12 +97,6 @@ function reducer( state = {}, action = {} ) {
 				...state,
 				station: action.station,
 			};
-
-		// Catches in Saga Middleware
-		// Returns unaffected state
-		case ACTION_AD_PLAYBACK_STOP:
-			console.log( 'reducer: playback stop' );
-			return state;
 
 		// Catches in Saga Middleware
 		case ACTION_PLAY_OMNY:
@@ -231,26 +224,6 @@ function reducer( state = {}, action = {} ) {
 				...state,
 				songs: action.list,
 			};
-
-		//Catches in Saga Middleware
-		case ACTION_STREAM_START:
-			console.log( 'reducer: stream start' );
-			return state;
-
-		//Catches in Saga Middleware
-		case ACTION_STREAM_STOP:
-			console.log( 'reducer: stream stop' );
-			return state;
-
-		//Catches in Saga Middleware
-		case ACTION_AUDIO_START:
-			console.log( 'reducer: audio start' );
-			return state;
-
-		//Catches in Saga Middleware
-		case ACTION_AUDIO_STOP:
-			console.log( 'reducer: audio stop' );
-			return state;
 
 		//Catches in Saga Middleware
 		case ACTION_AD_PLAYBACK_START:
