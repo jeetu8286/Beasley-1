@@ -3,6 +3,7 @@
 import playerjs from 'player.js';
 
 export const ACTION_INIT_TDPLAYER = 'PLAYER_INIT_TDPLAYER';
+export const ACTION_INIT_PLAYER = 'PLAYER_INIT';
 export const ACTION_STATUS_CHANGE = 'PLAYER_STATUS_CHANGE';
 export const ACTION_CUEPOINT_CHANGE = 'PLAYER_CUEPOINT_CHANGE';
 export const ACTION_SET_VOLUME = 'PLAYER_SET_VOLUME';
@@ -371,6 +372,7 @@ export function initTdPlayer( modules ) {
 export function playAudio( audio, cueTitle = '', artistName = '', trackType = 'live' ) {
 	return ( dispatch ) => {
 		const player = new Audio( audio );
+		console.log( 'timeChange can activate here', player );
 		player.addEventListener( 'loadstart', () => dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) ) );
 		player.addEventListener( 'pause', () => dispatch( statusUpdate( STATUSES.LIVE_PAUSE ) ) );
 		player.addEventListener( 'playing', () => dispatch( statusUpdate( STATUSES.LIVE_PLAYING ) ) );
@@ -380,7 +382,7 @@ export function playAudio( audio, cueTitle = '', artistName = '', trackType = 'l
 		player.addEventListener( 'ended', dispatch( audioStop() ) );
 		player.addEventListener( 'abort', dispatch( audioStop() ) );
 		player.addEventListener( 'loadedmetadata', () => dispatch( durationChange( player.duration ) ) );
-		player.addEventListener( 'timeupdate', () => dispatch( timeChange( player.currentTime ) ) );
+		player.addEventListener( 'timeupdate', () => { console.log( 'timeChange dispatch' ); return dispatch( timeChange( player.currentTime ) ); } );
 		dispatch( doPlayAudio( player, audio, trackType ) );
 		dispatch( cuePoint( { cuePoint: { type: 'track', cueTitle, artistName } } ) );
 	};

@@ -105,8 +105,6 @@ class LivePlayer extends Component {
 			return false;
 		}
 
-		console.log( 'fdhfkjslkjfsdkjhflskjdfh ', this.props.player );
-
 		const { online } = state;
 
 		const {

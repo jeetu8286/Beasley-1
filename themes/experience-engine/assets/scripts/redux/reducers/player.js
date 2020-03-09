@@ -16,6 +16,7 @@ import {
 // Player action imports
 import {
 	ACTION_INIT_TDPLAYER,
+	ACTION_INIT_PLAYER,
 	ACTION_STATUS_CHANGE,
 	ACTION_CUEPOINT_CHANGE,
 	ACTION_SET_VOLUME,
@@ -71,6 +72,13 @@ function reducer( state = {}, action = {} ) {
 		// Catches in Saga Middleware
 		case ACTION_INIT_TDPLAYER:
 			console.log( 'reducer: init tdplayer', state );
+			return {
+				...state,
+				player: action.player,
+			};
+
+		case ACTION_INIT_PLAYER:
+			console.log( 'reducer: init player', state );
 			return {
 				...state,
 				player: action.player,
@@ -159,7 +167,7 @@ function reducer( state = {}, action = {} ) {
 		// Cleaned up checks
 		// adding console for logging purposes
 		case ACTION_TIME_CHANGE: {
-			console.log( 'reducer: time change' );
+			console.log( 'reducer: timeChange' );
 			// Initialize override
 			let override = {};
 
