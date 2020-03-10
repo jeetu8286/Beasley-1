@@ -1,12 +1,8 @@
-/**
- * @function fullStop
- * Stop all players (mp3Player, omnyplayer and tdplayer)
- *
- * @param {object} playerStore
- * @param {player} playerStore.player - Actual player object to interface with
- * @param {string} playerStore.playerType - Type of player (omnyplayer, tdplayer, mp3player)
- */
-export default function fullStop( { player, playerType } ) {
+import { select, takeLatest } from 'redux-saga/effects';
+import { ACTION_PLAYER_STOP } from '../../actions/player';
+
+function* yieldStop( ) {
+	const { player, playerType } = yield select( ( { player } ) => player );
 
 	// If no player or type, abandon
 	if (
@@ -37,6 +33,10 @@ export default function fullStop( { player, playerType } ) {
 	// If tdplayer
 	if ( 'tdplayer' === playerType ) {
 		player.stop();
-		player.skipAd(); // TODO: No null player here though???
+		player.skipAd();
 	}
+}
+
+export default function* watchStop() {
+	yield takeLatest( [ACTION_PLAYER_STOP], yieldStop );
 }

@@ -9,9 +9,6 @@ import {
  * Generator runs whenever ACTION_AD_PLAYBACK_START is dispatched
  */
 function* yieldAdPlaybackStart() {
-
-	console.log( 'yieldAdPlaybackStart' );
-
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 

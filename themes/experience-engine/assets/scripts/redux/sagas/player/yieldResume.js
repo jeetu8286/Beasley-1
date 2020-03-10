@@ -9,9 +9,6 @@ import {
  * Generator runs whenever ACTION_RESUME is dispatched
  */
 function* yieldResume() {
-
-	console.log( 'yieldResume' );
-
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 

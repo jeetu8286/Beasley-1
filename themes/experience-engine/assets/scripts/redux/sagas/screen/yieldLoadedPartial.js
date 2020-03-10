@@ -1,10 +1,9 @@
-import { call, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import NProgress from 'nprogress';
 import {
 	manageBbgiConfig,
-	hideSplashScreen,
 } from '../../utilities';
-import { ACTION_LOADED_PARTIAL } from '../../actions/screen';
+import { ACTION_LOADED_PARTIAL, ACTION_HIDE_SPLASH_SCREEN } from '../../actions/screen';
 
 /**
  * @function yieldLoadedPartial
@@ -24,7 +23,7 @@ function* yieldLoadedPartial( action ) {
 	yield call( manageBbgiConfig, pageDocument );
 
 	// make sure to hide splash screen.
-	yield call( hideSplashScreen );
+	yield put( { type: ACTION_HIDE_SPLASH_SCREEN } );
 }
 
 /**

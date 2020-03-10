@@ -1,5 +1,5 @@
 // Import saga effects
-import { call, takeLatest, select, put } from 'redux-saga/effects';
+import { call, takeLatest, select } from 'redux-saga/effects';
 
 // Import helper method(s)
 import { loadNowPlaying } from '../../utilities';
@@ -15,10 +15,6 @@ import {
  * Generator runs whenever ACTION_SET_PLAYER is dispatched
  */
 function* yieldSetPlayer() {
-
-	console.log( 'yieldSetPlayer' );
-
-	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
 
 	// Destructure

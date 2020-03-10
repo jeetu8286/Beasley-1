@@ -16,9 +16,6 @@ import {
  * @param {String} action.cuePoint cuePoint from action
  */
 function* yieldCuePointChange( { cuePoint } ) {
-
-	console.log( 'yieldCuePointChange' );
-
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 

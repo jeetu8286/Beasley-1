@@ -1,7 +1,4 @@
 import { call, takeLatest } from 'redux-saga/effects';
-import {
-	hideSplashScreen,
-} from '../../utilities';
 import { ACTION_HIDE_SPLASH_SCREEN } from '../../actions/screen';
 
 /**
@@ -12,11 +9,16 @@ import { ACTION_HIDE_SPLASH_SCREEN } from '../../actions/screen';
  * @param { Object } action Dispatched action
  */
 function* yieldHideSplashScreen( action ) {
-
-	console.log( 'yieldHideSplashScreen' );
-
-	yield call( hideSplashScreen );
-
+	yield call(
+		[ window, 'setTimeout' ],
+		() => {
+			const splashScreen = document.getElementById( 'splash-screen' );
+			if ( splashScreen ) {
+				splashScreen.parentNode.removeChild( splashScreen );
+			}
+		},
+		2000,
+	);
 }
 
 /**

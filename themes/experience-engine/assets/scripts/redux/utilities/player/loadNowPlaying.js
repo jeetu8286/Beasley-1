@@ -8,8 +8,6 @@
  */
 export default function loadNowPlaying( { station = null, player = null, playerType = null } ) {
 
-	console.log( 'loadNowPlaying', player, playerType, station );
-
 	// If not tdplayer type, abandon
 	// Only tdplayer contains the NowPlayingApi
 	if (
@@ -28,7 +26,6 @@ export default function loadNowPlaying( { station = null, player = null, playerT
 		player.NowPlayingApi &&
 		'function' === typeof player.NowPlayingApi.load
 	) {
-		console.log( 'has station and player, fire player.NowPlayingApi' );
 		player.NowPlayingApi.load( { numberToFetch: 10, mount: station } );
 	}
 }

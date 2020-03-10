@@ -14,9 +14,6 @@ import {
  * @param {Object} action.payload payload from dispatch
  */
 function* yieldAdPlaybackStop( { payload } ) {
-
-	console.log( 'yieldAdPlaybackStop' );
-
 	// Destructure from payload
 	const { actionType } = payload;
 
@@ -50,7 +47,6 @@ function* yieldAdPlaybackStop( { payload } ) {
 			station &&
 			'function' === typeof player.play
 		) {
-			console.log( 'going to play station' );
 			yield call( [ player, 'play' ], { station } );
 		}
 

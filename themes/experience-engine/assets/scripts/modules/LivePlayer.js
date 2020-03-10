@@ -148,34 +148,29 @@ class LivePlayer extends Component {
 		const isIos = isIOS();
 
 		const children = (
-			<Fragment>
-				{notification}
+			<ErrorBoundary>
+				<Fragment>
+					{notification}
 
-				<div className={`preroll-wrapper${adPlayback && !isAudioAdOnly( { player, playerType } ) ? ' -active' : ''}`}>
-					<div className="preroll-container">
-						<div id="td_container" className="preroll-player"></div>
-						<div className="preroll-notification">Live stream will be available after this brief ad from our sponsors</div>
+					<div className={`preroll-wrapper${adPlayback && !isAudioAdOnly( { player, playerType } ) ? ' -active' : ''}`}>
+						<div className="preroll-container">
+							<div id="td_container" className="preroll-player"></div>
+							<div className="preroll-notification">Live stream will be available after this brief ad from our sponsors</div>
+						</div>
 					</div>
-				</div>
 
-				<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
+					<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
 
-				<ErrorBoundary>
 					<Progress className="-mobile" colors={textStyle} />
-				</ErrorBoundary>
 
-				<div className="controls" style={ controlsStyle }>
-					<div className="control-section">
-						<ErrorBoundary>
+					<div className="controls" style={ controlsStyle }>
+						<div className="control-section">
 							<Info colors={textStyle} />
-						</ErrorBoundary>
-					</div>
-					<div className="control-section -centered">
-						<div className={`controls-wrapper -centered ${progressClass}`}>
-							<ErrorBoundary>
+						</div>
+						<div className="control-section -centered">
+							<div className={`controls-wrapper -centered ${progressClass}`}>
 								<RecentSongs colors={customColors} />
-							</ErrorBoundary>
-							<ErrorBoundary>
+
 								<Controls
 									status={status}
 									play={this.handlePlay}
@@ -185,35 +180,23 @@ class LivePlayer extends Component {
 									isIos={isIos}
 									progressClass={progressClass}
 								/>
-							</ErrorBoundary>
-							<ErrorBoundary>
-								<Volume colors={buttonsFillStyle} />
-							</ErrorBoundary>
-						</div>
-						<ErrorBoundary>
-							<Progress className="-desktop" colors={textStyle} />
-						</ErrorBoundary>
-					</div>
-					<div className="control-section">
-						<ErrorBoundary>
-							<Rewind progressClass={progressClass} />
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Sponsor className="controls-sponsor" minWidth={1060} />
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Stations colors={customColors} />
-						</ErrorBoundary>
-						<ErrorBoundary>
-							<Contacts colors={customColors} />
-						</ErrorBoundary>
-					</div>
-				</div>
 
-				<ErrorBoundary>
+								<Volume colors={buttonsFillStyle} />
+							</div>
+
+							<Progress className="-desktop" colors={textStyle} />
+						</div>
+						<div className="control-section">
+							<Rewind progressClass={progressClass} />
+							<Sponsor className="controls-sponsor" minWidth={1060} />
+							<Stations colors={customColors} />
+							<Contacts colors={customColors} />
+						</div>
+					</div>
+
 					<Sponsor className="sponsor-mobile" maxWidth="1059" style={ controlsStyle } />
-				</ErrorBoundary>
-			</Fragment>
+				</Fragment>
+			</ErrorBoundary>
 		);
 
 		return ReactDOM.createPortal( children, this.container );
