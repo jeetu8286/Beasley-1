@@ -345,6 +345,25 @@ function setUpAudioPlayer( dispatch, src ) {
 }
 
 /**
+ * Sets up the omny player.
+ *
+ * @param {string} source The audio source file.
+ */
+function setUpOmnyPlayer( source ) {
+	const id = source.replace( /\W+/g, '' );
+	if ( document.getElementById( id ) ) {
+		return;
+	}
+
+	const iframe = document.createElement( 'iframe' );
+	iframe.id = id;
+	iframe.src = source;
+	document.body.appendChild( iframe );
+
+	PLAYERS_REGISTRY.omnyPlayer = new playerjs.Player( iframe );
+}
+
+/**
  * Action Creator for playing an audio file.
  *
  * @param {*} src The audio source.
@@ -364,40 +383,15 @@ export const playStation = ( station ) => dispatch =>
 
 
 /**
- * Action creator for playing an omny audio file.
+ * Action Creator for playing an audio file using the omnyplayer.
  *
- * @param {*} audio
+ * @param {*} src The audio source.
  * @param {*} cueTitle
  * @param {*} artistName
  * @param {*} trackType
  */
-export function playOmny( audio, cueTitle = '', artistName = '', trackType = 'live'  ) {
-	return ( dispatch ) => {
-		const id = audio.replace( /\W+/g, '' );
-		if ( document.getElementById( id ) ) {
-			return;
-		}
-
-		const iframe = document.createElement( 'iframe' );
-		iframe.id = id;
-		iframe.src = audio;
-		document.body.appendChild( iframe );
-
-		const player = new playerjs.Player( iframe );
-
-		player.on( 'ready', () => {
-			dispatch( doPlayOmny( player, audio, trackType ) );
-			dispatch( cuePoint( { type: 'track', cueTitle, artistName } ) );
-			dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) );
-		} );
-
-		player.on( 'play', () => dispatch( statusUpdate( STATUSES.LIVE_PLAYING ) ) );
-		player.on( 'pause', () => dispatch( statusUpdate( STATUSES.LIVE_PAUSE ) ) );
-		player.on( 'ended', () => dispatch( statusUpdate( STATUSES.LIVE_STOP ) ) );
-		player.on( 'error', ()=> errorCatcher( 'Omny Error' ) );
-		player.on( 'timeupdate', ( { seconds: time, duration } ) => dispatch( timeChange( time, duration ) ) );
-	};
-}
+export const playOmny = ( src, cueTitle = '', artistName = '', trackType = 'live' ) => dispatch =>
+	play( 'omnyplayer', src, cueTitle, artistName, trackType )( dispatch );
 
 /**
  * Low-level play action creator
@@ -410,6 +404,7 @@ export function playOmny( audio, cueTitle = '', artistName = '', trackType = 'li
  * @param {*} trackType
  */
 const play = ( playerType, source, cueTitle = '', artistName = '', trackType = '' ) => dispatch => {
+	// make sure to stop any running player.
 	dispatch( stop() );
 
 	if ( 'tdplayer' === playerType ) {
@@ -441,7 +436,30 @@ const play = ( playerType, source, cueTitle = '', artistName = '', trackType = '
 		} );
 		dispatch( cuePoint( { type: 'track', cueTitle, artistName } ) );
 	} else if( 'omnyplayer' === playerType ) {
-		// todo
+		if ( null === PLAYERS_REGISTRY.audioPlayer ) {
+			setUpOmnyPlayer();
+		}
+
+		dispatch( setPlayer( PLAYERS_REGISTRY.omnyPlayer, 'omnyplayer' ) );
+
+		// all events are removed when stopping the omny player so we need to recreate them.
+		PLAYERS_REGISTRY.omnyPlayer.on( 'ready', () => {
+			dispatch( {
+				type: ACTION_PLAY,
+				payload: {
+					source,
+					trackType,
+				},
+			} );
+			dispatch( cuePoint( { type: 'track', cueTitle, artistName } ) );
+			dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) );
+		} );
+
+		PLAYERS_REGISTRY.omnyPlayer.on( 'play', () => dispatch( statusUpdate( STATUSES.LIVE_PLAYING ) ) );
+		PLAYERS_REGISTRY.omnyPlayer.on( 'pause', () => dispatch( statusUpdate( STATUSES.LIVE_PAUSE ) ) );
+		PLAYERS_REGISTRY.omnyPlayer.on( 'ended', () => dispatch( statusUpdate( STATUSES.LIVE_STOP ) ) );
+		PLAYERS_REGISTRY.omnyPlayer.on( 'error', ()=> errorCatcher( 'Omny Error' ) );
+		PLAYERS_REGISTRY.omnyPlayer.on( 'timeupdate', ( { seconds: time, duration } ) => dispatch( timeChange( time, duration ) ) );
 	}
 };
 
