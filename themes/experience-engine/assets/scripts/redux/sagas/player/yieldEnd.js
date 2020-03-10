@@ -1,10 +1,10 @@
 import { call, select, takeLatest } from 'redux-saga/effects';
-import { ACTION_PLAYER_STOP } from '../../actions/player';
+import { ACTION_PLAYER_END } from '../../actions/player';
 import { lyticsTrack } from '../../utilities';
 
-function* yieldStopped() {
+function* yieldEnd() {
 	const playerStore = yield select( ( { player } ) => player );
-
+	console.log( 'yield end' );
 	if ( 'tdplayer' === playerStore.playerType ) {
 		const { liveStreamInterval = null } = window;
 
@@ -34,12 +34,13 @@ function* yieldStopped() {
 			1 >= Math.abs( duration - time ) &&
 			! userInteraction
 		) {
+			console.log( 'calling lytics track' );
 			yield call( lyticsTrack, 'end', cuePoint );
 		}
 	}
 
 }
 
-export default function* watchStopped() {
-	yield takeLatest( [ACTION_PLAYER_STOP], yieldStopped );
+export default function* watchEnd() {
+	yield takeLatest( [ACTION_PLAYER_END], yieldEnd );
 }

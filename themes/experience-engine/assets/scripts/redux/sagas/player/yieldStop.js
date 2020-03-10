@@ -3,7 +3,7 @@ import { ACTION_PLAYER_STOP } from '../../actions/player';
 
 function* yieldStop( ) {
 	const { player, playerType } = yield select( ( { player } ) => player );
-
+	console.log( 'yield stop' );
 	// If no player or type, abandon
 	if (
 		!player ||

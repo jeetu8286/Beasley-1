@@ -22,7 +22,7 @@ export const ACTION_AD_BREAK_SYNCED_HIDE = 'PLAYER_AD_BREAK_SYNCED_HIDE';
 
 export const ACTION_PLAYER_START = 'PLAYER_START';
 export const ACTION_PLAYER_STOP = 'PLAYER_STOP';
-export const ACTION_PLAYER_STOPPED = 'PLAYER_STOPPED';
+export const ACTION_PLAYER_END = 'ACTION_PLAYER_END';
 export const ACTION_SET_PLAYER_TYPE = 'PLAYER_SET_TYPE';
 
 export const STATUSES = {
@@ -173,9 +173,9 @@ export function stop() {
 /**
  * Stop action creator
  */
-export function stopped() {
+export function end() {
 	return {
-		type: ACTION_PLAYER_STOPPED,
+		type: ACTION_PLAYER_END,
 	};
 }
 
@@ -268,7 +268,7 @@ export function initTdPlayer( modules ) {
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-playback-start', () => dispatch( adPlaybackStart() ) ); // used to dispatchPlaybackStart
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-playback-complete', () => dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ) ) ); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE )
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-start', () => dispatch( start() ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-stop', () => dispatch( stopped() ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-stop', () => dispatch( end() ) );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener(
 			'ad-playback-error',
 			() => {
@@ -334,11 +334,12 @@ function setUpAudioPlayer( dispatch, src ) {
 	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'loadstart', () => dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) ) );
 	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'pause', () => dispatch( statusUpdate( STATUSES.LIVE_PAUSE ) ) );
 	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'playing', () => dispatch( statusUpdate( STATUSES.LIVE_PLAYING ) ) );
-	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'ended', () => dispatch( statusUpdate( STATUSES.LIVE_STOP ) ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'ended', () => {
+		dispatch( statusUpdate( STATUSES.LIVE_STOP ) );
+	} );
 	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'play', () => dispatch( start() ) );
-	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'pause', dispatch( stopped() ) );
-	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'ended', dispatch( stopped() ) );
-	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'abort', dispatch( stopped() ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'pause', () => dispatch( end() ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'abort', () => dispatch( end() ) );
 	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'loadedmetadata', () => dispatch( durationChange( PLAYERS_REGISTRY.audioPlayer.duration ) ) );
 	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'timeupdate', () => dispatch( timeChange( PLAYERS_REGISTRY.audioPlayer.currentTime ) ) );
 }

@@ -18,6 +18,7 @@ import {
 	watchHideSplashScreen,
 } from './sagas/';
 import watchPlay from './sagas/player/yieldPlay';
+import watchEnd from './sagas/player/yieldEnd';
 
 /**
  * Root saga that watches for side effects.
@@ -27,6 +28,7 @@ export default function* rootSaga() {
 		watchSetPlayer(),
 		watchStart(),
 		watchPlay(),
+		watchEnd(),
 		watchStop(),
 		watchPause(),
 		watchResume(),

@@ -6,6 +6,7 @@
 export { default as watchSetPlayer } from './player/yieldSetPlayer';
 export { default as watchAdPlaybackStop } from './player/yieldAdPlaybackStop';
 export { default as watchStop } from './player/yieldStop';
+export { default as watchEnd } from './player/yieldEnd';
 export { default as watchPlay } from './player/yieldPlay';
 export { default as watchPause } from './player/yieldPause';
 export { default as watchStart } from './player/yieldStart';
