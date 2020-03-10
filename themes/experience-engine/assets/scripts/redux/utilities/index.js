@@ -3,7 +3,6 @@ export { default as livePlayerLocalStorage } from './player/livePlayerLocalStora
 export { default as getInitialStation } from './player/getInitialStation';
 export { default as parseVolume } from './player/parseVolume';
 export { default as loadNowPlaying } from './player/loadNowPlaying';
-export { default as fullStop } from './player/fullStop';
 export { default as lyticsTrack } from './screen/lyticsTrack';
 export { default as getNewsStreamsFromFeeds } from './screen/getNewsStreamsFromFeeds';
 export { default as manageScripts } from './screen/manageScripts';
