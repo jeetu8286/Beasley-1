@@ -78,7 +78,12 @@ function reducer( state = {}, action = {} ) {
 		}
 		case ACTION_PLAY: {
 			const { source, trackType } = action.payload;
-			const newState = { ...state };
+			const newState = {
+				...state,
+				station: '',
+				audio: '',
+				trackType: '',
+			};
 
 			if ( 'tdplayer' === state.playerType ) {
 				newState.station = source;
