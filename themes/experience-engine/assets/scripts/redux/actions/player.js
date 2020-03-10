@@ -20,6 +20,10 @@ export const ACTION_AD_PLAYBACK_COMPLETE = 'PLAYER_AD_PLAYBACK_COMPLETE';
 export const ACTION_AD_PLAYBACK_ERROR = 'PLAYER_AD_PLAYBACK_ERROR';
 export const ACTION_AD_BREAK_SYNCED = 'PLAYER_AD_BREAK_SYNCED';
 export const ACTION_AD_BREAK_SYNCED_HIDE = 'PLAYER_AD_BREAK_SYNCED_HIDE';
+
+export const ACTION_PLAYER_START = 'PLAYER_START';
+export const ACTION_PLAYER_STOP = 'PLAYER_STOP';
+export const ACTION_PLAYER_STOPPED = 'PLAYER_STOPPED';
 export const ACTION_STREAM_START = 'PLAYER_STREAM_START';
 export const ACTION_STREAM_STOP = 'PLAYER_STREAM_STOP';
 export const ACTION_AUDIO_START = 'PLAYER_AUDIO_START';
@@ -112,30 +116,6 @@ export function statusUpdate( status ) {
 }
 
 /**
- * streamStart action creator
- * @param {Object} data - Payload from player event
- */
-export function streamStart( data ) {
-	console.log( 'action: streamStart' );
-	return {
-		type: ACTION_STREAM_START,
-		data,
-	};
-}
-
-/**
- * streamStop action creator
- * @param {Object} data - Payload from player event
- */
-export function streamStop( data ) {
-	console.log( 'action: streamStop' );
-	return {
-		type: ACTION_STREAM_STOP,
-		data,
-	};
-}
-
-/**
  * cuePoint action creator
  * @param {Object} data - Payload from player event
  */
@@ -159,25 +139,6 @@ export function nowPlayingLoaded( data ) {
 	};
 }
 
-/**
- * audioStart action creator
- */
-export function audioStart() {
-	console.log( 'action: audioStart' );
-	return {
-		type: ACTION_AUDIO_START,
-	};
-}
-
-/**
- * audioStop action creator
- */
-export function audioStop() {
-	console.log( 'action: audioStop' );
-	return {
-		type: ACTION_AUDIO_STOP,
-	};
-}
 
 /**
  * durationChange action creator
@@ -202,6 +163,36 @@ export function timeChange( time, duration = null ) {
 		type: ACTION_TIME_CHANGE,
 		time,
 		duration,
+	};
+}
+
+/**
+ * Start action creator
+ */
+export function start() {
+	console.log( 'action: start' );
+	return {
+		type: ACTION_PLAYER_START,
+	};
+}
+
+/**
+ * Stop action creator
+ */
+export function stop() {
+	console.log( 'action: stop' );
+	return {
+		type: ACTION_PLAYER_STOP,
+	};
+}
+
+/**
+ * Stop action creator
+ */
+export function stopped() {
+	console.log( 'action: stop' );
+	return {
+		type: ACTION_PLAYER_STOPPED,
 	};
 }
 
@@ -294,12 +285,12 @@ export function initTdPlayer( modules ) {
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'speech-cue-point', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'custom-cue-point', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-cue-point', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-cue-point-complete', ( { data } ) => dispatch( cuePoint( data.cuePoint || {} ) ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-cue-point-complete', () => dispatch( cuePoint() ) );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-break-synced-element', dispatchSyncedStart );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-playback-start', () => dispatch( adPlaybackStart() ) ); // used to dispatchPlaybackStart
 		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'ad-playback-complete', () => dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE ) ) ); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE )
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-start', ( { data } ) => dispatch( streamStart( data ) ) );
-		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-stop', ( { data } ) => dispatch( streamStop( data ) ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-start', () => dispatch( start() ) );
+		PLAYERS_REGISTRY.tdPlayer.addEventListener( 'stream-stop', () => dispatch( stopped() ) );
 		PLAYERS_REGISTRY.tdPlayer.addEventListener(
 			'ad-playback-error',
 			() => {
@@ -361,18 +352,17 @@ function errorCatcher( prefix = '' ) {
  */
 function setUpAudioPlayer( dispatch, src ) {
 	PLAYERS_REGISTRY.audioPlayer = new Audio( src );
-	const { audioPlayer } = PLAYERS_REGISTRY;
 
-	audioPlayer.addEventListener( 'loadstart', () => dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) ) );
-	audioPlayer.addEventListener( 'pause', () => dispatch( statusUpdate( STATUSES.LIVE_PAUSE ) ) );
-	audioPlayer.addEventListener( 'playing', () => dispatch( statusUpdate( STATUSES.LIVE_PLAYING ) ) );
-	audioPlayer.addEventListener( 'ended', () => dispatch( statusUpdate( STATUSES.LIVE_STOP ) ) );
-	audioPlayer.addEventListener( 'play', () => dispatch( audioStart() ) );
-	audioPlayer.addEventListener( 'pause', dispatch( audioStop() ) );
-	audioPlayer.addEventListener( 'ended', dispatch( audioStop() ) );
-	audioPlayer.addEventListener( 'abort', dispatch( audioStop() ) );
-	audioPlayer.addEventListener( 'loadedmetadata', () => dispatch( durationChange( audioPlayer.duration ) ) );
-	audioPlayer.addEventListener( 'timeupdate', () => dispatch( timeChange( audioPlayer.currentTime ) ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'loadstart', () => dispatch( statusUpdate( STATUSES.LIVE_BUFFERING ) ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'pause', () => dispatch( statusUpdate( STATUSES.LIVE_PAUSE ) ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'playing', () => dispatch( statusUpdate( STATUSES.LIVE_PLAYING ) ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'ended', () => dispatch( statusUpdate( STATUSES.LIVE_STOP ) ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'play', () => dispatch( start() ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'pause', dispatch( stopped() ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'ended', dispatch( stopped() ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'abort', dispatch( stopped() ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'loadedmetadata', () => dispatch( durationChange( PLAYERS_REGISTRY.audioPlayer.duration ) ) );
+	PLAYERS_REGISTRY.audioPlayer.addEventListener( 'timeupdate', () => dispatch( timeChange( PLAYERS_REGISTRY.audioPlayer.currentTime ) ) );
 }
 
 /**
@@ -441,6 +431,8 @@ export function playOmny( audio, cueTitle = '', artistName = '', trackType = 'li
  * @param {*} trackType
  */
 const play = ( playerType, source, cueTitle = '', artistName = '', trackType = '' ) => dispatch => {
+	dispatch( stop() );
+
 	if ( 'tdplayer' === playerType ) {
 		dispatch( setPlayer( PLAYERS_REGISTRY.tdPlayer, 'tdplayer' ) );
 		dispatch( {
