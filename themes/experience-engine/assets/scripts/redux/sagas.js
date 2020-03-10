@@ -16,9 +16,9 @@ import {
 	watchLoadedPage,
 	watchLoadedPartial,
 	watchHideSplashScreen,
+	watchPlay,
+	watchEnd,
 } from './sagas/';
-import watchPlay from './sagas/player/yieldPlay';
-import watchEnd from './sagas/player/yieldEnd';
 
 /**
  * Root saga that watches for side effects.

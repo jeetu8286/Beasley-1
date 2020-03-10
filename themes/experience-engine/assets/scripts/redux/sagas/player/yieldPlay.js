@@ -51,6 +51,7 @@ function* yieldPlay( action ) {
 		if ( authwatcher && authwatcher.lastLoggedInUser ) {
 			if ( 'undefined' !== typeof authwatcher.lastLoggedInUser.demographicsset ) {
 				if ( authwatcher.lastLoggedInUser.demographicsset ) {
+					// eslint-disable-next-line no-console
 					console.log( 'triton','params sent' );
 					adConfig.trackingParameters = {
 						...adConfig.trackingParameters,

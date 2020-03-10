@@ -4,7 +4,7 @@ import { lyticsTrack } from '../../utilities';
 
 function* yieldEnd() {
 	const playerStore = yield select( ( { player } ) => player );
-	console.log( 'yield end' );
+
 	if ( 'tdplayer' === playerStore.playerType ) {
 		const { liveStreamInterval = null } = window;
 
@@ -34,7 +34,6 @@ function* yieldEnd() {
 			1 >= Math.abs( duration - time ) &&
 			! userInteraction
 		) {
-			console.log( 'calling lytics track' );
 			yield call( lyticsTrack, 'end', cuePoint );
 		}
 	}
