@@ -2,7 +2,6 @@ import React, { Fragment, Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { isIOS } from '../library/browser';
 import { isAudioAdOnly } from '../library/strings';
@@ -28,17 +27,40 @@ class LivePlayer extends Component {
 	constructor( props ) {
 		super( props );
 
-		const self = this;
+		this.container = document.getElementById( 'live-player' );
+		this.state = { online: window.navigator.onLine };
 
-		self.container = document.getElementById( 'live-player' );
-		self.state = { online: window.navigator.onLine };
-
-		self.onOnline = self.handleOnline.bind( self );
-		self.onOffline = self.handleOffline.bind( self );
+		this.onOnline = this.handleOnline.bind( this );
+		this.onOffline = this.handleOffline.bind( this );
+		this.handlePlay = this.handlePlay.bind( this );
 	}
 
 	componentDidMount() {
-		const self = this;
+		// TDSdk is loaded asynchronously, so we need to wait till its loaded and
+		// parsed by browser, and only then start initializing the player
+		const tdinterval = setInterval( () => {
+			if ( window.TDSdk ) {
+				// this.props.initPlayer( tdmodules );
+				this.setUpPlayer();
+				clearInterval( tdinterval );
+			}
+		}, 500 );
+
+
+		window.addEventListener( 'online',  this.onOnline );
+		window.addEventListener( 'offline', this.onOffline );
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener( 'online',  this.onOnline );
+		window.removeEventListener( 'offline', this.onOffline );
+	}
+
+	/**
+	 * Sets up the TdPlayer
+	 */
+	setUpPlayer() {
+		const { initTdPlayer } = this.props;
 
 		// @see: https://userguides.tritondigital.com/spc/tdplay2/
 		const tdmodules = [];
@@ -47,6 +69,9 @@ class LivePlayer extends Component {
 			id: 'MediaPlayer',
 			playerId: 'td_container',
 			techPriority: ['Html5'],
+			idSync: {
+				station: this.props.station,
+			},
 			geoTargeting: {
 				desktop: { isActive: false },
 				iOS: { isActive: false },
@@ -67,24 +92,7 @@ class LivePlayer extends Component {
 			elements: [{ id: 'sync-banner', width: 320, height: 50 }],
 		} );
 
-		// TDSdk is loaded asynchronously, so we need to wait till its loaded and
-		// parsed by browser, and only then start initializing the player
-		const tdinterval = setInterval( () => {
-			if ( window.TDSdk ) {
-				this.props.initPlayer( tdmodules );
-				clearInterval( tdinterval );
-			}
-		}, 500 );
-
-
-		window.addEventListener( 'online',  self.onOnline );
-		window.addEventListener( 'offline', self.onOffline );
-	}
-
-	componentWillUnmount() {
-		const self = this;
-		window.removeEventListener( 'online',  self.onOnline );
-		window.removeEventListener( 'offline', self.onOffline );
+		this.props.initTdPlayer( tdmodules );
 	}
 
 	handleOnline() {
@@ -95,24 +103,28 @@ class LivePlayer extends Component {
 		this.setState( { online: false } );
 	}
 
+	handlePlay() {
+		const { station, playStation } = this.props;
+		playStation( station );
+	}
+
 	render() {
-		const self = this;
-		const { container, state, props } = self;
-		if ( !container ) {
+		if ( !this.container ) {
 			return false;
 		}
 
-		const { online } = state;
+		const { online } = this.state;
+
 		const {
-			station,
 			status,
 			adPlayback,
 			adSynced,
-			play,
 			pause,
 			resume,
 			duration,
-		} = props;
+			player,
+			playerType,
+		} = this.props;
 
 		let notification = false;
 		if ( ! online ) {
@@ -120,7 +132,7 @@ class LivePlayer extends Component {
 		}
 
 		const progressClass = ! duration ? '-live' : '-podcast';
-		let { customColors } = container.dataset;
+		let { customColors } = this.container.dataset;
 		const controlsStyle = {};
 		const buttonsBackgroundStyle = {};
 		const buttonsFillStyle = {};
@@ -139,7 +151,7 @@ class LivePlayer extends Component {
 			<Fragment>
 				{notification}
 
-				<div className={`preroll-wrapper${adPlayback && !isAudioAdOnly() ? ' -active' : ''}`}>
+				<div className={`preroll-wrapper${adPlayback && !isAudioAdOnly( { player, playerType } ) ? ' -active' : ''}`}>
 					<div className="preroll-container">
 						<div id="td_container" className="preroll-player"></div>
 						<div className="preroll-notification">Live stream will be available after this brief ad from our sponsors</div>
@@ -166,7 +178,7 @@ class LivePlayer extends Component {
 							<ErrorBoundary>
 								<Controls
 									status={status}
-									play={() => play( station )}
+									play={this.handlePlay}
 									pause={pause}
 									resume={resume}
 									colors={buttonsBackgroundStyle}
@@ -204,7 +216,7 @@ class LivePlayer extends Component {
 			</Fragment>
 		);
 
-		return ReactDOM.createPortal( children, container );
+		return ReactDOM.createPortal( children, this.container );
 	}
 
 }
@@ -214,30 +226,29 @@ LivePlayer.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
-	initPlayer: PropTypes.func.isRequired,
-	play: PropTypes.func.isRequired,
+	initTdPlayer: PropTypes.func.isRequired,
+	playStation: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
 	duration: PropTypes.number.isRequired,
+	player: PropTypes.object,
+	playerType: PropTypes.string,
 };
 
-function mapStateToProps( { player } ) {
-	return {
+
+export default connect(
+	( {player} ) => ( {
+		player: player.player,
+		playerType: player.playerType,
 		station: player.station,
 		status: player.status,
 		adPlayback: player.adPlayback,
 		adSynced: player.adSynced,
 		duration: player.duration,
-	};
-}
-
-function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( {
-		initPlayer: actions.initTdPlayer,
-		play: actions.playStation,
+	} ), {
+		initTdPlayer: actions.initTdPlayer,
+		playStation: actions.playStation,
 		pause: actions.pause,
 		resume: actions.resume,
-	}, dispatch );
-}
-
-export default connect( mapStateToProps, mapDispatchToProps )( LivePlayer );
+	},
+)( LivePlayer );

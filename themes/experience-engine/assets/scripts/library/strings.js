@@ -30,8 +30,31 @@ export function isAbsoluteUrl( url ) {
 	return /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test( url );
 }
 
-export function isAudioAdOnly() {
-	const { currentAdModule } = window.tdplayer.MediaPlayer.adManager || false;
+/**
+ * @function isAudioOnly
+ * Detects if ad is an audio only advert
+ *
+ * @param {Object} playerStore
+ * @param {Object} playerStore.player - Full player reference
+ * @param {string} playerStore.playerType - Player Type
+ * @returns {Boolean}
+ */
+export function isAudioAdOnly( { player, playerType } ) {
+
+	let currentAdModule = null;
+
+	// If not tdplayer, abandon
+	if ( 'tdplayer' === playerType ) {
+		return false;
+	}
+
+	if(
+		player &&
+		player.MediaPlayer &&
+		player.MediaPlayer.adManager
+	) {
+		currentAdModule = player.MediaPlayer.adManager.currentAdModule;
+	}
 
 	// Look for ad, if MP3, don't display it.
 	if ( currentAdModule && currentAdModule.hasOwnProperty( 'html5Node' ) ) {

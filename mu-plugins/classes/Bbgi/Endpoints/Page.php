@@ -51,7 +51,12 @@ class Page extends Module {
 	 * @return string|false
 	 */
 	public function fetch_page( $url ) {
-		$page_response = wp_remote_get( $url, [ 'timeout' => 30 ] );
+		$page_response = wp_remote_get(
+			$url, [
+				'timeout'   => 30,
+				'sslverify' => defined( 'WP_DEBUG') && WP_DEBUG ? false : true,
+			]
+		);
 
 		if ( is_wp_error( $page_response ) ) {
 			return false;

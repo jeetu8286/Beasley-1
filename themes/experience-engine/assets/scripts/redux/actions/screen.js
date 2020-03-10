@@ -17,82 +17,6 @@ export const ACTION_HIDE_SPLASH_SCREEN = 'HIDE_SPLASH_SCREEN';
 export const ACTION_UPDATE_NOTICE = 'UPDATE_NOTICE ';
 export const ACTION_HISTORY_HTML_SNAPSHOT = 'HISTORY_HTML_SNAPSHOT';
 
-
-/**
- * Parses and dispatches the raw's HTML responde to the store
- *
- * @param {function} dispatch Redux dispatch function
- * @param {string} url The URL of the page
- * @param {object} response The page raw HTMl responde
- */
-function parseHtmlToStore( dispatch, url, response ) {
-	const urlSlugified = slugify( url );
-	const parsed = parseHtml( response.html );
-	const pageDocument = parsed.document;
-
-	dispatch( {
-		type: ACTION_LOADED_PAGE,
-		url,
-		...parsed,
-		isHome: pageDocument.body.classList.contains( 'home' ),
-	} );
-
-	dispatch( {
-		type: ACTION_HISTORY_HTML_SNAPSHOT,
-		uuid: urlSlugified,
-		data: response.html,
-	} );
-
-	return { urlSlugified, pageDocument };
-}
-
-/**
- * Scrolls to the top of content.
- */
-function scrollIntoView() {
-	// Get content container
-	const content = document.getElementById( 'content' );
-
-	// Scroll to top of content
-	if( content ) {
-		content.scrollIntoView( true );
-	}
-}
-
-/**
- * Updates window.history with new url and title
- *
- * @param {string} url The URL to update history with
- * @param {object} pageDocument
- */
-function updateHistory( url, title ) {
-	const { history, location, pageXOffset, pageYOffset } = window;
-	const uuid = slugify( url );
-
-	history.replaceState(
-		{ ...history.state, pageXOffset, pageYOffset },
-		document.title,
-		location.href,
-	);
-	history.pushState(
-		{ uuid, pageXOffset: 0, pageYOffset: 0 },
-		title,
-		url,
-	);
-
-	dispatchEvent( 'pushstate' );
-}
-
-/**
- * Updates DOM related stuff for the loaded page document.
- *
- * @param {object} pageDocument
- */
-function updateDOM( pageDocument ) {
-	document.title = pageDocument.title;
-	document.body.className = pageDocument.body.className;
-}
-
 /**
  * Parses the current content blocks for redux.
  */
@@ -135,9 +59,17 @@ export const fetchFeedsContent = ( token, url = 'feeds-content' ) => async dispa
 			},
 		).then( res => res.json() );
 
-		parseHtmlToStore( dispatch, url, response );
+		const parsedHtml = parseHtml( response.html );
+		dispatch( {
+			type: ACTION_LOADED_PAGE,
+			url,
+			response,
+			options: {
+				suppressHistory: true,
+			},
+			parsedHtml,
 
-		scrollIntoView();
+		} );
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );
 	}
@@ -161,7 +93,7 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 		if ( [301, 302, 303,307, 308].includes( response.status ) ) {
 			if ( redirect.url && ! redirect.internal ) {
 				window.location.href = response.redirect;
-			} else{
+			} else {
 				// internal redirect
 				dispatch( fetchPage( redirect.url, options ) );
 			}
@@ -174,42 +106,22 @@ export const fetchPage = ( url, options = {} ) => async dispatch => {
 			dispatch( { type: ACTION_LOAD_ERROR } );
 			return;
 		}
+		const parsedHtml = parseHtml( response.html );
 
-		const { pageDocument } = parseHtmlToStore( dispatch, url, response );
+		dispatch( {
+			type: ACTION_LOADED_PAGE,
+			url,
+			response,
+			options,
+			isHome: parsedHtml.document.body.classList.contains( 'home' ),
+			parsedHtml,
 
-		scrollIntoView();
-
-		// last step is update history, return early if it's not needed.
-		if ( options.suppressHistory ) {
-			return;
-		}
-
-		updateHistory( url, pageDocument.title );
-		updateDOM( pageDocument );
-
+		} );
 	} catch( error ) {
 		dispatch( { type: ACTION_LOAD_ERROR, error } );
 	}
 
 };
-
-/**
- * Parses the HTML and updated the current page.
- *
- * @param {string} Html of the page.
- */
-export function updatePage( html ) {
-	const parsed = parseHtml( html );
-	const pageDocument = parsed.document;
-
-	document.body.className = pageDocument.body.className;
-
-	return {
-		type: ACTION_LOADED_PAGE,
-		force: true,
-		...parsed,
-	};
-}
 
 /**
  * Loads a partial page (e.g for LoadMode)

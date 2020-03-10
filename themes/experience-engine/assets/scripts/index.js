@@ -8,9 +8,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-// playerjs gets added to the window object
-// and is used to play omnyAudio programatically
-import 'player.js';
 import './library/geotargetly';
 import '../styles/main.css';
 import { closestPolyfill } from './library';
