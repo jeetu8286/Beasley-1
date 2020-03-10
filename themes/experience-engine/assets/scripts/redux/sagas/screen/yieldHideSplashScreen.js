@@ -1,7 +1,4 @@
 import { call, takeLatest } from 'redux-saga/effects';
-import {
-	hideSplashScreen,
-} from '../../utilities';
 import { ACTION_HIDE_SPLASH_SCREEN } from '../../actions/screen';
 
 /**
