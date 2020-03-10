@@ -7,6 +7,7 @@ import {
 	slugify,
 } from '../../library';
 
+export const ACTION_SET_SCREEN_STATE = 'SET_SCREEN_STATE';
 export const ACTION_INIT_PAGE = 'PAGE_INIT';
 export const ACTION_LOADING_PAGE = 'PAGE_LOADING';
 export const ACTION_LOADED_PAGE = 'PAGE_LOADED';
@@ -27,7 +28,14 @@ export function initPage() {
 	// clean up content block for now, it will be poplated in the render function
 	removeChildren( content );
 
-	return { type: ACTION_INIT_PAGE, ...parsed };
+	return {
+		type: ACTION_INIT_PAGE,
+		payload: {
+			content: parsed.content,
+			embeds: parsed.embeds,
+			scripts: parsed.scripts,
+		},
+	};
 }
 
 /**

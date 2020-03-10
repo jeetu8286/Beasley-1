@@ -1,5 +1,4 @@
 import {
-	ACTION_INIT_PAGE,
 	ACTION_LOADING_PARTIAL,
 	ACTION_LOADING_PAGE,
 	ACTION_LOADED_PAGE,
@@ -8,6 +7,7 @@ import {
 	ACTION_HIDE_SPLASH_SCREEN,
 	ACTION_UPDATE_NOTICE,
 	ACTION_HISTORY_HTML_SNAPSHOT,
+	ACTION_SET_SCREEN_STATE,
 } from '../actions/screen';
 
 export const DEFAULT_STATE = {
@@ -37,12 +37,12 @@ function reducer( state = {}, action = {} ) {
 	switch ( action.type ) {
 
 		// Catch in Sagas
-		case ACTION_INIT_PAGE:
+		case ACTION_SET_SCREEN_STATE:
 			return {
 				...state,
-				content: action.content,
-				embeds: action.embeds,
-				scripts: action.scripts,
+				content: action.payload.content,
+				embeds: action.payload.embeds,
+				scripts: action.payload.scripts,
 			};
 
 		case ACTION_LOADING_PARTIAL:
