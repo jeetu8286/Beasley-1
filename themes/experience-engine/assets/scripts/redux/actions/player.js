@@ -413,7 +413,12 @@ const play = ( playerType, source, cueTitle = '', artistName = '', trackType = '
 	dispatch( stop() );
 
 	if ( 'tdplayer' === playerType ) {
+		// reset time and duration.
+		dispatch( timeChange( 0 ) );
+		dispatch( durationChange( 0 ) );
+		// set the appropriate player.
 		dispatch( setPlayer( PLAYERS_REGISTRY.tdPlayer, 'tdplayer' ) );
+		// play.
 		dispatch( {
 			type: ACTION_PLAY,
 			payload: {

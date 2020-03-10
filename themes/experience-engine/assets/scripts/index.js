@@ -17,7 +17,6 @@ closestPolyfill();
 import createStore from './redux/store';
 import App from './app';
 
-
 const root = document.createElement( 'div' );
 document.body.appendChild( root );
 
