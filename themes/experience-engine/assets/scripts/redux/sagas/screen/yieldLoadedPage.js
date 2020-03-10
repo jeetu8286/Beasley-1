@@ -3,10 +3,9 @@ import NProgress from 'nprogress';
 import {
 	manageScripts,
 	manageBbgiConfig,
-	hideSplashScreen,
 	updateTargeting,
 } from '../../utilities';
-import { ACTION_LOADED_PAGE, ACTION_HISTORY_HTML_SNAPSHOT } from '../../actions/screen';
+import { ACTION_LOADED_PAGE, ACTION_HISTORY_HTML_SNAPSHOT, ACTION_HIDE_SPLASH_SCREEN } from '../../actions/screen';
 import { slugify, dispatchEvent } from '../../../library';
 
 /**
@@ -97,7 +96,7 @@ function* yieldLoadedPage( action ) {
 	yield call( scrollIntoView );
 
 	// make sure to hide splash screen.
-	yield call( hideSplashScreen );
+	yield put( { type: ACTION_HIDE_SPLASH_SCREEN } );
 
 	// last step is update history, return early if it's not needed.
 	if ( options.suppressHistory ) {
