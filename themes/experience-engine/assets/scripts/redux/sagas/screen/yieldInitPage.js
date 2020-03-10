@@ -15,8 +15,6 @@ import {
  * @param { Object } action.scripts Scripts from action
  */
 function* yieldInitPage( { scripts } ) {
-	console.log( 'yieldInitPage' );
-
 	// Screen store from state
 	const screenStore = yield select( ( { screen } ) => screen );
 

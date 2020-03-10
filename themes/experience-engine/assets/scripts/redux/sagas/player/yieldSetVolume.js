@@ -16,9 +16,6 @@ import {
  * @param {String} action.volume volume from action
  */
 function* yieldSetVolume( { volume } ) {
-
-	console.log( 'yieldSetVolume' );
-
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 

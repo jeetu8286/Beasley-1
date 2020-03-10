@@ -12,11 +12,7 @@ import { ACTION_HIDE_SPLASH_SCREEN } from '../../actions/screen';
  * @param { Object } action Dispatched action
  */
 function* yieldHideSplashScreen( action ) {
-
-	console.log( 'yieldHideSplashScreen' );
-
 	yield call( hideSplashScreen );
-
 }
 
 /**

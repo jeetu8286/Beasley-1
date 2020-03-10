@@ -68,8 +68,6 @@ function reducer( state = {}, action = {} ) {
 
 		// Catches in Saga Middleware
 		case ACTION_SET_PLAYER: {
-			console.log( 'reducer: set player', state );
-
 			const { playerType, player } = action.payload;
 
 			return {
@@ -93,7 +91,6 @@ function reducer( state = {}, action = {} ) {
 		}
 		// Catches in Saga Middleware
 		case ACTION_PAUSE:
-			console.log( 'reducer: pause' );
 			return {
 				...state,
 				...adReset,
@@ -101,16 +98,12 @@ function reducer( state = {}, action = {} ) {
 
 		// Catches in Saga Middleware
 		case ACTION_RESUME:
-			console.log( 'reducer: resume' );
 			return {
 				...state,
 				...adReset,
 			};
 
-		// NOTE: Nothing mod'd here
-		// adding console for logging purposes
 		case ACTION_STATUS_CHANGE:
-			console.log( 'reducer: status change' );
 			return {
 				...state,
 				status: action.status,
@@ -118,7 +111,6 @@ function reducer( state = {}, action = {} ) {
 
 		// Catches in Saga Middleware
 		case ACTION_SET_VOLUME: {
-			console.log( 'reducer: set volume' );
 			const volume = parseVolume( action.volume );
 			return {
 				...state,
@@ -128,7 +120,6 @@ function reducer( state = {}, action = {} ) {
 
 		// Catches in Saga Middleware
 		case ACTION_CUEPOINT_CHANGE:
-			console.log( 'reducer: cuepoint change' );
 			return {
 				...state,
 				...adReset,
@@ -136,20 +127,14 @@ function reducer( state = {}, action = {} ) {
 				userInteraction: false,
 			};
 
-		// NOTE: Nothing mod'd here
 		// adding console for logging purposes
 		case ACTION_DURATION_CHANGE:
-			console.log( 'reducer: duration change' );
 			return {
 				...state,
 				duration: +action.duration, // +converts to number unary plus
 			};
 
-		// Cleaned up checks
-		// adding console for logging purposes
 		case ACTION_TIME_CHANGE: {
-			console.log( 'reducer: timeChange' );
-			// Initialize override
 			let override = {};
 
 			// Destructure from action
@@ -178,8 +163,6 @@ function reducer( state = {}, action = {} ) {
 
 		// Catches in Saga Middleware
 		case ACTION_SEEK_POSITION: {
-			console.log( 'reducer: seek position' );
-
 			// Destructure for playerType check
 			const { playerType } = state;
 
@@ -203,7 +186,6 @@ function reducer( state = {}, action = {} ) {
 		}
 
 		case ACTION_NOW_PLAYING_LOADED:
-			console.log( 'reducer: now playing loaded' );
 			return {
 				...state,
 				songs: action.list,
@@ -211,7 +193,6 @@ function reducer( state = {}, action = {} ) {
 
 		//Catches in Saga Middleware
 		case ACTION_AD_PLAYBACK_START:
-			console.log( 'reducer: ad playback start' );
 			return {
 				...state,
 				adPlayback: true,
@@ -220,7 +201,6 @@ function reducer( state = {}, action = {} ) {
 		//Catches in Saga Middleware
 		case ACTION_AD_PLAYBACK_ERROR:
 		case ACTION_AD_PLAYBACK_COMPLETE: {
-			console.log( 'reducer: ad playback complete or error' );
 			return {
 				...state,
 				adPlayback: false,
@@ -228,7 +208,6 @@ function reducer( state = {}, action = {} ) {
 		}
 
 		case ACTION_AD_BREAK_SYNCED:
-			console.log( 'reducer: ad break synced' );
 			return {
 				...state,
 				...adReset,
@@ -236,7 +215,6 @@ function reducer( state = {}, action = {} ) {
 			};
 
 		case ACTION_AD_BREAK_SYNCED_HIDE:
-			console.log( 'reducer: ad break synced hide' );
 			return {
 				...state,
 				...adReset,
@@ -244,8 +222,6 @@ function reducer( state = {}, action = {} ) {
 
 		case ACTION_UPDATE_USER_FEEDS:
 		case ACTION_SET_USER_FEEDS: {
-			console.log( 'reducer: update or set user feeds' );
-
 			// Set newstreams from action.feeds
 			const newstreams = getNewsStreamsFromFeeds( action.feeds );
 			let initialStation = getInitialStation( streams );

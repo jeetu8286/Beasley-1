@@ -11,8 +11,6 @@ import {
  * is dispatched
  */
 function* yieldAdPlaybackComplete() {
-	console.log( 'yieldAdPlaybackComplete' );
-
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
 

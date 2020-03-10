@@ -1,5 +1,4 @@
 /* eslint-disable sort-keys */
-// and is used to play omnyAudio programatically
 import playerjs from 'player.js';
 
 export const ACTION_SET_PLAYER = 'SET_PLAYER';
@@ -24,10 +23,6 @@ export const ACTION_AD_BREAK_SYNCED_HIDE = 'PLAYER_AD_BREAK_SYNCED_HIDE';
 export const ACTION_PLAYER_START = 'PLAYER_START';
 export const ACTION_PLAYER_STOP = 'PLAYER_STOP';
 export const ACTION_PLAYER_STOPPED = 'PLAYER_STOPPED';
-export const ACTION_STREAM_START = 'PLAYER_STREAM_START';
-export const ACTION_STREAM_STOP = 'PLAYER_STREAM_STOP';
-export const ACTION_AUDIO_START = 'PLAYER_AUDIO_START';
-export const ACTION_AUDIO_STOP = 'PLAYER_AUDIO_STOP';
 export const ACTION_SET_PLAYER_TYPE = 'PLAYER_SET_TYPE';
 
 export const STATUSES = {
@@ -61,7 +56,6 @@ const PLAYERS_REGISTRY = {
  * this was called directly.
  */
 export function adPlaybackStop( actionType ) {
-	console.log( 'action: adPlaybackStop' );
 	return {
 		type: ACTION_AD_PLAYBACK_STOP,
 		payload: {
@@ -77,7 +71,6 @@ export function adPlaybackStop( actionType ) {
  * dispatch the adPlaybackStop action creator after 70 seconds
  */
 export function adPlaybackStart() {
-	console.log( 'action: adPlaybackStart' );
 	return {
 		type: ACTION_AD_PLAYBACK_START,
 	};
@@ -87,7 +80,6 @@ export function adPlaybackStart() {
  * adBreakSynced action creator
  */
 export function adBreakSynced() {
-	console.log( 'action: adBreakSynced' );
 	return {
 		type: ACTION_AD_BREAK_SYNCED,
 	};
@@ -97,7 +89,6 @@ export function adBreakSynced() {
  * adBreakSyncedHide action creator
  */
 export function adBreakSyncedHide() {
-	console.log( 'action: adBreakSyncedHide' );
 	return {
 		type: ACTION_AD_BREAK_SYNCED_HIDE,
 	};
@@ -108,7 +99,6 @@ export function adBreakSyncedHide() {
  * @param {String} status
  */
 export function statusUpdate( status ) {
-	console.log( 'action: statusUpdate' );
 	return {
 		type: ACTION_STATUS_CHANGE,
 		status,
@@ -120,7 +110,6 @@ export function statusUpdate( status ) {
  * @param {Object} data - Payload from player event
  */
 export function cuePoint( cuePoint = {} ) {
-	console.log( 'action: cuePoint' );
 	return {
 		type: ACTION_CUEPOINT_CHANGE,
 		cuePoint,
@@ -132,7 +121,6 @@ export function cuePoint( cuePoint = {} ) {
  * @param {Object} data - Payload from player event
  */
 export function nowPlayingLoaded( data ) {
-	console.log( 'action: nowPlayingLoaded', data );
 	return {
 		type: ACTION_NOW_PLAYING_LOADED,
 		...data,
@@ -145,7 +133,6 @@ export function nowPlayingLoaded( data ) {
  * @param {String} duration - Payload from player
  */
 export function durationChange( duration ) {
-	console.log( 'action: durationChange' );
 	return {
 		type: ACTION_DURATION_CHANGE,
 		duration,
@@ -158,7 +145,6 @@ export function durationChange( duration ) {
  * @param {String|null} duration - Payload from player
  */
 export function timeChange( time, duration = null ) {
-	console.log( 'action: timeChange' );
 	return {
 		type: ACTION_TIME_CHANGE,
 		time,
@@ -170,7 +156,6 @@ export function timeChange( time, duration = null ) {
  * Start action creator
  */
 export function start() {
-	console.log( 'action: start' );
 	return {
 		type: ACTION_PLAYER_START,
 	};
@@ -180,7 +165,6 @@ export function start() {
  * Stop action creator
  */
 export function stop() {
-	console.log( 'action: stop' );
 	return {
 		type: ACTION_PLAYER_STOP,
 	};
@@ -190,7 +174,6 @@ export function stop() {
  * Stop action creator
  */
 export function stopped() {
-	console.log( 'action: stop' );
 	return {
 		type: ACTION_PLAYER_STOPPED,
 	};
@@ -200,7 +183,6 @@ export function stopped() {
  * pause action creator
  */
 export function pause() {
-	console.log( 'action: pause' );
 	return {
 		type: ACTION_PAUSE,
 	};
@@ -210,7 +192,6 @@ export function pause() {
  * resume action creator
  */
 export function resume() {
-	console.log( 'action: resume' );
 	return {
 		type: ACTION_RESUME,
 	};
@@ -233,7 +214,6 @@ export function setPlayer( player, playerType ) {
  * @param {String} volume
  */
 export function setVolume( volume ) {
-	console.log( 'action: setVolume' );
 	return {
 		type: ACTION_SET_VOLUME,
 		volume,
@@ -245,7 +225,6 @@ export function setVolume( volume ) {
  * @param {String} position
  */
 export function seekPosition( position ) {
-	console.log( 'action: seekPosition' );
 	return {
 		type: ACTION_SEEK_POSITION,
 		position,
@@ -258,7 +237,6 @@ export function seekPosition( position ) {
  * @param {*} modules
  */
 export function initTdPlayer( modules ) {
-	console.log( 'initTdPlayer initialized' );
 	return ( dispatch ) => {
 		let adSyncedTimeout = false;
 

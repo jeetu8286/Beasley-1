@@ -11,8 +11,6 @@ import {
  * @param {Object} action.position Position from dispatched action
  */
 function* yieldSeekPosition( { position } ) {
-	console.log( 'yieldSeekPosition' );
-
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 

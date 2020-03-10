@@ -3,7 +3,6 @@ import { ACTION_PLAYER_STOP } from '../../actions/player';
 import { lyticsTrack } from '../../utilities';
 
 function* yieldStopped() {
-	console.log( 'yieldStoppped' );
 	const playerStore = yield select( ( { player } ) => player );
 
 	if ( 'tdplayer' === playerStore.playerType ) {

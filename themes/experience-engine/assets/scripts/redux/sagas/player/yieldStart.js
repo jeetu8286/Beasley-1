@@ -2,18 +2,13 @@ import { call, takeLatest, select } from 'redux-saga/effects';
 import {
 	sendInlineAudioPlaying, sendLiveStreamPlaying,
 } from '../../../library/google-analytics';
-import {
-	ACTION_AUDIO_START,
-} from '../../actions/player';
+import { ACTION_PLAYER_START } from '../../actions/player';
 
 /**
  * @function yieldStart
  * Generator runs whenever ACTION_AUDIO_START is dispatched
  */
 function* yieldStart() {
-
-	console.log( 'yieldStart' );
-
 	const playerStore = yield select( ( {player} ) => player );
 
 	// Get interval from global
@@ -76,5 +71,5 @@ function* yieldStart() {
  * Generator used to bind action and callback
  */
 export default function* watchStart() {
-	yield takeLatest( [ACTION_AUDIO_START], yieldStart );
+	yield takeLatest( [ACTION_PLAYER_START], yieldStart );
 }

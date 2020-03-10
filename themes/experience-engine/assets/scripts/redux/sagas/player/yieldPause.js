@@ -9,9 +9,6 @@ import {
  * Generator runs whenever ACTION_PAUSE is dispatched
  */
 function* yieldPause() {
-
-	console.log( 'yieldPause' );
-
 	// Get player from state
 	const playerStore = yield select( ( { player } ) => player );
 

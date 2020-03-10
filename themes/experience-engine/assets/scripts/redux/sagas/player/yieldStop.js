@@ -3,7 +3,6 @@ import { ACTION_PLAYER_STOP } from '../../actions/player';
 import { fullStop } from '../../utilities';
 
 function* yieldStop( ) {
-	console.log( 'yieldStop' );
 	const playerStore = yield select( ( { player } ) => player );
 
 	yield call( fullStop, playerStore );

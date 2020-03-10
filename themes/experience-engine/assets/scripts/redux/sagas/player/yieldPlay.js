@@ -22,7 +22,6 @@ const getStreamByStation = station =>
  */
 function* yieldPlay( action ) {
 	const { source } = action.payload;
-	console.log( 'yieldPlay', source );
 
 	// Player store from state
 	const playerStore = yield select( ( { player } ) => player );
@@ -84,7 +83,6 @@ function* yieldPlay( action ) {
 		player &&
 		'function' === typeof player.play
 	) {
-		console.log( 'yes we hit the play method---------------' );
 		yield call( [ player, 'play' ] );
 	}
 }
