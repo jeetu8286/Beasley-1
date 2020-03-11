@@ -5,7 +5,7 @@ import trapHOC from '@10up/react-focus-trap-hoc';
 
 import Header from './elements/Header';
 import Alert from './elements/Alert';
-import UserNav from './../../modules/UserNav';
+import UserNav from '../../modules/UserNav';
 import { firebaseAuth } from '../../library/firebase';
 
 import {
@@ -17,8 +17,8 @@ import {
 } from '../../library/experience-engine';
 
 class CompleteSignup extends PureComponent {
-	constructor( props ) {
-		super( props );
+	constructor(props) {
+		super(props);
 
 		const self = this;
 
@@ -30,8 +30,8 @@ class CompleteSignup extends PureComponent {
 			error: '',
 		};
 
-		self.onFieldChange = self.handleFieldChange.bind( self );
-		self.onFormSubmit = self.handleFormSubmit.bind( self );
+		self.onFieldChange = self.handleFieldChange.bind(self);
+		self.onFormSubmit = self.handleFormSubmit.bind(self);
 	}
 
 	componentDidMount() {
@@ -46,17 +46,17 @@ class CompleteSignup extends PureComponent {
 		 */
 		window.beforeBeasleyModalClose = function() {
 			/* First time close button was clicked */
-			self.setState( {
+			self.setState({
 				didTryClose: true,
 				error:
 					'You must complete your profile information before you can login. Click close to continue as a non-member.',
-			} );
+			});
 
 			/* Second time close button was clicked */
 			window.beforeBeasleyModalClose = function() {
 				firebaseAuth.signOut();
 
-				if ( UserNav.isHomepage() ) {
+				if (UserNav.isHomepage()) {
 					window.location.reload();
 				}
 
@@ -77,69 +77,69 @@ class CompleteSignup extends PureComponent {
 		window.beforeBeasleyModalClose = null;
 	}
 
-	handleFieldChange( e ) {
+	handleFieldChange(e) {
 		const { target } = e;
-		this.setState( { [target.name]: target.value } );
+		this.setState({ [target.name]: target.value });
 	}
 
-	handleFormSubmit( e ) {
+	handleFormSubmit(e) {
 		const self = this;
 		let { zip, gender, bday, email } = self.state;
 		const { user, close } = self.props;
 
 		/* Convert bday since validateDate expects date in mm/dd/yyyy format */
-		if ( bday && -1 !== bday.indexOf( '-' ) ) {
+		if (bday && bday.indexOf('-') !== -1) {
 			bday = bday
-				.split( '-' )
+				.split('-')
 				.reverse()
-				.join( '/' );
+				.join('/');
 		}
 
 		e.preventDefault();
 
-		if ( false === validateEmail( email ) ) {
-			self.setState( { error: 'Please enter a valid email address.' } );
+		if (validateEmail(email) === false) {
+			self.setState({ error: 'Please enter a valid email address.' });
 			return false;
 		}
 
-		if ( false === validateZipcode( zip ) ) {
-			self.setState( { error: 'Please enter a valid US Zipcode.' } );
+		if (validateZipcode(zip) === false) {
+			self.setState({ error: 'Please enter a valid US Zipcode.' });
 			return false;
 		}
 
 		// @TODO :: This currently breaks on date specific inputs. We could consider just removing the date input type and using a text input.
-		if ( false === validateDate( bday ) ) {
-			self.setState( { error: 'Please ensure date is in MM/DD/YYYY format.' } );
+		if (validateDate(bday) === false) {
+			self.setState({ error: 'Please ensure date is in MM/DD/YYYY format.' });
 			return false;
 		}
 
-		if ( false === validateGender( gender ) ) {
-			self.setState( { error: 'Please select your gender.' } );
+		if (validateGender(gender) === false) {
+			self.setState({ error: 'Please select your gender.' });
 			return false;
 		}
 
-		self.setState( { error: '' } );
+		self.setState({ error: '' });
 
-		if ( user ) {
-			saveUser( email, zip, gender, bday ).then( () => {
+		if (user) {
+			saveUser(email, zip, gender, bday).then(() => {
 				close();
 				window.location.reload();
-			} );
+			});
 		}
 	}
 
 	render() {
 		const self = this;
-		let { email, zip, gender, bday, error } = self.state;
-		let { user } = this.props;
+		const { email, zip, gender, bday, error } = self.state;
+		const { user } = this.props;
 
 		/** If Firebase gave us an email use it as the default */
-		if ( !email && user.email ) {
-			this.setState( { email: user.email } );
+		if (!email && user.email) {
+			this.setState({ email: user.email });
 		}
 
 		return (
-			<Fragment>
+			<>
 				<Header>
 					<h3>Complete Your Profile</h3>
 				</Header>
@@ -199,7 +199,7 @@ class CompleteSignup extends PureComponent {
 								id="user-gender-male"
 								name="gender"
 								value="male"
-								checked={'male' === gender}
+								checked={gender === 'male'}
 								onChange={self.onFieldChange}
 							/>
 							<label htmlFor="user-gender-male">Male</label>
@@ -210,7 +210,7 @@ class CompleteSignup extends PureComponent {
 								id="user-gender-female"
 								name="gender"
 								value="female"
-								checked={'female' === gender}
+								checked={gender === 'female'}
 								onChange={self.onFieldChange}
 							/>
 							<label htmlFor="user-gender-female">Female</label>
@@ -222,7 +222,7 @@ class CompleteSignup extends PureComponent {
 						</button>
 					</div>
 				</form>
-			</Fragment>
+			</>
 		);
 	}
 }
@@ -231,11 +231,11 @@ CompleteSignup.propTypes = {
 	close: PropTypes.func.isRequired,
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
-	user: PropTypes.oneOfType( [PropTypes.object, PropTypes.bool] ).isRequired,
+	user: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
 };
 
-function mapStateToProps( { auth } ) {
+function mapStateToProps({ auth }) {
 	return { user: auth.user || false };
 }
 
-export default connect( mapStateToProps )( trapHOC()( CompleteSignup ) );
+export default connect(mapStateToProps)(trapHOC()(CompleteSignup));

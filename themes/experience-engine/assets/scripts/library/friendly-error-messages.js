@@ -1,5 +1,5 @@
-export function mapAuthErrorCodeToFriendlyMessage( error ) {
-	switch( error.code ) {
+export function mapAuthErrorCodeToFriendlyMessage(error) {
+	switch (error.code) {
 		case 'auth/user-disabled':
 			return 'Whoops! Your user account has been disabled. Please register a new account if you wish to sign in.';
 			break;
@@ -22,6 +22,6 @@ export function mapAuthErrorCodeToFriendlyMessage( error ) {
 			return 'Whoops! Your password must be 6 characters or longer.';
 			break;
 		default:
-			return 'Whoops! We are sorry, but there has been an error we didn\'t expect.  Please try again soon.';
+			return "Whoops! We are sorry, but there has been an error we didn't expect.  Please try again soon.";
 	}
 }

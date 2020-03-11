@@ -6,22 +6,22 @@ import { bindActionCreators } from 'redux';
 import { playStation } from '../../redux/actions/player';
 
 class Stations extends Component {
-	constructor( props ) {
-		super( props );
+	constructor(props) {
+		super(props);
 
 		const self = this;
 		self.state = { isOpen: false };
 		self.stationModalRef = React.createRef();
 
-		self.onToggle = self.handleToggleClick.bind( self );
-		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
-		self.handleUserEventOutside = self.handleUserEventOutside.bind( self );
+		self.onToggle = self.handleToggleClick.bind(self);
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind(self);
+		self.handleUserEventOutside = self.handleUserEventOutside.bind(self);
 	}
 
 	componentDidMount() {
-		document.addEventListener( 'mousedown', this.handleUserEventOutside, false );
-		document.addEventListener( 'scroll', this.handleUserEventOutside, false );
-		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
+		document.addEventListener('mousedown', this.handleUserEventOutside, false);
+		document.addEventListener('scroll', this.handleUserEventOutside, false);
+		document.addEventListener('keydown', this.handleEscapeKeyDown, false);
 	}
 
 	componentWillUnmount() {
@@ -30,39 +30,39 @@ class Stations extends Component {
 			this.handleUserEventOutside,
 			false,
 		);
-		document.removeEventListener( 'scroll', this.handleUserEventOutside, false );
-		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
+		document.removeEventListener('scroll', this.handleUserEventOutside, false);
+		document.removeEventListener('keydown', this.handleEscapeKeyDown, false);
 	}
 
-	handlePlayClick( station ) {
+	handlePlayClick(station) {
 		const self = this;
-		self.setState( { isOpen: false } );
-		self.props.play( station );
+		self.setState({ isOpen: false });
+		self.props.play(station);
 	}
 
 	handleToggleClick() {
-		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
+		this.setState(prevState => ({ isOpen: !prevState.isOpen }));
 	}
 
-	handleUserEventOutside( e ) {
+	handleUserEventOutside(e) {
 		const self = this;
 		const { current: ref } = self.stationModalRef;
 
-		if ( !ref || !ref.contains( e.target ) ) {
-			self.setState( { isOpen: false } );
+		if (!ref || !ref.contains(e.target)) {
+			self.setState({ isOpen: false });
 		}
 	}
 
-	handleEscapeKeyDown( e ) {
-		if ( 27 === e.keyCode ) {
-			this.setState( { isOpen: false } );
+	handleEscapeKeyDown(e) {
+		if (e.keyCode === 27) {
+			this.setState({ isOpen: false });
 		}
 	}
 
-	renderStations( textStyle ) {
+	renderStations(textStyle) {
 		const self = this;
 		const { isOpen } = self.state;
-		if ( !isOpen ) {
+		if (!isOpen) {
 			return false;
 		}
 
@@ -70,12 +70,12 @@ class Stations extends Component {
 		const stations = [];
 
 		/* eslint-disable camelcase */
-		streams.forEach( ( { title, stream_call_letters, picture } ) => {
+		streams.forEach(({ title, stream_call_letters, picture }) => {
 			const { large, original } = picture || {};
 			const { url } = large || original || {};
 
 			let logo = false;
-			if ( url ) {
+			if (url) {
 				logo = <img src={url} alt={title} />;
 			}
 
@@ -84,7 +84,7 @@ class Stations extends Component {
 					<button
 						type="button"
 						className="control-station-button"
-						onClick={self.handlePlayClick.bind( self, stream_call_letters )}
+						onClick={self.handlePlayClick.bind(self, stream_call_letters)}
 						style={textStyle}
 					>
 						{logo}
@@ -92,7 +92,7 @@ class Stations extends Component {
 					</button>
 				</div>,
 			);
-		} );
+		});
 		/* eslint-enable */
 
 		return stations;
@@ -119,7 +119,7 @@ class Stations extends Component {
 		};
 
 		let label = 'Listen Live';
-		if ( stream ) {
+		if (stream) {
 			label = (
 				<span>
 					<span className="controls-station-title">Saved Stations</span>
@@ -153,7 +153,7 @@ class Stations extends Component {
 					</svg>
 				</button>
 				<div className="live-player-modal" style={modalStyle}>
-					{self.renderStations( textStyle )}
+					{self.renderStations(textStyle)}
 				</div>
 			</div>
 		);
@@ -162,28 +162,25 @@ class Stations extends Component {
 
 Stations.propTypes = {
 	play: PropTypes.func.isRequired,
-	stream: PropTypes.oneOfType( [PropTypes.bool, PropTypes.object] ),
-	streams: PropTypes.arrayOf( PropTypes.object ).isRequired,
+	stream: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+	streams: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 Stations.defaultProps = {
 	stream: false,
 };
 
-function mapStateToProps( { player } ) {
+function mapStateToProps({ player }) {
 	const { streams, station } = player;
 
 	return {
-		stream: streams.find( item => item.stream_call_letters === station ),
+		stream: streams.find(item => item.stream_call_letters === station),
 		streams,
 	};
 }
 
-function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( { play: playStation }, dispatch );
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({ play: playStation }, dispatch);
 }
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)( Stations );
+export default connect(mapStateToProps, mapDispatchToProps)(Stations);

@@ -1,66 +1,69 @@
 module.exports = {
-	settings: {
-		react: {
-			version: '16.5.2',
-		},
-	},
 	parser: 'babel-eslint',
+	parserOptions: {
+		ecmaFeatures: {
+			generators: true,
+			experimentalObjectRestSpread: true
+		},
+		sourceType: 'module',
+		allowImportExportEverywhere: false
+	},
 	env: {
 		browser: true,
-		node: true,
-		es6: true,
+		es6: true
 	},
-	plugins: ['import', 'react', 'jsx-a11y'],
-	extends: [
-		'@10up/eslint-config',
-		'plugin:import/errors',
-		'plugin:import/warnings',
-		'plugin:react/recommended',
-		'plugin:jsx-a11y/recommended',
-	],
+	plugins: ['prettier', 'react-hooks'],
+	extends: ['airbnb', 'prettier', 'prettier/react'],
+	settings: {
+		'import/resolver': {
+			node: {
+				extensions: ['.js', '.json', '.css', '.styl']
+			}
+		}
+	},
 	globals: {
-		wp: true,
-	},
-	env: {
-		browser: true,
-		node: true,
+		window: true,
+		document: true,
+		__dirname: true,
+		__DEV__: true,
+		CONFIG: true,
+		process: true,
+		jest: true,
+		describe: true,
+		test: true,
+		it: true,
+		expect: true,
+		beforeEach: true,
+		fetch: true,
+		alert: true,
+		module: true,
+		require: true,
 	},
 	rules: {
-		'comma-dangle': [
-			'warn',
-			{
-				arrays: 'always-multiline',
-				objects: 'always-multiline',
-				imports: 'always-multiline',
-				exports: 'always-multiline',
-				functions: 'always-multiline',
-			},
-		],
-		'import/no-unresolved': 0,
-		'no-extra-semi': 0,
-		'no-unreachable': 0,
-		'no-unused-vars': 0,
-		'no-useless-escape': 0,
-		// @note: override @10up/eslint-config
-		'require-jsdoc': 0,
 		'camelcase': 0,
-		// @note: Turning this off, confirming this is WordPress standard
-		// 'sort-keys': [1, 'asc', { caseSensitive: true, natural: false }],
-		indent: [
-			'error',
-			'tab',
-			{
-				SwitchCase: 1,
+		'no-tabs': 0,
+		'class-methods-use-this': 0,
+		'max-len': 0,
+		'global-require': 0,
+		'import/no-dynamic-require': 0,
+		'indent': [2, 'tab', { 'SwitchCase': 1 }],
+		'no-plusplus': [2, { 'allowForLoopAfterthoughts': true }],
+		'react/jsx-indent': [2, 'tab'],
+		'react/jsx-filename-extension': 0,
+		'react/no-danger': 0,
+		'no-unused-vars': [ 'error', { args: 'none' } ],
+		// See https://github.com/evcohen/eslint-plugin-jsx-a11y/issues/340
+		"jsx-a11y/anchor-is-valid": [ "error", {
+				"components": [ "Link" ],
+				"specialLink": [ "to" ]
+		}],
+		"jsx-a11y/label-has-for": [ 2, {
+			"components": [ "Label" ],
+			"required": {
+				"some": [ "nesting", "id" ]
 			},
-		],
-		'jsx-a11y/label-has-for': [
-			'error',
-			{
-				required: {
-					every: ['id'],
-				},
-			},
-		],
-		'jsx-a11y/media-has-caption': 0,
-	},
-};
+		}],
+		'prettier/prettier': [ 'error', { useTabs: true, tabWidth: 2, singleQuote: true, printWidth: 80, trailingComma: "all" } ],
+		"react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+	}
+}

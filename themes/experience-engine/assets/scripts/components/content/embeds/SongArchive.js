@@ -16,14 +16,13 @@ const $ = window.jQuery;
  * re-render without the loading indicator.
  */
 class SongArchive extends PureComponent {
-
-	constructor( props ) {
-		super( props );
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			loading: true,
 			songs: [],
-			now: Math.floor( ( new Date() ).getTime() / 1000 ),
+			now: Math.floor(new Date().getTime() / 1000),
 		};
 	}
 
@@ -32,75 +31,86 @@ class SongArchive extends PureComponent {
 	 * 3. Update loading text to reuse existing Loader
 	 */
 	render() {
-
 		return (
 			<div className="song-archive">
-				<h3>Recently Played Songs on { this.props.description }</h3>
+				<h3>Recently Played Songs on {this.props.description}</h3>
 
-				{ this.state.loading ?
+				{this.state.loading ? (
 					<p>Loading ...</p>
-					:
+				) : (
 					<div>
-
-						{ this.state.days.map( ( day ) => {
+						{this.state.days.map(day => {
 							return (
-								<div key={ day }>
-									<h4>{ day }</h4>
+								<div key={day}>
+									<h4>{day}</h4>
 									<ul>
-										{ this.state.songCollectionByDay.get( day ).map( ( song ) => {
+										{this.state.songCollectionByDay.get(day).map(song => {
 											return (
-												<li key={ song.id }>
-													<span className="song-time">{ dayjs.unix( song.timestamp ).format( 'h:mm A' ) }</span>
+												<li key={song.id}>
+													<span className="song-time">
+														{dayjs.unix(song.timestamp).format('h:mm A')}
+													</span>
 													&nbsp;
-													<span className="song-title">{ song.title }</span>
+													<span className="song-title">{song.title}</span>
 													&mdash;
-													<span className="song-artist">{ song.artist }</span>
+													<span className="song-artist">{song.artist}</span>
 												</li>
 											);
-										} ) }
+										})}
 									</ul>
 								</div>
 							);
-						} ) }
+						})}
 					</div>
-				}
+				)}
 			</div>
 		);
 	}
 
 	componentDidMount() {
-		let self = this;
+		const self = this;
 
-		$.get( this.props.endpoint )
-			.then( ( result ) => {
+		$.get(this.props.endpoint)
+			.then(result => {
+				const days = [
+					...new Set(
+						result.map(song =>
+							dayjs.unix(song.timestamp).format('MMMM D, YYYY'),
+						),
+					),
+				];
 
-				const days = [ ...new Set( result.map( song => dayjs.unix( song.timestamp ).format( 'MMMM D, YYYY' ) ) ) ];
+				const songCollectionByDay = new Map();
+				days.map(day => songCollectionByDay.set(day, []));
 
-				let songCollectionByDay = new Map();
-				days.map( day => songCollectionByDay.set( day, [] ) );
+				result.map(song =>
+					songCollectionByDay
+						.get(dayjs.unix(song.timestamp).format('MMMM D, YYYY'))
+						.push(song),
+				);
 
-				result.map( song => songCollectionByDay.get( dayjs.unix( song.timestamp ).format( 'MMMM D, YYYY' ) ).push( song ) );
-
-				self.setState( { loading: false, days: days, songCollectionByDay: songCollectionByDay } );
-			} )
-			.fail( () => {
-				self.setState( { loading: false, days: [], songCollectionByDay: [] } );
-			} );
+				self.setState({
+					loading: false,
+					days,
+					songCollectionByDay,
+				});
+			})
+			.fail(() => {
+				self.setState({ loading: false, days: [], songCollectionByDay: [] });
+			});
 	}
-
 }
 
 SongArchive.propTypes = {
-	callsign    : PropTypes.string,
-	endpoint    : PropTypes.string,
-	description : PropTypes.string,
+	callsign: PropTypes.string,
+	endpoint: PropTypes.string,
+	description: PropTypes.string,
 };
 
 SongArchive.defaultProps = {
-	callsign    : '',
-	endpoint    : '',
-	description : '',
+	callsign: '',
+	endpoint: '',
+	description: '',
 };
 
 export default SongArchive;
-

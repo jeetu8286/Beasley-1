@@ -11,8 +11,8 @@ import Alert from './elements/Alert';
 import { showSignInModal } from '../../redux/actions/modal';
 
 class RestorePassword extends PureComponent {
-	constructor( props ) {
-		super( props );
+	constructor(props) {
+		super(props);
 
 		const self = this;
 
@@ -22,8 +22,8 @@ class RestorePassword extends PureComponent {
 			success: false,
 		};
 
-		self.onFieldChange = self.handleFieldChange.bind( self );
-		self.onFormSubmit = self.handleFormSubmit.bind( self );
+		self.onFieldChange = self.handleFieldChange.bind(self);
+		self.onFormSubmit = self.handleFormSubmit.bind(self);
 	}
 
 	componentDidMount() {
@@ -34,32 +34,32 @@ class RestorePassword extends PureComponent {
 		this.props.deactivateTrap();
 	}
 
-	handleFieldChange( e ) {
+	handleFieldChange(e) {
 		const { target } = e;
-		this.setState( { [target.name]: target.value } );
+		this.setState({ [target.name]: target.value });
 	}
 
-	handleFormSubmit( e ) {
+	handleFormSubmit(e) {
 		const self = this;
 		const { email } = self.state;
 
 		e.preventDefault();
 
 		firebaseAuth
-			.sendPasswordResetEmail( email, { url: window.location.href } )
-			.then( () => {
-				self.setState( {
+			.sendPasswordResetEmail(email, { url: window.location.href })
+			.then(() => {
+				self.setState({
 					success: true,
 					email: '',
 					message:
 						'Please, check your inbox. An email has been sent to you with instructions how to reset your password.',
-				} );
-			} )
-			.catch( error => {
-				self.setState( {
+				});
+			})
+			.catch(error => {
+				self.setState({
 					message: error.message,
-				} );
-			} );
+				});
+			});
 	}
 
 	render() {
@@ -68,7 +68,7 @@ class RestorePassword extends PureComponent {
 		const { signin } = self.props;
 
 		return (
-			<Fragment>
+			<>
 				<Header>
 					<h3>Restore Password</h3>
 				</Header>
@@ -107,7 +107,7 @@ class RestorePassword extends PureComponent {
 						</p>
 					</div>
 				</form>
-			</Fragment>
+			</>
 		);
 	}
 }
@@ -118,7 +118,7 @@ RestorePassword.propTypes = {
 	signin: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps( dispatch ) {
+function mapDispatchToProps(dispatch) {
 	return bindActionCreators(
 		{
 			signin: showSignInModal,
@@ -126,7 +126,4 @@ function mapDispatchToProps( dispatch ) {
 		dispatch,
 	);
 }
-export default connect(
-	null,
-	mapDispatchToProps,
-)( trapHOC()( RestorePassword ) );
+export default connect(null, mapDispatchToProps)(trapHOC()(RestorePassword));

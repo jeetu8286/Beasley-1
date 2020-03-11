@@ -6,13 +6,12 @@ import { bindActionCreators } from 'redux';
 import { loadPartialPage } from '../../../redux/actions/screen';
 
 class LoadMore extends PureComponent {
-
-	constructor( props ) {
-		super( props );
+	constructor(props) {
+		super(props);
 
 		const self = this;
 		self.state = { loading: false };
-		self.onLoadClick = self.handleLoadClick.bind( self );
+		self.onLoadClick = self.handleLoadClick.bind(self);
 	}
 
 	handleLoadClick() {
@@ -21,9 +20,9 @@ class LoadMore extends PureComponent {
 		const { link, placeholder, load } = self.props;
 
 		// prevent double clicking
-		if ( !loading ) {
-			self.setState( { loading: true } );
-			load( link, placeholder );
+		if (!loading) {
+			self.setState({ loading: true });
+			load(link, placeholder);
 		}
 	}
 
@@ -31,7 +30,7 @@ class LoadMore extends PureComponent {
 		const self = this;
 		const { loading } = self.state;
 		const { partialKeys, placeholder } = self.props;
-		if ( -1 < partialKeys.indexOf( placeholder ) ) {
+		if (partialKeys.indexOf(placeholder) > -1) {
 			return false;
 		}
 
@@ -45,22 +44,25 @@ class LoadMore extends PureComponent {
 			</div>
 		);
 	}
-
 }
 
 LoadMore.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	link: PropTypes.string.isRequired,
-	partialKeys: PropTypes.arrayOf( PropTypes.string ).isRequired,
+	partialKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
 	load: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ( { screen } ) => ( {
-	partialKeys: Object.keys( screen.partials ),
-} );
+const mapStateToProps = ({ screen }) => ({
+	partialKeys: Object.keys(screen.partials),
+});
 
-const mapDispatchToProps = ( dispatch ) => bindActionCreators( {
-	load: loadPartialPage,
-}, dispatch );
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(
+		{
+			load: loadPartialPage,
+		},
+		dispatch,
+	);
 
-export default connect( mapStateToProps, mapDispatchToProps )( LoadMore );
+export default connect(mapStateToProps, mapDispatchToProps)(LoadMore);

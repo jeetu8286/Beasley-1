@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Contacts extends PureComponent {
-	constructor( props ) {
-		super( props );
+	constructor(props) {
+		super(props);
 
 		const self = this;
 		self.state = { isOpen: false };
 		self.contactModalRef = React.createRef();
 
-		self.onToggle = self.handleToggleClick.bind( self );
-		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind( self );
-		self.handleUserEventOutside = self.handleUserEventOutside.bind( self );
+		self.onToggle = self.handleToggleClick.bind(self);
+		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind(self);
+		self.handleUserEventOutside = self.handleUserEventOutside.bind(self);
 	}
 
 	componentDidMount() {
-		document.addEventListener( 'mousedown', this.handleUserEventOutside, false );
-		document.addEventListener( 'scroll', this.handleUserEventOutside, false );
-		document.addEventListener( 'keydown', this.handleEscapeKeyDown, false );
+		document.addEventListener('mousedown', this.handleUserEventOutside, false);
+		document.addEventListener('scroll', this.handleUserEventOutside, false);
+		document.addEventListener('keydown', this.handleEscapeKeyDown, false);
 	}
 
 	componentWillUnmount() {
@@ -27,33 +27,33 @@ class Contacts extends PureComponent {
 			this.handleUserEventOutside,
 			false,
 		);
-		document.removeEventListener( 'scroll', this.handleUserEventOutside, false );
-		document.removeEventListener( 'keydown', this.handleEscapeKeyDown, false );
+		document.removeEventListener('scroll', this.handleUserEventOutside, false);
+		document.removeEventListener('keydown', this.handleEscapeKeyDown, false);
 	}
 
 	handleToggleClick() {
-		this.setState( prevState => ( { isOpen: !prevState.isOpen } ) );
+		this.setState(prevState => ({ isOpen: !prevState.isOpen }));
 	}
 
-	handleUserEventOutside( e ) {
+	handleUserEventOutside(e) {
 		const self = this;
 		const { current: ref } = self.contactModalRef;
 
-		if ( !ref || !ref.contains( e.target ) ) {
-			self.setState( { isOpen: false } );
+		if (!ref || !ref.contains(e.target)) {
+			self.setState({ isOpen: false });
 		}
 	}
 
-	handleEscapeKeyDown( e ) {
-		if ( 27 === e.keyCode ) {
-			this.setState( { isOpen: false } );
+	handleEscapeKeyDown(e) {
+		if (e.keyCode === 27) {
+			this.setState({ isOpen: false });
 		}
 	}
 
 	render() {
 		const self = this;
 		const { stream, colors } = self.props;
-		if ( !stream ) {
+		if (!stream) {
 			return false;
 		}
 
@@ -76,13 +76,12 @@ class Contacts extends PureComponent {
 		const { isOpen } = self.state;
 
 		let contacts = false;
-		if ( isOpen ) {
-
+		if (isOpen) {
 			const config = window.bbgiconfig;
 			let image =
 				config && config.theme && config.theme.logo && config.theme.logo.url;
 
-			if ( !image ) {
+			if (!image) {
 				image =
 					picture && picture.large && picture.large.url
 						? picture.large.url
@@ -90,19 +89,33 @@ class Contacts extends PureComponent {
 			}
 
 			contacts = (
-				<Fragment>
+				<>
 					<img src={image} alt={title} />
-					{phone &&
-						<p style={textStyle}>Phone: <a href={`tel:${phone}`} style={textStyle}>{phone}</a></p>
-					}
-					{text &&
-						<p style={textStyle}>Text: <a href={`sms://${text}`} style={textStyle}>{text}</a></p>
-					}
-					{email &&
-						<p><a href={`mailto:${email}`} style={textStyle}>{email}</a></p>
-					}
+					{phone && (
+						<p style={textStyle}>
+							Phone:{' '}
+							<a href={`tel:${phone}`} style={textStyle}>
+								{phone}
+							</a>
+						</p>
+					)}
+					{text && (
+						<p style={textStyle}>
+							Text:{' '}
+							<a href={`sms://${text}`} style={textStyle}>
+								{text}
+							</a>
+						</p>
+					)}
+					{email && (
+						<p>
+							<a href={`mailto:${email}`} style={textStyle}>
+								{email}
+							</a>
+						</p>
+					)}
 					<p style={textStyle}>{address}</p>
-				</Fragment>
+				</>
 			);
 		}
 
@@ -141,16 +154,14 @@ class Contacts extends PureComponent {
 }
 
 Contacts.propTypes = {
-	stream: PropTypes.oneOfType( [
-		PropTypes.object, PropTypes.bool,
-	] ),
+	stream: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 Contacts.defaultProps = {
 	stream: false,
 };
 
-function mapStateToProps( { player } ) {
+function mapStateToProps({ player }) {
 	return {
 		stream: player.streams.find(
 			item => item.stream_call_letters === player.station,
@@ -158,4 +169,4 @@ function mapStateToProps( { player } ) {
 	};
 }
 
-export default connect( mapStateToProps )( Contacts );
+export default connect(mapStateToProps)(Contacts);
