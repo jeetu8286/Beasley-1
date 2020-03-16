@@ -1,10 +1,8 @@
 import {
 	removeChildren,
-	dispatchEvent,
 	getStateFromContent,
 	parseHtml,
 	pageview,
-	slugify,
 } from '../../library';
 
 export const ACTION_SET_SCREEN_STATE = 'SET_SCREEN_STATE';
@@ -93,7 +91,7 @@ export const fetchFeedsContent = (
 export const fetchPage = (url, options = {}) => async dispatch => {
 	const pageEndpoint = `${
 		window.bbgiconfig.wpapi
-	}\page?url=${encodeURIComponent(url)}`;
+	}\page?url=${encodeURIComponent(url)}`; // eslint-disable-line no-useless-escape
 
 	try {
 		dispatch({ type: ACTION_LOADING_PAGE, url });

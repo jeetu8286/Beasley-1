@@ -13,19 +13,16 @@ class Countdown extends Component {
 	constructor(props) {
 		super(props);
 
-		const self = this;
+		this.state = this.getTimeRemaining(false);
+		this.interval = null;
 
-		self.state = self.getTimeRemaining(false);
-		self.interval = null;
-
-		self.getTimeRemaining = self.getTimeRemaining.bind(self);
+		this.getTimeRemaining = this.getTimeRemaining.bind(this);
 	}
 
 	componentDidMount() {
-		const self = this;
-		const { payload } = self.props;
+		const { payload } = this.props;
 		if (payload && payload.countdownTime) {
-			self.interval = setInterval(self.getTimeRemaining, 1000);
+			this.interval = setInterval(this.getTimeRemaining, 1000);
 		}
 	}
 
@@ -38,12 +35,10 @@ class Countdown extends Component {
 	}
 
 	getTimeRemaining(updateState = true) {
-		const self = this;
-
 		const total =
-			Date.parse(self.props.payload.countdownTime) - Date.parse(new Date());
+			Date.parse(this.props.payload.countdownTime) - Date.parse(new Date());
 		if (total <= 0) {
-			self.stopInterval();
+			this.stopInterval();
 		}
 
 		const seconds = Math.floor(total / SECOND_IN_MILLISECONDS) % 60;
@@ -59,7 +54,7 @@ class Countdown extends Component {
 		};
 
 		if (updateState) {
-			self.setState(remaining);
+			this.setState(remaining);
 		}
 
 		return remaining;
@@ -96,8 +91,7 @@ class Countdown extends Component {
 	}
 
 	render() {
-		const self = this;
-		const { payload } = self.props;
+		const { payload } = this.props;
 
 		if (!payload) {
 			return false;
@@ -127,7 +121,7 @@ class Countdown extends Component {
 
 		const titleText = link ? <a href={link}>{title}</a> : title;
 
-		const { days, hours, minutes, seconds } = self.state;
+		const { days, hours, minutes, seconds } = this.state;
 
 		return (
 			<div className="countdown" style={blockStyle}>
@@ -172,7 +166,7 @@ class Countdown extends Component {
 						</div>
 					</div>
 
-					{self.getSponsor()}
+					{this.getSponsor()}
 				</div>
 			</div>
 		);
@@ -182,11 +176,12 @@ class Countdown extends Component {
 Countdown.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	payload: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-	timeStyle: PropTypes.object,
+	timeStyle: PropTypes.shape({}),
 };
 
 Countdown.defaultProps = {
 	payload: false,
+	timeStyle: {},
 };
 
 export default Countdown;

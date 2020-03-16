@@ -5,9 +5,7 @@ class DiscoveryFilters extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-
-		self.state = {
+		this.state = {
 			brand: '',
 			location: '',
 			genre: '',
@@ -15,17 +13,16 @@ class DiscoveryFilters extends PureComponent {
 			keyword: '',
 		};
 
-		self.onFilterChange = self.handleFilterChange.bind(self);
-		self.onKeywordChange = self.handleKeywordChange.bind(self);
-		self.onSubmit = self.handleKeywordSubmit.bind(self);
+		this.onFilterChange = this.handleFilterChange.bind(this);
+		this.onKeywordChange = this.handleKeywordChange.bind(this);
+		this.onSubmit = this.handleKeywordSubmit.bind(this);
 	}
 
 	handleFilterChange(e) {
-		const self = this;
 		const { target } = e;
 
-		self.setState({ [target.name]: target.value }, () => {
-			self.props.onChange({ ...self.state });
+		this.setState({ [target.name]: target.value }, () => {
+			this.props.onChange({ ...this.state });
 		});
 	}
 
@@ -41,18 +38,17 @@ class DiscoveryFilters extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { brand, location, genre, type, keyword } = self.state;
+		const { brand, location, genre, type, keyword } = this.state;
 
 		const { bbgiconfig } = window;
 		const { locations, genres, publishers } = bbgiconfig || {};
 
-		/* eslint-disable jsx-a11y/no-onchange */
+		/* eslint-disable react/no-array-index-key */
 		return (
 			<div className="filters">
 				<div className="content-wrap">
 					<div className="select select-brand">
-						<select name="brand" value={brand} onChange={self.onFilterChange}>
+						<select name="brand" value={brand} onChange={this.onFilterChange}>
 							<option value="">All Brands</option>
 							{Object.keys(publishers).map((item, i) => (
 								<option key={`brand-${i}`} value={item}>
@@ -66,7 +62,7 @@ class DiscoveryFilters extends PureComponent {
 						<select
 							name="location"
 							value={location}
-							onChange={self.onFilterChange}
+							onChange={this.onFilterChange}
 						>
 							<option value="">All Locations</option>
 							{locations.map((item, i) => (
@@ -76,7 +72,7 @@ class DiscoveryFilters extends PureComponent {
 					</div>
 
 					<div className="select select-types">
-						<select name="type" value={type} onChange={self.onFilterChange}>
+						<select name="type" value={type} onChange={this.onFilterChange}>
 							<option>All Types</option>
 							<option value="events">Events</option>
 							<option value="podcast">Podcasts</option>
@@ -88,7 +84,7 @@ class DiscoveryFilters extends PureComponent {
 					</div>
 
 					<div className="select select-genres">
-						<select name="genre" value={genre} onChange={self.onFilterChange}>
+						<select name="genre" value={genre} onChange={this.onFilterChange}>
 							<option value="">All Genres</option>
 							{genres.map((item, i) => (
 								<option key={`genre-${i}`}>{item}</option>
@@ -96,7 +92,7 @@ class DiscoveryFilters extends PureComponent {
 						</select>
 					</div>
 
-					<form role="search" className="search-form" onSubmit={self.onSubmit}>
+					<form role="search" className="search-form" onSubmit={this.onSubmit}>
 						<label htmlFor="search-q" id="q" className="screen-reader-text">
 							Search for:
 						</label>
@@ -107,7 +103,7 @@ class DiscoveryFilters extends PureComponent {
 							name="s"
 							value={keyword}
 							placeholder="Search"
-							onChange={self.onKeywordChange}
+							onChange={this.onKeywordChange}
 						/>
 						<button
 							type="submit"

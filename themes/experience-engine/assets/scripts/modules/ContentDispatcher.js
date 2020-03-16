@@ -100,6 +100,7 @@ class ContentDispatcher extends Component {
 				const count = carousels[i].classList.contains('-large') ? 2.2 : 4.2;
 				const group = carousels[i].classList.contains('-large') ? 2 : 4;
 
+				// eslint-disable-next-line no-new
 				new Swiper(carousels[i], {
 					slidesPerView: count + 2,
 					slidesPerGroup: group + 2,
@@ -223,6 +224,7 @@ class ContentDispatcher extends Component {
 		);
 
 		Object.keys(partials).forEach(key => {
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			blocks.push(<ContentBlock key={key} {...partials[key]} partial />);
 		});
 
@@ -239,6 +241,10 @@ ContentDispatcher.propTypes = {
 	initPageLoaded: PropTypes.func.isRequired,
 	fetchPage: PropTypes.func.isRequired,
 	fetchFeedsContent: PropTypes.func.isRequired,
+};
+
+ContentDispatcher.defaultProps = {
+	isHome: false,
 };
 
 export default connect(

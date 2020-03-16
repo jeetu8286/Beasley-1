@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -34,20 +34,17 @@ class EditFeed extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-
-		self.onMoveToTopClick = self.handleMoveToTopClick.bind(self);
-		self.onMoveUpClick = self.handleMoveUpClick.bind(self);
-		self.onDeleteClick = self.handleDeleteClick.bind(self);
-		self.onMoveDownClick = self.handleMoveDownClick.bind(self);
-		self.onMoveToBottomClick = self.handleMoveToBottomClick.bind(self);
+		this.onMoveToTopClick = this.handleMoveToTopClick.bind(this);
+		this.onMoveUpClick = this.handleMoveUpClick.bind(this);
+		this.onDeleteClick = this.handleDeleteClick.bind(this);
+		this.onMoveDownClick = this.handleMoveDownClick.bind(this);
+		this.onMoveToBottomClick = this.handleMoveToBottomClick.bind(this);
 	}
 
 	componentDidMount() {
-		const self = this;
-		self.props.activateTrap();
+		this.props.activateTrap();
 
-		const feeds = self.shiftFeeds(0);
+		const feeds = this.shiftFeeds(0);
 		const feedsHash = EditFeed.getFeedsHash(feeds);
 		const container = document.getElementById('inner-content');
 		if (container) {
@@ -55,7 +52,8 @@ class EditFeed extends PureComponent {
 				const child = container.childNodes[i];
 				if (child && child.id) {
 					if (feedsHash[child.id]) {
-						index = child.style.order = (feedsHash[child.id] + 1) * 10;
+						child.style.order = (feedsHash[child.id] + 1) * 10;
+						index = child.style.order;
 					} else {
 						child.style.order = index + 1;
 					}
@@ -69,8 +67,7 @@ class EditFeed extends PureComponent {
 	}
 
 	shiftFeeds(shift) {
-		const self = this;
-		const { feed, feeds } = self.props;
+		const { feed, feeds } = this.props;
 
 		const newfeeds = feeds.map((item, i) => ({
 			id: item.id,
@@ -86,10 +83,8 @@ class EditFeed extends PureComponent {
 	}
 
 	reorderFeeds(shift) {
-		const self = this;
-
-		const feeds = self.shiftFeeds(shift);
-		self.props.modifyFeeds(feeds);
+		const feeds = this.shiftFeeds(shift);
+		this.props.modifyFeeds(feeds);
 
 		const feedsHash = EditFeed.getFeedsHash(feeds);
 		const container = document.getElementById('inner-content');
@@ -116,8 +111,7 @@ class EditFeed extends PureComponent {
 	}
 
 	handleDeleteClick() {
-		const self = this;
-		const { close, deleteFeed, feed } = self.props;
+		const { close, deleteFeed, feed } = this.props;
 
 		deleteFeed(feed);
 
@@ -138,8 +132,7 @@ class EditFeed extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { title, feed } = self.props;
+		const { title, feed } = this.props;
 		const label = title || feed || 'Feed';
 
 		return (
@@ -149,29 +142,33 @@ class EditFeed extends PureComponent {
 				<div>
 					<button
 						className="btn"
-						onClick={self.onMoveToTopClick}
+						onClick={this.onMoveToTopClick}
 						aria-label={`Move ${label} To Top`}
+						type="button"
 					>
 						Move To Top
 					</button>
 					<button
 						className="btn"
-						onClick={self.onMoveUpClick}
+						onClick={this.onMoveUpClick}
 						aria-label={`Move Up ${label}`}
+						type="button"
 					>
 						Move Up
 					</button>
 					<button
 						className="btn"
-						onClick={self.onMoveDownClick}
+						onClick={this.onMoveDownClick}
 						aria-label={`Move Down ${label} To Top`}
+						type="button"
 					>
 						Move Down
 					</button>
 					<button
 						className="btn"
-						onClick={self.onMoveToBottomClick}
+						onClick={this.onMoveToBottomClick}
 						aria-label={`Move ${label} To Bottom`}
+						type="button"
 					>
 						Move To Bottom
 					</button>
@@ -182,8 +179,9 @@ class EditFeed extends PureComponent {
 				<div>
 					<button
 						className="btn"
-						onClick={self.onDeleteClick}
+						onClick={this.onDeleteClick}
 						aria-label={`Delete ${label}`}
+						type="button"
 					>
 						Delete
 					</button>

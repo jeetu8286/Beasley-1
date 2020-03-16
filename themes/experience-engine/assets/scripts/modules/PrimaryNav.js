@@ -22,46 +22,42 @@ class PrimaryNav extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-
-		self.primaryNavRef = React.createRef();
-		self.state = {
+		this.primaryNavRef = React.createRef();
+		this.state = {
 			navHtml: navRoot.innerHTML,
 			initialWw: window.innerWidth,
 		};
 
-		self.handleSubMenu = self.handleSubMenu.bind(self);
-		self.handleMobileNav = self.handleMobileNav.bind(self);
-		self.onPageChange = self.handlePageChange.bind(self);
-		self.onResize = self.onResize.bind(self);
-		self.detectScrollbar = self.detectScrollbar.bind(self);
-		self.handleEscapeKey = self.handleEscapeKey.bind(self);
-		self.handleClickOutSide = self.handleClickOutSide.bind(self);
-		self.closeMenus = self.closeMenus.bind(self);
+		this.handleSubMenu = this.handleSubMenu.bind(this);
+		this.handleMobileNav = this.handleMobileNav.bind(this);
+		this.onPageChange = this.handlePageChange.bind(this);
+		this.onResize = this.onResize.bind(this);
+		this.detectScrollbar = this.detectScrollbar.bind(this);
+		this.handleEscapeKey = this.handleEscapeKey.bind(this);
+		this.handleClickOutSide = this.handleClickOutSide.bind(this);
+		this.closeMenus = this.closeMenus.bind(this);
 
 		removeChildren(navRoot);
 	}
 
 	componentDidMount() {
-		const self = this;
+		window.addEventListener('resize', this.onResize);
+		window.addEventListener('popstate', this.onPageChange);
+		window.addEventListener('pushstate', this.onPageChange);
 
-		window.addEventListener('resize', self.onResize);
-		window.addEventListener('popstate', self.onPageChange);
-		window.addEventListener('pushstate', self.onPageChange);
+		const container = this.primaryNavRef.current;
+		container.addEventListener('click', this.handleSubMenu);
 
-		const container = self.primaryNavRef.current;
-		container.addEventListener('click', self.handleSubMenu);
-
-		siteMenuToggle.addEventListener('click', self.handleMobileNav);
-		document.addEventListener('keydown', self.handleEscapeKey);
-		document.addEventListener('click', self.handleClickOutSide);
+		siteMenuToggle.addEventListener('click', this.handleMobileNav);
+		document.addEventListener('keydown', this.handleEscapeKey);
+		document.addEventListener('click', this.handleClickOutSide);
 
 		if (window.matchMedia('(min-width: 900px)').matches) {
 			navRoot.parentNode.setAttribute('aria-hidden', false);
 		}
 
 		if (isWindowsBrowser()) {
-			self.detectScrollbar();
+			this.detectScrollbar();
 		}
 
 		// Fix for login link in Safari
@@ -71,17 +67,15 @@ class PrimaryNav extends PureComponent {
 	}
 
 	componentWillUnmount() {
-		const self = this;
+		window.removeEventListener('resize', this.onResize);
+		window.removeEventListener('popstate', this.onPageChange);
+		window.removeEventListener('pushstate', this.onPageChange);
 
-		window.removeEventListener('resize', self.onResize);
-		window.removeEventListener('popstate', self.onPageChange);
-		window.removeEventListener('pushstate', self.onPageChange);
+		const container = this.primaryNavRef.current;
+		container.removeEventListener('click', this.handleSubMenu);
 
-		const container = self.primaryNavRef.current;
-		container.removeEventListener('click', self.handleSubMenu);
-
-		siteMenuToggle.removeEventListener('click', self.handleMobileNav);
-		document.removeEventListener('click', self.handleClickOutSide);
+		siteMenuToggle.removeEventListener('click', this.handleMobileNav);
+		document.removeEventListener('click', this.handleClickOutSide);
 	}
 
 	onResize() {
@@ -193,8 +187,7 @@ class PrimaryNav extends PureComponent {
 		const { target } = e;
 		const menuItem = target.parentNode;
 
-		const self = this;
-		const { primaryNavRef } = self;
+		const { primaryNavRef } = this;
 		const container = primaryNavRef.current;
 
 		if (
@@ -206,7 +199,7 @@ class PrimaryNav extends PureComponent {
 				showDiscover,
 				showSignin,
 				signedIn,
-			} = self.props;
+			} = this.props;
 
 			// Remove "current-menu-item" from any / all.
 			const links = container.querySelectorAll('.menu-item > a');
@@ -251,9 +244,8 @@ class PrimaryNav extends PureComponent {
 	}
 
 	handlePageChange() {
-		const self = this;
-		const { primaryNavRef } = self;
-		const { setNavigationCurrent, hideModal } = self.props;
+		const { primaryNavRef } = this;
+		const { setNavigationCurrent, hideModal } = this.props;
 		const container = primaryNavRef.current;
 		let linkToActivate;
 		let parent;
@@ -284,7 +276,7 @@ class PrimaryNav extends PureComponent {
 			!window.matchMedia('(min-width: 900px)').matches &&
 			navRoot.parentNode.classList.contains('is-active')
 		) {
-			self.handleMobileNav();
+			this.handleMobileNav();
 		}
 
 		if (
@@ -294,7 +286,7 @@ class PrimaryNav extends PureComponent {
 			return;
 		}
 
-		self.closeMenus();
+		this.closeMenus();
 	}
 
 	closeMenus() {
@@ -318,13 +310,12 @@ class PrimaryNav extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { navHtml } = self.state;
+		const { navHtml } = this.state;
 
 		// render back into #primary-nav container
 		return ReactDOM.createPortal(
 			<div
-				ref={self.primaryNavRef}
+				ref={this.primaryNavRef}
 				dangerouslySetInnerHTML={{ __html: navHtml }}
 			/>,
 			document.getElementById('js-primary-nav'),
@@ -338,6 +329,7 @@ PrimaryNav.propTypes = {
 	showSignin: PropTypes.func.isRequired,
 	setNavigationCurrent: PropTypes.func.isRequired,
 	currentMenu: PropTypes.string.isRequired,
+	hideModal: PropTypes.func.isRequired,
 };
 
 function mapStateToProps({ auth, navigation }) {

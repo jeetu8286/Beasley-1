@@ -51,13 +51,8 @@ class Info extends Component {
 	}
 
 	renderAudio() {
-		const self = this;
-		const { cuePoint, time, duration, colors } = self.props;
+		const { cuePoint, time, duration, colors } = this.props;
 		const info = Info.getCuePointInfo(cuePoint);
-
-		const textStyle = {
-			color: colors['--brand-text-color'] || colors['--global-theme-secondary'],
-		};
 
 		return (
 			<div className="controls-info" style={colors}>
@@ -74,8 +69,7 @@ class Info extends Component {
 	}
 
 	renderStation() {
-		const self = this;
-		const { station, streams, status, cuePoint, colors } = self.props;
+		const { station, streams, status, cuePoint, colors } = this.props;
 
 		let info = STATUS_LABELS[status] || '';
 		if (status === 'LIVE_PLAYING') {
@@ -99,19 +93,30 @@ class Info extends Component {
 	}
 
 	render() {
-		const self = this;
-		const { station } = self.props;
-		return station ? self.renderStation() : self.renderAudio();
+		const { station } = this.props;
+		return station ? this.renderStation() : this.renderAudio();
 	}
 }
 
 Info.propTypes = {
+	colors: PropTypes.shape({
+		'--global-theme-secondary': PropTypes.string,
+		'--brand-button-color': PropTypes.string,
+		'--brand-background-color': PropTypes.string,
+		'--brand-text-color': PropTypes.string,
+	}),
 	station: PropTypes.string.isRequired,
 	streams: PropTypes.arrayOf(PropTypes.object).isRequired,
 	status: PropTypes.string.isRequired,
 	cuePoint: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
 	time: PropTypes.number,
 	duration: PropTypes.number,
+};
+
+Info.defaultProps = {
+	colors: {},
+	time: 0,
+	duration: 0,
 };
 
 function mapStateToProps({ player }) {

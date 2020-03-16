@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import HomepageOrderingContext from '../../context/homepage-ordering';
-import { modifyUserFeeds, deleteUserFeed } from '../../redux/actions/auth';
+import { modifyUserFeeds } from '../../redux/actions/auth';
 
 class Homepage extends Component {
 	static sortFeeds(a, b) {
@@ -22,10 +22,9 @@ class Homepage extends Component {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.childrenContext = {
-			moveUp: self.reorderFeeds.bind(self, 15),
-			moveDown: self.reorderFeeds.bind(self, -15),
+		this.childrenContext = {
+			moveUp: this.reorderFeeds.bind(this, 15),
+			moveDown: this.reorderFeeds.bind(this, -15),
 		};
 	}
 
@@ -65,8 +64,7 @@ class Homepage extends Component {
 	}
 
 	shiftFeeds(shift, feed) {
-		const self = this;
-		const { feeds } = self.props;
+		const { feeds } = this.props;
 
 		let index = 0;
 		let delta = 0;
@@ -93,10 +91,9 @@ class Homepage extends Component {
 	}
 
 	reorderFeeds(shift, feed) {
-		const self = this;
-		const feeds = self.shiftFeeds(shift, feed);
-		self.props.modifyFeeds(feeds);
-		self.repositionFeeds(feeds);
+		const feeds = this.shiftFeeds(shift, feed);
+		this.props.modifyFeeds(feeds);
+		this.repositionFeeds(feeds);
 	}
 
 	render() {
@@ -111,7 +108,6 @@ class Homepage extends Component {
 Homepage.propTypes = {
 	children: PropTypes.node.isRequired,
 	feeds: PropTypes.arrayOf(PropTypes.object).isRequired,
-	deleteFeed: PropTypes.func.isRequired,
 	modifyFeeds: PropTypes.func.isRequired,
 };
 
@@ -127,7 +123,6 @@ function mapStateToProps({ auth }) {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators(
 		{
-			deleteFeed: deleteUserFeed,
 			modifyFeeds: modifyUserFeeds,
 		},
 		dispatch,

@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import trapHOC from '@10up/react-focus-trap-hoc';
 import { connect } from 'react-redux';
@@ -14,16 +14,14 @@ class RestorePassword extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-
-		self.state = {
+		this.state = {
 			email: '',
 			message: '',
 			success: false,
 		};
 
-		self.onFieldChange = self.handleFieldChange.bind(self);
-		self.onFormSubmit = self.handleFormSubmit.bind(self);
+		this.onFieldChange = this.handleFieldChange.bind(this);
+		this.onFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	componentDidMount() {
@@ -40,15 +38,14 @@ class RestorePassword extends PureComponent {
 	}
 
 	handleFormSubmit(e) {
-		const self = this;
-		const { email } = self.state;
+		const { email } = this.state;
 
 		e.preventDefault();
 
 		firebaseAuth
 			.sendPasswordResetEmail(email, { url: window.location.href })
 			.then(() => {
-				self.setState({
+				this.setState({
 					success: true,
 					email: '',
 					message:
@@ -56,16 +53,15 @@ class RestorePassword extends PureComponent {
 				});
 			})
 			.catch(error => {
-				self.setState({
+				this.setState({
 					message: error.message,
 				});
 			});
 	}
 
 	render() {
-		const self = this;
-		const { email, message, success } = self.state;
-		const { signin } = self.props;
+		const { email, message, success } = this.state;
+		const { signin } = this.props;
 
 		return (
 			<>
@@ -75,7 +71,7 @@ class RestorePassword extends PureComponent {
 
 				<Alert message={message} type={success ? 'info' : 'error'} />
 
-				<form className="modal-form" onSubmit={self.onFormSubmit}>
+				<form className="modal-form" onSubmit={this.onFormSubmit}>
 					<div className="modal-form-group">
 						<label className="modal-form-label" htmlFor="user-email">
 							Email
@@ -86,7 +82,7 @@ class RestorePassword extends PureComponent {
 							id="user-email"
 							name="email"
 							value={email}
-							onChange={self.onFieldChange}
+							onChange={this.onFieldChange}
 							placeholder="yourname@yourddomain.com"
 						/>
 					</div>

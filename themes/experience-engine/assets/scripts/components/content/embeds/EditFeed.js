@@ -13,36 +13,32 @@ class EditFeed extends Component {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.onRemove = self.handleRemove.bind(self);
-		self.onMoveUp = self.handleMoveUp.bind(self);
-		self.onMoveDown = self.handleMoveDown.bind(self);
-		self.hideNotice = self.hideNotice.bind(self);
+		this.onRemove = this.handleRemove.bind(this);
+		this.onMoveUp = this.handleMoveUp.bind(this);
+		this.onMoveDown = this.handleMoveDown.bind(this);
+		this.hideNotice = this.hideNotice.bind(this);
 	}
 
 	handleMoveDown() {
-		const self = this;
+		this.context.moveDown(this.props.feed);
 
-		self.context.moveDown(self.props.feed);
-
-		self.props.updateNotice({
-			message: `<span class="title">${self.props.title}</span> has been moved down`,
+		this.props.updateNotice({
+			message: `<span class="title">${this.props.title}</span> has been moved down`,
 			isOpen: true,
 		});
 
-		self.hideNotice();
+		this.hideNotice();
 	}
 
 	handleMoveUp() {
-		const self = this;
-		self.context.moveUp(self.props.feed);
+		this.context.moveUp(this.props.feed);
 
 		updateNotice({
-			message: `<span class="title">${self.props.title}</span> has been moved up`,
+			message: `<span class="title">${this.props.title}</span> has been moved up`,
 			isOpen: true,
 		});
 
-		self.hideNotice();
+		this.hideNotice();
 	}
 
 	handleRemove() {
@@ -73,8 +69,7 @@ class EditFeed extends Component {
 	}
 
 	render() {
-		const self = this;
-		const { loggedIn, className, notice } = self.props;
+		const { loggedIn, className, notice } = this.props;
 		const noticeClass = !notice.isOpen ? '' : '-visible';
 
 		if (!loggedIn) {
@@ -87,7 +82,8 @@ class EditFeed extends Component {
 				<button
 					className={className}
 					aria-label="Move Down Feed"
-					onClick={self.onMoveDown}
+					onClick={this.onMoveDown}
+					type="button"
 				>
 					<svg
 						width="14"
@@ -108,7 +104,8 @@ class EditFeed extends Component {
 				<button
 					className={className}
 					aria-label="Move Up Feed"
-					onClick={self.onMoveUp}
+					onClick={this.onMoveUp}
+					type="button"
 				>
 					<svg
 						width="14"
@@ -129,7 +126,8 @@ class EditFeed extends Component {
 				<button
 					className={className}
 					aria-label="Remove Feed"
-					onClick={self.onRemove}
+					onClick={this.onRemove}
+					type="button"
 				>
 					<svg
 						width="13"
@@ -159,13 +157,14 @@ class EditFeed extends Component {
 EditFeed.propTypes = {
 	loggedIn: PropTypes.bool.isRequired,
 	feed: PropTypes.string.isRequired,
-	feeds: PropTypes.arrayOf(PropTypes.object).isRequired,
 	title: PropTypes.string,
 	className: PropTypes.string,
 	deleteFeed: PropTypes.func.isRequired,
 	updateNotice: PropTypes.func.isRequired,
-	hideNotice: PropTypes.func,
-	notice: PropTypes.object.isRequired,
+	notice: PropTypes.shape({
+		message: PropTypes.string,
+		isOpen: PropTypes.bool,
+	}).isRequired,
 };
 
 EditFeed.defaultProps = {

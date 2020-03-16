@@ -29,11 +29,10 @@ class ModalDispatcher extends Component {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.modalRef = React.createRef();
+		this.modalRef = React.createRef();
 
-		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind(self);
-		self.handleClickOutside = self.handleClickOutside.bind(self);
+		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind(this);
+		this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
 
 	componentDidMount() {
@@ -47,8 +46,7 @@ class ModalDispatcher extends Component {
 	}
 
 	handleMenuCurrentItem() {
-		const self = this;
-		const { navigation } = self.props;
+		const { navigation } = this.props;
 		const { previous: previousMenuItem } = navigation;
 		const previous = document.getElementById(previousMenuItem);
 
@@ -67,13 +65,12 @@ class ModalDispatcher extends Component {
 			homeButton.classList.add('current-menu-item');
 		}
 
-		self.props.navigationRevert();
+		this.props.navigationRevert();
 	}
 
 	handleClickOutside(e) {
-		const self = this;
-		const { modal } = self.props;
-		const { current: ref } = self.modalRef;
+		const { modal } = this.props;
+		const { current: ref } = this.modalRef;
 
 		if (
 			modal !== 'CLOSED' &&
@@ -81,8 +78,8 @@ class ModalDispatcher extends Component {
 			COMPLETE_SIGNUP_MODAL !== modal &&
 			(!ref || !ref.contains(e.target))
 		) {
-			self.props.close();
-			self.handleMenuCurrentItem();
+			this.props.close();
+			this.handleMenuCurrentItem();
 		}
 	}
 
@@ -101,11 +98,11 @@ class ModalDispatcher extends Component {
 	}
 
 	render() {
-		const self = this;
-		const { modal, payload } = self.props;
+		const { modal, payload } = this.props;
 
 		let component = false;
 
+		/* eslint-disable react/jsx-props-no-spreading */
 		switch (modal) {
 			case SIGNIN_MODAL:
 				component = (
@@ -124,7 +121,7 @@ class ModalDispatcher extends Component {
 				break;
 			case DISCOVER_MODAL:
 				component = (
-					<div className="discover-modal" ref={self.modalRef}>
+					<div className="discover-modal" ref={this.modalRef}>
 						<DiscoverModal close={() => this.handleClose()} {...payload} />
 					</div>
 				);
@@ -146,10 +143,11 @@ class ModalDispatcher extends Component {
 			default:
 				return false;
 		}
+		/* eslint-enable */
 
 		return (
 			<div className={`modal ${(modal || '').toLowerCase()}`}>
-				<div ref={self.modalRef} className="modal-content">
+				<div ref={this.modalRef} className="modal-content">
 					<CloseButton close={() => this.handleClose()} />
 					<ErrorBoundary>{component}</ErrorBoundary>
 				</div>
@@ -163,6 +161,9 @@ ModalDispatcher.propTypes = {
 	payload: PropTypes.shape({}),
 	close: PropTypes.func.isRequired,
 	navigationRevert: PropTypes.func.isRequired,
+	navigation: PropTypes.shape({
+		previous: PropTypes.string,
+	}).isRequired,
 };
 
 ModalDispatcher.defaultProps = {

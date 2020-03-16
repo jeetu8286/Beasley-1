@@ -2,6 +2,7 @@ import { dispatchEvent } from './dom';
 
 history.pushState = (f =>
 	function pushState() {
+		// eslint-disable-next-line prefer-rest-params
 		const ret = f.apply(this, arguments);
 		dispatchEvent('pushState');
 		dispatchEvent('locationchange');
@@ -10,6 +11,7 @@ history.pushState = (f =>
 
 history.replaceState = (f =>
 	function replaceState() {
+		// eslint-disable-next-line prefer-rest-params
 		const ret = f.apply(this, arguments);
 		dispatchEvent('replaceState');
 		return ret;
@@ -19,7 +21,7 @@ window.addEventListener('popstate', () => {
 	dispatchEvent('locationchange');
 });
 
-window.addEventListener('locationchange', function() {
+window.addEventListener('locationchange', () => {
 	if (window.bbgiconfig.geotargetly && window.geotargetly) {
 		try {
 			window.geotargetly(document, 'script', 'style', 'head');

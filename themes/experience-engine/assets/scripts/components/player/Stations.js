@@ -9,13 +9,12 @@ class Stations extends Component {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.state = { isOpen: false };
-		self.stationModalRef = React.createRef();
+		this.state = { isOpen: false };
+		this.stationModalRef = React.createRef();
 
-		self.onToggle = self.handleToggleClick.bind(self);
-		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind(self);
-		self.handleUserEventOutside = self.handleUserEventOutside.bind(self);
+		this.onToggle = this.handleToggleClick.bind(this);
+		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind(this);
+		this.handleUserEventOutside = this.handleUserEventOutside.bind(this);
 	}
 
 	componentDidMount() {
@@ -35,9 +34,8 @@ class Stations extends Component {
 	}
 
 	handlePlayClick(station) {
-		const self = this;
-		self.setState({ isOpen: false });
-		self.props.play(station);
+		this.setState({ isOpen: false });
+		this.props.play(station);
 	}
 
 	handleToggleClick() {
@@ -45,11 +43,10 @@ class Stations extends Component {
 	}
 
 	handleUserEventOutside(e) {
-		const self = this;
-		const { current: ref } = self.stationModalRef;
+		const { current: ref } = this.stationModalRef;
 
 		if (!ref || !ref.contains(e.target)) {
-			self.setState({ isOpen: false });
+			this.setState({ isOpen: false });
 		}
 	}
 
@@ -60,13 +57,12 @@ class Stations extends Component {
 	}
 
 	renderStations(textStyle) {
-		const self = this;
-		const { isOpen } = self.state;
+		const { isOpen } = this.state;
 		if (!isOpen) {
 			return false;
 		}
 
-		const { streams } = self.props;
+		const { streams } = this.props;
 		const stations = [];
 
 		/* eslint-disable camelcase */
@@ -84,7 +80,7 @@ class Stations extends Component {
 					<button
 						type="button"
 						className="control-station-button"
-						onClick={self.handlePlayClick.bind(self, stream_call_letters)}
+						onClick={this.handlePlayClick.bind(this, stream_call_letters)}
 						style={textStyle}
 					>
 						{logo}
@@ -99,9 +95,8 @@ class Stations extends Component {
 	}
 
 	render() {
-		const self = this;
-		const { stream, colors } = self.props;
-		const { isOpen } = self.state;
+		const { stream, colors } = this.props;
+		const { isOpen } = this.state;
 
 		const textStyle = {
 			color: colors['--brand-text-color'] || colors['--global-theme-secondary'],
@@ -129,13 +124,14 @@ class Stations extends Component {
 
 		return (
 			<div
-				ref={self.stationModalRef}
+				ref={this.stationModalRef}
 				className={`controls-station control-border${isOpen ? ' -open' : ''}`}
 			>
 				<button
-					onClick={self.onToggle}
+					onClick={this.onToggle}
 					aria-label="Open Stations Selector"
 					style={textStyle}
+					type="button"
 				>
 					{label}
 					<svg
@@ -153,7 +149,7 @@ class Stations extends Component {
 					</svg>
 				</button>
 				<div className="live-player-modal" style={modalStyle}>
-					{self.renderStations(textStyle)}
+					{this.renderStations(textStyle)}
 				</div>
 			</div>
 		);
@@ -161,12 +157,19 @@ class Stations extends Component {
 }
 
 Stations.propTypes = {
+	colors: PropTypes.shape({
+		'--global-theme-secondary': PropTypes.string,
+		'--brand-button-color': PropTypes.string,
+		'--brand-background-color': PropTypes.string,
+		'--brand-text-color': PropTypes.string,
+	}),
 	play: PropTypes.func.isRequired,
 	stream: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 	streams: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 Stations.defaultProps = {
+	colors: {},
 	stream: false,
 };
 

@@ -13,13 +13,11 @@ class Discovery extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.handleClick = self.handleClick.bind(self);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleClick() {
-		const self = this;
-		const { signedIn, showDiscover, showSignin } = self.props;
+		const { signedIn, showDiscover, showSignin } = this.props;
 		const menuItems = document.querySelectorAll('#menu-ee-primary li');
 		const discoveryWrapper = document.querySelector('#menu-item-discovery');
 		const navWrapper = document.querySelector('.nav-wrap');
@@ -44,8 +42,7 @@ class Discovery extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { placeholder } = self.props;
+		const { placeholder } = this.props;
 		const { bbgiconfig } = window;
 		const { publisher, theme } = bbgiconfig || {};
 		const { title } = publisher || {};
@@ -308,7 +305,7 @@ class Discovery extends PureComponent {
 						/>
 					</svg>
 
-					<button className="btn" onClick={self.handleClick}>
+					<button className="btn" onClick={this.handleClick} type="button">
 						Customize Your Feed
 					</button>
 				</div>

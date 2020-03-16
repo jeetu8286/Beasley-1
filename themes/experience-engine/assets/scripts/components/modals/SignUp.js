@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'md5';
 import trapHOC from '@10up/react-focus-trap-hoc';
@@ -41,6 +41,8 @@ class SignUp extends PureComponent {
 		if (browsers === 'supported') {
 			return !isChrome() && !iOSSafari && !iOSFireFox && !iOSChrome;
 		}
+
+		return false;
 	}
 
 	static isMS() {
@@ -51,10 +53,9 @@ class SignUp extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
 		this.hiddenBday = React.createRef();
 
-		self.state = {
+		this.state = {
 			email: '',
 			password: '',
 			firstname: '',
@@ -65,9 +66,9 @@ class SignUp extends PureComponent {
 			error: '',
 		};
 
-		self.onFieldChange = self.handleFieldChange.bind(self);
-		self.onFormSubmit = self.handleFormSubmit.bind(self);
-		self.handleInputMask = self.handleInputMask.bind(self);
+		this.onFieldChange = this.handleFieldChange.bind(this);
+		this.onFormSubmit = this.handleFormSubmit.bind(this);
+		this.handleInputMask = this.handleInputMask.bind(this);
 	}
 
 	componentDidMount() {
@@ -89,7 +90,6 @@ class SignUp extends PureComponent {
 	}
 
 	handleFormSubmit(e) {
-		const self = this;
 		const {
 			email,
 			password,
@@ -98,7 +98,7 @@ class SignUp extends PureComponent {
 			zip,
 			gender,
 			bday,
-		} = self.state;
+		} = this.state;
 
 		const emailAddress = email.trim().toLowerCase();
 		const userData = {
@@ -108,40 +108,40 @@ class SignUp extends PureComponent {
 
 		e.preventDefault();
 
-		self.props.suppressUserCheck();
+		this.props.suppressUserCheck();
 
 		if (!firstname) {
-			self.setState({ error: 'Please enter your first name.' });
+			this.setState({ error: 'Please enter your first name.' });
 			return false;
 		}
 
 		if (!lastname) {
-			self.setState({ error: 'Please enter your last name.' });
+			this.setState({ error: 'Please enter your last name.' });
 			return false;
 		}
 
 		if (validateEmail(email) === false) {
-			self.setState({ error: 'Please enter a valid email address.' });
+			this.setState({ error: 'Please enter a valid email address.' });
 			return false;
 		}
 
 		if (validateZipcode(zip) === false) {
-			self.setState({ error: 'Please enter a valid US Zipcode.' });
+			this.setState({ error: 'Please enter a valid US Zipcode.' });
 			return false;
 		}
 
 		if (validateDate(bday) === false) {
-			self.setState({ error: 'Please ensure date is in MM/DD/YYYY format' });
+			this.setState({ error: 'Please ensure date is in MM/DD/YYYY format' });
 			return false;
 		}
-		self.setState({ error: '' });
+		this.setState({ error: '' });
 
 		if (validateGender(gender) === false) {
-			self.setState({ error: 'Please select your gender.' });
+			this.setState({ error: 'Please select your gender.' });
 			return false;
 		}
 
-		firebaseAuth
+		return firebaseAuth
 			.createUserWithEmailAndPassword(emailAddress, password)
 			.then(response => {
 				const { user } = response;
@@ -149,22 +149,21 @@ class SignUp extends PureComponent {
 				saveUser(emailAddress, zip, gender, bday);
 				user.updateProfile(userData);
 
-				self.props.setDisplayName(userData.displayName);
+				this.props.setDisplayName(userData.displayName);
 			})
 			.then(() => {
 				ensureUserHasCurrentChannel().then(() => {
-					self.props.close();
+					this.props.close();
 					window.location.reload();
 					document.body.innerHTML = '';
 				});
 			})
 			.catch(error =>
-				self.setState({ error: mapAuthErrorCodeToFriendlyMessage(error) }),
+				this.setState({ error: mapAuthErrorCodeToFriendlyMessage(error) }),
 			);
 	}
 
 	render() {
-		const self = this;
 		const {
 			email,
 			password,
@@ -174,8 +173,8 @@ class SignUp extends PureComponent {
 			gender,
 			bday,
 			error,
-		} = self.state;
-		const { signin } = self.props;
+		} = this.state;
+		const { signin } = this.props;
 
 		return (
 			<>
@@ -190,7 +189,7 @@ class SignUp extends PureComponent {
 				</p>
 				<OAuthButtons horizontal />
 
-				<form className="modal-form -form-sign-up" onSubmit={self.onFormSubmit}>
+				<form className="modal-form -form-sign-up" onSubmit={this.onFormSubmit}>
 					<div className="modal-form-group-inline">
 						<div className="modal-form-group">
 							<label className="modal-form-label" htmlFor="user-firstname">
@@ -202,7 +201,7 @@ class SignUp extends PureComponent {
 								id="user-firstname"
 								name="firstname"
 								value={firstname}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 								placeholder="Your name"
 							/>
 						</div>
@@ -216,7 +215,7 @@ class SignUp extends PureComponent {
 								id="user-lastname"
 								name="lastname"
 								value={lastname}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 								placeholder="Your surname"
 							/>
 						</div>
@@ -232,7 +231,7 @@ class SignUp extends PureComponent {
 								id="user-email"
 								name="email"
 								value={email}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 								placeholder="yourname@yourdomain.com"
 							/>
 						</div>
@@ -246,7 +245,7 @@ class SignUp extends PureComponent {
 								id="user-password"
 								name="password"
 								value={password}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 								placeholder="Your password"
 							/>
 						</div>
@@ -262,7 +261,7 @@ class SignUp extends PureComponent {
 								id="user-zip"
 								name="zip"
 								value={zip}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 								placeholder="90210"
 							/>
 						</div>
@@ -276,7 +275,7 @@ class SignUp extends PureComponent {
 								id="user-bday"
 								name="bday"
 								value={bday}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 								placeholder="mm/dd/yyyy"
 							/>
 						</div>
@@ -293,7 +292,7 @@ class SignUp extends PureComponent {
 								name="gender"
 								value="male"
 								checked={gender === 'male'}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 							/>
 							<label htmlFor="user-gender-male">Male</label>
 						</div>
@@ -304,7 +303,7 @@ class SignUp extends PureComponent {
 								name="gender"
 								value="female"
 								checked={gender === 'female'}
-								onChange={self.onFieldChange}
+								onChange={this.onFieldChange}
 							/>
 							<label htmlFor="user-gender-female">Female</label>
 						</div>
@@ -331,6 +330,7 @@ class SignUp extends PureComponent {
 }
 
 SignUp.propTypes = {
+	close: PropTypes.func.isRequired,
 	activateTrap: PropTypes.func.isRequired,
 	deactivateTrap: PropTypes.func.isRequired,
 	suppressUserCheck: PropTypes.func.isRequired,

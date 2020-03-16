@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
@@ -71,8 +71,7 @@ class ContentBlock extends Component {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.state = { ready: false };
+		this.state = { ready: false };
 	}
 
 	componentDidMount() {
@@ -105,9 +104,8 @@ class ContentBlock extends Component {
 	}
 
 	render() {
-		const self = this;
-		const { content, embeds, partial, isHome } = self.props;
-		const { ready } = self.state;
+		const { content, embeds, partial, isHome } = this.props;
+		const { ready } = this.state;
 
 		const portal = ReactDOM.createPortal(
 			<div dangerouslySetInnerHTML={{ __html: content }} />,

@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -90,7 +90,7 @@ class LivePlayer extends Component {
 			elements: [{ id: 'sync-banner', width: 320, height: 50 }],
 		});
 
-		this.props.initTdPlayer(tdmodules);
+		initTdPlayer(tdmodules);
 	}
 
 	handleOnline() {
@@ -234,8 +234,8 @@ LivePlayer.propTypes = {
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
 	duration: PropTypes.number.isRequired,
-	player: PropTypes.object,
-	playerType: PropTypes.string,
+	player: PropTypes.shape({}).isRequired,
+	playerType: PropTypes.string.isRequired,
 };
 
 export default connect(

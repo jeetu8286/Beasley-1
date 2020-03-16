@@ -11,9 +11,7 @@ class Rewind extends PureComponent {
 	constructor() {
 		super();
 
-		const self = this;
-
-		self.handleOnClick = self.handleOnClick.bind(self);
+		this.handleOnClick = this.handleOnClick.bind(this);
 	}
 
 	/**
@@ -22,8 +20,7 @@ class Rewind extends PureComponent {
 	 * Go back to 0
 	 */
 	handleOnClick() {
-		const self = this;
-		const { currentTime, seek } = self.props;
+		const { currentTime, seek } = this.props;
 		let newTime = currentTime - 15;
 
 		if (newTime < 0) {
@@ -38,15 +35,15 @@ class Rewind extends PureComponent {
 	 * @returns {*}
 	 */
 	render() {
-		const self = this;
-		const { progressClass } = self.props;
+		const { progressClass } = this.props;
 
 		return (
 			<div className={`controls-rewind ${progressClass}`}>
 				<button
 					className="rewind"
 					aria-label="Rewind fifteen seconds"
-					onClick={self.handleOnClick}
+					onClick={this.handleOnClick}
+					type="button"
 				>
 					<svg
 						width="32"
@@ -69,6 +66,10 @@ Rewind.propTypes = {
 	currentTime: PropTypes.number.isRequired,
 	seek: PropTypes.func.isRequired,
 	progressClass: PropTypes.string,
+};
+
+Rewind.defaultProps = {
+	progressClass: '',
 };
 
 const mapStateToProps = ({ player }) => ({

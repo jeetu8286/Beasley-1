@@ -52,6 +52,7 @@ export function isAudioAdOnly({ player, playerType }) {
 	}
 
 	// Look for ad, if MP3, don't display it.
+	// eslint-disable-next-line no-prototype-builtins
 	if (currentAdModule && currentAdModule.hasOwnProperty('html5Node')) {
 		const regEx = new RegExp(/\.mp3$/);
 		const adUrl = currentAdModule.html5Node.currentSrc || false;

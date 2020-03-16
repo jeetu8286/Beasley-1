@@ -49,7 +49,7 @@ class Dfp extends PureComponent {
 		// Don't assume readiness, instead, push to queue
 		window.googletag.cmd.push(() => {
 			// listen for ad slot loading
-			window.googletag.pubads().addEventListener('slotOnload', function(event) {
+			window.googletag.pubads().addEventListener('slotOnload', event => {
 				// get current loaded slot id
 				const idLoaded = event.slot.getSlotElementId();
 
@@ -222,6 +222,8 @@ class Dfp extends PureComponent {
 
 			googletag.display(slot);
 			this.setState({ slot });
+
+			return true;
 		});
 	}
 

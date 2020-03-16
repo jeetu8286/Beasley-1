@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -10,8 +10,7 @@ class AudioEmbed extends Component {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.onPlayClick = self.handlePlayClick.bind(self);
+		this.onPlayClick = this.handlePlayClick.bind(this);
 	}
 
 	getTitle() {
@@ -71,35 +70,32 @@ class AudioEmbed extends Component {
 	}
 
 	handlePlayClick() {
-		const self = this;
-		const { omny, title, author, playAudio, playOmny, tracktype } = self.props;
-		const src = self.getPlayableSource();
+		const { omny, title, author, playAudio, playOmny, tracktype } = this.props;
+		const src = this.getPlayableSource();
 
 		if (omny) {
 			playOmny(src, title, author, tracktype);
 		} else {
-			playAudio(src, self.getTitle(), author, tracktype);
+			playAudio(src, this.getTitle(), author, tracktype);
 		}
 	}
 
 	getStatus() {
-		const self = this;
-		const { audio, status } = self.props;
-		const src = self.getPlayableSource();
+		const { audio, status } = this.props;
+		const src = this.getPlayableSource();
 
 		return audio === src ? status : actions.STATUSES.LIVE_STOP;
 	}
 
 	render() {
-		const self = this;
-		const { pause, resume, title } = self.props;
+		const { pause, resume, title } = this.props;
 
 		return (
 			<>
 				<Controls
-					status={self.getStatus()}
+					status={this.getStatus()}
 					title={title}
-					play={self.onPlayClick}
+					play={this.onPlayClick}
 					pause={pause}
 					resume={resume}
 				/>
@@ -120,6 +116,7 @@ AudioEmbed.propTypes = {
 	playOmny: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
 	resume: PropTypes.func.isRequired,
+	tracktype: PropTypes.string.isRequired,
 };
 
 AudioEmbed.defaultProps = {

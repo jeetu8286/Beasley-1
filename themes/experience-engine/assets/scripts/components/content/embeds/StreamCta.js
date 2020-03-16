@@ -64,7 +64,11 @@ StreamCta.propTypes = {
 	id: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	subtitle: PropTypes.string.isRequired,
-	picture: PropTypes.shape({}),
+	picture: PropTypes.shape({
+		large: PropTypes.shape({
+			url: PropTypes.string,
+		}),
+	}),
 	stream_call_letters: PropTypes.string.isRequired,
 };
 

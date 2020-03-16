@@ -35,7 +35,6 @@ class LivestreamVideo extends PureComponent {
 
 LivestreamVideo.propTypes = {
 	embedid: PropTypes.string.isRequired,
-	src: PropTypes.string.isRequired,
 };
 
 export default LivestreamVideo;

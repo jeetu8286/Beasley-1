@@ -9,13 +9,12 @@ class Volume extends PureComponent {
 	constructor() {
 		super();
 
-		const self = this;
-		self.state = { showVolume: false };
-		self.volumeRef = React.createRef();
+		this.state = { showVolume: false };
+		this.volumeRef = React.createRef();
 
-		self.toggleVolumeSlider = self.toggleVolumeSlider.bind(self);
-		self.handleUserEventOutside = self.handleUserEventOutside.bind(self);
-		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind(self);
+		this.toggleVolumeSlider = this.toggleVolumeSlider.bind(this);
+		this.handleUserEventOutside = this.handleUserEventOutside.bind(this);
+		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind(this);
 	}
 
 	componentDidMount() {
@@ -37,11 +36,10 @@ class Volume extends PureComponent {
 	}
 
 	handleUserEventOutside(e) {
-		const self = this;
-		const { current: ref } = self.volumeRef;
+		const { current: ref } = this.volumeRef;
 
 		if (!ref || !ref.contains(e.target)) {
-			self.setState({ showVolume: false });
+			this.setState({ showVolume: false });
 		}
 	}
 
@@ -52,10 +50,9 @@ class Volume extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { audio, setVolume, colors } = self.props;
-		const { showVolume } = self.state;
-		let { volume } = self.props;
+		const { audio, setVolume, colors } = this.props;
+		const { showVolume } = this.state;
+		let { volume } = this.props;
 
 		if (audio && audio.length && audio.indexOf('https://omny.fm/') === 0) {
 			return false;
@@ -67,10 +64,11 @@ class Volume extends PureComponent {
 		}
 
 		return (
-			<div ref={self.volumeRef} className="controls-volume">
+			<div ref={this.volumeRef} className="controls-volume">
 				<button
-					onClick={self.toggleVolumeSlider}
+					onClick={this.toggleVolumeSlider}
 					aria-label="Toggle volume controls"
+					type="button"
 				>
 					<svg
 						width="22"
@@ -148,9 +146,16 @@ Volume.propTypes = {
 	volume: PropTypes.number.isRequired,
 	audio: PropTypes.string,
 	setVolume: PropTypes.func.isRequired,
+	colors: PropTypes.shape({
+		'--global-theme-secondary': PropTypes.string,
+		'--brand-button-color': PropTypes.string,
+		'--brand-background-color': PropTypes.string,
+		'--brand-text-color': PropTypes.string,
+	}),
 };
 
 Volume.defaultProps = {
+	colors: {},
 	audio: '',
 };
 

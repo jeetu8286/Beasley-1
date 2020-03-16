@@ -11,20 +11,17 @@ class AddToFavorites extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-
-		self.state = {
+		this.state = {
 			hidden: !props.feedId,
 			feed: props.feedId,
 		};
 
-		self.onAddClick = self.handleAddClick.bind(self);
-		self.onRemoveClick = self.handleRemoveClick.bind(self);
+		this.onAddClick = this.handleAddClick.bind(this);
+		this.onRemoveClick = this.handleRemoveClick.bind(this);
 	}
 
 	componentDidMount() {
-		const self = this;
-		const { keyword } = self.props;
+		const { keyword } = this.props;
 		if (!keyword) {
 			return;
 		}
@@ -40,30 +37,28 @@ class AddToFavorites extends PureComponent {
 						}
 					}
 
-					self.setState(newState);
+					this.setState(newState);
 				}
 			})
 			.catch(() => ({}));
 	}
 
 	hasFeed() {
-		const self = this;
-		const { feed } = self.state;
+		const { feed } = this.state;
 
-		return !!self.props.selectedFeeds.find(item => item.id === feed);
+		return !!this.props.selectedFeeds.find(item => item.id === feed);
 	}
 
 	handleAddClick() {
-		const self = this;
 		const feedsArray = [];
-		const { signedIn, showSignIn } = self.props;
+		const { signedIn, showSignIn } = this.props;
 
 		if (!signedIn) {
 			showSignIn();
 			return;
 		}
 
-		self.props.selectedFeeds.forEach(item => {
+		this.props.selectedFeeds.forEach(item => {
 			feedsArray.push({
 				id: item.id,
 				sortorder: feedsArray.length + 1,
@@ -71,32 +66,30 @@ class AddToFavorites extends PureComponent {
 		});
 
 		feedsArray.push({
-			id: self.state.feed,
+			id: this.state.feed,
 			sortorder: feedsArray.length + 1,
 		});
 
-		self.props.modifyUserFeeds(feedsArray);
+		this.props.modifyUserFeeds(feedsArray);
 	}
 
 	handleRemoveClick() {
-		const self = this;
-		if (self.hasFeed()) {
-			self.props.deleteUserFeed(self.state.feed);
+		if (this.hasFeed()) {
+			this.props.deleteUserFeed(this.state.feed);
 		}
 	}
 
 	render() {
-		const self = this;
-		const { classes, addLabel, removeLabel, showIcon } = self.props;
+		const { classes, addLabel, removeLabel, showIcon } = this.props;
 
-		const { hidden } = self.state;
+		const { hidden } = this.state;
 		if (hidden) {
 			return false;
 		}
 
 		let icon = false;
 
-		if (self.hasFeed()) {
+		if (this.hasFeed()) {
 			if (showIcon) {
 				icon = (
 					<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +99,11 @@ class AddToFavorites extends PureComponent {
 			}
 
 			return (
-				<button className={`btn ${classes}`} onClick={self.onRemoveClick}>
+				<button
+					className={`btn ${classes}`}
+					onClick={this.onRemoveClick}
+					type="button"
+				>
 					{icon}
 					{removeLabel}
 				</button>
@@ -126,7 +123,11 @@ class AddToFavorites extends PureComponent {
 		}
 
 		return (
-			<button className={`btn ${classes}`} onClick={self.onAddClick}>
+			<button
+				className={`btn ${classes}`}
+				onClick={this.onAddClick}
+				type="button"
+			>
 				{icon}
 				{addLabel}
 			</button>

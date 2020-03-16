@@ -79,7 +79,7 @@ class BackToTop extends PureComponent {
 		const start = window.scrollY || document.documentElement.scrollTop;
 		let currentTime = null;
 
-		const animateScroll = function(timestamp) {
+		const animateScroll = timestamp => {
 			if (!currentTime) {
 				currentTime = timestamp;
 			}
@@ -117,6 +117,7 @@ class BackToTop extends PureComponent {
 				className={classes}
 				aria-label="Back to top"
 				onClick={self.onBackToTop}
+				type="button"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="18">
 					<path fill="#FFF" d="M8 2.8l8 7.9-2.4 2.4-5.5-5.5-5.6 5.6L0 10.7z" />

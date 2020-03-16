@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -17,16 +17,14 @@ class SignIn extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-
-		self.state = {
+		this.state = {
 			email: '',
 			password: '',
 			message: '',
 		};
 
-		self.onFieldChange = self.handleFieldChange.bind(self);
-		self.onFormSubmit = self.handleFormSubmit.bind(self);
+		this.onFieldChange = this.handleFieldChange.bind(this);
+		this.onFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	componentDidMount() {
@@ -43,8 +41,7 @@ class SignIn extends PureComponent {
 	}
 
 	handleFormSubmit(e) {
-		const self = this;
-		const { email, password } = self.state;
+		const { email, password } = this.state;
 
 		e.preventDefault();
 
@@ -52,20 +49,19 @@ class SignIn extends PureComponent {
 			.signInWithEmailAndPassword(email, password)
 			.then(() => {
 				ensureUserHasCurrentChannel().then(() => {
-					self.props.close();
+					this.props.close();
 					window.location.reload();
 					document.body.innerHTML = '';
 				});
 			})
 			.catch(error =>
-				self.setState({ message: mapAuthErrorCodeToFriendlyMessage(error) }),
+				this.setState({ message: mapAuthErrorCodeToFriendlyMessage(error) }),
 			);
 	}
 
 	render() {
-		const self = this;
-		const { email, password, message } = self.state;
-		const { restore, signup } = self.props;
+		const { email, password, message } = this.state;
+		const { restore, signup } = this.props;
 		const { title } = window.bbgiconfig.publisher;
 
 		return (
@@ -86,7 +82,7 @@ class SignIn extends PureComponent {
 					<div className="option">
 						<form
 							className="modal-form -form-sign-in"
-							onSubmit={self.onFormSubmit}
+							onSubmit={this.onFormSubmit}
 						>
 							<div className="modal-form-group">
 								<label className="modal-form-label" htmlFor="user-email">
@@ -98,7 +94,7 @@ class SignIn extends PureComponent {
 									id="user-email"
 									name="email"
 									value={email}
-									onChange={self.onFieldChange}
+									onChange={this.onFieldChange}
 									placeholder="your@emailaddress.com"
 								/>
 							</div>
@@ -112,7 +108,7 @@ class SignIn extends PureComponent {
 									id="user-password"
 									name="password"
 									value={password}
-									onChange={self.onFieldChange}
+									onChange={this.onFieldChange}
 									placeholder="Your password"
 								/>
 							</div>

@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -6,13 +6,12 @@ class Contacts extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.state = { isOpen: false };
-		self.contactModalRef = React.createRef();
+		this.state = { isOpen: false };
+		this.contactModalRef = React.createRef();
 
-		self.onToggle = self.handleToggleClick.bind(self);
-		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind(self);
-		self.handleUserEventOutside = self.handleUserEventOutside.bind(self);
+		this.onToggle = this.handleToggleClick.bind(this);
+		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind(this);
+		this.handleUserEventOutside = this.handleUserEventOutside.bind(this);
 	}
 
 	componentDidMount() {
@@ -36,11 +35,10 @@ class Contacts extends PureComponent {
 	}
 
 	handleUserEventOutside(e) {
-		const self = this;
-		const { current: ref } = self.contactModalRef;
+		const { current: ref } = this.contactModalRef;
 
 		if (!ref || !ref.contains(e.target)) {
-			self.setState({ isOpen: false });
+			this.setState({ isOpen: false });
 		}
 	}
 
@@ -51,8 +49,7 @@ class Contacts extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { stream, colors } = self.props;
+		const { stream, colors } = this.props;
 		if (!stream) {
 			return false;
 		}
@@ -73,7 +70,7 @@ class Contacts extends PureComponent {
 		};
 
 		const { title, email, phone, text, address, picture } = stream;
-		const { isOpen } = self.state;
+		const { isOpen } = this.state;
 
 		let contacts = false;
 		if (isOpen) {
@@ -121,10 +118,10 @@ class Contacts extends PureComponent {
 
 		return (
 			<div
-				ref={self.contactModalRef}
+				ref={this.contactModalRef}
 				className={`controls-contact control-border ${isOpen ? ' -open' : ''}`}
 			>
-				<button onClick={self.onToggle}>
+				<button onClick={this.onToggle} type="button">
 					<svg
 						width="22"
 						height="22"
@@ -154,10 +151,17 @@ class Contacts extends PureComponent {
 }
 
 Contacts.propTypes = {
+	colors: PropTypes.shape({
+		'--global-theme-secondary': PropTypes.string,
+		'--brand-button-color': PropTypes.string,
+		'--brand-background-color': PropTypes.string,
+		'--brand-text-color': PropTypes.string,
+	}),
 	stream: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 Contacts.defaultProps = {
+	colors: {},
 	stream: false,
 };
 

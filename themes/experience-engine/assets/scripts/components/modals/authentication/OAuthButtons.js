@@ -7,10 +7,9 @@ class OAuthButtons extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.onTwitterLogin = self.handleTwitterLogin.bind(self);
-		self.onFacebookLogin = self.handleFacebookLogin.bind(self);
-		self.onGoogleLogin = self.handleGoogleLogin.bind(self);
+		this.onTwitterLogin = this.handleTwitterLogin.bind(this);
+		this.onFacebookLogin = this.handleFacebookLogin.bind(this);
+		this.onGoogleLogin = this.handleGoogleLogin.bind(this);
 	}
 
 	login(provider) {
@@ -32,15 +31,13 @@ class OAuthButtons extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-
 		return (
 			<div className={`oauth${this.props.horizontal ? ' -horizontal' : ''}`}>
 				<button
 					className="button auth-button -facebook"
 					type="button"
 					aria-label="Authenticate with Facebook"
-					onClick={self.onFacebookLogin}
+					onClick={this.onFacebookLogin}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +59,7 @@ class OAuthButtons extends PureComponent {
 					className="button auth-button -twitter"
 					type="button"
 					aria-label="Authenticate with Twitter"
-					onClick={self.onTwitterLogin}
+					onClick={this.onTwitterLogin}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +81,7 @@ class OAuthButtons extends PureComponent {
 					className="button auth-button -google"
 					type="button"
 					aria-label="Authenticate with Google"
-					onClick={self.onGoogleLogin}
+					onClick={this.onGoogleLogin}
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -109,6 +106,10 @@ class OAuthButtons extends PureComponent {
 
 OAuthButtons.propTypes = {
 	horizontal: PropTypes.bool,
+};
+
+OAuthButtons.defaultProps = {
+	horizontal: false,
 };
 
 export default OAuthButtons;

@@ -1,4 +1,4 @@
-import { call, takeLatest, select, put } from 'redux-saga/effects';
+import { call, takeLatest, select } from 'redux-saga/effects';
 import { livePlayerLocalStorage } from '../../utilities';
 import { ACTION_PLAY } from '../../actions/player';
 

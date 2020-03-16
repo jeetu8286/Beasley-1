@@ -5,7 +5,6 @@ class EmbedVideo extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
 		const fragment = document.createElement('div');
 		fragment.innerHTML = props.html;
 
@@ -14,18 +13,18 @@ class EmbedVideo extends PureComponent {
 		const iframe = fragment.querySelector('iframe');
 		if (iframe) {
 			const parts = iframe.src.split('?');
-			iframe.src = src = `${parts[0]}?${parts[1] ||
-				''}&rel=0&showinfo=0&autoplay=1`;
+			src = `${parts[0]}?${parts[1] || ''}&rel=0&showinfo=0&autoplay=1`;
+			iframe.src = src;
 			html = iframe.outerHTML;
 		}
 
-		self.state = {
+		this.state = {
 			show: false,
 			html,
 			src,
 		};
 
-		self.onPlayClick = self.handlePlayClick.bind(self);
+		this.onPlayClick = this.handlePlayClick.bind(this);
 	}
 
 	handlePlayClick(e) {
@@ -36,9 +35,8 @@ class EmbedVideo extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { show, html, src } = self.state;
-		const { thumbnail, title } = self.props;
+		const { show, html, src } = this.state;
+		const { thumbnail, title } = this.props;
 
 		if (show) {
 			return (
@@ -63,14 +61,14 @@ class EmbedVideo extends PureComponent {
 
 		return (
 			<div className="lazy-video">
-				<a href={src} aria-label={`Play ${title}`} onClick={self.onPlayClick}>
+				<a href={src} aria-label={`Play ${title}`} onClick={this.onPlayClick}>
 					<picture>
 						{webp}
 						<img src={thumbnail} alt={title} />
 					</picture>
 				</a>
 
-				<button onClick={self.onPlayClick} aria-hidden="true">
+				<button onClick={this.onPlayClick} aria-hidden="true" type="button">
 					<svg width="68" height="48" viewBox="0 0 68 48">
 						<path
 							className="shape"

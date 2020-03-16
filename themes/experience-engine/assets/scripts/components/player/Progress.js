@@ -27,8 +27,7 @@ class Progress extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.onSeek = self.handleSeekPosition.bind(self);
+		this.onSeek = this.handleSeekPosition.bind(this);
 	}
 
 	handleSeekPosition(e) {
@@ -43,8 +42,7 @@ class Progress extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { time, duration, className, colors } = self.props;
+		const { time, duration, className, colors } = this.props;
 
 		if (duration <= 0) {
 			return false;
@@ -59,7 +57,7 @@ class Progress extends PureComponent {
 						min="0"
 						max={duration}
 						value={time}
-						onChange={self.onSeek}
+						onChange={this.onSeek}
 					/>
 					<p
 						className="pre-bar"
@@ -76,7 +74,13 @@ Progress.propTypes = {
 	time: PropTypes.number.isRequired,
 	duration: PropTypes.number.isRequired,
 	seek: PropTypes.func.isRequired,
-	colors: PropTypes.object,
+	colors: PropTypes.shape({}),
+	className: PropTypes.string,
+};
+
+Progress.defaultProps = {
+	colors: {},
+	className: '',
 };
 
 const mapStateToProps = ({ player }) => ({

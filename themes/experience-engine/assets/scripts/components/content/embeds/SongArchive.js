@@ -21,8 +21,6 @@ class SongArchive extends PureComponent {
 
 		this.state = {
 			loading: true,
-			songs: [],
-			now: Math.floor(new Date().getTime() / 1000),
 		};
 	}
 
@@ -68,8 +66,6 @@ class SongArchive extends PureComponent {
 	}
 
 	componentDidMount() {
-		const self = this;
-
 		$.get(this.props.endpoint)
 			.then(result => {
 				const days = [
@@ -89,26 +85,24 @@ class SongArchive extends PureComponent {
 						.push(song),
 				);
 
-				self.setState({
+				this.setState({
 					loading: false,
 					days,
 					songCollectionByDay,
 				});
 			})
 			.fail(() => {
-				self.setState({ loading: false, days: [], songCollectionByDay: [] });
+				this.setState({ loading: false, days: [], songCollectionByDay: [] });
 			});
 	}
 }
 
 SongArchive.propTypes = {
-	callsign: PropTypes.string,
 	endpoint: PropTypes.string,
 	description: PropTypes.string,
 };
 
 SongArchive.defaultProps = {
-	callsign: '',
 	endpoint: '',
 	description: '',
 };

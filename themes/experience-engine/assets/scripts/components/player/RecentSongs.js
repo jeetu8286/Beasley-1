@@ -1,18 +1,18 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class RecentSongs extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.state = { isOpen: false };
-		self.recentSongsModalRef = React.createRef();
+		this.state = { isOpen: false };
+		this.recentSongsModalRef = React.createRef();
 
-		self.onToggle = self.handleToggleClick.bind(self);
-		self.handleEscapeKeyDown = self.handleEscapeKeyDown.bind(self);
-		self.handleUserEventOutside = self.handleUserEventOutside.bind(self);
-		self.handleViewMoreClick = self.handleViewMoreClick.bind(self);
+		this.onToggle = this.handleToggleClick.bind(this);
+		this.handleEscapeKeyDown = this.handleEscapeKeyDown.bind(this);
+		this.handleUserEventOutside = this.handleUserEventOutside.bind(this);
+		this.handleViewMoreClick = this.handleViewMoreClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -36,11 +36,10 @@ class RecentSongs extends PureComponent {
 	}
 
 	handleUserEventOutside(e) {
-		const self = this;
-		const { current: ref } = self.recentSongsModalRef;
+		const { current: ref } = this.recentSongsModalRef;
 
 		if (!ref || !ref.contains(e.target)) {
-			self.setState({ isOpen: false });
+			this.setState({ isOpen: false });
 		}
 	}
 
@@ -55,9 +54,8 @@ class RecentSongs extends PureComponent {
 	}
 
 	render() {
-		const self = this;
-		const { isOpen } = self.state;
-		const { songs, colors } = self.props;
+		const { isOpen } = this.state;
+		const { songs, colors } = this.props;
 
 		if (!Array.isArray(songs) || !songs.length) {
 			return false;
@@ -112,10 +110,10 @@ class RecentSongs extends PureComponent {
 
 		return (
 			<div
-				ref={self.recentSongsModalRef}
+				ref={this.recentSongsModalRef}
 				className={`controls-recent${isOpen ? ' -open' : ''}`}
 			>
-				<button onClick={self.onToggle}>
+				<button onClick={this.onToggle} type="button">
 					<svg
 						width="29"
 						height="6"
@@ -207,6 +205,19 @@ class RecentSongs extends PureComponent {
 	}
 }
 
+RecentSongs.propTypes = {
+	colors: PropTypes.shape({
+		'--global-theme-secondary': PropTypes.string,
+		'--brand-button-color': PropTypes.string,
+		'--brand-background-color': PropTypes.string,
+		'--brand-text-color': PropTypes.string,
+	}),
+	songs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
+
+RecentSongs.defaultProps = {
+	colors: {},
+};
 function mapStateToProps({ player }) {
 	return {
 		songs: player.songs,

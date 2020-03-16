@@ -121,7 +121,14 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 
 				<div className="archive-tiles -list">
 					{relatedPosts.filter(deduplicate).map(relatedPost => (
-						<RelatedPost key={relatedPost.id} {...relatedPost} />
+						<RelatedPost
+							key={relatedPost.id}
+							id={relatedPost.id}
+							url={relatedPost.url}
+							title={relatedPost.title}
+							primary_image={relatedPost.primary_image}
+							published={relatedPost.published}
+						/>
 					))}
 				</div>
 			</div>
@@ -135,7 +142,6 @@ RelatedPosts.propTypes = {
 	posttype: PropTypes.string,
 	categories: PropTypes.string,
 	posttitle: PropTypes.string,
-	postid: PropTypes.number,
 	url: PropTypes.string,
 };
 
@@ -143,7 +149,6 @@ RelatedPosts.defaultProps = {
 	posttype: 'all',
 	categories: '',
 	posttitle: '',
-	postid: 0,
 	url: '/',
 };
 

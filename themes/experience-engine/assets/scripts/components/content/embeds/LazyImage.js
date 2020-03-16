@@ -66,7 +66,9 @@ class LazyImage extends PureComponent {
 			quality = 95;
 		}
 
-		let { src, width, height } = this.props;
+		let { src } = this.props;
+		const { width, height } = this.props;
+
 		const { containerWidth, containerHeight } = this.getDimensions();
 
 		// Kludge: Temporary fix for incorrectly cached image URLs in EE API

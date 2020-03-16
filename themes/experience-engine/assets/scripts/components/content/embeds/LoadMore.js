@@ -9,27 +9,24 @@ class LoadMore extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.state = { loading: false };
-		self.onLoadClick = self.handleLoadClick.bind(self);
+		this.state = { loading: false };
+		this.onLoadClick = this.handleLoadClick.bind(this);
 	}
 
 	handleLoadClick() {
-		const self = this;
-		const { loading } = self.state;
-		const { link, placeholder, load } = self.props;
+		const { loading } = this.state;
+		const { link, placeholder, load } = this.props;
 
 		// prevent double clicking
 		if (!loading) {
-			self.setState({ loading: true });
+			this.setState({ loading: true });
 			load(link, placeholder);
 		}
 	}
 
 	render() {
-		const self = this;
-		const { loading } = self.state;
-		const { partialKeys, placeholder } = self.props;
+		const { loading } = this.state;
+		const { partialKeys, placeholder } = this.props;
 		if (partialKeys.indexOf(placeholder) > -1) {
 			return false;
 		}
@@ -38,7 +35,7 @@ class LoadMore extends PureComponent {
 
 		return (
 			<div className="load-more-wrapper">
-				<button className="load-more" onClick={self.onLoadClick}>
+				<button className="load-more" onClick={this.onLoadClick} type="button">
 					{label}
 				</button>
 			</div>

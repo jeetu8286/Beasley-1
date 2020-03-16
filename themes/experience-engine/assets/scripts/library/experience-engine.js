@@ -1,5 +1,14 @@
 import { firebaseAuth } from './firebase';
 
+function __api(strings, ...params) {
+	let url = window.bbgiconfig.eeapi;
+	strings.forEach((string, i) => {
+		url += string + encodeURIComponent(params[i] || '');
+	});
+
+	return url;
+}
+
 function getChannel() {
 	const { publisher } = window.bbgiconfig;
 	const { id: channel } = publisher || {};
@@ -21,13 +30,10 @@ function getToken(token = null) {
 		.catch(error => console.error(error)); // eslint-disable-line no-console
 }
 
-function __api(strings, ...params) {
-	let url = window.bbgiconfig.eeapi;
-	strings.forEach((string, i) => {
-		url += string + encodeURIComponent(params[i] || '');
-	});
-
-	return url;
+export function getUser() {
+	return getToken()
+		.then(token => fetch(__api`user?authorization=${token}`))
+		.then(response => response.json());
 }
 
 export function saveUser(email, zipcode, gender, dateofbirth) {
@@ -92,6 +98,16 @@ export function userHasCurrentChannel() {
 }
 
 /**
+ * Adds the current publisher channel to the current user
+ *
+ * @return Promise
+ */
+export function addCurrentChannelToUser() {
+	const channel = getChannel();
+	return addChannelToUser(channel);
+}
+
+/**
  * Checks if the current user is registered with the current channel. If
  * not, adds the channel to the user.
  *
@@ -122,22 +138,6 @@ export function addChannelToUser(channel) {
 			method: 'PUT',
 		});
 	});
-}
-
-/**
- * Adds the current publisher channel to the current user
- *
- * @return Promise
- */
-export function addCurrentChannelToUser() {
-	const channel = getChannel();
-	return addChannelToUser(channel);
-}
-
-export function getUser() {
-	return getToken()
-		.then(token => fetch(__api`user?authorization=${token}`))
-		.then(response => response.json());
 }
 
 export function discovery(filters) {
@@ -218,14 +218,14 @@ export function validateDate(dateString) {
 	const day = parseInt(parts[1], 10);
 
 	// Check the ranges of month and year
-	if (year < 1000 || year > 3000 || month == 0 || month > 12) {
+	if (year < 1000 || year > 3000 || month === 0 || month > 12) {
 		return false;
 	}
 
 	const monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 	// Adjust for leap years
-	if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+	if (year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0))
 		monthLength[1] = 29;
 
 	// Check the range of the day
@@ -241,7 +241,7 @@ export function validateDate(dateString) {
  * @return bool
  */
 export function validateEmail(email) {
-	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(String(email).toLowerCase());
 }
 

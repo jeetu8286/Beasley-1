@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 
 class Close extends PureComponent {
 	constructor(props) {

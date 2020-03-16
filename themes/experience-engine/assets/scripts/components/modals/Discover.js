@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import trapHOC from '@10up/react-focus-trap-hoc';
@@ -110,12 +110,12 @@ class Discover extends Component {
 	 * update
 	 */
 	didLoadMoreClick() {
-		this.setState({
-			pageNum: this.state.pageNum + 1,
-			pendingPageNum: this.state.pageNum + 1,
+		this.setState(({ pageNum }) => ({
+			pageNum: pageNum + 1,
+			pendingPageNum: pageNum + 1,
 			pendingScrollX: window.scrollX,
 			pendingScrollY: window.scrollY,
-		});
+		}));
 
 		return false;
 	}
@@ -135,6 +135,7 @@ class Discover extends Component {
 			if (el) {
 				window.scrollTo(this.state.pendingScrollX, this.state.pendingScrollY);
 
+				// eslint-disable-next-line react/no-did-update-set-state
 				this.setState({
 					pendingPageNum: 0,
 					pendingScrollX: 0,

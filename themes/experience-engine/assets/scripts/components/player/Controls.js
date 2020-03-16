@@ -74,7 +74,7 @@ Controls.propTypes = {
 	play: PropTypes.func,
 	pause: PropTypes.func,
 	resume: PropTypes.func,
-	colors: PropTypes.object,
+	colors: PropTypes.shape({}),
 	isIos: PropTypes.bool,
 	progressClass: PropTypes.string,
 };
@@ -84,6 +84,9 @@ Controls.defaultProps = {
 	play: () => {},
 	pause: () => {},
 	resume: () => {},
+	colors: {},
+	isIos: false,
+	progressClass: '',
 };
 
 export default Controls;

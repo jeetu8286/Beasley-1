@@ -21,4 +21,9 @@ Notification.propTypes = {
 	noticeClass: PropTypes.string,
 };
 
+Notification.defaultProps = {
+	message: '',
+	noticeClass: '',
+};
+
 export default Notification;

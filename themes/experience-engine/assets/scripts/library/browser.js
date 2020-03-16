@@ -27,11 +27,12 @@ export const isWebKit = () => {
 export const isIE11 = () => {
 	let ie = 0;
 	try {
+		// eslint-disable-next-line
 		ie = navigator.userAgent.match(/(MSIE |Trident.*rv[ :])([0-9]+)/)[2];
 	} catch (e) {
 		// do nothing
 	}
-	return ie == 11;
+	return Number(ie) === 11;
 };
 
 export const isWindowsBrowser = () => {

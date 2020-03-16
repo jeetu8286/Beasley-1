@@ -13,10 +13,9 @@ class Feed extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		const self = this;
-		self.handleAdd = self.handleAdd.bind(self);
-		self.handleRemove = self.handleRemove.bind(self);
-		self.hideNotice = self.hideNotice.bind(self);
+		this.handleAdd = this.handleAdd.bind(this);
+		this.handleRemove = this.handleRemove.bind(this);
+		this.hideNotice = this.hideNotice.bind(this);
 	}
 
 	hideNotice() {
@@ -29,38 +28,33 @@ class Feed extends PureComponent {
 	}
 
 	handleAdd() {
-		const self = this;
-		const { id, title } = self.props;
+		const { id, title } = this.props;
 
-		self.setState({ loading: true });
-		self.props.onAdd(id);
+		this.props.onAdd(id);
 
-		self.props.updateNotice({
+		this.props.updateNotice({
 			message: `<span class="title">${title}</span> has been added to your homepage`,
 			isOpen: true,
 		});
 
-		self.hideNotice();
+		this.hideNotice();
 	}
 
 	handleRemove() {
-		const self = this;
-		const { id, title } = self.props;
+		const { id, title } = this.props;
 
-		self.setState({ loading: true });
-		self.props.onRemove(id);
+		this.props.onRemove(id);
 
-		self.props.updateNotice({
+		this.props.updateNotice({
 			message: `<span class="title">${title}</span> has been removed from your homepage`,
 			isOpen: true,
 		});
 
-		self.hideNotice();
+		this.hideNotice();
 	}
 
 	render() {
-		const self = this;
-		const { id, title, picture, type, added, pageNum } = self.props;
+		const { id, title, picture, type, added, pageNum } = this.props;
 
 		const placholder = `${id}-thumbnail`;
 		const image = (picture.original || picture.large || {}).url;
@@ -78,13 +72,18 @@ class Feed extends PureComponent {
 
 		const button = added ? (
 			<button
-				onClick={self.handleRemove}
+				onClick={this.handleRemove}
 				aria-label={`Remove ${title} from your feed`}
+				type="button"
 			>
 				<span>&#45;</span>
 			</button>
 		) : (
-			<button onClick={self.handleAdd} aria-label={`Add ${title} to your feed`}>
+			<button
+				onClick={this.handleAdd}
+				aria-label={`Add ${title} to your feed`}
+				type="button"
+			>
 				<span>&#43;</span>
 			</button>
 		);
@@ -120,18 +119,24 @@ class Feed extends PureComponent {
 Feed.propTypes = {
 	id: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
-	picture: PropTypes.shape({}),
+	picture: PropTypes.shape({
+		original: PropTypes.shape({}),
+		large: PropTypes.shape({}),
+	}),
 	type: PropTypes.string.isRequired,
 	added: PropTypes.bool.isRequired,
 	onAdd: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
 	updateNotice: PropTypes.func.isRequired,
-	notice: PropTypes.object.isRequired,
+	notice: PropTypes.shape({
+		message: PropTypes.string,
+	}).isRequired,
 	pageNum: PropTypes.number,
 };
 
 Feed.defaultProps = {
 	picture: {},
+	pageNum: 1,
 };
 
 function mapStateToProps({ screen }) {
