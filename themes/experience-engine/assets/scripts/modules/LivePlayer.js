@@ -3,20 +3,20 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { isIOS } from '../library/browser';
-import { isAudioAdOnly } from '../library/strings';
+import { isIOS, isAudioAdOnly } from '../library';
 
-import Stations from '../components/player/Stations';
-import Controls from '../components/player/Controls';
-import Info from '../components/player/Info';
-import Volume from '../components/player/Volume';
-import Rewind from '../components/player/Rewind';
-
-import Progress from '../components/player/Progress';
-import RecentSongs from '../components/player/RecentSongs';
-import Offline from '../components/player/Offline';
-import Contacts from '../components/player/Contacts';
-import Sponsor from '../components/player/Sponsor';
+import {
+	Stations,
+	Controls,
+	Info,
+	Volume,
+	Rewind,
+	Progress,
+	RecentSongs,
+	Offline,
+	Contacts,
+	Sponsor,
+} from '../components/player';
 
 import ErrorBoundary from '../components/ErrorBoundary';
 
@@ -26,9 +26,8 @@ class LivePlayer extends Component {
 	constructor(props) {
 		super(props);
 
-		this.container = document.getElementById('live-player');
 		this.state = { online: window.navigator.onLine };
-
+		this.container = document.getElementById('live-player');
 		this.onOnline = this.handleOnline.bind(this);
 		this.onOffline = this.handleOffline.bind(this);
 		this.handlePlay = this.handlePlay.bind(this);
@@ -39,7 +38,6 @@ class LivePlayer extends Component {
 		// parsed by browser, and only then start initializing the player
 		const tdinterval = setInterval(() => {
 			if (window.TDSdk) {
-				// this.props.initPlayer( tdmodules );
 				this.setUpPlayer();
 				clearInterval(tdinterval);
 			}
@@ -108,7 +106,7 @@ class LivePlayer extends Component {
 
 	render() {
 		if (!this.container) {
-			return false;
+			return null;
 		}
 
 		const { online } = this.state;

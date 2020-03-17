@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Swiper from 'swiper';
 import md5 from 'md5';
 
-import { firebaseAuth } from '../library/firebase';
 import ContentBlock from '../components/content/ContentBlock';
 import {
 	initPage,
@@ -12,13 +11,12 @@ import {
 	fetchPage,
 	fetchFeedsContent,
 } from '../redux/actions/screen';
-import { untrailingslashit } from '../library/strings';
-import slugify from '../library/slugify';
+import { firebaseAuth, untrailingslashit, slugify } from '../library';
 
 const specialPages = ['/wp-admin/', '/wp-signup.php', '/wp-login.php'];
 
 /**
- * The ContentDispatcher component is responsible for catching click on intenral links
+ * The ContentDispatcher component is responsible for catching click on internal links
  * and trigger the page loading logic.
  */
 class ContentDispatcher extends Component {
@@ -186,7 +184,7 @@ class ContentDispatcher extends Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// load user homepage if token is not empty and the next page is a homepage
+		// load user homepage if token is not empty and the next page is the homepage
 		// otherwise just load the next page
 		if (
 			untrailingslashit(origin) === untrailingslashit(link.split(/[?#]/)[0]) &&
@@ -195,9 +193,11 @@ class ContentDispatcher extends Component {
 			firebaseAuth.currentUser
 				.getIdToken()
 				.then(token => {
+					// we don't want to supressHistory here as we want to update the URL to the homepage.
 					fetchFeedsContent(token, link, { supressHistory: false });
 				})
 				.catch(() => {
+					// fallback to loading regular homepage if fetchFeedsContent fails.
 					fetchPage(link);
 				});
 		} else {
