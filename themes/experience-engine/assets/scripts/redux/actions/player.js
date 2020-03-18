@@ -281,13 +281,11 @@ export function initTdPlayer(modules) {
 		window.tdPlayer.addEventListener('custom-cue-point', ({ data }) =>
 			dispatch(cuePoint(data.cuePoint || {})),
 		);
-		window.tdPlayer.addEventListener(
-			'ad-break-cue-point',
-			({ data }) => dispatch(cuePoint(data.cuePoint || {})),
+		window.tdPlayer.addEventListener('ad-break-cue-point', ({ data }) =>
+			dispatch(cuePoint(data.cuePoint || {})),
 		);
-		window.tdPlayer.addEventListener(
-			'ad-break-cue-point-complete',
-			() => dispatch(cuePoint()),
+		window.tdPlayer.addEventListener('ad-break-cue-point-complete', () =>
+			dispatch(cuePoint()),
 		);
 		window.tdPlayer.addEventListener(
 			'ad-break-synced-element',
@@ -299,12 +297,8 @@ export function initTdPlayer(modules) {
 		window.tdPlayer.addEventListener('ad-playback-complete', () =>
 			dispatch(adPlaybackStop(ACTION_AD_PLAYBACK_COMPLETE)),
 		); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE )
-		window.tdPlayer.addEventListener('stream-start', () =>
-			dispatch(start()),
-		);
-		window.tdPlayer.addEventListener('stream-stop', () =>
-			dispatch(end()),
-		);
+		window.tdPlayer.addEventListener('stream-start', () => dispatch(start()));
+		window.tdPlayer.addEventListener('stream-stop', () => dispatch(end()));
 		window.tdPlayer.addEventListener('ad-playback-error', () => {
 			/*
 			 * the beforeStreamStart function may be injected onto the window
@@ -346,9 +340,7 @@ function setUpAudioPlayer(dispatch, src) {
 	window.audioPlayer.addEventListener('ended', () => {
 		dispatch(statusUpdate(STATUSES.LIVE_STOP));
 	});
-	window.audioPlayer.addEventListener('play', () =>
-		dispatch(start()),
-	);
+	window.audioPlayer.addEventListener('play', () => dispatch(start()));
 	window.audioPlayer.addEventListener('pause', () => dispatch(end()));
 	window.audioPlayer.addEventListener('abort', () => dispatch(end()));
 	window.audioPlayer.addEventListener('loadedmetadata', () =>
@@ -456,9 +448,8 @@ const play = (
 			dispatch(statusUpdate(STATUSES.LIVE_STOP)),
 		);
 		window.omnyPlayer.on('error', () => errorCatcher('Omny Error'));
-		window.omnyPlayer.on(
-			'timeupdate',
-			({ seconds: time, duration }) => dispatch(timeChange(time, duration)),
+		window.omnyPlayer.on('timeupdate', ({ seconds: time, duration }) =>
+			dispatch(timeChange(time, duration)),
 		);
 	}
 };
