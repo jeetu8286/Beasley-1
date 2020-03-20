@@ -40,11 +40,9 @@ export const STATUSES = {
 /**
  * Holds reference to all players
  */
-const PLAYERS_REGISTRY = {
-	tdPlayer: null,
-	audioPlayer: null,
-	omnyPlayer: null,
-};
+window.tdplayer = null;
+window.audioplayer = null;
+window.omnyplayer = null;
 
 /**
  * playbackStop action creator
@@ -262,52 +260,46 @@ export function initTdPlayer(modules) {
 			dispatch(adBreakSynced());
 		}
 
-		PLAYERS_REGISTRY.tdPlayer = new window.TDSdk({
+		window.tdplayer = new window.TDSdk({
 			configurationError: errorCatcher('Configuration Error'),
 			coreModules: modules,
 			moduleError: errorCatcher('Module Error'),
 		});
 
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('stream-status', ({ data }) =>
+		window.tdplayer.addEventListener('stream-status', ({ data }) =>
 			dispatch(statusUpdate(data.code)),
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('list-loaded', ({ data }) =>
+		window.tdplayer.addEventListener('list-loaded', ({ data }) =>
 			dispatch(nowPlayingLoaded(data)),
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('track-cue-point', ({ data }) =>
+		window.tdplayer.addEventListener('track-cue-point', ({ data }) =>
 			dispatch(cuePoint(data.cuePoint || {})),
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('speech-cue-point', ({ data }) =>
+		window.tdplayer.addEventListener('speech-cue-point', ({ data }) =>
 			dispatch(cuePoint(data.cuePoint || {})),
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('custom-cue-point', ({ data }) =>
+		window.tdplayer.addEventListener('custom-cue-point', ({ data }) =>
 			dispatch(cuePoint(data.cuePoint || {})),
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener(
-			'ad-break-cue-point',
-			({ data }) => dispatch(cuePoint(data.cuePoint || {})),
+		window.tdplayer.addEventListener('ad-break-cue-point', ({ data }) =>
+			dispatch(cuePoint(data.cuePoint || {})),
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener(
-			'ad-break-cue-point-complete',
-			() => dispatch(cuePoint()),
+		window.tdplayer.addEventListener('ad-break-cue-point-complete', () =>
+			dispatch(cuePoint()),
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener(
+		window.tdplayer.addEventListener(
 			'ad-break-synced-element',
 			dispatchSyncedStart,
 		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('ad-playback-start', () =>
+		window.tdplayer.addEventListener('ad-playback-start', () =>
 			dispatch(adPlaybackStart()),
 		); // used to dispatchPlaybackStart
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('ad-playback-complete', () =>
+		window.tdplayer.addEventListener('ad-playback-complete', () =>
 			dispatch(adPlaybackStop(ACTION_AD_PLAYBACK_COMPLETE)),
 		); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_COMPLETE )
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('stream-start', () =>
-			dispatch(start()),
-		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('stream-stop', () =>
-			dispatch(end()),
-		);
-		PLAYERS_REGISTRY.tdPlayer.addEventListener('ad-playback-error', () => {
+		window.tdplayer.addEventListener('stream-start', () => dispatch(start()));
+		window.tdplayer.addEventListener('stream-stop', () => dispatch(end()));
+		window.tdplayer.addEventListener('ad-playback-error', () => {
 			/*
 			 * the beforeStreamStart function may be injected onto the window
 			 * object from google tag manager. This function provides a callback
@@ -334,30 +326,28 @@ export function initTdPlayer(modules) {
  * @param {*} src The audio source
  */
 function setUpAudioPlayer(dispatch, src) {
-	PLAYERS_REGISTRY.audioPlayer = new Audio(src);
+	window.audioplayer = new Audio(src);
 
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('loadstart', () =>
+	window.audioplayer.addEventListener('loadstart', () =>
 		dispatch(statusUpdate(STATUSES.LIVE_BUFFERING)),
 	);
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('pause', () =>
+	window.audioplayer.addEventListener('pause', () =>
 		dispatch(statusUpdate(STATUSES.LIVE_PAUSE)),
 	);
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('playing', () =>
+	window.audioplayer.addEventListener('playing', () =>
 		dispatch(statusUpdate(STATUSES.LIVE_PLAYING)),
 	);
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('ended', () => {
+	window.audioplayer.addEventListener('ended', () => {
 		dispatch(statusUpdate(STATUSES.LIVE_STOP));
 	});
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('play', () =>
-		dispatch(start()),
+	window.audioplayer.addEventListener('play', () => dispatch(start()));
+	window.audioplayer.addEventListener('pause', () => dispatch(end()));
+	window.audioplayer.addEventListener('abort', () => dispatch(end()));
+	window.audioplayer.addEventListener('loadedmetadata', () =>
+		dispatch(durationChange(window.audioplayer.duration)),
 	);
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('pause', () => dispatch(end()));
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('abort', () => dispatch(end()));
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('loadedmetadata', () =>
-		dispatch(durationChange(PLAYERS_REGISTRY.audioPlayer.duration)),
-	);
-	PLAYERS_REGISTRY.audioPlayer.addEventListener('timeupdate', () =>
-		dispatch(timeChange(PLAYERS_REGISTRY.audioPlayer.currentTime)),
+	window.audioplayer.addEventListener('timeupdate', () =>
+		dispatch(timeChange(window.audioplayer.currentTime)),
 	);
 }
 
@@ -377,7 +367,7 @@ function setUpOmnyPlayer(source) {
 	iframe.src = source;
 	document.body.appendChild(iframe);
 
-	PLAYERS_REGISTRY.omnyPlayer = new playerjs.Player(iframe);
+	window.omnyplayer = new playerjs.Player(iframe);
 }
 
 /**
@@ -405,7 +395,7 @@ const play = (
 		dispatch(timeChange(0));
 		dispatch(durationChange(0));
 		// set the appropriate player.
-		dispatch(setPlayer(PLAYERS_REGISTRY.tdPlayer, 'tdplayer'));
+		dispatch(setPlayer(window.tdplayer, 'tdplayer'));
 		// play.
 		dispatch({
 			type: ACTION_PLAY,
@@ -414,12 +404,12 @@ const play = (
 			},
 		});
 	} else if (playerType === 'mp3player') {
-		if (PLAYERS_REGISTRY.audioPlayer === null) {
+		if (window.audioplayer === null) {
 			setUpAudioPlayer(dispatch, source);
 		} else {
-			PLAYERS_REGISTRY.audioPlayer.src = source;
+			window.audioplayer.src = source;
 		}
-		dispatch(setPlayer(PLAYERS_REGISTRY.audioPlayer, 'mp3player'));
+		dispatch(setPlayer(window.audioplayer, 'mp3player'));
 		dispatch({
 			type: ACTION_PLAY,
 			payload: {
@@ -429,14 +419,14 @@ const play = (
 		});
 		dispatch(cuePoint({ type: 'track', cueTitle, artistName }));
 	} else if (playerType === 'omnyplayer') {
-		if (PLAYERS_REGISTRY.audioPlayer === null) {
+		if (window.audioplayer === null) {
 			setUpOmnyPlayer();
 		}
 
-		dispatch(setPlayer(PLAYERS_REGISTRY.omnyPlayer, 'omnyplayer'));
+		dispatch(setPlayer(window.omnyplayer, 'omnyplayer'));
 
 		// all events are removed when stopping the omny player so we need to recreate them.
-		PLAYERS_REGISTRY.omnyPlayer.on('ready', () => {
+		window.omnyplayer.on('ready', () => {
 			dispatch({
 				type: ACTION_PLAY,
 				payload: {
@@ -448,19 +438,18 @@ const play = (
 			dispatch(statusUpdate(STATUSES.LIVE_BUFFERING));
 		});
 
-		PLAYERS_REGISTRY.omnyPlayer.on('play', () =>
+		window.omnyplayer.on('play', () =>
 			dispatch(statusUpdate(STATUSES.LIVE_PLAYING)),
 		);
-		PLAYERS_REGISTRY.omnyPlayer.on('pause', () =>
+		window.omnyplayer.on('pause', () =>
 			dispatch(statusUpdate(STATUSES.LIVE_PAUSE)),
 		);
-		PLAYERS_REGISTRY.omnyPlayer.on('ended', () =>
+		window.omnyplayer.on('ended', () =>
 			dispatch(statusUpdate(STATUSES.LIVE_STOP)),
 		);
-		PLAYERS_REGISTRY.omnyPlayer.on('error', () => errorCatcher('Omny Error'));
-		PLAYERS_REGISTRY.omnyPlayer.on(
-			'timeupdate',
-			({ seconds: time, duration }) => dispatch(timeChange(time, duration)),
+		window.omnyplayer.on('error', () => errorCatcher('Omny Error'));
+		window.omnyplayer.on('timeupdate', ({ seconds: time, duration }) =>
+			dispatch(timeChange(time, duration)),
 		);
 	}
 };
