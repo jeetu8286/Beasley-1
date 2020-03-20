@@ -99,6 +99,10 @@ class LivePlayer extends Component {
 		this.setState({ online: false });
 	}
 
+	/**
+	 * Handle cliks on the player play button. Those cliks will start the livestreaming
+	 * if there isn't anything playing.
+	 */
 	handlePlay() {
 		const { station, playStation } = this.props;
 		playStation(station);
@@ -155,66 +159,64 @@ class LivePlayer extends Component {
 
 		const children = (
 			<ErrorBoundary>
-				<>
-					{notification}
+				{notification}
 
-					<div
-						className={`preroll-wrapper${
-							adPlayback && !isAudioAdOnly({ player, playerType })
-								? ' -active'
-								: ''
-						}`}
-					>
-						<div className="preroll-container">
-							<div id="td_container" className="preroll-player" />
-							<div className="preroll-notification">
-								Live stream will be available after this brief ad from our
-								sponsors
-							</div>
+				<div
+					className={`preroll-wrapper${
+						adPlayback && !isAudioAdOnly({ player, playerType })
+							? ' -active'
+							: ''
+					}`}
+				>
+					<div className="preroll-container">
+						<div id="td_container" className="preroll-player" />
+						<div className="preroll-notification">
+							Live stream will be available after this brief ad from our
+							sponsors
 						</div>
 					</div>
+				</div>
 
-					<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
+				<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
 
-					<Progress className="-mobile" colors={textStyle} />
+				<Progress className="-mobile" colors={textStyle} />
 
-					<div className="controls" style={controlsStyle}>
-						<div className="control-section">
-							<Info colors={textStyle} />
-						</div>
-						<div className="control-section -centered">
-							<div className={`controls-wrapper -centered ${progressClass}`}>
-								<RecentSongs colors={customColors} />
-
-								<Controls
-									status={status}
-									play={this.handlePlay}
-									pause={pause}
-									resume={resume}
-									colors={buttonsBackgroundStyle}
-									isIos={isIos}
-									progressClass={progressClass}
-								/>
-
-								<Volume colors={buttonsFillStyle} />
-							</div>
-
-							<Progress className="-desktop" colors={textStyle} />
-						</div>
-						<div className="control-section">
-							<Rewind progressClass={progressClass} />
-							<Sponsor className="controls-sponsor" minWidth={1060} />
-							<Stations colors={customColors} />
-							<Contacts colors={customColors} />
-						</div>
+				<div className="controls" style={controlsStyle}>
+					<div className="control-section">
+						<Info colors={textStyle} />
 					</div>
+					<div className="control-section -centered">
+						<div className={`controls-wrapper -centered ${progressClass}`}>
+							<RecentSongs colors={customColors} />
 
-					<Sponsor
-						className="sponsor-mobile"
-						maxWidth="1059"
-						style={controlsStyle}
-					/>
-				</>
+							<Controls
+								status={status}
+								play={this.handlePlay}
+								pause={pause}
+								resume={resume}
+								colors={buttonsBackgroundStyle}
+								isIos={isIos}
+								progressClass={progressClass}
+							/>
+
+							<Volume colors={buttonsFillStyle} />
+						</div>
+
+						<Progress className="-desktop" colors={textStyle} />
+					</div>
+					<div className="control-section">
+						<Rewind progressClass={progressClass} />
+						<Sponsor className="controls-sponsor" minWidth={1060} />
+						<Stations colors={customColors} />
+						<Contacts colors={customColors} />
+					</div>
+				</div>
+
+				<Sponsor
+					className="sponsor-mobile"
+					maxWidth="1059"
+					style={controlsStyle}
+				/>
 			</ErrorBoundary>
 		);
 
