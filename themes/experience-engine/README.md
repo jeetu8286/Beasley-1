@@ -68,7 +68,7 @@ git commit -m "New feature" --no-verify
 
 ## The Hybrid approach
 
-The Experience Engine theme uses an unique "hybrid" approach making use of [React Portals](https://reactjs.org/docs/portals.html). The tl;dr is that WordPress is responsible for bootstraping and generating each page, each page may contains a couple of "embeds" or "placeholders" elements that are read and parsed by React and re-injected in the page through React Portals.
+The Experience Engine theme uses a "hybrid" approach making use of [React Portals](https://reactjs.org/docs/portals.html). The tl;dr is that WordPress is responsible for bootstraping and generating each page, each page may contains a couple of "embeds" or "placeholders" elements that are read and parsed by React and re-injected in the page through React Portals. The purpose of this 'hybrid' approach is to be able to reuse legacy site features without needing to completely rewrite all functionality.
 
 ### Embeds/React Components
 
