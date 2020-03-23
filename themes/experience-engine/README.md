@@ -1,6 +1,6 @@
 # Experience Engine Theme
 
-The experience engine theme is a hybrid WordPress/React theme that power most of the beasley sites.
+The Experience Engine theme is a hybrid WordPress/React theme that powers the majority of the Beasley sites. Legacy themes are still used on an as-needed basis, use the Experience Engine theme as the default for new sites.
 
 ## Building the theme
 
