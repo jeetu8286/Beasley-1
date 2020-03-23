@@ -127,7 +127,7 @@ Take a look at the [RelatedPosts.js](assets/scripts/components/content/embeds/Re
 All the embeds must have a corresponding React component, and they live inside the `assets/scripts/component/content/embeds` directory.
 
 ### Processing embeds
-The embeds are parsed by React and mapped to the corresponding React components by the [parseHtml](assets/scripts/library/html-parser.js) function. The parseHtml function parses the full html of the page and calls `getStateFromContent` which makes many calls to `processEmbeds`. Here's an example of how that works:
+Embeds are parsed by React and mapped to the corresponding React components by the [parseHtml](assets/scripts/library/html-parser.js) function. New embed services need to be added to this logic to be rendered as expected. The parseHtml function parses the full html of the page and calls `getStateFromContent` which makes many calls to `processEmbeds`. Here's an example of how that works:
 
 ```js
 export function getStateFromContent(container) {
