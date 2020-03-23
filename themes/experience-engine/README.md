@@ -427,8 +427,6 @@ Similarly to `fetchPage` it dispatches and trigger the `yieldLoadedPage` saga.
 
 Go to the [Redux docs](assets/scripts/redux/README.md) for Redux specific documentation.
 
-# Player
-
 # General Guidelines
 
 - Use React Hooks and functional components instead of classes. Several components were already converted to functional components with hooks. We recommend any new component to be created this way. E.g:
