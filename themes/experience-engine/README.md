@@ -60,7 +60,7 @@ npm run format:js
 
 Husky and lint-staged is also set up to run `eslint` on every commit, which means all code must pass the eslint config before being pushed to the repo.
 
-It's possible to bypass these checks but check with the tech lead before doing so.
+It's possible to bypass these checks but it's discouraged and highly recommended to check with the project technical lead before doing so.
 
 ```
 git commit -m "New feature" --no-verify
