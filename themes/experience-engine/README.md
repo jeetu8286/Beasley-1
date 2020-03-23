@@ -380,7 +380,7 @@ export const fetchPage = (url, options = {}) => async dispatch => {
 Note that `fetchPage` dispatches the response (parseHtml) to `ACTION_LOADED_PAGE` which in turns triggers a saga called [yieldLoadedPage.js](assets/scripts/redux/sagas/screen/yieldLoadedPage.js) which does several side effects operations.
 
 ### fetchFeedsContent
-The `fetchFeedsContent` action creator calls the [feeds-content](../../mu-plugins/classes/Bbgi/Integration/ExperienceEngine.php) endpoint (see the `rest_get_feeds_content` method) and receives back a list of the raw HTML of the page to be loaded.
+The `fetchFeedsContent` action creator calls the [feeds-content](../../mu-plugins/classes/Bbgi/Integration/ExperienceEngine.php) endpoint (see the `rest_get_feeds_content` method) and receives back the raw HTML of the page to be loaded. The Firebase user token is sent so that the server can fetch the user feeds.
 
 ```js
 /**
