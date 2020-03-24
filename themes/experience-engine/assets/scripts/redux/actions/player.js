@@ -38,13 +38,6 @@ export const STATUSES = {
 };
 
 /**
- * Holds reference to all players
- */
-window.tdplayer = null;
-window.audioplayer = null;
-window.omnyplayer = null;
-
-/**
  * playbackStop action creator
  * @param {*} actionType
  * @returns {Object} action payload
