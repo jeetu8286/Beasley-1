@@ -1,7 +1,7 @@
 # Beasley WordPress
 
 ## Themes
-The primary theme used throughout the Beasley properties is Experience Engine. You can can find docs specific to the theme can be found in the [Experience Enginge theme directory](https://gitlab.10up.com/beasley/beasley/-/blob/master/themes/experience-engine/page.php)
+The primary theme used throughout the Beasley properties is Experience Engine. You can can find docs specific to the theme can be found in the [Experience Enginge theme](themes/experience-engine/README.md)
 
 ## Must-Use Plugins - Sitewide Functionality & Integrations
 The following is an overview of custom code that is used on each site. All of this code is located in `/mu-plugins/` and is automatically loaded on every site.
