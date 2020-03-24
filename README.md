@@ -18,6 +18,7 @@ Simple wrapper for WP_Cache
 
 ### Experience Engine
 `mu-plugins/classes/Bbgi/Integration/ExperienceEngine.php`
+Main API for interacting with Experience Engine.
 
 ### Firebase
 `mu-plugins/classes/Bbgi/Integration/Firebase.php`
@@ -59,9 +60,7 @@ Module responsible for integrating EE Push Notifications.
 * Adds user capabilities to send push notifications
 * Adds post list action to send notification
 * Creates notification menu page
-* Adds ‘Send Notification’ metabox. This provides a button that sets up the
- correct url of the iframe to be embedded in the editor. It is the service in
-  this embed that is responsible for sending the notification.
+* Adds ‘Send Notification’ metabox. This provides a button that sets up the correct url of the iframe to be embedded in the editor. It is the service in this embed that is responsible for sending the notification.
 
 ### Redirects
 `mu-plugins/classes/Bbgi/Redirects.php`
@@ -85,9 +84,11 @@ This module adds support for correct Twitter image sizes in the site's [Open
 
 ### Users
 `mu-plugins/classes/Bbgi/Users.php`
+Adds additional user functionality like last-login tracking and auto-expiration for idle accounts.
 
 ### Webhooks
 `mu-plugins/classes/Bbgi/Users.php`
+Support for Experience Engine webhooks on post create/update/delete.
 
 ## Plugins
 The following in an overview of 10up-developed plugins that can be enabled on sites individually.
