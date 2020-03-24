@@ -397,7 +397,7 @@ const play = (
 			},
 		});
 	} else if (playerType === 'mp3player') {
-		if (window.audioplayer === null) {
+		if (typeof window.audioplayer === 'undefined') {
 			setUpAudioPlayer(dispatch, source);
 		} else {
 			window.audioplayer.src = source;
@@ -412,7 +412,7 @@ const play = (
 		});
 		dispatch(cuePoint({ type: 'track', cueTitle, artistName }));
 	} else if (playerType === 'omnyplayer') {
-		if (window.audioplayer === null) {
+		if (typeof window.audioplayer === 'undefined') {
 			setUpOmnyPlayer();
 		}
 
