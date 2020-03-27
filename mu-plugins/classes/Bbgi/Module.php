@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Abstract class for modules
+ */
 namespace Bbgi;
 
 abstract class Module {
@@ -48,11 +50,12 @@ abstract class Module {
 			'dfp'               => new \Bbgi\Integration\Dfp(),
 			'facebook'          => new \Bbgi\Integration\Facebook(),
 			'feed-pull'         => new \Bbgi\Integration\FeedPull(),
+			'notifications'     => new \Bbgi\Integration\PushNotifications(),
 			'webhooks'          => new \Bbgi\Webhooks(),
 			'enclosure'         => new \Bbgi\Media\Enclosure(),
 			'users'             => new \Bbgi\Users(),
 			'redirects'         => new \Bbgi\Redirects(),
-			'notifications'     => new \Bbgi\Integration\PushNotifications(),
+			'page-endpoint'     => new \Bbgi\Endpoints\Page(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {

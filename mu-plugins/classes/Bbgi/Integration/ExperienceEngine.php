@@ -1,4 +1,7 @@
 <?php
+/**
+ * API for interacting with Expression Engine
+ */
 
 namespace Bbgi\Integration;
 
@@ -102,6 +105,7 @@ class ExperienceEngine extends \Bbgi\Module {
 	public function send_request( $path, $args = array() ) {
 		$host = $this->_get_host();
 		$args['headers'] = array( 'Content-Type' => 'application/json' );
+		$args['timeout'] = 30;
 		if ( empty( $args['method'] ) ) {
 			$args['method'] = 'GET';
 		}
@@ -289,12 +293,7 @@ class ExperienceEngine extends \Bbgi\Module {
 		register_rest_route( $namespace, 'feeds-content', array(
 			'methods'  => \WP_REST_Server::CREATABLE,
 			'callback' => $this( 'rest_get_feeds_content' ),
-			'args'     => array_merge( $authorization, array(
-				'format' => array(
-					'type'     => 'string',
-					'required' => false,
-				),
-			) ),
+			'args'     => array_merge( $authorization, [] ),
 		) );
 	}
 
@@ -368,16 +367,11 @@ class ExperienceEngine extends \Bbgi\Module {
 		$response = json_decode( $response, true );
 
 		$data = apply_filters( 'ee_feeds_content_html', '', $response );
-		if ( $request->get_param( 'format' ) == 'raw' ) {
-			// @todo: find a better way to send html data
-			header( 'content-type: text/html' );
-			echo $data;
-			exit;
-		}
 
-		return rest_ensure_response( array(
-			'html' => $data,
-		) );
+		return rest_ensure_response( [
+			'status'    => 200,
+			'html'      => $data,
+		] );
 	}
 
 }
