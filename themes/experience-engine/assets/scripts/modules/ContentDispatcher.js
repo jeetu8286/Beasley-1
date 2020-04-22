@@ -25,6 +25,7 @@ class ContentDispatcher extends Component {
 		this.onClick = this.handleClick.bind(this);
 		this.handleSliders = this.handleSliders.bind(this);
 		this.handleSliderLoad = this.handleSliderLoad.bind(this);
+		this.onPageChange = this.onPageChange.bind(this);
 	}
 
 	/**
@@ -34,6 +35,7 @@ class ContentDispatcher extends Component {
 		const { initPage } = this.props;
 
 		window.addEventListener('click', this.onClick);
+		console.log(this.onPageChange);
 		window.addEventListener('popstate', this.onPageChange);
 
 		// load current page into the state
@@ -195,6 +197,13 @@ class ContentDispatcher extends Component {
 			// if it's a regular internal page (not homepage) just fetch the page as usual.
 			fetchPage(link);
 		}
+	}
+
+	onPageChange(e) {
+		const { fetchPage } = this.props;
+		console.log('popstate', e);
+		console.log('location', document.location);
+		fetchPage(document.location.href);
 	}
 
 	render() {
