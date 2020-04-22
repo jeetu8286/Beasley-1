@@ -35,7 +35,6 @@ class ContentDispatcher extends Component {
 		const { initPage } = this.props;
 
 		window.addEventListener('click', this.onClick);
-		console.log(this.onPageChange);
 		window.addEventListener('popstate', this.onPageChange);
 
 		// load current page into the state
@@ -201,8 +200,6 @@ class ContentDispatcher extends Component {
 
 	onPageChange(e) {
 		const { fetchPage } = this.props;
-		console.log('popstate', e);
-		console.log('location', document.location);
 		fetchPage(document.location.href);
 	}
 
