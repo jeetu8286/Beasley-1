@@ -60,7 +60,6 @@ class SecondStreet extends \Bbgi\Module {
 			return '';
 		}
 
-		$alertdown = '<div class="second-street-alert">We have been notified of an interruption in service by Second Street, which is the administrator of this online contest. We apologize for the inconvenience and will continue to provide updates as we receive them.</div>';
 
 		$embed = sprintf(
 			'<div class="secondstreet-embed" src="https://embed-%s.secondstreetapp.com/Scripts/dist/embed.js" data-ss-embed="promotion" data-opguid="%s" data-routing="%s"></div>',
@@ -69,7 +68,7 @@ class SecondStreet extends \Bbgi\Module {
 			esc_attr( $attributes['routing'] )
 		);
 
-		return apply_filters( 'secondstreet_embed_html', $alertdown . $embed, $attributes );
+		return apply_filters( 'secondstreet_embed_html', $embed, $attributes );
 	}
 
 }
