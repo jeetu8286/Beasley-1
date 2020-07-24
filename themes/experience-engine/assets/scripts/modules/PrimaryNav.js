@@ -280,6 +280,7 @@ class PrimaryNav extends PureComponent {
 		}
 
 		if (
+			parent &&
 			parent.classList.contains('sub-menu') &&
 			parent.contains(linkToActivate)
 		) {
