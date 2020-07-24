@@ -3,7 +3,7 @@
 
 	<div class="meta">
 		<?php get_template_part( 'partials/tile/title' ); ?>
-		<?php ee_the_contest_dates(); ?>
+		<?php ee_the_contest_dates_if_enabled(); ?>
 
 		<p class="type">
 			<svg width="14" height="11" viewBox="0 0 14 11" xmlns="http://www.w3.org/2000/svg">
