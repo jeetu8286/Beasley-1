@@ -159,6 +159,18 @@
 	display: none;
 }
 
+.sponsor-meta {
+	font-family: var(--global-font-family-primary);
+  	color: rgba(68, 68, 68, 1);
+  	font-weight: 600;
+  	padding-bottom: .8rem;
+}
+
+.pad-top-75rem {
+	padding-top: .8rem;
+}
+
+
 /* General fixes for external feeds */
 .file .element-invisible {
 	visibility: hidden;
