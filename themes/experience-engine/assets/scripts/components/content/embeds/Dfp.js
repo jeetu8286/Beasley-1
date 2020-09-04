@@ -122,7 +122,6 @@ class Dfp extends PureComponent {
 			}
 
 			slot.addService(googletag.pubads());
-			googletag.pubads().enableLazyLoad();
 
 			let sizeMapping = false;
 			if (unitName === 'top-leaderboard') {
