@@ -95,7 +95,13 @@ if ( ! function_exists( 'ee_enqueue_dfp_scripts' ) ) :
 
 		$dfp_ad_lazy_loading = get_option( 'ad_lazy_loading_enabled', 'off' );
 		if  ( $dfp_ad_lazy_loading === 'on' ) {
-        	$dfp_ad_lazy_loading = "googletag.pubads().enableLazyLoad(); console.log('Ad Lazy Loading interstitial ENABLED (PHP)');";
+        	$dfp_ad_lazy_loading = "		googletag.pubads().enableLazyLoad({
+        		fetchMarginPercent: 0,
+				renderMarginPercent: 0,
+				mobileScaling: 0.0,
+			});
+			console.log('Ad Lazy Loading interstitial ENABLED (PHP)');
+			";
         } else {
         	$dfp_ad_lazy_loading = "console.log('Ad Lazy Loading interstitial DISABLED (PHP)');";
         }

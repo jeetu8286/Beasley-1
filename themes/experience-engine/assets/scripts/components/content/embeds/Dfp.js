@@ -131,7 +131,11 @@ class Dfp extends PureComponent {
 
 			if (isLazyLoadingEnabled === 'on') {
 				console.log(`Ad Lazy Loading ${unitName} ENABLED (JS)`);
-				googletag.pubads().enableLazyLoad();
+				googletag.pubads().enableLazyLoad({
+					fetchMarginPercent: 0,
+					renderMarginPercent: 0,
+					mobileScaling: 0.0,
+				});
 			} else {
 				console.log(`Ad Lazy Loading ${unitName} DISABLED (JS)`);
 			}
