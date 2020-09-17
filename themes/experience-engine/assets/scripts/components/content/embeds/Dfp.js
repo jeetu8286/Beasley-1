@@ -213,7 +213,9 @@ class Dfp extends PureComponent {
 				slot.setTargeting(targeting[i][0], targeting[i][1]);
 			}
 
-			googletag.display(slot);
+			// MFP 09/17/2020 - Added a refresh() that fires as last embed of first content block.
+			//                - Calls to display should not be required.
+			// googletag.display(slot);
 			this.setState({ slot });
 
 			return true;
