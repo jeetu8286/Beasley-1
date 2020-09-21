@@ -16,7 +16,7 @@ function* yieldHideSplashScreen(action) {
 				splashScreen.parentNode.removeChild(splashScreen);
 			}
 		},
-		2000,
+		400,
 	);
 }
 
