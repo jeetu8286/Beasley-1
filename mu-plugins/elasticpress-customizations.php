@@ -11,7 +11,7 @@
  * Forces the query to be sorted by date instead of relevancy
  */
 add_action( 'pre_get_posts', function ( $query ) {
-	if ( ! is_admin() && $query->is_main_query() ) {
+	if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
 		$query->set( 'orderby', 'date' );
 		$query->set( 'order', 'desc' );
 	}
