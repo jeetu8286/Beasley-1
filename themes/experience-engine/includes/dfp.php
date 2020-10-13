@@ -109,6 +109,7 @@ if ( ! function_exists( 'ee_enqueue_dfp_scripts' ) ) :
 		$script = <<<EOL
 var googletag = googletag || {};
 googletag.cmd = googletag.cmd || [];
+dfp_needs_refresh = true; // MFP 10/02/2020 - Set explicit flag for controlling initial dfp refresh.
 
 googletag.cmd.push(function() {
 	googletag.pubads().collapseEmptyDivs(true);
