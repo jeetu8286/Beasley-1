@@ -21,6 +21,14 @@ function getSecondStreetPrefEmbedParams(element) {
 	};
 }
 
+function getSecondStreetSignupEmbedParams(element) {
+	const { dataset } = element;
+
+	return {
+		designid: dataset.designid,
+	};
+}
+
 function getAudioEmbedParams(element) {
 	const sources = {};
 	const tags = element.getElementsByTagName('source');
@@ -193,6 +201,12 @@ export function getStateFromContent(container) {
 				'secondstreetprefcenter',
 				'.secondstreet-prefcenter',
 				getSecondStreetPrefEmbedParams,
+			),
+			...processEmbeds(
+				container,
+				'secondstreetsignup',
+				'.secondstreet-signup',
+				getSecondStreetSignupEmbedParams,
 			),
 			...processEmbeds(
 				container,
