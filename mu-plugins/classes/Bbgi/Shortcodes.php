@@ -81,7 +81,7 @@ class Shortcodes extends \Bbgi\Module {
 		if ($atts['id']) {
 
 			$url = wp_cache_get( $atts['id'], 'bbgi:inlinking' );
-			if ( empty( $ids ) ) {
+			if ( empty( $url ) ) {
 				$url = $this->get_inlink_url( $atts['id'] );
 				wp_cache_set( $atts['id'], $url, 'bbgi:inlinking', MINUTE_IN_SECONDS * 15 );
 			}
