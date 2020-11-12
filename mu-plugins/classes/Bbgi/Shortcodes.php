@@ -39,11 +39,19 @@ class Shortcodes extends \Bbgi\Module {
 
 		$query = new WP_Query(
 				array(
-						'post_status' => 'publish',
-						'meta-key' => 'syndication_old_name',
-						'meta_value' => $syndication_old_name
+					'post_status' => 'publish',
+					'meta_query' => array(
+						array(
+							'key'     => 'syndication_old_name',
+							'value'   => $syndication_old_name,
+							'compare' => '=',
+						)
+					)
 				)
 		);
+
+
+
 
 		$query->set( 'no_found_rows', true );
 
