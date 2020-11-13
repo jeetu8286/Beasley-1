@@ -1,5 +1,6 @@
 import { call, takeLatest } from 'redux-saga/effects';
 import { ACTION_HIDE_SPLASH_SCREEN } from '../../actions/screen';
+import { updateInterstitialAdDiv } from '../../utilities';
 
 /**
  * Generator runs whenever [ ACTION_HIDE_SPLASH_SCREEN ]
@@ -13,9 +14,12 @@ function* yieldHideSplashScreen(action) {
 	yield call(() => {
 		const splashScreen = document.getElementById('splash-screen');
 		const { googletag, dfp_needs_refresh } = window;
+
 		if (dfp_needs_refresh) {
 			window.dfp_needs_refresh = false;
 			googletag.cmd.push(() => {
+				updateInterstitialAdDiv();
+				// Refresh All Ads
 				googletag.pubads().refresh(); // Refresh ALL Slots
 			});
 		}
