@@ -26,6 +26,7 @@ mu-plugins/post-finder/
 !/plugins/user-role-editor-pro/
 !/plugins/configure-smtp/
 !/plugins/embedly
+!/plugins/wp-parsely
 
 themes/index.php
 themes/twentyfourteen
