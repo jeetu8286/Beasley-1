@@ -136,7 +136,7 @@ if ( ! function_exists( 'ee_the_sponsored_by_div' ) ) :
 
 			$sponsored_by = $sponsor_url === ''
 				? $div_start . $sponsored_by . '</div>'
-				: $div_start . '<a class="sponsor-meta" href="' . $sponsor_url . '" target="_blank" >' . $sponsored_by . '</a></div>';
+				: $div_start . '<a class="sponsor-meta" href="' . $sponsor_url . '" rel="sponsored" target="_blank" >' . $sponsored_by . '</a></div>';
 		}
 
 		echo $sponsored_by;
