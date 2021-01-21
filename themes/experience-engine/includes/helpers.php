@@ -143,6 +143,16 @@ if ( ! function_exists( 'ee_the_sponsored_by_div' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_the_sponsored_by_thumbnail_overlay' ) ) :
+	function ee_the_sponsored_by_thumbnail_overlay( $the_id = null) {
+		$sponsored_by = ee_get_sponsored_by($the_id);
+		if ( $sponsored_by !== '' ) {
+			$sponsored_by = '<div class="post-sponsor-overlay">Sponsored</div>';
+		}
+		echo $sponsored_by;
+	}
+endif;
+
 if ( ! function_exists( 'ee_filter_primary_category' ) ) :
 	function ee_filter_primary_category( $categories, $post_id ) {
 		$post = get_post( $post_id );
