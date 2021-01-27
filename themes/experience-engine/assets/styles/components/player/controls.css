@@ -617,7 +617,7 @@
 	&:focus,
 	&:hover {
 		outline: 0;
-		opacity: 1;
+		opacity: 0.8;
 	}
 
 	& svg {
@@ -659,4 +659,3 @@
 		margin-top: 0;
 	}
 }
-
