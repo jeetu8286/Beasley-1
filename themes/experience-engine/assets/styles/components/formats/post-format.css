@@ -26,6 +26,8 @@
 }
 
 .post-sponsor-overlay {
+	font-weight: bold;
+	font-size: .9rem;
 	align-items: center;
 	background: red;
 	color: white;
