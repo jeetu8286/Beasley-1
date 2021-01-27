@@ -629,6 +629,14 @@
 }
 
 .LIVE_PLAYING .pause-btn {
+	opacity: 1;
+
+	&:focus,
+	&:hover {
+		 outline: 0;
+		 opacity: .8;
+    }
+
 	& svg {
 		width: 13px;
 		height: 23px;
@@ -661,7 +669,15 @@
 	}
 }
 
-
+.control-section .-podcast.LIVE_PAUSE .resume-btn,
+.control-section .-podcast.LIVE_PLAYING .pause-btn,
+.control-section .-podcast.LIVE_STOP .play-btn,
+.control-section .-podcast.LIVE_FAILED .play-btn,
+.control-section .-podcast.LIVE_BUFFERING .loading-btn,
+.control-section .-podcast.LIVE_CONNECTING .loading-btn,
+.control-section .-podcast.LIVE_RECONNECTING .loading-btn,
+.control-section .-podcast.STREAM_GEO_BLOCKED .play-btn,
+.control-section .-podcast.STATION_NOT_FOUND .play-btn
 .control-section .-live.LIVE_PAUSE .resume-btn,
 .control-section .-live.LIVE_PLAYING .pause-btn,
 .control-section .-live.LIVE_STOP .play-btn,
@@ -672,4 +688,10 @@
 .control-section .-live.STREAM_GEO_BLOCKED .play-btn,
 .control-section .-live.STATION_NOT_FOUND .play-btn {
 	opacity: 1;
+
+	&:focus,
+	&:hover {
+		 outline: 0;
+		 opacity: .8;
+	 }
 }
