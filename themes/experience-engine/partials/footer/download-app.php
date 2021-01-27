@@ -1,5 +1,5 @@
 <div class="download">
-	<h6>Download our app</h6>
+	<h6>Download our station app</h6>
 	<p>Download the app to LISTEN LIVE wherever you are and connect with us like never before!</p>
 
 	<?php if ( ee_has_publisher_information( 'ios' ) ) : ?>
