@@ -26,7 +26,6 @@
 }
 
 .post-sponsor-overlay {
-	padding: 0;
 	align-items: center;
 	background: red;
 	color: white;
@@ -36,4 +35,5 @@
 	margin: 0 auto;
 	left: 0;
 	position: absolute;
+	padding: 0 .25rem;
 }
