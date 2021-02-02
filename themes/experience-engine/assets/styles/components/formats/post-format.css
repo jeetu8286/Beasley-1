@@ -24,3 +24,18 @@
         }
     }
 }
+
+.post-sponsor-overlay {
+	font-weight: bold;
+	font-size: .9rem;
+	align-items: center;
+	background: red;
+	color: white;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	margin: 0 auto;
+	left: 0;
+	position: absolute;
+	padding: 0 .25rem;
+}
