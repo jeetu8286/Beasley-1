@@ -13,9 +13,7 @@
 			</div>
 		<?php endif; ?>
 
-		<?php echo('<span>RibbonName-' . esc_attr($post->feed_title) . '</span>'); ?>
-		<?php if( 'Featured' == esc_attr($post->feed_title)  ) : ?>
-			<?php echo('<span>Added Div If Sponsored</span>'); ?>
+		<?php if( stripos( esc_attr($post->feed_title), ' Miss') !== false ) : ?>
 			<?php ee_the_sponsored_by_thumbnail_overlay( $post->ID ); ?>
 		<?php endif; ?>
 	</a>
