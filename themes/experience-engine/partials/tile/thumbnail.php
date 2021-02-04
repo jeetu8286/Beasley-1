@@ -12,5 +12,8 @@
 				</svg>
 			</div>
 		<?php endif; ?>
+		<?php if( 'Featured' == $post->feed_title ) : ?>
+			<?php ee_the_sponsored_by_thumbnail_overlay( $post->ID ); ?>
+		<?php endif; ?>
 	</a>
 </div>

@@ -190,6 +190,7 @@ if ( ! function_exists( 'ee_setup_post_from_feed_item' ) ) :
 			$post->filter = 'raw';
 
 			$post->ID = 0;
+			$post->feed_title = $feed[ 'title' ];
 			$post->post_title = $item['title'];
 			$post->post_status = 'publish';
 			$post->post_type = ee_is_network_domain( $item['link'] ) || $post_type == 'episode' ? $post_type : 'external';
