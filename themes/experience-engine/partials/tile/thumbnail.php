@@ -12,5 +12,9 @@
 				</svg>
 			</div>
 		<?php endif; ?>
+
+		<?php if( stripos( esc_attr($post->feed_title), ' Miss') !== false ) : ?>
+			<?php ee_the_sponsored_by_thumbnail_overlay( $post->ID ); ?>
+		<?php endif; ?>
 	</a>
 </div>
