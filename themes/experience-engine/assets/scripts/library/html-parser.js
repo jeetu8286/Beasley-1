@@ -151,6 +151,18 @@ function getPayloadParams(flattern = false) {
 	};
 }
 
+function getMapboxParams(element) {
+	const { dataset } = element;
+
+	return {
+		accesstoken: dataset.accesstoken,
+		style: dataset.style,
+		long: dataset.long,
+		lat: dataset.lat,
+		zoom: dataset.zoom,
+	};
+}
+
 function processEmbeds(container, type, selector, callback) {
 	const embeds = [];
 
@@ -334,6 +346,7 @@ export function getStateFromContent(container) {
 					'dimensionvalue',
 				),
 			),
+			...processEmbeds(container, 'mapbox', '.mapbox', getMapboxParams),
 		];
 
 		// extract <script> tags
