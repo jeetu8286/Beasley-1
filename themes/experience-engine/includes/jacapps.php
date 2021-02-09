@@ -32,6 +32,7 @@ if ( ! function_exists( 'ee_setup_jacapps' ) ) :
 		add_filter( 'secondstreet_embed_html', 'ee_update_jacapps_secondstreet_html', 10, 2 );
 		add_filter( 'secondstreetpref_html', 'ee_update_jacapps_secondstreetpref_html', 10, 2 );
 		add_filter( 'secondstreetsignup_html', 'ee_update_jacapps_secondstreetsignup_html', 10, 2 );
+		add_filter( 'mapbox_html', 'ee_update_jacapps_mapbox_html', 10, 2 );
 
 		remove_filter( 'omny_embed_html', 'ee_update_omny_embed' );
 	}
@@ -106,3 +107,35 @@ if ( ! function_exists( 'ee_update_jacapps_secondstreetsignup_html' ) ) :
 		return '<script src="' . esc_url( $url ) . '" data-ss-embed="optin" data-design-id="' . esc_attr( $atts['design_id'] ) . '"></script>';
 	}
 endif;
+
+if ( ! function_exists( 'ee_update_jacapps_mapbox_html' ) ) :
+	function ee_update_jacapps_mapbox_html( $embed, $atts ) {
+		$style = '<style>#mapboxdiv { width: 100%; height: 400px }</style>';
+		$mapboxscript = '<script id="mapscript" async defer src="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js"></script>';
+		$mapboxstyle = '<link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet" />';
+		$mapboxdiv = '<div id="mapboxdiv"></div>';
+		$implementation = sprintf(
+			'<script>
+					document.getElementById(\'mapscript\').onload = function() {
+					    mapboxgl.accessToken = \'%s\'
+
+						var map = new mapboxgl.Map({
+						container: \'mapboxdiv\',
+						style: \'%s\',
+						center: [ %s, %s ],
+						zoom: %s
+						});
+					}
+
+			       	</script>',
+					esc_attr( $atts['accesstoken']),
+					esc_attr( $atts['style']),
+					esc_attr( $atts['lat']),
+					esc_attr( $atts['long']),
+					esc_attr( $atts['zoom'])
+		);
+
+		return $style . $mapboxscript . $mapboxstyle . $mapboxdiv . $implementation;
+	}
+endif;
+

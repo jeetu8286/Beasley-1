@@ -26,6 +26,7 @@ import SongArchive from './embeds/SongArchive';
 import RelatedPosts from './embeds/RelatedPosts';
 import GoogleAnalytics from './embeds/GoogleAnalytics';
 import Instagram from './embeds/Instagram';
+import MapBox from './embeds/MapBox';
 
 const mapping = {
 	audio: AudioEmbed,
@@ -49,6 +50,7 @@ const mapping = {
 	relatedposts: RelatedPosts,
 	ga: GoogleAnalytics,
 	instagram: Instagram,
+	mapbox: MapBox,
 };
 
 /**
