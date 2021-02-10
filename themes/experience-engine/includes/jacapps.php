@@ -33,6 +33,7 @@ if ( ! function_exists( 'ee_setup_jacapps' ) ) :
 		add_filter( 'secondstreetpref_html', 'ee_update_jacapps_secondstreetpref_html', 10, 2 );
 		add_filter( 'secondstreetsignup_html', 'ee_update_jacapps_secondstreetsignup_html', 10, 2 );
 		add_filter( 'mapbox_html', 'ee_update_jacapps_mapbox_html', 10, 2 );
+		add_filter( 'hubspotform_html', 'ee_update_jacapps_hubspotform_html', 10, 2 );
 
 		remove_filter( 'omny_embed_html', 'ee_update_omny_embed' );
 	}
@@ -136,6 +137,28 @@ if ( ! function_exists( 'ee_update_jacapps_mapbox_html' ) ) :
 		);
 
 		return $style . $mapboxscript . $mapboxstyle . $mapboxdiv . $implementation;
+	}
+endif;
+
+if ( ! function_exists( 'ee_update_jacapps_hubspotform_html' ) ) :
+	function ee_update_jacapps_hubspotform_html( $embed, $atts ) {
+
+		$hubspotformscript = '<script id="hubspotformscript" async defer src="https://js.hsforms.net/forms/v2.js"></script>';
+		$hubspotformdiv = '<div id="hsFormDiv"></div>';
+		$implementation = sprintf(
+			'<script>
+					document.getElementById(\'hubspotformscript\').onload = function() {
+						hbspt.forms.create({
+							portalId: \'%s\',
+							formId: \'%s\',
+							target: \'#hsFormDiv\',
+						});
+					}
+			       	</script>',
+					esc_attr( $atts['portalid']),
+					esc_attr( $atts['formid'])
+		);
+		return $hubspotformscript . $hubspotformdiv . $implementation;
 	}
 endif;
 
