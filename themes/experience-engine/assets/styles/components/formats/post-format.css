@@ -14,7 +14,7 @@
         top: 50%;
         transform: translateY(-50%);
         width: 64px;
-	    opacity: .8;
+	    opacity: .7;
 
 		&:focus,
 		&:hover {

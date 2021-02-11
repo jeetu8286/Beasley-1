@@ -613,7 +613,7 @@
 	height: 54px;
 	justify-content: center;
 	width: 54px;
-	opacity: .8;
+	opacity: .7;
 
 	&:focus,
 	&:hover {
@@ -634,7 +634,7 @@
 	&:focus,
 	&:hover {
 		 outline: 0;
-		 opacity: .8;
+		 opacity: .7;
     }
 
 	& svg {
@@ -692,6 +692,6 @@
 	&:focus,
 	&:hover {
 		 outline: 0;
-		 opacity: .8;
+		 opacity: .7;
 	 }
 }
