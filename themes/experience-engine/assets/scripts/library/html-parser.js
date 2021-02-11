@@ -163,6 +163,15 @@ function getMapboxParams(element) {
 	};
 }
 
+function getHubspotFormParams(element) {
+	const { dataset } = element;
+
+	return {
+		portalid: dataset.portalid,
+		formid: dataset.formid,
+	};
+}
+
 function processEmbeds(container, type, selector, callback) {
 	const embeds = [];
 
@@ -347,6 +356,12 @@ export function getStateFromContent(container) {
 				),
 			),
 			...processEmbeds(container, 'mapbox', '.mapbox', getMapboxParams),
+			...processEmbeds(
+				container,
+				'hubspotform',
+				'.hsform',
+				getHubspotFormParams,
+			),
 		];
 
 		// extract <script> tags
