@@ -94,6 +94,18 @@ if ( ! function_exists( 'ee_get_css_colors' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_get_css_opacities' ) ) :
+	function ee_get_css_opacities() {
+		$vars = [
+			'--brand-play-opacity'           => get_option( 'play_opacity_setting', '0.8' ),
+			'--brand-play-hover-opacity'     => get_option( 'play_hover_opacity_setting', '1' ),
+			'--brand-play-live-hover-opacity'     => get_option( 'play_live_hover_opacity_setting', '0.8' ),
+		];
+
+		return $vars;
+	}
+endif;
+
 if ( ! function_exists( 'ee_the_custom_logo' ) ) :
 	function ee_the_custom_logo( $base_w = 150, $base_h = 150 ) {
 		$site_logo_id = get_option( 'gmr_site_logo', 0 );
@@ -118,7 +130,7 @@ endif;
 if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 	function ee_the_bbgiconfig() {
 		$config = array(
-			'cssvars' => array( 'variables' => ee_get_css_colors() ),
+			'cssvars' => array( 'variables' => array_merge(ee_get_css_colors(), ee_get_css_opacities()) ),
 			'geotargetly' => ee_current_page_needs_geotargetly(),
 
 			/** Live Streaming Intervals */
