@@ -215,6 +215,9 @@ if ( ! function_exists( 'ee_setup_post_from_feed_item' ) ) :
 			$post = new \WP_Post( $post );
 		}
 
+		// Always add feed_title
+		$post->feed_title = $feed[ 'title' ];
+
 		setup_postdata( $post );
 		$GLOBALS['post'] = $post;
 

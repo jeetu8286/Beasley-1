@@ -151,6 +151,27 @@ function getPayloadParams(flattern = false) {
 	};
 }
 
+function getMapboxParams(element) {
+	const { dataset } = element;
+
+	return {
+		accesstoken: dataset.accesstoken,
+		style: dataset.style,
+		long: dataset.long,
+		lat: dataset.lat,
+		zoom: dataset.zoom,
+	};
+}
+
+function getHubspotFormParams(element) {
+	const { dataset } = element;
+
+	return {
+		portalid: dataset.portalid,
+		formid: dataset.formid,
+	};
+}
+
 function processEmbeds(container, type, selector, callback) {
 	const embeds = [];
 
@@ -333,6 +354,13 @@ export function getStateFromContent(container) {
 					'dimensionkey',
 					'dimensionvalue',
 				),
+			),
+			...processEmbeds(container, 'mapbox', '.mapbox', getMapboxParams),
+			...processEmbeds(
+				container,
+				'hubspotform',
+				'.hsform',
+				getHubspotFormParams,
 			),
 		];
 

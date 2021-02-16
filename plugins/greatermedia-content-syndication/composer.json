@@ -1,5 +1,10 @@
 {
     "name": "beasley/content-syndication",
+    "config": {
+      "platform": {
+        "php": "7.0.33"
+      }
+    },
     "description": "Content Syndication for Beasley",
     "type": "wordpress-plugin",
     "minimum-stability": "dev",
