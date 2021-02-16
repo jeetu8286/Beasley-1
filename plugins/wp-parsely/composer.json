@@ -1,0 +1,16 @@
+{
+  "authors": [
+    {
+      "name": "Parsely",
+      "email": "hello@parsely.com",
+      "homepage": "http://www.parse.ly",
+      "role": "Developer"
+    }
+  ],
+  "require-dev": {
+    "wp-coding-standards/wpcs": "2.3.0",
+    "squizlabs/php_codesniffer": "3.3.2",
+    "automattic/vipwpcs": "^2.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2"
+  }
+}
