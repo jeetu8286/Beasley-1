@@ -33,12 +33,9 @@ class PrimaryNavWalker extends \Walker_Nav_Menu {
 		$discovery->classes[] = 'menu-item-discovery';
 
 		$newelements = array(
-			'home' => $newhome
+			'home' => $newhome,
+			'discovery' => $discovery
 		);
-
-		if ('disabled' !== get_option( 'ee_login' )) {
-			$newelements['discovery'] = $discovery;
-		}
 
 		foreach ( $elements as $index => $element ) {
 			if ( trailingslashit( $element->url ) != $home ) {
