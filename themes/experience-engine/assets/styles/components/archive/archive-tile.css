@@ -365,8 +365,8 @@
 		}
 
 		& .post-title {
-			hyphens: auto;
-			word-wrap: break-word;
+			hyphens: manual;
+			word-wrap: anywhere;
 
 			& h3 {
 				font-size: 14px;
