@@ -4,6 +4,14 @@ import LazyImage from './LazyImage';
 import LoadingAjaxContent from '../../LoadingAjaxContent';
 import { slugify } from '../../../library';
 
+const stripHttp = urlToModify => {
+	return urlToModify.replace('http://', '');
+};
+
+const strip150Size = urlToModify => {
+	return urlToModify.replace('-150x150', '');
+};
+
 const RelatedPost = ({
 	id,
 	url,
@@ -37,8 +45,8 @@ const RelatedPost = ({
 						crop={false}
 						placeholder={`thumbnail-${id}`}
 						src={primary_image}
-						width={200}
-						height={150}
+						width={188}
+						height={141}
 						alt={title || ''}
 					/>
 				</a>
@@ -123,16 +131,12 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 							result.data.map(relatedPost => {
 								return {
 									id: slugify(
-										relatedPost.url
-											? relatedPost.url.replace('http://', '')
-											: '',
+										relatedPost.url ? stripHttp(relatedPost.url) : '',
 									),
-									url: relatedPost.url
-										? relatedPost.url.replace('http://', '')
-										: '',
+									url: relatedPost.url ? stripHttp(relatedPost.url) : '',
 									title: relatedPost.title,
 									primary_image: relatedPost.image_url
-										? relatedPost.image_url.replace('http://', '')
+										? strip150Size(stripHttp(relatedPost.image_url))
 										: '',
 									published: relatedPost.pub_date,
 									test_name: relatedPost.tags,
