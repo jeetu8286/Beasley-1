@@ -1,7 +1,8 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
 import { IntersectionObserverContext } from '../../../context/intersection-observer';
+
+const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 
 class Dfp extends PureComponent {
 	constructor(props) {
@@ -22,8 +23,10 @@ class Dfp extends PureComponent {
 		this.container = document.getElementById(placeholder);
 		this.tryDisplaySlot();
 
-		this.startInterval();
-		document.addEventListener('visibilitychange', this.onVisibilityChange);
+		if (placeholder !== playerSponsorDivID) {
+			this.startInterval();
+			document.addEventListener('visibilitychange', this.onVisibilityChange);
+		}
 
 		// Fire sponsored ad utility to determine if
 		// a sponsor ad will in fact load in the player
@@ -54,7 +57,7 @@ class Dfp extends PureComponent {
 				// compare against sponsor slot id
 				// this value is fixed and can be found in
 				// /assets/scripts/components/player/Sponsor.js
-				if (idLoaded === 'div-gpt-ad-1487117572008-0') {
+				if (idLoaded === playerSponsorDivID) {
 					// Add class to body
 					document
 						.getElementsByTagName('body')[0]
@@ -65,10 +68,13 @@ class Dfp extends PureComponent {
 	}
 
 	componentWillUnmount() {
+		const { placeholder } = this.props;
 		this.destroySlot();
 
-		this.stopInterval();
-		document.removeEventListener('visibilitychange', this.onVisibilityChange);
+		if (placeholder !== playerSponsorDivID) {
+			this.stopInterval();
+			document.removeEventListener('visibilitychange', this.onVisibilityChange);
+		}
 	}
 
 	handleVisibilityChange() {
@@ -81,7 +87,7 @@ class Dfp extends PureComponent {
 
 	startInterval() {
 		this.setState({
-			interval: setInterval(this.refreshSlot, 20000), // 20 sec
+			interval: setInterval(this.refreshSlot, 5000), // 5 sec
 		});
 	}
 
@@ -110,6 +116,7 @@ class Dfp extends PureComponent {
 		googletag.cmd.push(() => {
 			const size = bbgiconfig.dfp.sizes[unitName];
 			const slot = googletag.defineSlot(unitId, size, placeholder);
+			console.log(`CREATED SLOT ${slot.getSlotElementId()} for ID ${unitId}`);
 
 			// If Slot was already defined this will be null
 			// Ignored to fix the exception
@@ -212,6 +219,7 @@ class Dfp extends PureComponent {
 			// MFP 09/17/2020 - Added a refresh() that fires as last embed of first content block.
 			//                - Calls to display should not be required.
 			// googletag.display(slot);
+			console.log(`SETTING SLOT ${slot.getSlotElementId()} for UnitName `);
 			this.setState({ slot });
 
 			return true;
@@ -223,6 +231,7 @@ class Dfp extends PureComponent {
 		const { googletag } = window;
 
 		if (slot) {
+			console.log(`REFRESH ${slot.getSlotElementId()}`);
 			googletag.pubads().refresh([slot]);
 		}
 	}
