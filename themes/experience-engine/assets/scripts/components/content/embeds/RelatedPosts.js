@@ -82,7 +82,7 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 	const endpointURL = `${bbgiconfig.eeapi}publishers/${
 		bbgiconfig.publisher.id
 	}/recommendations?categories=${categories ||
-		''}&posttype=${posttype}&url=${encodeURIComponent(url)}`;
+		''}&posttype=${posttype}&url=https%3A%2F%2Fwmmr.com%2F2021%2F03%2F29%2Fperry-farrell-lollapalooza-2021-in-person-event%2F`;
 
 	useEffect(() => {
 		async function fetchPostsEndpoint() {
@@ -110,6 +110,10 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 
 	useEffect(() => {
 		async function fetchPosts() {
+			const normalizeUrl = urlToNormalize => {
+				return urlToNormalize.replace('https://', '').replace('http://', '');
+			};
+
 			if (postsEndpointURL) {
 				try {
 					const result = await fetch(postsEndpointURL).then(r => r.json());
@@ -123,7 +127,7 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 							result.data.map(relatedPost => {
 								return {
 									id: slugify(relatedPost.url ? relatedPost.url : ''),
-									url: relatedPost.url ? relatedPost.url : '',
+									url: relatedPost.url ? normalizeUrl(relatedPost.url) : '',
 									title: relatedPost.title,
 									primary_image: relatedPost.image_url
 										? relatedPost.image_url.replace('-150x150', '')
