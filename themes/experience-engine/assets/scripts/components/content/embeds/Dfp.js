@@ -3,6 +3,35 @@ import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context/intersection-observer';
 
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
+const SlotUpdateTimeInterval = 5000;
+const slotVisibilityChangedHandler = event => {
+	let { slotStatsObject } = window;
+	let { inViewPercentage } = event;
+	const { slot } = event;
+
+	console.log(`slotVisibilityChangedHandler FIRED`);
+
+	if (!slotStatsObject) {
+		console.log(`Creating slotStatsObject in slotVisibilityChangedHandler `);
+		window.slotStatsObject = {};
+		slotStatsObject = window.slotStatsObject;
+	}
+
+	if (typeof event.inViewPercentage === 'undefined') {
+		inViewPercentage = 100;
+	}
+
+	const slotID = slot.getSlotElementId();
+	if (typeof slotStatsObject[slotID] === 'undefined') {
+		slotStatsObject[slotID] = {
+			slot,
+			viewPercentage: 0,
+			timeVisible: 0,
+		};
+	} else {
+		slotStatsObject[slotID].viewPercentage = inViewPercentage;
+	}
+};
 
 class Dfp extends PureComponent {
 	constructor(props) {
@@ -15,9 +44,11 @@ class Dfp extends PureComponent {
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
+		this.refreshSlots = this.refreshSlots.bind(this);
 	}
 
 	componentDidMount() {
+		const { googletag, addedSlotVisListener } = window;
 		const { placeholder } = this.props;
 
 		this.container = document.getElementById(placeholder);
@@ -31,6 +62,25 @@ class Dfp extends PureComponent {
 		// Fire sponsored ad utility to determine if
 		// a sponsor ad will in fact load in the player
 		this.maybeLoadedPlayerSponsorAd();
+
+		// If Ad Blocker is enabled googletag will be absent
+		if (!googletag) {
+			console.log(`NO googletag FOUND IN DFP COMPONENT DID MOUNT`);
+			return;
+		}
+
+		if (!addedSlotVisListener) {
+			console.log(`Adding slotVisibilityChangedHandler`);
+			window.addedSlotVisListener = true;
+			googletag.cmd.push(function() {
+				googletag
+					.pubads()
+					.addEventListener(
+						'slotVisibilityChanged',
+						slotVisibilityChangedHandler,
+					);
+			});
+		}
 	}
 
 	/**
@@ -87,7 +137,7 @@ class Dfp extends PureComponent {
 
 	startInterval() {
 		this.setState({
-			interval: setInterval(this.refreshSlot, 5000), // 5 sec
+			interval: setInterval(this.refreshSlot, SlotUpdateTimeInterval),
 		});
 	}
 
@@ -227,12 +277,73 @@ class Dfp extends PureComponent {
 	}
 
 	refreshSlot() {
-		const { slot } = this.state;
 		const { googletag } = window;
+		const { slot } = this.state;
+		let { slotStatsObject } = window;
+
+		if (!slotStatsObject) {
+			console.log(`Creating slotStatsObject in refreshSlot() `);
+			window.slotStatsObject = {};
+			slotStatsObject = window.slotStatsObject;
+		}
 
 		if (slot) {
 			console.log(`REFRESH ${slot.getSlotElementId()}`);
-			googletag.pubads().refresh([slot]);
+			const slotID = slot.getSlotElementId();
+			if (typeof slotStatsObject[slotID] === 'undefined') {
+				console.log(`Creating new stat item for ${slotID}`);
+				slotStatsObject[slotID] = {
+					slot,
+					viewPercentage: 0,
+					timeVisible: 0,
+				};
+			} else if (slotStatsObject[slotID].viewPercentage > 50) {
+				slotStatsObject[slotID].timeVisible += SlotUpdateTimeInterval;
+				console.log(
+					`Stat item for ${slotID} has was incremented to ${slotStatsObject[slotID].timeVisible} seconds of viewability`,
+				);
+			}
+
+			if (slotStatsObject[slotID].timeVisible > 30000) {
+				slotStatsObject[slotID].timeVisible = 0;
+				googletag.pubads().refresh([slot], { changeCorrelator: false });
+			}
+		}
+
+		// this.refreshSlots();
+	}
+
+	refreshSlots() {
+		const { googletag } = window;
+		const { slotStatsObject } = window;
+		const slotsToModify = [];
+		console.log(`refreshSlots()`);
+
+		if (slotStatsObject) {
+			console.log(
+				`slotStatsObject Has ${Object.keys(slotStatsObject).length} Slots`,
+			);
+			Object.keys(slotStatsObject).forEach(slotID => {
+				const slotStat = slotStatsObject[slotID];
+				console.log(`Checking ${slotStat.slot.getSlotElementId()}`);
+				console.log(`Pct ${slotStat.viewPercentage}`);
+				console.log(`TimeVis ${slotStat.timeVisible}`);
+				if (slotStat.timeVisible > 30000) {
+					console.log(`Adding Slot To Be Refreshed`);
+					slotsToModify.push(slotStat.slot);
+					console.log(`${slotsToModify.length} Slots Need To Be Refreshed`);
+					slotStat.timeVisible = 0;
+				}
+			});
+
+			if (slotsToModify.length > 0) {
+				console.log(`REFRESHING ${slotsToModify.length} Slot(s)`);
+				// googletag.cmd.push(function() {
+				googletag.pubads().refresh([slotsToModify]);
+				// });
+			}
+		} else {
+			console.log(`No SlotStat Array Found in refreshSlots()`);
 		}
 	}
 
