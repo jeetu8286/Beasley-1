@@ -4,18 +4,39 @@ import { IntersectionObserverContext } from '../../../context/intersection-obser
 
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const SlotUpdateTimeInterval = 5000;
-const slotVisibilityChangedHandler = event => {
+const getSlotStatsObject = () => {
 	let { slotStatsObject } = window;
-	let { inViewPercentage } = event;
-	const { slot } = event;
-
-	console.log(`slotVisibilityChangedHandler FIRED`);
-
 	if (!slotStatsObject) {
 		console.log(`Creating slotStatsObject in slotVisibilityChangedHandler `);
 		window.slotStatsObject = {};
 		slotStatsObject = window.slotStatsObject;
 	}
+	return slotStatsObject;
+};
+
+const impressionViewableHandler = event => {
+	const { slot } = event;
+	const slotStatsObject = getSlotStatsObject();
+
+	console.log(`impressionViewableHandler FIRED`);
+
+	const slotID = slot.getSlotElementId();
+	if (typeof slotStatsObject[slotID] === 'undefined') {
+		slotStatsObject[slotID] = {
+			viewPercentage: 100,
+			timeVisible: 0,
+		};
+	} else {
+		slotStatsObject[slotID].viewPercentage = 100;
+	}
+};
+
+const slotVisibilityChangedHandler = event => {
+	let { inViewPercentage } = event;
+	const { slot } = event;
+	const slotStatsObject = getSlotStatsObject();
+
+	console.log(`slotVisibilityChangedHandler FIRED`);
 
 	if (typeof event.inViewPercentage === 'undefined') {
 		inViewPercentage = 100;
@@ -24,8 +45,7 @@ const slotVisibilityChangedHandler = event => {
 	const slotID = slot.getSlotElementId();
 	if (typeof slotStatsObject[slotID] === 'undefined') {
 		slotStatsObject[slotID] = {
-			slot,
-			viewPercentage: 0,
+			viewPercentage: inViewPercentage,
 			timeVisible: 0,
 		};
 	} else {
@@ -44,11 +64,10 @@ class Dfp extends PureComponent {
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
-		this.refreshSlots = this.refreshSlots.bind(this);
 	}
 
 	componentDidMount() {
-		const { googletag, addedSlotVisListener } = window;
+		const { googletag, addedSlotListeners } = window;
 		const { placeholder } = this.props;
 
 		this.container = document.getElementById(placeholder);
@@ -69,10 +88,12 @@ class Dfp extends PureComponent {
 			return;
 		}
 
-		if (!addedSlotVisListener) {
-			console.log(`Adding slotVisibilityChangedHandler`);
-			window.addedSlotVisListener = true;
+		if (!addedSlotListeners) {
+			window.addedSlotListeners = true;
 			googletag.cmd.push(function() {
+				googletag
+					.pubads()
+					.addEventListener('impressionViewable', impressionViewableHandler);
 				googletag
 					.pubads()
 					.addEventListener(
@@ -269,7 +290,7 @@ class Dfp extends PureComponent {
 			// MFP 09/17/2020 - Added a refresh() that fires as last embed of first content block.
 			//                - Calls to display should not be required.
 			// googletag.display(slot);
-			console.log(`SETTING SLOT ${slot.getSlotElementId()} for UnitName `);
+
 			this.setState({ slot });
 
 			return true;
@@ -279,16 +300,10 @@ class Dfp extends PureComponent {
 	refreshSlot() {
 		const { googletag } = window;
 		const { slot } = this.state;
-		let { slotStatsObject } = window;
-
-		if (!slotStatsObject) {
-			console.log(`Creating slotStatsObject in refreshSlot() `);
-			window.slotStatsObject = {};
-			slotStatsObject = window.slotStatsObject;
-		}
+		const slotStatsObject = getSlotStatsObject();
 
 		if (slot) {
-			console.log(`REFRESH ${slot.getSlotElementId()}`);
+			console.log(`refresh() ${slot.getSlotElementId()}`);
 			const slotID = slot.getSlotElementId();
 			if (typeof slotStatsObject[slotID] === 'undefined') {
 				console.log(`Creating new stat item for ${slotID}`);
@@ -304,46 +319,10 @@ class Dfp extends PureComponent {
 				);
 			}
 
-			if (slotStatsObject[slotID].timeVisible > 30000) {
+			if (slotStatsObject[slotID].timeVisible >= 30000) {
 				slotStatsObject[slotID].timeVisible = 0;
 				googletag.pubads().refresh([slot], { changeCorrelator: false });
 			}
-		}
-
-		// this.refreshSlots();
-	}
-
-	refreshSlots() {
-		const { googletag } = window;
-		const { slotStatsObject } = window;
-		const slotsToModify = [];
-		console.log(`refreshSlots()`);
-
-		if (slotStatsObject) {
-			console.log(
-				`slotStatsObject Has ${Object.keys(slotStatsObject).length} Slots`,
-			);
-			Object.keys(slotStatsObject).forEach(slotID => {
-				const slotStat = slotStatsObject[slotID];
-				console.log(`Checking ${slotStat.slot.getSlotElementId()}`);
-				console.log(`Pct ${slotStat.viewPercentage}`);
-				console.log(`TimeVis ${slotStat.timeVisible}`);
-				if (slotStat.timeVisible > 30000) {
-					console.log(`Adding Slot To Be Refreshed`);
-					slotsToModify.push(slotStat.slot);
-					console.log(`${slotsToModify.length} Slots Need To Be Refreshed`);
-					slotStat.timeVisible = 0;
-				}
-			});
-
-			if (slotsToModify.length > 0) {
-				console.log(`REFRESHING ${slotsToModify.length} Slot(s)`);
-				// googletag.cmd.push(function() {
-				googletag.pubads().refresh([slotsToModify]);
-				// });
-			}
-		} else {
-			console.log(`No SlotStat Array Found in refreshSlots()`);
 		}
 	}
 
