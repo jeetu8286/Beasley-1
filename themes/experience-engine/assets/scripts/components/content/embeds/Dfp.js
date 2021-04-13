@@ -57,6 +57,17 @@ const slotVisibilityChangedHandler = event => {
 	}
 };
 
+const slotRenderEndedHandler = event => {
+	const { slot, isEmpty, size } = event;
+
+	console.log(`slotRenderEndedHandler FIRED`);
+	if (!isEmpty && size && size[1]) {
+		const slotID = slot.getSlotElementId();
+		console.log(`Size - ${size}`);
+		document.getElementById(slotID).style.height = `${size[1]}px`;
+	}
+};
+
 class Dfp extends PureComponent {
 	constructor(props) {
 		const { placeholder } = props;
@@ -110,6 +121,9 @@ class Dfp extends PureComponent {
 						'slotVisibilityChanged',
 						slotVisibilityChangedHandler,
 					);
+				googletag
+					.pubads()
+					.addEventListener('slotRenderEnded', slotRenderEndedHandler);
 			});
 		}
 	}
@@ -347,10 +361,10 @@ class Dfp extends PureComponent {
 		if (slot) {
 			const slotID = slot.getSlotElementId();
 			console.log(`REFRESH - ${slotID}`);
-			// googletag.pubads().collapseEmptyDivs(false); // Stop Collapsing Empty Slots
 			googletag.cmd.push(() => {
 				document.getElementById(slotID).style.opacity = '0';
 				document.getElementById(slotID).classList.remove('fadeOutAnimation');
+				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
 				googletag.pubads().refresh([slot], { changeCorrelator: false });
 			});
 		}
