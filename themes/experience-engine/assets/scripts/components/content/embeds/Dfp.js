@@ -4,6 +4,7 @@ import { IntersectionObserverContext } from '../../../context/intersection-obser
 
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const SlotUpdateTimeInterval = 5000;
+
 const getSlotStatsObject = () => {
 	let { slotStatsObject } = window;
 	if (!slotStatsObject) {
@@ -29,6 +30,9 @@ const impressionViewableHandler = event => {
 	} else {
 		slotStatsObject[slotID].viewPercentage = 100;
 	}
+
+	document.getElementById(slotID).classList.add('fadeInAnimation');
+	document.getElementById(slotID).style.opacity = '1';
 };
 
 const slotVisibilityChangedHandler = event => {
@@ -55,6 +59,7 @@ const slotVisibilityChangedHandler = event => {
 
 class Dfp extends PureComponent {
 	constructor(props) {
+		const { placeholder } = props;
 		super(props);
 
 		this.state = {
@@ -62,7 +67,12 @@ class Dfp extends PureComponent {
 			interval: false,
 		};
 
+		if (placeholder !== playerSponsorDivID) {
+			document.getElementById(placeholder).classList.add('fadeInAnimation');
+		}
+
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
+		this.updateSlot = this.updateSlot.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
 	}
 
@@ -158,7 +168,7 @@ class Dfp extends PureComponent {
 
 	startInterval() {
 		this.setState({
-			interval: setInterval(this.refreshSlot, SlotUpdateTimeInterval),
+			interval: setInterval(this.updateSlot, SlotUpdateTimeInterval),
 		});
 	}
 
@@ -297,18 +307,17 @@ class Dfp extends PureComponent {
 		});
 	}
 
-	refreshSlot() {
-		const { googletag } = window;
+	updateSlot() {
+		// const { googletag } = window;
 		const { slot } = this.state;
 		const slotStatsObject = getSlotStatsObject();
 
 		if (slot) {
-			console.log(`refresh() ${slot.getSlotElementId()}`);
+			console.log(`update() ${slot.getSlotElementId()}`);
 			const slotID = slot.getSlotElementId();
 			if (typeof slotStatsObject[slotID] === 'undefined') {
 				console.log(`Creating new stat item for ${slotID}`);
 				slotStatsObject[slotID] = {
-					slot,
 					viewPercentage: 0,
 					timeVisible: 0,
 				};
@@ -321,10 +330,29 @@ class Dfp extends PureComponent {
 
 			if (slotStatsObject[slotID].timeVisible >= 30000) {
 				slotStatsObject[slotID].timeVisible = 0;
-				googletag.cmd.push(() => {
-					googletag.pubads().refresh([slot], { changeCorrelator: false });
-				});
+				document.getElementById(slotID).classList.remove('fadeInAnimation');
+				document.getElementById(slotID).classList.remove('fadeOutAnimation');
+				document.getElementById(slotID).classList.add('fadeOutAnimation');
+				setTimeout(() => {
+					this.refreshSlot();
+				}, 1000);
 			}
+		}
+	}
+
+	refreshSlot() {
+		const { googletag } = window;
+		const { slot } = this.state;
+
+		if (slot) {
+			const slotID = slot.getSlotElementId();
+			console.log(`REFRESH - ${slotID}`);
+			// googletag.pubads().collapseEmptyDivs(false); // Stop Collapsing Empty Slots
+			googletag.cmd.push(() => {
+				document.getElementById(slotID).style.opacity = '0';
+				document.getElementById(slotID).classList.remove('fadeOutAnimation');
+				googletag.pubads().refresh([slot], { changeCorrelator: false });
+			});
 		}
 	}
 
