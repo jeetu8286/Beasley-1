@@ -2,78 +2,71 @@ import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context/intersection-observer';
 
+const isRotateAdsEnabled = true;
+const slotPollMillisecs = 5000;
+const slotRefreshMillisecs = 30000;
+
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
-const SlotUpdateTimeInterval = 5000;
+const isNotPlayerOrInterstitial = placeholder => {
+	return (
+		placeholder !== playerSponsorDivID && placeholder !== interstitialDivID
+	);
+};
 
-const getSlotStatsObject = () => {
+const getSlotStatsCollectionObject = () => {
 	let { slotStatsObject } = window;
 	if (!slotStatsObject) {
-		console.log(`Creating slotStatsObject in slotVisibilityChangedHandler `);
 		window.slotStatsObject = {};
 		slotStatsObject = window.slotStatsObject;
 	}
 	return slotStatsObject;
 };
 
-const impressionViewableHandler = event => {
-	const { slot } = event;
-	const slotStatsObject = getSlotStatsObject();
+const getSlotStat = placeholder => {
+	if (!placeholder) {
+		throw Error('NULL Slot ID Param in getSlotStat()');
+	}
 
-	console.log(`impressionViewableHandler FIRED`);
-
-	const slotID = slot.getSlotElementId();
-	if (typeof slotStatsObject[slotID] === 'undefined') {
-		slotStatsObject[slotID] = {
-			viewPercentage: 100,
+	const slotStatsObject = getSlotStatsCollectionObject();
+	if (typeof slotStatsObject[placeholder] === 'undefined') {
+		slotStatsObject[placeholder] = {
+			viewPercentage: 0,
 			timeVisible: 0,
 		};
-	} else {
-		slotStatsObject[slotID].viewPercentage = 100;
 	}
+
+	return slotStatsObject[placeholder];
+};
+
+const impressionViewableHandler = event => {
+	const { slot } = event;
+	const placeholder = slot.getSlotElementId();
+	getSlotStat(placeholder).viewPercentage = 100;
 };
 
 const slotVisibilityChangedHandler = event => {
 	let { inViewPercentage } = event;
 	const { slot } = event;
-	const slotStatsObject = getSlotStatsObject();
-
-	console.log(`slotVisibilityChangedHandler FIRED`);
 
 	if (typeof event.inViewPercentage === 'undefined') {
 		inViewPercentage = 100;
 	}
 
-	const slotID = slot.getSlotElementId();
-	if (typeof slotStatsObject[slotID] === 'undefined') {
-		slotStatsObject[slotID] = {
-			viewPercentage: inViewPercentage,
-			timeVisible: 0,
-		};
-	} else {
-		slotStatsObject[slotID].viewPercentage = inViewPercentage;
-	}
+	const placeholder = slot.getSlotElementId();
+	getSlotStat(placeholder).viewPercentage = inViewPercentage;
 };
 
 const slotRenderEndedHandler = event => {
 	const { slot, isEmpty, size } = event;
 
-	console.log(`slotRenderEndedHandler FIRED`);
-	const slotID = slot.getSlotElementId();
-	if (
-		!isEmpty &&
-		size &&
-		size[1] &&
-		slotID !== playerSponsorDivID &&
-		slotID !== interstitialDivID
-	) {
+	const placeholder = slot.getSlotElementId();
+	if (!isEmpty && size && size[1] && isNotPlayerOrInterstitial(placeholder)) {
 		const imageHeight = size[1];
-		const slotElement = document.getElementById(slotID);
+		const slotElement = document.getElementById(placeholder);
 		const padBottomStr = window.getComputedStyle(slotElement).paddingBottom;
-		console.log(`Padding Bottom String: ${padBottomStr}`);
 		const padBottom =
 			padBottomStr.indexOf('px') > -1 ? padBottomStr.replace('px', '') : '0';
-		console.log(`Padding Bottom: ${padBottom}`);
 		slotElement.style.height = `${imageHeight + parseInt(padBottom, 10)}px`;
 		slotElement.classList.add('fadeInAnimation');
 		slotElement.style.opacity = '1';
@@ -90,16 +83,22 @@ class Dfp extends PureComponent {
 			interval: false,
 		};
 
-		if (
-			placeholder !== playerSponsorDivID &&
-			placeholder !== interstitialDivID
-		) {
-			document.getElementById(placeholder).classList.add('fadeInAnimation');
+		if (isNotPlayerOrInterstitial(placeholder)) {
+			document.getElementById(placeholder).style.opacity = 0;
 		}
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
-		this.updateSlot = this.updateSlot.bind(this);
+		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
+	}
+
+	isConfiguredToRunInterval() {
+		const { placeholder, unitName } = this.props;
+
+		return (
+			unitName === 'right-rail' ||
+			(isRotateAdsEnabled && isNotPlayerOrInterstitial(placeholder))
+		);
 	}
 
 	componentDidMount() {
@@ -109,10 +108,7 @@ class Dfp extends PureComponent {
 		this.container = document.getElementById(placeholder);
 		this.tryDisplaySlot();
 
-		if (
-			placeholder !== playerSponsorDivID &&
-			placeholder !== interstitialDivID
-		) {
+		if (this.isConfiguredToRunInterval()) {
 			this.startInterval();
 			document.addEventListener('visibilitychange', this.onVisibilityChange);
 		}
@@ -123,8 +119,8 @@ class Dfp extends PureComponent {
 
 		// If Ad Blocker is enabled googletag will be absent
 		if (!googletag) {
-			console.log(`NO googletag FOUND IN DFP COMPONENT DID MOUNT`);
-			return;
+			throw Error(`NO googletag FOUND IN DFP COMPONENT DID MOUNT`);
+			// return;
 		}
 
 		if (!window.addedSlotListeners) {
@@ -181,13 +177,9 @@ class Dfp extends PureComponent {
 	}
 
 	componentWillUnmount() {
-		const { placeholder } = this.props;
 		this.destroySlot();
 
-		if (
-			placeholder !== playerSponsorDivID &&
-			placeholder !== interstitialDivID
-		) {
+		if (this.isConfiguredToRunInterval()) {
 			this.stopInterval();
 			document.removeEventListener('visibilitychange', this.onVisibilityChange);
 		}
@@ -203,7 +195,7 @@ class Dfp extends PureComponent {
 
 	startInterval() {
 		this.setState({
-			interval: setInterval(this.updateSlot, SlotUpdateTimeInterval),
+			interval: setInterval(this.updateSlotVisibleTimeStat, slotPollMillisecs),
 		});
 	}
 
@@ -232,7 +224,6 @@ class Dfp extends PureComponent {
 		googletag.cmd.push(() => {
 			const size = bbgiconfig.dfp.sizes[unitName];
 			const slot = googletag.defineSlot(unitId, size, placeholder);
-			console.log(`CREATED SLOT ${slot.getSlotElementId()} for ID ${unitId}`);
 
 			// If Slot was already defined this will be null
 			// Ignored to fix the exception
@@ -332,59 +323,47 @@ class Dfp extends PureComponent {
 				slot.setTargeting(targeting[i][0], targeting[i][1]);
 			}
 
-			// MFP 09/17/2020 - Added a refresh() that fires as last embed of first content block.
-			//                - Calls to display should not be required.
-			// googletag.display(slot);
-
 			this.setState({ slot });
-
 			return true;
 		});
 	}
 
-	updateSlot() {
-		// const { googletag } = window;
+	updateSlotVisibleTimeStat() {
+		const { placeholder } = this.props;
 		const { slot } = this.state;
-		const slotStatsObject = getSlotStatsObject();
 
 		if (slot) {
-			console.log(`update() ${slot.getSlotElementId()}`);
-			const slotID = slot.getSlotElementId();
-			if (typeof slotStatsObject[slotID] === 'undefined') {
-				console.log(`Creating new stat item for ${slotID}`);
-				slotStatsObject[slotID] = {
-					viewPercentage: 0,
-					timeVisible: 0,
-				};
-			} else if (slotStatsObject[slotID].viewPercentage > 50) {
-				slotStatsObject[slotID].timeVisible += SlotUpdateTimeInterval;
+			const slotStat = getSlotStat(placeholder);
+			if (slotStat.viewPercentage > 50) {
+				slotStat.timeVisible += slotPollMillisecs;
 				console.log(
-					`Stat item for ${slotID} has was incremented to ${slotStatsObject[slotID].timeVisible} seconds of viewability`,
+					`Stat item for ${placeholder} has was incremented to ${slotStat.timeVisible} milliseconds of viewability`,
 				);
 			}
 
-			if (slotStatsObject[slotID].timeVisible >= 30000) {
-				slotStatsObject[slotID].timeVisible = 0;
-				document.getElementById(slotID).classList.remove('fadeInAnimation');
-				document.getElementById(slotID).classList.remove('fadeOutAnimation');
-				document.getElementById(slotID).classList.add('fadeOutAnimation');
+			if (slotStat.timeVisible >= slotRefreshMillisecs) {
+				slotStat.timeVisible = 0;
+				const placeholderElement = document.getElementById(placeholder);
+				placeholderElement.classList.remove('fadeInAnimation');
+				placeholderElement.classList.remove('fadeOutAnimation');
+				placeholderElement.classList.add('fadeOutAnimation');
 				setTimeout(() => {
 					this.refreshSlot();
-				}, 100);
+				}, 50);
 			}
 		}
 	}
 
 	refreshSlot() {
 		const { googletag } = window;
+		const { placeholder } = this.props;
 		const { slot } = this.state;
 
 		if (slot) {
-			const slotID = slot.getSlotElementId();
-			console.log(`REFRESH - ${slotID}`);
 			googletag.cmd.push(() => {
-				document.getElementById(slotID).style.opacity = '0';
-				document.getElementById(slotID).classList.remove('fadeOutAnimation');
+				const placeholderElement = document.getElementById(placeholder);
+				placeholderElement.style.opacity = '0';
+				placeholderElement.classList.remove('fadeOutAnimation');
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
 				googletag.pubads().refresh([slot], { changeCorrelator: false });
 			});
@@ -392,9 +371,12 @@ class Dfp extends PureComponent {
 	}
 
 	destroySlot() {
+		const { placeholder } = this.props;
 		const { slot } = this.state;
 		if (slot) {
 			const { googletag } = window;
+			// Remove Slot Stat Property
+			delete getSlotStatsCollectionObject()[placeholder];
 
 			if (googletag && googletag.destroySlots) {
 				googletag.destroySlots([slot]);
