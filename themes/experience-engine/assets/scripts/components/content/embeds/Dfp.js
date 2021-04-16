@@ -2,10 +2,6 @@ import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context/intersection-observer';
 
-const isRotateAdsEnabled = true;
-const slotPollMillisecs = 5000;
-const slotRefreshMillisecs = 30000;
-
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
 const isNotPlayerOrInterstitial = placeholder => {
@@ -76,11 +72,19 @@ const slotRenderEndedHandler = event => {
 class Dfp extends PureComponent {
 	constructor(props) {
 		const { placeholder } = props;
+		const { bbgiconfig } = window;
 		super(props);
 
 		this.state = {
 			slot: false,
 			interval: false,
+			isRotateAdsEnabled: bbgiconfig.isRotateAdsEnabled !== 'off',
+			slotPollMillisecs: bbgiconfig.ad_rotation_polling_msec_setting
+				? parseInt(bbgiconfig.ad_rotation_polling_msec_setting, 10)
+				: 5000,
+			slotRefreshMillisecs: bbgiconfig.ad_rotation_refresh_msec_setting
+				? parseInt(bbgiconfig.ad_rotation_refresh_msec_setting, 10)
+				: 30000,
 		};
 
 		if (isNotPlayerOrInterstitial(placeholder)) {
@@ -94,6 +98,7 @@ class Dfp extends PureComponent {
 
 	isConfiguredToRunInterval() {
 		const { placeholder, unitName } = this.props;
+		const { isRotateAdsEnabled } = this.state;
 
 		return (
 			unitName === 'right-rail' ||
@@ -194,6 +199,7 @@ class Dfp extends PureComponent {
 	}
 
 	startInterval() {
+		const { slotPollMillisecs } = this.state;
 		this.setState({
 			interval: setInterval(this.updateSlotVisibleTimeStat, slotPollMillisecs),
 		});
@@ -330,7 +336,7 @@ class Dfp extends PureComponent {
 
 	updateSlotVisibleTimeStat() {
 		const { placeholder } = this.props;
-		const { slot } = this.state;
+		const { slot, slotPollMillisecs, slotRefreshMillisecs } = this.state;
 
 		if (slot) {
 			const slotStat = getSlotStat(placeholder);
@@ -343,10 +349,11 @@ class Dfp extends PureComponent {
 
 			if (slotStat.timeVisible >= slotRefreshMillisecs) {
 				slotStat.timeVisible = 0;
-				const placeholderElement = document.getElementById(placeholder);
-				placeholderElement.classList.remove('fadeInAnimation');
-				placeholderElement.classList.remove('fadeOutAnimation');
-				placeholderElement.classList.add('fadeOutAnimation');
+				const placeholderClasslist = document.getElementById(placeholder)
+					.classList;
+				placeholderClasslist.remove('fadeInAnimation');
+				placeholderClasslist.remove('fadeOutAnimation');
+				placeholderClasslist.add('fadeOutAnimation');
 				setTimeout(() => {
 					this.refreshSlot();
 				}, 50);
