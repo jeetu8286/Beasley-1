@@ -87,7 +87,7 @@ class Dfp extends PureComponent {
 		this.state = {
 			slot: false,
 			interval: false,
-			isRotateAdsEnabled: bbgiconfig.isRotateAdsEnabled !== 'off',
+			isRotateAdsEnabled: bbgiconfig.ad_rotation_enabled !== 'off',
 			slotPollMillisecs: slotPollSecs ? slotPollSecs * 1000 : 5000,
 			slotRefreshMillisecs: slotRefreshSecs ? slotRefreshSecs * 1000 : 30000,
 		};
