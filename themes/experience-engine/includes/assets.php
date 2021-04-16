@@ -173,8 +173,8 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			'geotargetly' => ee_current_page_needs_geotargetly(),
 			'related_article_title' => get_option( 'related_article_title', 'You May Also Like' ),
 			'ad_rotation_enabled' => get_option( 'ad_rotation_enabled', 'on' ),
-			'ad_rotation_polling_msec_setting' => get_option( 'ad_rotation_polling_msec_setting', '5' ),
-			'ad_rotation_refresh_msec_setting' => get_option( 'ad_rotation_refresh_msec_setting', '30' ),
+			'ad_rotation_polling_sec_setting' => get_option( 'ad_rotation_polling_sec_setting', '5' ),
+			'ad_rotation_refresh_sec_setting' => get_option( 'ad_rotation_refresh_sec_setting', '30' ),
 
 			/** Live Streaming Intervals */
 			'intervals'  => [
