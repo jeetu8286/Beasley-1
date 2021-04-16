@@ -236,6 +236,9 @@ class Settings extends \Bbgi\Module {
 		register_setting(self::option_group, 'contest_show_dates_setting', 'sanitize_text_field');
 
 		register_setting(self::option_group, 'ad_lazy_loading_enabled', 'sanitize_text_field');
+		register_setting(self::option_group, 'ad_rotation_enabled', 'sanitize_text_field');
+		register_setting(self::option_group, 'ad_rotation_polling_sec_setting', 'sanitize_text_field');
+		register_setting(self::option_group, 'ad_rotation_refresh_sec_setting', 'sanitize_text_field');
 
 		register_setting(self::option_group, 'ee_featured_item_count_setting', 'sanitize_text_field');
 		register_setting(self::option_group, 'ee_dont_miss_item_count_setting', 'sanitize_text_field');
