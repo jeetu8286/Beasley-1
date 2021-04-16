@@ -75,16 +75,21 @@ class Dfp extends PureComponent {
 		const { bbgiconfig } = window;
 		super(props);
 
+		const slotPollSecs = parseInt(
+			bbgiconfig.ad_rotation_polling_sec_setting,
+			10,
+		);
+		const slotRefreshSecs = parseInt(
+			bbgiconfig.ad_rotation_refresh_sec_setting,
+			10,
+		);
+
 		this.state = {
 			slot: false,
 			interval: false,
 			isRotateAdsEnabled: bbgiconfig.isRotateAdsEnabled !== 'off',
-			slotPollMillisecs: bbgiconfig.ad_rotation_polling_msec_setting
-				? parseInt(bbgiconfig.ad_rotation_polling_msec_setting, 10)
-				: 5000,
-			slotRefreshMillisecs: bbgiconfig.ad_rotation_refresh_msec_setting
-				? parseInt(bbgiconfig.ad_rotation_refresh_msec_setting, 10)
-				: 30000,
+			slotPollMillisecs: slotPollSecs ? slotPollSecs * 1000 : 5000,
+			slotRefreshMillisecs: slotRefreshSecs ? slotRefreshSecs * 1000 : 30000,
 		};
 
 		if (isNotPlayerOrInterstitial(placeholder)) {
