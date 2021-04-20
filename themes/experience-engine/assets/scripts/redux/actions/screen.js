@@ -96,6 +96,13 @@ export const fetchPage = (url, options = {}) => async dispatch => {
 	}\page?url=${encodeURIComponent(url)}`; // eslint-disable-line no-useless-escape
 
 	try {
+		const station_play_link_matched = url.match(/str-station-([A-Za-z0-9]+)/);
+
+		if (station_play_link_matched) {
+			console.log(`${station_play_link_matched[1].toUpperCase()}`);
+			// TODO: Dispatch play event with station in payload
+		}
+
 		dispatch({ type: ACTION_LOADING_PAGE, url });
 
 		const response = await fetch(pageEndpoint).then(response =>
