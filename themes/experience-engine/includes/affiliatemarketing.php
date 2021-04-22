@@ -64,8 +64,10 @@ if ( ! function_exists( 'ee_get_affiliatemarketing_html' ) ) :
 									echo '<div>', $am_item_description[$index],'</div>';
 								}
 								echo '<div class="shop-button">';
-									if( isset( $am_item_description[$index] ) && $am_item_description[$index] !== "" ) {
-										echo '<div class="get-it-now-meta"> Get it now from <a class="get-it-now-button" href="', $am_item_getitnowfromurl[$index], '" target="_blank" rel="noopener">', $am_item_getitnowfromname[$index], '</a></div>';
+									if( isset( $am_item_getitnowfromname[$index] ) && $am_item_getitnowfromname[$index] !== "" ) {
+										$get_it_now_from_url = $am_item_getitnowfromurl[$index] ? $am_item_getitnowfromurl[$index] : '#' ;
+
+										echo '<div class="get-it-now-meta"> Get it now from <a class="get-it-now-button" href="', $get_it_now_from_url, '" target="_blank" rel="noopener">', $am_item_getitnowfromname[$index], '</a></div>';
 									}
 									if( isset( $am_item_buttontext[$index] ) && $am_item_buttontext[$index] !== "" )
 									{
