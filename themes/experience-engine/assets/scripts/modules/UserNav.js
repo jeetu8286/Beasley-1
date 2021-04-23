@@ -63,6 +63,8 @@ class UserNav extends Component {
 	 */
 	didAuthStateChange(user) {
 		// 04/23/3021 - Temporarily Short Circuit Login
+		// TODO - when direction we are taking is clear, this class needs to be refactored.
+		//      - In particular loadAsNotLoggedIn() and finishLoading() seem awful similar...
 		this.loadAsNotLoggedIn();
 		/*
 		const { didLogin } = this.state;
