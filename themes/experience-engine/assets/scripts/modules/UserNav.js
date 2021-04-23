@@ -23,7 +23,7 @@ class UserNav extends Component {
 		super(props);
 
 		this.state = {
-			didLogin: false,
+			// didLogin: false,
 			didRedirect: false,
 			loading: true,
 		};
@@ -62,6 +62,9 @@ class UserNav extends Component {
 	 * Else load as if not logged in - load page using logged-out lifecycle
 	 */
 	didAuthStateChange(user) {
+		// 04/23/3021 - Temporarily Short Circuit Login
+		this.loadAsNotLoggedIn();
+		/*
 		const { didLogin } = this.state;
 		const { resetUser } = this.props;
 
@@ -74,6 +77,7 @@ class UserNav extends Component {
 			resetUser();
 			this.finishLoading();
 		}
+		*/
 	}
 
 	/**
@@ -237,7 +241,7 @@ class UserNav extends Component {
 UserNav.propTypes = {
 	hideSplashScreen: PropTypes.func.isRequired,
 	fetchFeedsContent: PropTypes.func.isRequired,
-	resetUser: PropTypes.func.isRequired,
+	// resetUser: PropTypes.func.isRequired,
 	setUser: PropTypes.func.isRequired,
 	showCompleteSignup: PropTypes.func.isRequired,
 	showSignIn: PropTypes.func.isRequired,
