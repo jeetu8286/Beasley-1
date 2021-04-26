@@ -10,6 +10,10 @@ class BrandedContent extends PureComponent {
 			return;
 		}
 
+		const scriptelement = document.createElement('script');
+		scriptelement.setAttribute('src', 'https://c.go-fet.ch/a/embed.js');
+		scriptelement.setAttribute('async', 'true');
+
 		const element = document.createElement('div');
 
 		element.setAttribute('data-stackid', stackid);
@@ -21,6 +25,7 @@ class BrandedContent extends PureComponent {
 		element.setAttribute('class', 'dml-widget-container');
 
 		container.appendChild(element);
+		container.appendChild(scriptelement);
 	}
 
 	render() {
