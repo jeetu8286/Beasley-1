@@ -10,6 +10,10 @@ function supports_galleries( $show_id ) {
 	return (bool) filter_var( get_post_meta( $show_id, 'show_homepage_galleries', true ), FILTER_VALIDATE_BOOLEAN );
 }
 
+function supports_affiliate_marketing( $show_id ) {
+	return (bool) filter_var( get_post_meta( $show_id, 'show_homepage_affiliate_marketing', true ), FILTER_VALIDATE_BOOLEAN );
+}
+
 function supports_podcasts( $show_id ) {
 	return (bool) filter_var( get_post_meta( $show_id, 'show_homepage_podcasts', true ), FILTER_VALIDATE_BOOLEAN );
 }
