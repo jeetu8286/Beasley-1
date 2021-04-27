@@ -84,6 +84,24 @@ function galleries_link_html( $show_id, $link_text = 'Galleries' ) {
 	}
 }
 
+function get_affiliate_marketing_permalink( $show_id ) {
+	return trailingslashit( get_the_permalink( $show_id ) ) . "affiliate_marketing/";
+}
+
+function affiliate_marketing_link_html( $show_id, $link_text = 'Affiliate Marketing' ) {
+	if ( supports_affiliate_marketing( $show_id ) ) {
+		$class = 'affiliate_marketing' == get_query_var( 'show_section' ) || ( is_singular() && get_post_type() === 'affiliate_marketing' )
+			? 'current-menu-item'
+			: '';
+
+		?><li class="<?php echo esc_attr( $class ); ?>">
+			<a href="<?php echo esc_url( get_affiliate_marketing_permalink( $show_id ) ); ?>">
+				<?php echo esc_html( $link_text ); ?>
+			</a>
+		</li><?php
+	}
+}
+
 function get_podcasts_permalink( $show_id ) {
 	return trailingslashit( get_the_permalink( $show_id ) ) . "podcasts/";
 }
@@ -251,6 +269,31 @@ function get_show_gallery_query( $per_page = 10 ) {
 
 	$args = array(
 		'post_type'      => 'gmr_gallery',
+		'paged'          => $current_page,
+		'posts_per_page' => $per_page,
+		'tax_query'      => array(
+			array(
+				'taxonomy' => \ShowsCPT::SHOW_TAXONOMY,
+				'field' => 'term_taxonomy_id',
+				'terms' => $show_term->term_taxonomy_id,
+			),
+		),
+	);
+
+	return new \WP_Query( $args );
+}
+
+/**
+ * Gets an instance of WP_Query that corresponds to the current page of the affiliate marketing endpoints for shows
+ *
+ * @return \WP_Query
+ */
+function get_show_affiliate_marketing_query( $per_page = 10 ) {
+	$show_term = \TDS\get_related_term( get_the_ID() );
+	$current_page = get_query_var( 'paged', 1 );
+	
+	$args = array(
+		'post_type'      => 'affiliate_marketing',
 		'paged'          => $current_page,
 		'posts_per_page' => $per_page,
 		'tax_query'      => array(
