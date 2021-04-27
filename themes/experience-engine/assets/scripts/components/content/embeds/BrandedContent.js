@@ -21,6 +21,10 @@ class BrandedContent extends PureComponent {
 		element.setAttribute('class', 'dml-widget-container');
 
 		container.appendChild(element);
+
+		if (window.DML) {
+			window.DML.dmlLoad(element);
+		}
 	}
 
 	render() {
