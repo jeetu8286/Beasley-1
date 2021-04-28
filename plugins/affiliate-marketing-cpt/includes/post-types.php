@@ -11,12 +11,14 @@ class AffiliateMarketingCPT {
 	 * Hook into the appropriate actions when the class is initiated.
 	 */
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'affiliate_cpt_init' ), 0 );
+		add_action( 'init', array( __CLASS__, 'affiliate_cpt' ), 0 );
+
+		add_filter( 'gmr-show-curation-post-types', array( __CLASS__, 'extend_curration_post_types' ) );
 	}
 	/**
 	 * Add the Affiliate marketing Content Type
 	 */
-	public static function affiliate_cpt_init() {
+	public static function affiliate_cpt() {
 		load_plugin_textdomain( AFFILIATE_MARKETING_CPT_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 		$labels = array(
@@ -190,6 +192,19 @@ class AffiliateMarketingCPT {
 				),
 			),
 		) );
+	}
+
+	/**
+	 * Extends homepage curration post types.
+	 *
+	 * @static
+	 * @access public
+	 * @param array $post_types The array of already registered post types.
+	 * @return array The array of extended post types.
+	 */
+	public static function extend_curration_post_types( $post_types ) {
+		$post_types[] = self::AFFILIATE_MARKETING_POST_TYPE;
+		return $post_types;
 	}
 }
 

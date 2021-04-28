@@ -24,7 +24,7 @@ register_activation_hook( __FILE__, 'affiliate_marketing_cpt_activated' );
 register_deactivation_hook( __FILE__, 'affiliate_marketing_cpt_deactivated' );
 
 function affiliate_marketing_cpt_activated() {
-	\AffiliateMarketingCPT::affiliate_cpt_init();
+	\AffiliateMarketingCPT::affiliate_cpt();
 
 	load_capabilities( AffiliateMarketingCPT::AFFILIATE_MARKETING_POST_TYPE );
 }
