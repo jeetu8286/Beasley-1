@@ -156,7 +156,7 @@ class AffiliateMarketingCPTMetaboxes {
 				</div>
 				<div class="am-form-group">
 					<label class="ammetatitle" for="am_item_buttontext_<?php echo $i; ?>"><?php _e( 'Button Text', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ); ?> </label>
-					<input name="am_item_buttontext[]" type="text" value="<?php echo htmlentities($am_item_buttontext[$i]); ?>" class="am_item_buttontext">
+					<input name="am_item_buttontext[]" type="text" value="<?php echo $am_item_buttontext[$i] ? htmlentities( $am_item_buttontext[$i] ) : 'Shop This' ; ?>" class="am_item_buttontext">
 				</div>
 				<div class="am-form-group">
 					<label class="ammetatitle" for="am_item_buttonurl_<?php echo $i; ?>"><?php _e( 'Button URL', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ); ?> </label>

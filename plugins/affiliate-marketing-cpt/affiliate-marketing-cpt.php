@@ -27,6 +27,7 @@ function affiliate_marketing_cpt_activated() {
 	\AffiliateMarketingCPT::affiliate_cpt();
 
 	load_capabilities( AffiliateMarketingCPT::AFFILIATE_MARKETING_POST_TYPE );
+	flush_rewrite_rules();	// This function is useful when used with custom post types as it allows for automatic flushing of the WordPress rewrite rules
 }
 
 function affiliate_marketing_cpt_deactivated() {
