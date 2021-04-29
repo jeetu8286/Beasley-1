@@ -60,6 +60,7 @@ class AffiliateMarketingCPT {
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => 29,
+			'menu_icon'           => 'dashicons-networking',
 			'supports'           => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail' ),
 			'taxonomies'         => array( 'am_category', 'am_tag' ),
 			'show_in_rest'       => true
