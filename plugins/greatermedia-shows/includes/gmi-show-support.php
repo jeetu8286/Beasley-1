@@ -439,7 +439,10 @@ function get_show_main_query( $per_page = 10 ) {
 	if ( class_exists( '\GreaterMediaGalleryCPT' ) ) {
 		$post_types[] = \GreaterMediaGalleryCPT::GALLERY_POST_TYPE;
 	}
-
+	if ( class_exists( '\AffiliateMarketingCPT' ) ) {
+		$post_types[] = \AffiliateMarketingCPT::AFFILIATE_MARKETING_POST_TYPE;
+	}
+	
 	$show_args = array(
 		'post_type'      => $post_types,
 		'paged'          => $current_page,

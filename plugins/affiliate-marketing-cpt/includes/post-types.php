@@ -13,6 +13,7 @@ class AffiliateMarketingCPT {
 	public static function init() {
 		add_action( 'init', array( __CLASS__, 'affiliate_cpt' ), 0 );
 
+		add_filter( 'gmr-homepage-curation-post-types', array( __CLASS__, 'extend_curration_post_types' ) );
 		add_filter( 'gmr-show-curation-post-types', array( __CLASS__, 'extend_curration_post_types' ) );
 	}
 	/**

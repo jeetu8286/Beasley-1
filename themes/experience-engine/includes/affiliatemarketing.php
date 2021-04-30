@@ -23,12 +23,15 @@ if ( ! function_exists( 'ee_get_affiliatemarketing_html' ) ) :
 				} else {
 					$amimage_title	= '';
 				}
+				$amitembuttonurl = $am_item_buttonurl[$index] 
+				?	$amitembuttonurl = $am_item_buttonurl[$index] 
+				: $amitembuttonurl = '#';
 				echo '<li class="affiliate-marketingmeta-item', $am_image_slug == $amimage_title ? ' scroll-to' : '', '">';
 					// Start code for Affiliate marketing meta data
 					echo '<div class="am-meta">';
 						echo '<div class="wrapper">';
 							echo '<div class="caption">';
-								echo '<h3>', $am_item_name_data, '</h3>';
+								echo '<h3>', '<a href="', $amitembuttonurl, '" target="_blank" rel="noopener">', $am_item_name_data, '</a></h3>';
 								
 								static $urls = array();
 
@@ -46,7 +49,7 @@ if ( ! function_exists( 'ee_get_affiliatemarketing_html' ) ) :
 								remove_filter( '_ee_the_lazy_image', $update_lazy_image );
 
 								if ( ! empty( $image_html ) ) {
-									echo '<div>', $image_html, '</div>';
+									echo '<div>', '<a href="', $amitembuttonurl, '" target="_blank" rel="noopener">', $image_html, '</a></div>';
 									
 									echo '<div class="share-wrap">';
 
@@ -71,10 +74,7 @@ if ( ! function_exists( 'ee_get_affiliatemarketing_html' ) ) :
 									}
 									if( isset( $am_item_buttontext[$index] ) && $am_item_buttontext[$index] !== "" )
 									{
-										$amitembuttonurl = $am_item_buttonurl[$index] 
-										?	$amitembuttonurl = $am_item_buttonurl[$index] 
-										: $amitembuttonurl = '#';	
-											echo '<div class="shop-now-button-meta">', '<a class="shop-now-button" href="', $amitembuttonurl, '" target="_blank" rel="noopener">', $am_item_buttontext[$index], '</a>', '</div>';
+										echo '<div class="shop-now-button-meta">', '<a class="shop-now-button" href="', $amitembuttonurl, '" target="_blank" rel="noopener">', $am_item_buttontext[$index], '</a>', '</div>';
 									}
 								echo '</div>';
 							echo '</div>';
