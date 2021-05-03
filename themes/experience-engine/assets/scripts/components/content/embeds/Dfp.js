@@ -62,7 +62,7 @@ const slotRenderEndedHandler = event => {
 	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		if (isEmpty) {
 			// Set Visible Time To Huge Arbitrary Value So That Next Poll Will Trigger A Refresh
-			// NOTE: Minimum Poll Intervavl Is Set In DFP Constructor To Be Much Longer Than
+			// NOTE: Minimum Poll Interval Is Set In DFP Constructor To Be Much Longer Than
 			// 	Round Trip to Ad Server So That Racing/Looping Condition Is Avoided.
 			getSlotStat(placeholder).timeVisible = 1000000;
 		} else {
