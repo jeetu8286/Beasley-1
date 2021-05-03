@@ -98,12 +98,14 @@ class Dfp extends PureComponent {
 			10,
 		);
 
+		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
+		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
 		this.state = {
 			slot: false,
 			interval: false,
 			isRotateAdsEnabled: bbgiconfig.ad_rotation_enabled !== 'off',
 			slotPollMillisecs:
-				slotPollSecs && slotPollSecs >= 1 ? slotPollSecs * 1000 : 5000,
+				slotPollSecs && slotPollSecs >= 5 ? slotPollSecs * 1000 : 5000,
 			slotRefreshMillisecs:
 				slotRefreshSecs && slotRefreshSecs >= 15
 					? slotRefreshSecs * 1000
