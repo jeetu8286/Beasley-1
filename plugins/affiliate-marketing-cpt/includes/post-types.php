@@ -70,7 +70,7 @@ class AffiliateMarketingCPT {
 
 		// Add new taxonomy, make it hierarchical (like categories)
 		$labels = array(
-			'name'              => _x( 'Categories', 'taxonomy general name', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ),
+			'name'              => _x( 'Affiliate Marketing Categories', 'taxonomy general name', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ),
 			'singular_name'     => _x( 'Category', 'taxonomy singular name', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ),
 			'search_items'      => __( 'Search Categories', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ),
 			'all_items'         => __( 'All Categories', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ),
