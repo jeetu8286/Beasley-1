@@ -5,12 +5,9 @@
 	padding: 0;
 }
 
-.post-tags-am {
+.post-tags {
 	& .post-tag-label {
 		color: #444444;
-	}
-	& .post-tag-items {
-		color: #202124;
 	}
 }
 
