@@ -33,6 +33,10 @@
 		margin-top: 1rem;
 	}
 
+	& .am_imagecode {
+		text-align: center;
+	}
+
 	& .placeholder-lazyimage {
 		overflow: hidden;
 		position: relative;
@@ -52,6 +56,7 @@
 
 	& .lazy-image {
 		background-size: contain;
+		background-color: transparent;
 		height: 100%;
 		left: 0;
 		position: absolute;

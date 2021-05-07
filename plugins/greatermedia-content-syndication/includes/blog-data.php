@@ -442,7 +442,6 @@ class BlogData {
 				$attachment->alt = get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true );
 				$attachment->attribution = get_post_meta( $attachment->ID, 'gmr_image_attribution', true );
 			}
-			// echo "<pre>", print_r($attachment), "</pre>"; exit;
 		}
 
 		$am_metas = array();
@@ -454,7 +453,10 @@ class BlogData {
 				$am_meta_item_photo->alt = get_post_meta( $am_meta_item_photo->ID, '_wp_attachment_image_alt', true );
 				$am_meta_item_photo->attribution = get_post_meta( $am_meta_item_photo->ID, 'gmr_image_attribution', true );
 			}
-			// echo "<pre>", print_r($am_metas['am_item_photo']), "</pre>"; exit;
+			$am_metas['am_item_imagetype'] = self::am_get_metavalue( 'am_item_imagetype', $single_result->ID  );
+			$am_metas['am_item_imagecode'] = self::am_get_metavalue( 'am_item_imagecode', $single_result->ID  );
+			$am_metas['am_item_order'] = self::am_get_metavalue( 'am_item_order', $single_result->ID  );
+			$am_metas['am_item_unique_order'] = self::am_get_metavalue( 'am_item_unique_order', $single_result->ID  );
 			$am_metas['am_item_name'] = self::am_get_metavalue( 'am_item_name', $single_result->ID  );
 			$am_metas['am_item_description'] = self::am_get_metavalue( 'am_item_description', $single_result->ID );
 			$am_metas['am_item_buttontext'] = self::am_get_metavalue( 'am_item_buttontext', $single_result->ID  );
@@ -550,6 +552,10 @@ class BlogData {
 				'am_item_name',
 				'am_item_description',
 				'am_item_photo',
+				'am_item_imagetype',
+				'am_item_imagecode',
+				'am_item_order',
+				'am_item_unique_order',
 				'am_item_buttontext',
 				'am_item_buttonurl',
 				'am_item_getitnowfromname',
@@ -689,6 +695,10 @@ class BlogData {
 			if ( 'affiliate_marketing' == $post_type ) {
 				delete_post_meta( $post_id, 'am_item_name' );
 				delete_post_meta( $post_id, 'am_item_photo' );
+				delete_post_meta( $post_id, 'am_item_imagetype' );
+				delete_post_meta( $post_id, 'am_item_imagecode' );
+				delete_post_meta( $post_id, 'am_item_order' );
+				delete_post_meta( $post_id, 'am_item_unique_order' );
 				delete_post_meta( $post_id, 'am_item_description' );
 				delete_post_meta( $post_id, 'am_item_buttontext' );
 				delete_post_meta( $post_id, 'am_item_buttonurl' );
@@ -696,12 +706,13 @@ class BlogData {
 				delete_post_meta( $post_id, 'am_item_getitnowfromurl' );
 				
 				update_post_meta( $post_id, 'am_item_name', $am_metas['am_item_name'] );
-
-				// update_post_meta( $post_id, 'am_item_photo', $am_metas['am_item_photo'] );
-				$am_item_photo_import = self::ImportAttachedImages( $post_id, $am_metas['am_item_photo'] );
-				//echo "<pre>", print_r($am_item_photo_import), "</pre>"; exit;
-				update_post_meta( $post_id, 'am_item_photo', $am_item_photo_import );
 				
+				$am_item_photo_import = self::ImportAttachedImages( $post_id, $am_metas['am_item_photo'] );
+				update_post_meta( $post_id, 'am_item_photo', $am_item_photo_import );
+				update_post_meta( $post_id, 'am_item_imagetype', $am_metas['am_item_imagetype'] );
+				update_post_meta( $post_id, 'am_item_imagecode', $am_metas['am_item_imagecode'] );
+				update_post_meta( $post_id, 'am_item_order', $am_metas['am_item_order'] );
+				update_post_meta( $post_id, 'am_item_unique_order', $am_metas['am_item_unique_order'] );
 				update_post_meta( $post_id, 'am_item_description', $am_metas['am_item_description'] );
 				update_post_meta( $post_id, 'am_item_buttontext', $am_metas['am_item_buttontext'] );
 				update_post_meta( $post_id, 'am_item_buttonurl', $am_metas['am_item_buttonurl'] );
