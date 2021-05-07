@@ -171,6 +171,12 @@
 		}
 	}
 
+	& .-podcast {
+		@media(--min-medium-viewport) {
+			margin-top: -35px;
+		}
+    }
+
 	& .controls-progress {
 		left: 0;
 		position: absolute;
