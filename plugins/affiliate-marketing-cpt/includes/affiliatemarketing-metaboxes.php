@@ -83,37 +83,16 @@ class AffiliateMarketingCPTMetaboxes {
 		$am_item_getitnowtext = self::am_get_metavalue( 'am_item_getitnowtext' );
 		$am_item_getitnowfromurl = self::am_get_metavalue( 'am_item_getitnowfromurl' );
 
-		if ($contents && !empty($contents)) {
-			$contents = $contents;
-		} else {
-			$contents = array('');
-		}
-		if ($am_item_name && !empty($am_item_name)) {
-			$am_item_name = $am_item_name ;
-		} else {
-			$am_item_name = array('');
-		}
-		if ($am_item_buttontext && !empty($am_item_buttontext)) {
-			$am_item_buttontext =  $am_item_buttontext ;
-		} else {
-			$am_item_buttontext = array('');
-		}
-		if ($am_item_buttonurl && !empty($am_item_buttonurl)) {
-			$am_item_buttonurl =  $am_item_buttonurl ;
-		} else {
-			$am_item_buttonurl = array('');
-		}
+		$contents = $contents && !empty($contents) ? $contents : array('');
+		$am_item_name = $am_item_name && !empty($am_item_name) ? $am_item_name : array('');
+		$am_item_buttontext = $am_item_buttontext && !empty($am_item_buttontext) ? $am_item_buttontext : array('');
+		$am_item_buttonurl = $am_item_buttonurl && !empty($am_item_buttonurl) ? $am_item_buttonurl : array('');
+
 		$am_item_getitnowtext = $am_item_getitnowtext && !empty($am_item_getitnowtext) ? $am_item_getitnowtext : array('') ;
-		if ($am_item_getitnowfromname && !empty($am_item_getitnowfromname)) {
-			$am_item_getitnowfromname =  $am_item_getitnowfromname;
-		} else {
-			$am_item_getitnowfromname = array('');
-		}
-		if ($am_item_getitnowfromurl && !empty($am_item_getitnowfromurl)) {
-			$am_item_getitnowfromurl =  $am_item_getitnowfromurl;
-		} else {
-			$am_item_getitnowfromurl = array('');
-		}
+
+		$am_item_getitnowfromname = $am_item_getitnowfromname && !empty($am_item_getitnowfromname) ? $am_item_getitnowfromname : array('');
+		$am_item_getitnowfromurl = $am_item_getitnowfromurl && !empty($am_item_getitnowfromurl) ? $am_item_getitnowfromurl : array('');
+
 
 			for ($i = 0; $i < count($contents); $i++) {
 			?>
@@ -140,17 +119,16 @@ class AffiliateMarketingCPTMetaboxes {
 						<?php _e( 'Photo', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ); ?>
 						<input name="am_item_imagetype_<?php echo "$i";?>" id="am_item_imagetype_imageurl_<?php echo "$i";?>" type="radio" <?php echo $am_item_imagetype[$i] == "imageurl" ? 'checked' : '' ;?> value="imageurl" class="am_item_imagetype" data-postid="<?php echo $i; ?>" data-type-hide="imagecode" /> 
 					</label>
-					<div class="imageurl" id="imageurl_<?php echo $i;?>" <?php echo $am_item_imagetype[$i] == "imageurl" ? 'style="display:none"' : '' ; ?>>
+					<div class="imageurl" id="imageurl_<?php echo $i;?>" <?php echo $am_item_imagetype[$i] == "imageurl" || $am_item_imagetype[$i] == "" ? 'style="display:none"' : '' ; ?>>
 						<textarea name="am_item_imagecode[]" class="tinytext" id="imagecode-<?php echo $i; ?>" rows="10"><?php echo $am_item_imagetype[$i] == "imagecode" ? $am_item_imagecode[$i] : ""; ?></textarea>
 					</div>
-					<div class="imagecode" id="imagecode_<?php echo $i;?>" <?php echo $am_item_imagetype[$i] == "imagecode" ? 'style="display:none"' : '' ; ?> >
+					<div class="imagecode" id="imagecode_<?php echo $i;?>" <?php echo $am_item_imagetype[$i] == "imagecode" || $am_item_imagetype[$i] == "" ? 'style="display:none"' : '' ; ?> >
 						<input type="hidden" value="<?php echo $am_item_photo[$i]; ?>" class="regular-text process_custom_images" id="process_custom_images<?php echo $i;?>" name="am_item_photo[]" max="" min="1" step="1">
 						<button class="set_custom_images button">Upload Image</button>
 						<?php
 							$img = wp_get_attachment_image_src($am_item_photo[$i], 'thumbnail');
-							if($img != "") {
-								echo '<img class="upload-preview" src="', $img[0], '" width="100px" /><br />';
-							} else { echo '<img class="upload-preview" src="', $img[0], '" width="100px" /><br />'; }
+							echo '<img class="upload-preview" src="', $img != "" && $am_item_imagetype[$i] == "imageurl" ? $img[0] : "" , '" width="100px" /><br />';
+
 						?>
 					</div>
 				</div>
