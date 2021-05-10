@@ -20,6 +20,8 @@ import {
 import ErrorBoundary from '../components/ErrorBoundary';
 
 import * as actions from '../redux/actions/player';
+// import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
+// import {durationChange, setPlayer, STATUSES, statusUpdate, timeChange} from '../redux/actions/player';
 
 class LivePlayer extends Component {
 	constructor(props) {
@@ -89,6 +91,19 @@ class LivePlayer extends Component {
 
 		initTdPlayer(tdmodules);
 	}
+
+	/*
+	switchToStream() {
+
+		// reset time and duration.
+		dispatch(timeChange(0));
+		dispatch(durationChange(0));
+		// set the appropriate player.
+		dispatch(setPlayer(window.tdplayer, 'tdplayer'));
+
+		//mapStateToProps
+	}
+	*/
 
 	handleOnline() {
 		this.setState({ online: true });
@@ -191,6 +206,7 @@ class LivePlayer extends Component {
 							}
 							pause={pause}
 							resume={resume}
+							initRadioMode={this.setUpPlayer}
 							colors={buttonsBackgroundStyle}
 							isIos={isIos}
 							progressClass={progressClass}
