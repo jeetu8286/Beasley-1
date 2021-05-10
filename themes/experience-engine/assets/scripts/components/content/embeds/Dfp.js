@@ -38,34 +38,52 @@ const getSlotStat = placeholder => {
 const impressionViewableHandler = event => {
 	const { slot } = event;
 	const placeholder = slot.getSlotElementId();
-	getSlotStat(placeholder).viewPercentage = 100;
+	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
+		getSlotStat(placeholder).viewPercentage = 100;
+	}
 };
 
 const slotVisibilityChangedHandler = event => {
-	let { inViewPercentage } = event;
 	const { slot } = event;
-
-	if (typeof event.inViewPercentage === 'undefined') {
-		inViewPercentage = 100;
-	}
-
 	const placeholder = slot.getSlotElementId();
-	getSlotStat(placeholder).viewPercentage = inViewPercentage;
+	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
+		getSlotStat(placeholder).viewPercentage =
+			typeof event.inViewPercentage === 'undefined'
+				? 100
+				: event.inViewPercentage;
+	}
 };
 
 const slotRenderEndedHandler = event => {
 	const { slot, isEmpty, size } = event;
 
 	const placeholder = slot.getSlotElementId();
-	if (!isEmpty && size && size[1] && isNotPlayerOrInterstitial(placeholder)) {
-		const imageHeight = size[1];
+	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
-		const padBottomStr = window.getComputedStyle(slotElement).paddingBottom;
-		const padBottom =
-			padBottomStr.indexOf('px') > -1 ? padBottomStr.replace('px', '') : '0';
-		slotElement.style.height = `${imageHeight + parseInt(padBottom, 10)}px`;
-		slotElement.classList.add('fadeInAnimation');
-		slotElement.style.opacity = '1';
+		if (isEmpty) {
+			// If Slot Is Visible
+			if (slotElement.offsetParent !== null) {
+				// Set Visible Time To Huge Arbitrary MSec Value So That Next Poll Will Trigger A Refresh
+				// NOTE: Minimum Poll Interval Is Set In DFP Constructor To Be Much Longer Than
+				// 	Round Trip to Ad Server So That Racing/Looping Condition Is Avoided.
+				getSlotStat(placeholder).timeVisible = 10000000;
+			}
+		} else {
+			// Adjust Container Div Height
+			if (size && size[1]) {
+				const imageHeight = size[1];
+				const padBottomStr = window.getComputedStyle(slotElement).paddingBottom;
+				const padBottom =
+					padBottomStr.indexOf('px') > -1
+						? padBottomStr.replace('px', '')
+						: '0';
+				slotElement.style.height = `${imageHeight + parseInt(padBottom, 10)}px`;
+			}
+
+			slotElement.classList.add('fadeInAnimation');
+			slotElement.style.opacity = '1';
+			getSlotStat(placeholder).timeVisible = 0; // Reset Timeout So That Next Few Polls Do Not Trigger A Refresh
+		}
 	}
 };
 
@@ -83,12 +101,14 @@ class Dfp extends PureComponent {
 			10,
 		);
 
+		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
+		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
 		this.state = {
 			slot: false,
 			interval: false,
 			isRotateAdsEnabled: bbgiconfig.ad_rotation_enabled !== 'off',
 			slotPollMillisecs:
-				slotPollSecs && slotPollSecs >= 1 ? slotPollSecs * 1000 : 5000,
+				slotPollSecs && slotPollSecs >= 5 ? slotPollSecs * 1000 : 5000,
 			slotRefreshMillisecs:
 				slotRefreshSecs && slotRefreshSecs >= 15
 					? slotRefreshSecs * 1000
@@ -349,15 +369,16 @@ class Dfp extends PureComponent {
 			}
 
 			if (slotStat.timeVisible >= slotRefreshMillisecs) {
-				slotStat.timeVisible = 0;
-				const placeholderClasslist = document.getElementById(placeholder)
-					.classList;
-				placeholderClasslist.remove('fadeInAnimation');
-				placeholderClasslist.remove('fadeOutAnimation');
-				placeholderClasslist.add('fadeOutAnimation');
+				const placeholderElement = document.getElementById(placeholder);
+				if (placeholderElement.style.opacity === '1') {
+					const placeholderClasslist = placeholderElement.classList;
+					placeholderClasslist.remove('fadeInAnimation');
+					placeholderClasslist.remove('fadeOutAnimation');
+					placeholderClasslist.add('fadeOutAnimation');
+				}
 				setTimeout(() => {
 					this.refreshSlot();
-				}, 50);
+				}, 100);
 			}
 		}
 	}
@@ -369,11 +390,11 @@ class Dfp extends PureComponent {
 
 		if (slot) {
 			googletag.cmd.push(() => {
+				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
+				googletag.pubads().refresh([slot]);
 				const placeholderElement = document.getElementById(placeholder);
 				placeholderElement.style.opacity = '0';
 				placeholderElement.classList.remove('fadeOutAnimation');
-				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
-				googletag.pubads().refresh([slot]);
 			});
 		}
 	}
