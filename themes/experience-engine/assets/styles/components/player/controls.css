@@ -173,7 +173,7 @@
 
 	& .-podcast {
 		@media(--min-medium-viewport) {
-			margin-top: -35px;
+			margin-top: -5px;
 		}
     }
 
@@ -616,6 +616,31 @@
 		width: 22px;
 		height: 31px;
 	}
+
+	& .radio-mode-btn {
+	    display: none;
+
+		& svg.LIVE_PAUSE,
+		& svg.LIVE_STOP,
+		& svg.LIVE_FAILED,
+		& svg.STREAM_GEO_BLOCKED,
+		& svg.STATION_NOT_FOUND {
+			  display: initial;
+			  fill: var(--brand-text-color);
+			  margin-left: 1rem;
+		  }
+  	}
+
+	& svg.LIVE_PAUSE.radio-mode-btn,
+	& svg.LIVE_STOP.radio-mode-btn,
+	& svg.LIVE_FAILED.radio-mode-btn,
+	& svg.STREAM_GEO_BLOCKED.radio-mode-btn,
+	& svg.STATION_NOT_FOUND.radio-mode-btn {
+	    display: initial;
+	    fill: var(--brand-text-color);
+	    margin-left: 1rem;
+  	}
+
 
 	& .play-btn,
 	& .pause-btn,
