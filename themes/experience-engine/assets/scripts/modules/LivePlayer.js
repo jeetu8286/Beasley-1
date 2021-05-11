@@ -92,19 +92,6 @@ class LivePlayer extends Component {
 		initTdPlayer(tdmodules);
 	}
 
-	/*
-	switchToStream() {
-
-		// reset time and duration.
-		dispatch(timeChange(0));
-		dispatch(durationChange(0));
-		// set the appropriate player.
-		dispatch(setPlayer(window.tdplayer, 'tdplayer'));
-
-		//mapStateToProps
-	}
-	*/
-
 	handleOnline() {
 		this.setState({ online: true });
 	}
@@ -206,7 +193,7 @@ class LivePlayer extends Component {
 							}
 							pause={pause}
 							resume={resume}
-							initRadioMode={this.setUpPlayer}
+							customColors={customColors}
 							colors={buttonsBackgroundStyle}
 							isIos={isIos}
 							progressClass={progressClass}
@@ -217,9 +204,17 @@ class LivePlayer extends Component {
 						<Info colors={textStyle} />
 					</div>
 					<div className="button-holder full-width">
-						<RecentSongs colors={customColors} />
-						<Progress className="-desktop" colors={textStyle} />
-						<Volume colors={buttonsFillStyle} />
+						<div>
+							<RecentSongs
+								className={` ${progressClass} `}
+								colors={customColors}
+							/>
+							<Progress
+								className={` -desktop ${progressClass} `}
+								colors={textStyle}
+							/>
+							<Volume colors={buttonsFillStyle} />
+						</div>
 					</div>
 					<PlayerAd
 						className="player-ad"
