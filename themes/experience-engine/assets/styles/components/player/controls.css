@@ -29,7 +29,7 @@
 	  justify-content: space-between;
 	  position: relative;
 
-      & button:not(.play-btn, .pause-btn, .resume-btn, .loading-btn) {
+      & button:not(.play-btn, .pause-btn, .resume-btn, .loading-btn, .listenlive-btn) {
 		  background: transparent;
 		  border: 0;
 		  cursor: pointer;
@@ -38,11 +38,6 @@
 		  text-align: left;
 	  }
     }
-
-	& .control-listenlive {
-		margin-left: .25rem;
-		width: 3rem;
-	}
 
 	& .control-section,
 	& .controls-wrapper {
@@ -114,7 +109,7 @@
 			}
 		}
 
-		& button:not(.play-btn, .pause-btn, .resume-btn, .loading-btn) {
+		& button:not(.play-btn, .pause-btn, .resume-btn, .loading-btn, .listenlive-btn) {
 			background: transparent;
 			border: 0;
 			cursor: pointer;
@@ -482,6 +477,14 @@
 		@media(--min-xxlarge-viewport) {
 			max-width: 180px;
 		}
+
+		& button.listenlive-btn {
+			border: none;
+			  margin-left: .5rem;
+			  padding-top: .25rem;
+			  width: 54px;
+			  font-size: .75rem;
+		  }
 
 		& button {
 			align-items: center;
