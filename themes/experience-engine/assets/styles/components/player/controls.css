@@ -48,11 +48,17 @@
 		justify-content: space-between;
 		position: relative;
 		width: 100%;
+	  	min-width: 0;
+	  	overflow: hidden;
+	  	text-overflow: ellipsis;
+	  	margin-right: 10px;
 
 		&:first-child {
 			flex: 2 0px;
 			order: 2;
 			overflow: hidden;
+		 	min-width: 0;
+		 	text-overflow: ellipsis;
 
 			@media(--min-medium-viewport) {
 				flex: 1 100%;
@@ -71,29 +77,16 @@
 			}
 		}
 
-		&:nth-child(2) {
-			flex: 1 100%;
-			margin-left: 1rem;
-			margin-right: 1rem;
-			max-width: 54px;
-			order: 1;
-
-			@media(--min-medium-viewport) {
-				flex: 2 0px;
-				max-width: 320px;
-				order: 2;
-			}
-
-			@media(--min-xlarge-viewport) {
-				flex: 0 0 auto;
-			}
-		}
 
 		&:last-child {
 			flex: 1 100%;
 			flex-flow: row nowrap;
 			max-width: 70px;
 			order: 3;
+		 	min-width: 0;
+		 	overflow: hidden;
+		 	text-overflow: ellipsis;
+
 
 			@media(--min-medium-viewport) {
 				flex: 1 18%;
@@ -184,6 +177,7 @@
 
 	& .controls-info {
 		font-size: 0.875rem;
+	  	width: 100%;
 
 		& strong {
 			font-weight: 600;
@@ -285,7 +279,7 @@
 			transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
 			visibility: hidden;
 			will-change: visibility, opacity;
-		    width: 320px;
+		    width: 240px;
 
 			& h5 {
 				font-size: 1rem;
@@ -596,8 +590,8 @@ display: none;
 }
 
 .top-progress-holder {
-	width: calc(100% - 80px);
-	margin-left: 80px;
+	width: calc(100% - 78px);
+	margin-left: 78px;
 	position: absolute;
 }
 
