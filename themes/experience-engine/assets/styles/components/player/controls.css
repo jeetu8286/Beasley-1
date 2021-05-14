@@ -184,7 +184,6 @@
 
 	& .controls-info {
 		font-size: 0.875rem;
-		width: 100%;
 
 		& strong {
 			font-weight: 600;
@@ -596,20 +595,10 @@ display: none;
 	}
 }
 
-.ee-range-input.-progress input[type="range"] {
-	  margin-left: 80px;
-
-	  @media(--min-medium-viewport) {
-		  margin-left: 0;
-	  }
-  }
-
-.ee-range-input.-progress p {
+.top-progress-holder {
+	width: calc(100% - 80px);
 	margin-left: 80px;
-
-	@media(--min-medium-viewport) {
-		margin-left: 0;
-	}
+	position: absolute;
 }
 
 .status {
