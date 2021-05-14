@@ -53,10 +53,10 @@ class Info extends Component {
 
 		return (
 			<div className="controls-info" style={colors}>
-				<div>
+				<p>
 					<strong>{info[0] || ''}</strong>
-				</div>
-				<div>{info[1] || ''}</div>
+				</p>
+				<p>{info[1] || ''}</p>
 			</div>
 		);
 	}
@@ -76,11 +76,11 @@ class Info extends Component {
 
 		return (
 			<div className="controls-info" style={colors}>
-				<div>
+				<p>
 					{status === 'LIVE_PLAYING' && <span className="live">Live</span>}
 					<strong>{stream ? stream.title : station}</strong>
-				</div>
-				<div>{info}</div>
+				</p>
+				<p>{info}</p>
 			</div>
 		);
 	}
