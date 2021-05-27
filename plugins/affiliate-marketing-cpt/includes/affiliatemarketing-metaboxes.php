@@ -8,10 +8,19 @@ class AffiliateMarketingCPTMetaboxes {
 	 * Hook into the appropriate actions when the class is constructed.
 	 */
 	public static function init() {
+		add_filter( 'wpseo_metabox_prio', array( __CLASS__, 'affiliate_marketing_yoast_to_bottom' ) );
+
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_box' ) );
 		add_action( 'save_post',array( __CLASS__, 'affiliate_marketing_save') );
 		add_action( 'save_post',array( __CLASS__, 'affiliate_marketing_footer_description_save') );
+	}
+
+	function affiliate_marketing_yoast_to_bottom() {
+		global $typenow, $pagenow;
+		if ( AffiliateMarketingCPT::AFFILIATE_MARKETING_POST_TYPE == $typenow && in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
+			return 'low';
+		}
 	}
 
 	/**
