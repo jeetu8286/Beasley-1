@@ -214,7 +214,7 @@ class AffiliateMarketingCPTMetaboxes {
 					
 					jQuery('.content-row').eq(jQuery('.content-row').length - 1).after(contentRow);
 					tinymce.init({ selector: '#' + contentID , branding: false });
-					jQuery(".am_item_imagetype").click(function() {$('#' + $(this).val() + '_' + $(this).attr('data-postid')).hide();$('#' + $(this).attr('data-type-hide') + '_' + $(this).attr('data-postid')).show();});
+					jQuery(".am_item_imagetype").click(function() {	jQuery('#' + jQuery(this).val() + '_' + jQuery(this).attr('data-postid')).hide(); jQuery('#' + jQuery(this).attr('data-type-hide') + '_' + jQuery(this).attr('data-postid')).show(); });
 			});
 			jQuery(document).on('click', '.content-delete', function(e) {
 				e.preventDefault();
