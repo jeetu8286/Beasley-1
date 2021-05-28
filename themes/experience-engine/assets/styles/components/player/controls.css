@@ -565,25 +565,21 @@ display: none;
 
 	& .time {
 		display: none;
+	    align-items: center;
+	    font-size: .675rem;
+	    margin-top: 3px;
+	    margin-right: 10px;
 
 		&.-desktop4digits {
 			@media(--min-medium-viewport) {
-				align-items: center;
 				display: inline-flex;
-				font-size: .675rem;
-				margin-top: 3px;
-				margin-right: 10px;
 				width: 1.75rem;
 			}
 		}
 
 		&.-desktop6digits {
 			@media(--min-medium-viewport) {
-				align-items: center;
 				display: inline-flex;
-				font-size: .675rem;
-				margin-top: 3px;
-				margin-right: 10px;
 				width: 2.75rem;
 			}
 		}
