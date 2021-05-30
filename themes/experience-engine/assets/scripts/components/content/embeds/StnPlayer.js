@@ -13,25 +13,36 @@ class StnPlayer extends PureComponent {
 		console.log('mounted');
 		const { placeholder, fk, cid } = this.props;
 
+		if (!window.stnvideos) {
+			window.stnvideos = {};
+		}
+
 		const container = document.getElementById(placeholder);
 		if (!container) {
 			return;
 		}
 
-		const stndiv = document.createElement('div');
-		stndiv.className = `s2nPlayer k-${fk}`;
-		stndiv.setAttribute('data-type', 'float');
+		console.log('component created');
 
-		const stn_barker_script = document.createElement('script');
-		stn_barker_script.setAttribute('type', 'text/javascript');
-		stn_barker_script.setAttribute(
-			'src',
-			`//embed.sendtonews.com/player3/embedcode.js?fk=${fk}&cid=${cid}&offsetx=0&offsety=75&floatwidth=400&floatposition=bottom-right`,
-		);
-		stn_barker_script.setAttribute('data-type', 's2nScript');
+		window.stnvideos.default = {
+			render: () => {
+				const stndiv = document.createElement('div');
+				stndiv.className = `s2nPlayer k-${fk}`;
+				stndiv.setAttribute('data-type', 'float');
 
-		container.appendChild(stndiv);
-		container.appendChild(stn_barker_script);
+				const stn_barker_script = document.createElement('script');
+				stn_barker_script.setAttribute('type', 'text/javascript');
+				stn_barker_script.setAttribute(
+					'src',
+					`//embed.sendtonews.com/player3/embedcode.js?fk=${fk}&cid=${cid}&offsetx=0&offsety=75&floatwidth=400&floatposition=bottom-right`,
+				);
+				stn_barker_script.setAttribute('data-type', 's2nScript');
+
+				container.appendChild(stndiv);
+				container.appendChild(stn_barker_script);
+			},
+			type: 'default',
+		};
 	}
 
 	render() {
