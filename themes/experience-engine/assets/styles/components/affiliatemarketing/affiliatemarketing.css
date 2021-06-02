@@ -147,6 +147,8 @@
 				color: #fff;
 				padding: 8px 20px;
 				border-radius: 8px;
+				font-size: 18px;
+				font-weight: 300;
 			}
 		}
 		& .share-wrap{
@@ -172,4 +174,17 @@
 		}
 	}
 
+}
+
+.get-it-now-meta {
+	& a {
+	font-weight: 300;
+	}
+}
+
+.am_imagecode {
+	& img {
+		max-width: 400px;
+		height: auto;
+	}
 }
