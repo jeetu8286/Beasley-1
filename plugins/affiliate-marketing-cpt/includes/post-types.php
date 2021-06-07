@@ -50,7 +50,7 @@ class AffiliateMarketingCPT {
 		);
 		$rewrite = array(
 			'slug'                => 'musthaves',
-			'with_front'          => false,
+			'with_front'          => true,
 			'pages'               => true,
 			'feeds'               => true,
 		);
