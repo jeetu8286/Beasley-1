@@ -193,12 +193,17 @@ class AffiliateMarketingCPTMetaboxes {
 			<?php
 			}
 			?>
-		<p><a class="button" href="#" id="add_content">Add new item</a></p>
+		<p>
+			<input name="total_count_items" id="total_count_items" type="hidden" value="<?php echo count($contents);?>" />
+			<a class="button" href="#" id="add_content">Add new item</a>
+		</p>
 		<script>
 			var startingContent = <?php echo count($contents) - 1; ?>;
 			jQuery('#add_content').click(function(e) {
 				e.preventDefault();
 				startingContent++;
+				var total_count_items = startingContent+1;
+				jQuery('#total_count_items').val(total_count_items); 
 				var contentID = 'am_item_description_' + startingContent;
 				var am_item_name = 'am_item_name_' + startingContent;
 				var am_item_photo = 'am_item_photo_' + startingContent;
@@ -257,10 +262,12 @@ class AffiliateMarketingCPTMetaboxes {
 			// var_dump($filecontents);
 			update_post_meta( $post_id, 'am_item_photo', $filecontents );
 		}
-		$itemCount = count($_POST['am_item_name']);
+		$itemCount = $_POST['total_count_items'];
 		$am_item_imagetype = array();
 		for ($x = 0; $x < $itemCount; $x++) {
-			$am_item_imagetype[] = $_POST['am_item_imagetype_'.$x];
+			if( isset($_POST['am_item_imagetype_'.$x]) && $_POST['am_item_imagetype_'.$x] != "" ) {
+				$am_item_imagetype[] = $_POST['am_item_imagetype_'.$x];
+			}
 		}
 		
 		if ( isset( $am_item_imagetype ) ) {
