@@ -23,19 +23,22 @@ class PlayerAd extends PureComponent {
 
 	getRender() {
 		const { minWidth, maxWidth } = this.props;
+		const { unitId } = window.bbgiconfig.dfp.player;
 
-		if (
-			minWidth > 0 &&
-			window.matchMedia(`(min-width: ${minWidth}px)`).matches
-		) {
-			return true;
-		}
+		if (unitId) {
+			if (
+				minWidth > 0 &&
+				window.matchMedia(`(min-width: ${minWidth}px)`).matches
+			) {
+				return true;
+			}
 
-		if (
-			maxWidth > 0 &&
-			window.matchMedia(`(max-width: ${maxWidth}px)`).matches
-		) {
-			return true;
+			if (
+				maxWidth > 0 &&
+				window.matchMedia(`(max-width: ${maxWidth}px)`).matches
+			) {
+				return true;
+			}
 		}
 
 		return false;
