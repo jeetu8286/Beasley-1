@@ -7,7 +7,7 @@ class PlayerAd extends PureComponent {
 	constructor(props) {
 		super(props);
 
-		this.state = { render: this.getRender() };
+		this.state = { shouldRender: this.getWhetherShouldRender() };
 
 		this.onResize = this.handleResize.bind(this);
 		this.onRef = this.handleSlotRef.bind(this);
@@ -21,7 +21,7 @@ class PlayerAd extends PureComponent {
 		window.removeEventListener('resize', this.onResize);
 	}
 
-	getRender() {
+	getWhetherShouldRender() {
 		const { minWidth, maxWidth } = this.props;
 		const { unitId } = window.bbgiconfig.dfp.player;
 
@@ -46,9 +46,9 @@ class PlayerAd extends PureComponent {
 
 	handleResize() {
 		window.requestAnimationFrame(() => {
-			const render = this.getRender();
-			if (render !== this.state.render) {
-				this.setState({ render });
+			const shouldRender = this.getWhetherShouldRender();
+			if (shouldRender !== this.state.shouldRender) {
+				this.setState({ shouldRender });
 			}
 		});
 	}
@@ -60,8 +60,8 @@ class PlayerAd extends PureComponent {
 	}
 
 	render() {
-		const { render } = this.state;
-		if (!render) {
+		const { shouldRender } = this.state;
+		if (!shouldRender) {
 			return false;
 		}
 
