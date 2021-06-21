@@ -321,11 +321,11 @@ class Dfp extends PureComponent {
 			} else if (unitName === 'adhesion') {
 				sizeMapping = googletag
 					.sizeMapping()
-					// does not display on small screens
+					// does not display on 0 width
 					.addSize([0, 0], [])
 
-					// restrict to smaller ad
-					.addSize([1250, 0], [[728, 90]])
+					// Div visibility is controlled in react so always show at small ad when at least 1 pixel wide
+					.addSize([1, 0], [[728, 90]])
 
 					// accepts both sizes
 					.addSize(
