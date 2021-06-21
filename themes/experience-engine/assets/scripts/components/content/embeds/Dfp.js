@@ -399,8 +399,8 @@ class Dfp extends PureComponent {
 
 			if (unitName === 'adhesion') {
 				const playerElement = document.getElementById('live-player');
-				// adhesion ads should be showing when screen > 1350
-				if (playerElement && playerElement.offsetWidth > 1350) {
+				// adhesion ads should be showing when screen > 1250
+				if (playerElement && playerElement.offsetWidth > 1250) {
 					slotStat.timeVisible += slotPollMillisecs;
 				}
 			} else if (slotStat.viewPercentage > 50) {
