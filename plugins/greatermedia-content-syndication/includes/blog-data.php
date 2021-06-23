@@ -246,7 +246,8 @@ class BlogData {
 					$single_post['am_metas'],
 					$single_post['am_item_photo_attachment'],
 					$single_post['term_tax'],
-					$force
+					$force,
+					$single_post['page_metas']
 				);
 
 				if ( $post_id > 0 ) {
@@ -445,6 +446,20 @@ class BlogData {
 			}
 		}
 
+		$page_metas = array();
+		if ( 'page' == $single_result->post_type ) {
+			$page_post = get_post($single_result->ID);
+			$page_metas['_wp_page_template'] = self::am_get_metavalue( '_wp_page_template', $single_result->ID );
+			$page_metas['menu_order'] = $page_post->menu_order;
+			$page_parent_slug_var = "";
+			if ( isset( $page_post->post_parent ) && $page_post->post_parent != "" )
+			{
+				$page_parent_slug_array = get_post( $page_post->post_parent );
+				$page_parent_slug_var = $page_parent_slug_array->post_name;
+			}
+			$page_metas['post_parent'] = $page_parent_slug_var;
+		}
+
 		$am_metas = array();
 		$am_metas_photo_array = array();
 		if ( 'affiliate_marketing' == $single_result->post_type ) {
@@ -499,7 +514,8 @@ class BlogData {
 			'am_item_photo_attachment'			  => $am_metas_photo_array,
 			'featured'            => $featured_id ? array( $featured_id, $featured_src ) : null,
 			'galleries'           => $galleries,
-			'term_tax'            => $term_tax
+			'term_tax'            => $term_tax,
+			'page_metas' 		  => $page_metas
 		);
 	}
 
@@ -523,7 +539,7 @@ class BlogData {
 	 *
 	 * @return int|\WP_Error
 	 */
-	public static function ImportPosts( $post, $metas, $defaults, $featured, $attachments, $gallery_attachments, $galleries,$am_metas, $am_item_photo_attachment, $term_tax, $force_update = false ) {
+	public static function ImportPosts( $post, $metas, $defaults, $featured, $attachments, $gallery_attachments, $galleries,$am_metas, $am_item_photo_attachment, $term_tax, $force_update = false, $page_metas ) {
 		if ( ! $post ) {
 			return;
 		}
@@ -560,6 +576,20 @@ class BlogData {
 		if ( 'publish' == $post_status ) {
 			$args['post_modified'] = current_time( 'mysql' );
 			$args['post_modified_gmt'] = current_time( 'mysql', 1 );
+		}
+		
+		if ( 'page' == $post_type ) {
+			$post_parent = "";
+			if ( isset( $page_metas['post_parent'] ) && $page_metas['post_parent'] != "" )
+			{
+				// $pageIdBySlug = get_page_by_path( $page_metas['post_parent'], OBJECT, 'page' );
+				$pageIdBySlug = get_page_by_path( 'the-content-factory-page', OBJECT, 'page' );
+				$post_parent = isset( $pageIdBySlug->ID ) && $pageIdBySlug->ID != "" ? $pageIdBySlug->ID : "" ;
+				echo "<pre>", print_r( $pageIdBySlug ), print_r( $page_metas['post_parent'] ), "</pre>"; exit;
+			}
+			$args['post_parent'] = $post_parent;
+			// echo "<pre>", print_r( $pageIdBySlug ), print_r( $args['post_parent'] ), "</pre>"; exit;
+			$args['menu_order'] = $page_metas['menu_order'];
 		}
 
 		if ( ! empty( $metas ) ) {
@@ -712,6 +742,11 @@ class BlogData {
 					}
 				}
 			}
+
+		if ( 'page' == $post_type ) {
+			delete_post_meta( $post_id, '_wp_page_template' );
+			update_post_meta( $post_id, '_wp_page_template',$page_metas['_wp_page_template'] );
+		}
 
 			if ( 'affiliate_marketing' == $post_type ) {
 				delete_post_meta( $post_id, 'am_item_name' );
