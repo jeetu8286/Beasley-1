@@ -107,7 +107,7 @@ if ( ! function_exists( 'ee_get_css_colors' ) ) :
 			$vars['--global-white'] = '#ffffff';
 			$vars['--global-alabaster'] = '#FCFCFC';
 			$vars['--global-gallery'] = '#EFEFEF';
-	
+
 			$vars['--global-theme-primary'] = '#f1f1f1';
 			$vars['--global-theme-secondary'] = '#fcfcfc';
 			$vars['--global-theme-font-primary'] = 'var(--global-tundora)';
@@ -202,7 +202,7 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			'ad_rotation_refresh_sec_setting' => get_option( 'ad_rotation_refresh_sec_setting', '30' ),
 			'ad_vid_rotation_refresh_sec_setting' => get_option( 'ad_vid_rotation_refresh_sec_setting', '60' ),
 			'vid_ad_html_tag_csv_setting' => get_option( 'vid_ad_html_tag_csv_setting', 'mixpo' ),
-
+			'ad_rubicon_zoneid_setting' => get_option( 'ad_rubicon_zoneid_setting', '' ),
 
 			/** Live Streaming Intervals */
 			'intervals'  => [
