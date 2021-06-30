@@ -302,7 +302,7 @@ class Dfp extends PureComponent {
 			return;
 		}
 
-		this.loadPrebid(bbgiconfig.dfp.sizes[unitName], rubiconZoneID);
+		this.loadPrebid(unitId, bbgiconfig.dfp.sizes[unitName], rubiconZoneID);
 
 		googletag.cmd.push(() => {
 			const size = bbgiconfig.dfp.sizes[unitName];
