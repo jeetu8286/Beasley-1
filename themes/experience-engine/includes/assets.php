@@ -49,9 +49,13 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		wp_register_script( 'googletag', '//www.googletagservices.com/tag/js/gpt.js', null, null, true ); // must be loaded in the footer
 		wp_script_add_data( 'googletag', 'async', true );
 
-		$mupluginbase = untrailingslashit( plugin_dir_url( __FILE__ ) );
-		wp_register_script( 'pbjs', $mupluginbase . '/prebidjs/prebid5.1.0.js', null, null, true );
-		wp_script_add_data( 'pbjs', 'async', true );
+		$mupluginbase = untrailingslashit( plugin_dir_url('') );
+		// $mupluginbase = preg_replace("(^https?://)", "", $mupluginbase );
+		// $prebidjspath = '//' . $mupluginbase . '/../mu-plugins/dependencies/prebidjs/prebid5.1.0.js';
+		$prebidjspath = $mupluginbase . '/../mu-plugins/dependencies/prebidjs/prebid5.1.0.js';
+		// NOT WORKING??? wp_register_script( 'pbjs', $prebidjspath, null, null, true );
+		// wp_script_add_data( 'pbjs', 'async', true );
+		echo "<script type='text/javascript' async src='". $prebidjspath ."'></script>";
 
 		// TODO: refactor this to use wp_localize_script.
 $bbgiconfig = <<<EOL
