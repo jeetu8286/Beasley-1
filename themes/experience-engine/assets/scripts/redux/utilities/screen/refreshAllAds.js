@@ -11,7 +11,10 @@ export default function refreshAllAds() {
 
 	const pbjs = window.pbjs || {};
 	pbjs.que = pbjs.que || [];
-	pbjs.setConfig({ debug: 'true' });
+	pbjs.setConfig({
+		debug: 'true',
+		rubicon: { singleRequest: true },
+	});
 
 	pbjs.que.push(() => {
 		const PREBID_TIMEOUT = 2000;

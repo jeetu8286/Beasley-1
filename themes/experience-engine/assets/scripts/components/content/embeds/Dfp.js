@@ -255,7 +255,10 @@ class Dfp extends PureComponent {
 
 		const pbjs = window.pbjs || {};
 		pbjs.que = pbjs.que || [];
-		pbjs.setConfig({ debug: 'true' });
+		pbjs.setConfig({
+			debug: 'true',
+			rubicon: { singleRequest: true },
+		});
 
 		const prebidSizes = sizes.filter(s => s !== 'fluid');
 
@@ -495,7 +498,10 @@ class Dfp extends PureComponent {
 
 		const pbjs = window.pbjs || {};
 		pbjs.que = pbjs.que || [];
-		pbjs.setConfig({ debug: 'true' });
+		pbjs.setConfig({
+			debug: 'true',
+			rubicon: { singleRequest: true },
+		});
 
 		pbjs.que.push(() => {
 			const PREBID_TIMEOUT = 2000;
