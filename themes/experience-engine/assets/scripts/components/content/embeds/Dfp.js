@@ -161,11 +161,14 @@ class Dfp extends PureComponent {
 					? slotVideoRefreshSecs * 1000
 					: 60000,
 			rubiconZoneID: bbgiconfig.ad_rubicon_zoneid_setting,
+			prebidEnabled: bbgiconfig.prebid_enabled,
 		};
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
 		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
+		this.loadPrebid = this.loadPrebid.bind(this);
+		this.refreshBid = this.refreshBid.bind(this);
 	}
 
 	isConfiguredToRunInterval() {
@@ -244,20 +247,24 @@ class Dfp extends PureComponent {
 		this.setState({ interval: false });
 	}
 
-	loadPrebid(unitID, sizes, rubiconZoneID) {
-		if (!unitID || !sizes || !rubiconZoneID) {
+	loadPrebid(unitID, sizes) {
+		const { prebidEnabled, rubiconZoneID } = this.state;
+		if (!prebidEnabled || !unitID || !sizes || !rubiconZoneID) {
 			return;
 		}
 
 		const pbjs = window.pbjs || {};
 		pbjs.que = pbjs.que || [];
+		pbjs.setConfig({ debug: 'true' });
+
+		const prebidSizes = sizes.filter(s => s !== 'fluid');
 
 		const adUnits = [
 			{
 				code: unitID,
 				mediaTypes: {
 					banner: {
-						sizes,
+						sizes: prebidSizes,
 					},
 				},
 				bids: [
@@ -286,7 +293,6 @@ class Dfp extends PureComponent {
 			targeting,
 			shouldMapSizes,
 		} = this.props;
-		const { rubiconZoneID } = this.state;
 		const { googletag, bbgiconfig } = window;
 
 		if (!document.getElementById(placeholder)) {
@@ -302,7 +308,7 @@ class Dfp extends PureComponent {
 			return;
 		}
 
-		this.loadPrebid(unitId, bbgiconfig.dfp.sizes[unitName], rubiconZoneID);
+		this.loadPrebid(unitId, bbgiconfig.dfp.sizes[unitName]);
 
 		googletag.cmd.push(() => {
 			const size = bbgiconfig.dfp.sizes[unitName];
@@ -477,18 +483,31 @@ class Dfp extends PureComponent {
 	}
 
 	refreshBid(unitId, slot) {
+		const { prebidEnabled } = this.state;
+
+		if (!prebidEnabled) {
+			const { googletag } = window;
+			googletag.cmd.push(() => {
+				googletag.pubads().refresh([slot]);
+			});
+			return; // EXIT FUNCTION
+		}
+
 		const pbjs = window.pbjs || {};
 		pbjs.que = pbjs.que || [];
+		pbjs.setConfig({ debug: 'true' });
 
 		pbjs.que.push(() => {
-			const PREBID_TIMEOUT = 1500;
+			const PREBID_TIMEOUT = 2000;
 			const { googletag } = window;
 			pbjs.requestBids({
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
 				bidsBackHandler: () => {
 					pbjs.setTargetingForGPTAsync([unitId]);
-					googletag.pubads().refresh([slot]);
+					googletag.cmd.push(() => {
+						googletag.pubads().refresh([slot]);
+					});
 				},
 			});
 		});
