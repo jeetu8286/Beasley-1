@@ -283,34 +283,8 @@ class Dfp extends PureComponent {
 		pbjs.que.push(() => {
 			pbjs.setConfig({
 				debug: 'true',
+				bidderTimeout: 1000,
 				rubicon: { singleRequest: true },
-				useBidCache: true,
-				bidderSequence: 'fixed',
-				syncsPerBidder: 10,
-				priceGranularity: {
-					buckets: [
-						{
-							min: 0,
-							max: 2,
-							increment: 0.01,
-						},
-						{
-							min: 2,
-							max: 5,
-							increment: 0.1,
-						},
-						{
-							min: 5,
-							max: 20,
-							increment: 0.5,
-						},
-						{
-							min: 20,
-							max: 100,
-							increment: 1,
-						},
-					],
-				},
 			});
 
 			pbjs.addAdUnits(adUnits);
@@ -527,10 +501,6 @@ class Dfp extends PureComponent {
 
 		const pbjs = window.pbjs || {};
 		pbjs.que = pbjs.que || [];
-		pbjs.setConfig({
-			debug: 'true',
-			rubicon: { singleRequest: true },
-		});
 
 		pbjs.que.push(() => {
 			const PREBID_TIMEOUT = 2000;
