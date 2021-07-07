@@ -8,6 +8,8 @@ function runNowPlaying() {
 			loading: true,
 			days: [],
 			songCollectionByDay: [],
+			description: description,
+			callsign: callsign,
 		}
 		render(songPreRender, state);
 
@@ -51,6 +53,11 @@ function render(songPreRender, state) {
 	const container = document.createElement('div');
 	container.className = 'song-archive';
 	songPreRender.appendChild(container);
+
+	const nowPlayingHeader = document.createElement('h3');
+	nowPlayingHeader.innerText = 'Recently Played Songs on ' + state.description;
+
+	container.appendChild(nowPlayingHeader);
 
 	if (state.loading) {
 		const loadingMessage = document.createElement('p');
