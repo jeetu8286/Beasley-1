@@ -31,7 +31,7 @@ if ( ee_is_jacapps() ) {
 
 
 	$nowplayingurl = plugins_url( '/nowplaying.js', __FILE__ );
-	$dayjsurl = get_template_directory_uri() . '/node_modules/dayjs/dayjs.min.js';
+	$dayjsurl = 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/dayjs.min.js';
 	wp_enqueue_script( 'day-js', "{$dayjsurl}", [] , null, false );
 	wp_enqueue_script( 'now-playing-jacapps', "{$nowplayingurl}", [] , null, true );
 }
