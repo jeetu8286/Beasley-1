@@ -32,6 +32,7 @@ mu-plugins/post-finder/
 !/plugins/affiliate-marketing-cpt
 !/plugins/sendtonews
 !/plugins/prebidjs
+!/plugins/now-playing-jacapps
 
 themes/index.php
 themes/twentyfourteen
