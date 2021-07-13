@@ -22,12 +22,13 @@ export default function refreshAllAds() {
 	});
 
 	function initAdserver() {
-		// if (pbjs.initAdserverSet) return;
 		const { googletag } = window;
-		// pbjs.initAdserverSet = true;
 		googletag.cmd.push(() => {
 			pbjs.que.push(() => {
-				pbjs.setTargetingForGPTAsync();
+				if (!pbjs.initAdserverSet) {
+					pbjs.initAdserverSet = true;
+					pbjs.setTargetingForGPTAsync();
+				}
 				googletag.pubads().refresh();
 			});
 		});
