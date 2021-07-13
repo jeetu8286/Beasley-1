@@ -22,9 +22,9 @@ export default function refreshAllAds() {
 	});
 
 	function initAdserver() {
-		if (pbjs.initAdserverSet) return;
+		// if (pbjs.initAdserverSet) return;
 		const { googletag } = window;
-		pbjs.initAdserverSet = true;
+		// pbjs.initAdserverSet = true;
 		googletag.cmd.push(() => {
 			pbjs.que.push(() => {
 				pbjs.setTargetingForGPTAsync();
