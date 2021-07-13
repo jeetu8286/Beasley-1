@@ -13,7 +13,7 @@ export default function refreshAllAds() {
 	pbjs.que = pbjs.que || [];
 
 	pbjs.que.push(() => {
-		const PREBID_TIMEOUT = 2000;
+		const PREBID_TIMEOUT = 1500;
 		// pbjs.addAdUnits(adUnits);
 		pbjs.requestBids({
 			bidsBackHandler: initAdserver,
@@ -25,10 +25,7 @@ export default function refreshAllAds() {
 		const { googletag } = window;
 		googletag.cmd.push(() => {
 			pbjs.que.push(() => {
-				if (!pbjs.initAdserverSet) {
-					pbjs.initAdserverSet = true;
-					pbjs.setTargetingForGPTAsync();
-				}
+				pbjs.setTargetingForGPTAsync();
 				googletag.pubads().refresh();
 			});
 		});
