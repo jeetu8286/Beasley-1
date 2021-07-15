@@ -129,8 +129,7 @@ if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 			'--brand-play-opacity'           => get_option( 'play_opacity_setting', '0.8' ),
 			'--brand-play-hover-opacity'     => get_option( 'play_hover_opacity_setting', '1' ),
 			'--brand-play-live-hover-opacity'     => get_option( 'play_live_hover_opacity_setting', '0.8' ),
-			'--configurable-iframe-height'     => get_option( 'configurable_iframe_height', '0' ),
-			'--configurable-iframe-src'     => get_option( 'configurable_iframe_src', '' ),
+			'--configurable-iframe-height'     => get_option( 'configurable_iframe_height', '0' ) . 'px',
 		];
 
 		return $vars;
@@ -210,7 +209,7 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			'vid_ad_html_tag_csv_setting' => get_option( 'vid_ad_html_tag_csv_setting', 'mixpo' ),
 			'ad_rubicon_zoneid_setting' => get_option( 'ad_rubicon_zoneid_setting', '' ),
 			'prebid_enabled' => function_exists( 'enqueue_prebid_scripts' ),
-			'configurable_iframe_height' => get_option( 'configurable_iframe_height', '0' ),
+			'configurable_iframe_src' => get_option( 'configurable_iframe_src', '' ),
 
 			/** Live Streaming Intervals */
 			'intervals'  => [

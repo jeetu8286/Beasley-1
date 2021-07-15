@@ -1,7 +1,14 @@
+<?php
+$iframe_height =  get_option( 'configurable_iframe_height', '0' );
+
+if ( empty( $iframe_height ) ) {
+	return;
+}
+?>
 
 <style>
 	#footer {
-		margin-bottom: 300px;
+		margin-bottom: var(--configurable-iframe-height);
 	}
 
 	div.configurable-iframe-holder {
@@ -9,7 +16,7 @@
 		bottom: 90px;
 		left: 0;
 		right: 0;
-		height: 300px;
+		height: var(--configurable-iframe-height);
 		z-index: 9;
 		overflow: hidden;
 	}
@@ -21,6 +28,14 @@
 	}
 </style>
 <div class="configurable-iframe-holder">
-	<iframe width="100%" height="100%" frameborder="0" scrolling="no" style="overflow: hidden" src="https://luvurnxtgig.wpengine.com/" ></iframe>
+	<iframe id="configurable-iframe-element" width="100%" height="100%" frameborder="0" scrolling="no" style="overflow: hidden" ></iframe>
 </div>
+
+<?PHP
+	echo "<script>";
+	echo "window.addEventListener('load', function() {";
+	echo "document.getElementById('configurable-iframe-element').setAttribute('src', window.bbgiconfig.configurable_iframe_src);";
+	echo "});";
+	echo "</script>";
+?>
 
