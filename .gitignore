@@ -33,6 +33,7 @@ mu-plugins/post-finder/
 !/plugins/sendtonews
 !/plugins/prebidjs
 !/plugins/now-playing-jacapps
+!/plugins/share-jacapps
 
 themes/index.php
 themes/twentyfourteen
