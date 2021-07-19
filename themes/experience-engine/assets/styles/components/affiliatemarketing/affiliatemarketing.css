@@ -197,7 +197,6 @@
 		height: auto;
 		@media (--max-medium-viewport) {
 			max-width: 100%;
-			width: 100%;
 		}
 	}
 }
