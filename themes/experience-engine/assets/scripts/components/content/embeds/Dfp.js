@@ -160,6 +160,7 @@ class Dfp extends PureComponent {
 					? slotVideoRefreshSecs * 1000
 					: 60000,
 			rubiconZoneID: bbgiconfig.ad_rubicon_zoneid_setting,
+			appnexusPlacementID: bbgiconfig.ad_appnexus_placementid_setting,
 			prebidEnabled: bbgiconfig.prebid_enabled,
 		};
 
@@ -171,6 +172,7 @@ class Dfp extends PureComponent {
 		this.destroySlot = this.destroySlot.bind(this);
 		this.getPrebidBidders = this.getPrebidBidders.bind(this);
 		this.getBidderRubicon = this.getBidderRubicon.bind(this);
+		this.getBidderAppnexus = this.getBidderAppnexus.bind(this);
 	}
 
 	isConfiguredToRunInterval() {
@@ -258,9 +260,25 @@ class Dfp extends PureComponent {
 		const retval = {
 			bidder: 'rubicon',
 			params: {
-				accountId: '18458',
-				siteId: '375130',
-				zoneId: rubiconZoneID,
+				accountId: 18458,
+				siteId: 375130,
+				zoneId: parseInt(rubiconZoneID, 10),
+			},
+		};
+
+		return retval;
+	}
+
+	getBidderAppnexus() {
+		const { appnexusPlacementID } = this.state;
+		if (!appnexusPlacementID) {
+			return null;
+		}
+
+		const retval = {
+			bidder: 'appnexus',
+			params: {
+				placementId: parseInt(appnexusPlacementID, 10),
 			},
 		};
 
