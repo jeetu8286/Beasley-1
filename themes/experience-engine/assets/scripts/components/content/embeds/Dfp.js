@@ -311,9 +311,7 @@ class Dfp extends PureComponent {
 			{
 				code: unitID,
 				mediaTypes: {
-					banner: {
-						sizeConfig: prebidSizes,
-					},
+					banner: {},
 				},
 				bids: prebidBidders,
 			},
