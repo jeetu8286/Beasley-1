@@ -195,5 +195,8 @@
 	& img {
 		max-width: 400px;
 		height: auto;
+		@media (--max-medium-viewport) {
+			max-width: 100%;
+		}
 	}
 }
