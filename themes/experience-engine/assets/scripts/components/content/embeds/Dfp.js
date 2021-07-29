@@ -323,6 +323,25 @@ class Dfp extends PureComponent {
 			pbjs.setConfig({
 				bidderTimeout: 1000,
 				rubicon: { singleRequest: true },
+				priceGranularity: {
+					buckets: [
+						{
+							min: 0,
+							max: 5,
+							increment: 0.01,
+						},
+						{
+							min: 5,
+							max: 20,
+							increment: 0.05,
+						},
+						{
+							min: 20,
+							max: 50,
+							increment: 0.5,
+						},
+					],
+				},
 			});
 
 			pbjs.addAdUnits(adUnits);
