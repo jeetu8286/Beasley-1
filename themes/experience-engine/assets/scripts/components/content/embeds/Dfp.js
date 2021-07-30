@@ -288,8 +288,15 @@ class Dfp extends PureComponent {
 	getPrebidBidders() {
 		const retval = [];
 
-		retval.push(this.getBidderRubicon());
-		retval.push(this.getBidderAppnexus());
+		const rubiconBidderParams = this.getBidderRubicon();
+		if (rubiconBidderParams) {
+			retval.push(rubiconBidderParams);
+		}
+
+		const appnexusBidderParams = this.getBidderAppnexus();
+		if (appnexusBidderParams) {
+			retval.push(appnexusBidderParams);
+		}
 
 		return retval;
 	}
@@ -674,7 +681,7 @@ class Dfp extends PureComponent {
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
 				bidsBackHandler: () => {
-					pbjs.setTargetingForGPTAsync([unitId]);
+					pbjs.setTargetingForGPTAsync([slot]);
 					googletag.cmd.push(() => {
 						googletag.pubads().refresh([slot]);
 					});
