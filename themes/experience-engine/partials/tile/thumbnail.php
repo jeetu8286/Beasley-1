@@ -1,5 +1,5 @@
 <div class="post-thumbnail">
-	<a href="<?php ee_the_permalink(); ?>">
+	<a href="<?php ee_the_permalink(); ?>" aria-label="Post thumbnail description link">
 		<?php ee_the_lazy_thumbnail( null, true ); ?>
 		<?php if( has_post_format( 'video', $post->ID ) ) : ?>
 			<div class="post-video-overlay">
