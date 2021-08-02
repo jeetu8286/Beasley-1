@@ -288,28 +288,24 @@ class Dfp extends PureComponent {
 	getPrebidBidders() {
 		const retval = [];
 
-		const rubiconBidderParams = this.getBidderRubicon();
-		if (rubiconBidderParams) {
-			retval.push(rubiconBidderParams);
-		}
+		retval.push(this.getBidderRubicon());
+		retval.push(this.getBidderAppnexus());
 
-		const appnexusBidderParams = this.getBidderAppnexus();
-		if (appnexusBidderParams) {
-			retval.push(appnexusBidderParams);
-		}
-
-		return retval;
+		return retval.filter(bidObj => bidObj);
 	}
 
+	// Returns whether Prebid is actually Enabled
 	loadPrebid(unitID, prebidSizes) {
 		const { prebidEnabled } = this.state;
 		if (!prebidEnabled || !unitID || !prebidSizes) {
-			return;
+			window.bbgiconfig.prebid_enabled = false; // Mark Global Flag
+			return false;
 		}
 
 		const prebidBidders = this.getPrebidBidders();
 		if (!prebidBidders || prebidBidders.length === 0) {
-			return;
+			window.bbgiconfig.prebid_enabled = false; // Mark Global Flag
+			return false;
 		}
 
 		const pbjs = window.pbjs || {};
@@ -354,6 +350,8 @@ class Dfp extends PureComponent {
 
 			pbjs.addAdUnits(adUnits);
 		});
+
+		return true;
 	}
 
 	registerSlot() {
@@ -603,13 +601,13 @@ class Dfp extends PureComponent {
 				slot.defineSizeMapping(sizeMapping);
 			}
 
-			this.loadPrebid(unitId, prebidSizeConfig);
+			const prebidEnabled = this.loadPrebid(unitId, prebidSizeConfig);
 
 			for (let i = 0; i < targeting.length; i++) {
 				slot.setTargeting(targeting[i][0], targeting[i][1]);
 			}
 
-			this.setState({ slot });
+			this.setState({ slot, prebidEnabled });
 			return true;
 		});
 	}
@@ -693,12 +691,12 @@ class Dfp extends PureComponent {
 	refreshSlot() {
 		const { googletag } = window;
 		const { placeholder, unitName, unitId } = this.props;
-		const { slot, rubiconZoneID } = this.state;
+		const { slot, prebidEnabled } = this.state;
 
 		if (slot) {
 			googletag.cmd.push(() => {
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
-				if (rubiconZoneID) {
+				if (prebidEnabled) {
 					this.refreshBid(unitId, slot);
 				} else {
 					googletag.pubads().refresh([slot]);
