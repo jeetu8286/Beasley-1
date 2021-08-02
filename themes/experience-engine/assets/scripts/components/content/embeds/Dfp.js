@@ -294,17 +294,15 @@ class Dfp extends PureComponent {
 		return retval.filter(bidObj => bidObj);
 	}
 
-	// Returns whether Prebid is actually Enabled
+	// Returns whether Prebid is actually Enabled for this slot
 	loadPrebid(unitID, prebidSizes) {
 		const { prebidEnabled } = this.state;
 		if (!prebidEnabled || !unitID || !prebidSizes) {
-			window.bbgiconfig.prebid_enabled = false; // Mark Global Flag
 			return false;
 		}
 
 		const prebidBidders = this.getPrebidBidders();
 		if (!prebidBidders || prebidBidders.length === 0) {
-			window.bbgiconfig.prebid_enabled = false; // Mark Global Flag
 			return false;
 		}
 
