@@ -88,4 +88,5 @@
 }
 .video__preview iframe{
 	height:200px;
+	width:auto;	
 }
