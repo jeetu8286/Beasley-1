@@ -118,6 +118,13 @@ function fvideos_get_oembed( $url ) {
 		$embed = _wp_oembed_get_object()->get_data( $url );
 		wp_cache_set( $key, $embed, 'fvideos', 5 * MINUTE_IN_SECONDS );
 	}
+	if ( $embed->provider_name == 'YouTube' && false !== stripos( $embed->thumbnail_url, 'hqdefault.jpg' ) ) {
+		$embed->thumbnail_url = str_ireplace(
+			'hqdefault.jpg',
+			'mqdefault.jpg',
+			$embed->thumbnail_url
+		);
+	}
 
 	return $embed;
 }
