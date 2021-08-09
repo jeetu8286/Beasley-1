@@ -176,7 +176,8 @@ function fvideos_get_media_image() {
 	$imgs = get_images_from_media_library( $searchMediaImage );
 	// print_r(count($imgs));
 	$html = '<div id="main-container-mediaimg">';
-	$html .= '<div class="media-search"> <span class="spinner" id="s_spinner"></span> <input type="text" name="s_mediaimage" id="s_mediaimage" class="s_mediaimage" placeholder="Search media items..." value="'. $searchMediaImage_val .'" /> </div>' ;
+	$html .= '<div class="media-search"> <span class="spinner" id="s_spinner"></span> <input type="text" name="s_mediaimage" id="s_mediaimage" class="s_mediaimage" placeholder="Search media items..." value="'. $searchMediaImage_val .'" /> <button type="button" class="s_btn_mediaimage button" >Search</button>
+	</div>' ;
 	if( !empty( $imgs ) && count( $imgs ) > 0 ) {
 		$html .= '<ul class="mediaimg-ul">';
 		foreach( $imgs as $imgid => $img ) {

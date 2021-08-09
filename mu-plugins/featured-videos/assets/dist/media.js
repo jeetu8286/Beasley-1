@@ -769,7 +769,7 @@ var mediaView = wp.media.View.extend({
 		'keyup .video__url': 'onUrlChange',
 		'click .video__submit': 'addVideo',
 		'click .video__mediaimg': 'showMediaImg',
-		'keyup #s_mediaimage': 'searchMediaImg',
+		'click .s_btn_mediaimage': 'searchMediaImg',
 		'click .img-attachment': 'getSelectedMediaImg',
 		'click #upload_image': 'showUploadImage',
 		'click #select_media_library': 'showMediaLibrary',
