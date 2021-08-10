@@ -247,7 +247,8 @@ class BlogData {
 					$single_post['am_metas'],
 					$single_post['am_item_photo_attachment'],
 					$single_post['term_tax'],
-					$force
+					$force,
+					$single_post['page_metas']
 				);
 
 				if ( $post_id > 0 ) {
@@ -453,6 +454,20 @@ class BlogData {
 			$listicle_metas['cpt_item_order'] = self::listicle_ge_metavalue( 'cpt_item_order', $single_result->ID  );
 		}
 
+		$page_metas = array();
+		if ( 'page' == $single_result->post_type ) {
+			$page_post = get_post($single_result->ID);
+			$page_metas['_wp_page_template'] = self::am_get_metavalue( '_wp_page_template', $single_result->ID );
+			$page_metas['menu_order'] = $page_post->menu_order;
+			$page_parent_slug_var = "";
+			if ( isset( $page_post->post_parent ) && $page_post->post_parent != "" )
+			{
+				$page_parent_slug_array = get_post( $page_post->post_parent );
+				$page_parent_slug_var = $page_parent_slug_array->post_name;
+			}
+			$page_metas['post_parent'] = $page_parent_slug_var;
+		}
+
 		$am_metas = array();
 		$am_metas_photo_array = array();
 		if ( 'affiliate_marketing' == $single_result->post_type ) {
@@ -462,7 +477,7 @@ class BlogData {
 				$am_item_postdata = get_post( $am_item_photoid );
 				$am_metas_photo_array[] = isset( $am_item_photoid ) && $am_item_photoid != "" ? $am_item_postdata : "" ;
 			}
-			
+
 			foreach ( $am_metas_photo_array as $am_meta_item_val ) {
 				if( ! empty ($am_meta_item_val) ) {
 					$am_meta_item_val->guid = wp_get_attachment_image_url( $am_meta_item_val->ID, 'full' );
@@ -470,13 +485,13 @@ class BlogData {
 					$am_meta_item_val->attribution = get_post_meta( $am_meta_item_val->ID, 'gmr_image_attribution', true );
 				}
 			}
-			
+
 			$am_metas['am_item_photo'] = array_filter( array_map( 'get_post', $am_metas['am_item_photo'] ) );
 			foreach ( $am_metas['am_item_photo'] as $am_meta_item_photo ) {
 				$am_meta_item_photo->guid = wp_get_attachment_image_url( $am_meta_item_photo->ID, 'full' );
 				$am_meta_item_photo->alt = get_post_meta( $am_meta_item_photo->ID, '_wp_attachment_image_alt', true );
 				$am_meta_item_photo->attribution = get_post_meta( $am_meta_item_photo->ID, 'gmr_image_attribution', true );
-			} 
+			}
 
 			$am_metas['am_item_imagetype'] = self::am_get_metavalue( 'am_item_imagetype', $single_result->ID  );
 			$am_metas['am_item_imagecode'] = self::am_get_metavalue( 'am_item_imagecode', $single_result->ID  );
@@ -508,7 +523,8 @@ class BlogData {
 			'am_item_photo_attachment'			  => $am_metas_photo_array,
 			'featured'            => $featured_id ? array( $featured_id, $featured_src ) : null,
 			'galleries'           => $galleries,
-			'term_tax'            => $term_tax
+			'term_tax'            => $term_tax,
+			'page_metas' 		  => $page_metas
 		);
 	}
 
@@ -541,7 +557,7 @@ class BlogData {
 	 *
 	 * @return int|\WP_Error
 	 */
-	public static function ImportPosts( $post, $metas, $defaults, $featured, $attachments, $gallery_attachments, $galleries, $listicle_metas,$am_metas, $am_item_photo_attachment, $term_tax, $force_update = false ) {
+	public static function ImportPosts( $post, $metas, $defaults, $featured, $attachments, $gallery_attachments, $galleries, $listicle_metas,$am_metas, $am_item_photo_attachment, $term_tax, $force_update = false, $page_metas ) {
 		if ( ! $post ) {
 			return;
 		}
@@ -578,6 +594,20 @@ class BlogData {
 		if ( 'publish' == $post_status ) {
 			$args['post_modified'] = current_time( 'mysql' );
 			$args['post_modified_gmt'] = current_time( 'mysql', 1 );
+		}
+
+		if ( 'page' == $post_type ) {
+			$post_parent = "";
+			if ( isset( $page_metas['post_parent'] ) && $page_metas['post_parent'] != "" )
+			{
+				// $pageIdBySlug = get_page_by_path( $page_metas['post_parent'], OBJECT, 'page' );
+				$pageIdBySlug = get_page_by_path( 'the-content-factory-page', OBJECT, 'page' );
+				$post_parent = isset( $pageIdBySlug->ID ) && $pageIdBySlug->ID != "" ? $pageIdBySlug->ID : "" ;
+				echo "<pre>", print_r( $pageIdBySlug ), print_r( $page_metas['post_parent'] ), "</pre>"; exit;
+			}
+			$args['post_parent'] = $post_parent;
+			// echo "<pre>", print_r( $pageIdBySlug ), print_r( $args['post_parent'] ), "</pre>"; exit;
+			$args['menu_order'] = $page_metas['menu_order'];
 		}
 
 		if ( ! empty( $metas ) ) {
@@ -735,12 +765,17 @@ class BlogData {
 				delete_post_meta( $post_id, 'cpt_item_name' );
 				delete_post_meta( $post_id, 'cpt_item_order' );
 				delete_post_meta( $post_id, 'cpt_item_description' );
-				
+
 				update_post_meta( $post_id, 'cpt_item_name', $listicle_metas['cpt_item_name'] );
 				update_post_meta( $post_id, 'cpt_item_order', $listicle_metas['cpt_item_order'] );
 				update_post_meta( $post_id, 'cpt_item_description', $listicle_metas['cpt_item_description'] );
 			}
-			
+
+		if ( 'page' == $post_type ) {
+			delete_post_meta( $post_id, '_wp_page_template' );
+			update_post_meta( $post_id, '_wp_page_template',$page_metas['_wp_page_template'] );
+		}
+
 			if ( 'affiliate_marketing' == $post_type ) {
 				delete_post_meta( $post_id, 'am_item_name' );
 				delete_post_meta( $post_id, 'am_item_photo' );
@@ -754,7 +789,7 @@ class BlogData {
 				delete_post_meta( $post_id, 'am_item_getitnowtext' );
 				delete_post_meta( $post_id, 'am_item_getitnowfromname' );
 				delete_post_meta( $post_id, 'am_item_getitnowfromurl' );
-				
+
 				update_post_meta( $post_id, 'am_item_name', $am_metas['am_item_name'] );
 				// $am_item_photo_import = self::ImportAttachedImages( $post_id, $am_metas['am_item_photo'] );
 				// $am_item_photo_import = self::ImportAttachedImages( $post_id, $am_item_photo_attachment );
