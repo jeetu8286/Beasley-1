@@ -50,7 +50,7 @@ class Main extends Bridge
 
         // Register [sendtonews] shortcode.
         // @TODO: Migrate to [stnvideo] shortcode.
-        $this->add_shortcode( 'sendtonews', 'ShortcodeController@show' );
+        //$this->add_shortcode( 'sendtonews', 'ShortcodeController@show' );
 
         // Register SendtoNews widget.
         // @TODO: Migrate to STNVideo widget.
@@ -72,7 +72,7 @@ class Main extends Bridge
      * @since 0.4.0 Use API Verification Method.
      * @since 0.9.0 Update API Verification to throttle requests.
      * @since 1.0.1 Suppress WP-CLI calls from triggering the plugin.
-     * 
+     *
      * @global SendtoNews\Main $sendtonews
      */
     public function on_admin()
