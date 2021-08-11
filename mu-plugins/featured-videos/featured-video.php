@@ -221,7 +221,7 @@ function fvideos_get_media_image() {
 				$html .= '<img class="img-attachment" src="' . $img . '" alt="" image-id="' . $imgid . '" onclick="$(this).addClass(' . $jqueryEventSelectedClass .')" />';
 			$html .= '</li>'; */
 			$html .= '<li class="mediaimg-li" >';
-				$html .= '<img class="img-attachment" src="' . $img . '" alt="" image-id="' . $imgid . '" onclick="$(this).addClass(' . $jqueryEventSelectedClass .')" />';
+				$html .= '<img class="img-attachment" src="' . $img . '" alt="" image-id="' . $imgid . '" onclick="jQuery(this).addClass(' . $jqueryEventSelectedClass .')" />';
 			$html .= '</li>';
 		}
 		$html .= '</ul>';
