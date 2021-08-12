@@ -50,7 +50,7 @@ class Main extends Bridge
 
         // Register [sendtonews] shortcode.
         // @TODO: Migrate to [stnvideo] shortcode.
-        $this->add_shortcode( 'sendtonews', 'ShortcodeController@show' );
+        //$this->add_shortcode( 'sendtonews', 'ShortcodeController@show' );
 
         // Register SendtoNews widget.
         // @TODO: Migrate to STNVideo widget.
