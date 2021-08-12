@@ -33,6 +33,10 @@ class Drimify extends \Bbgi\Module {
 			'app_style' => ''
 		), $atts, 'drimify' );
 
+		if($attributes['app_url'] != '' && false === stripos( $attributes['app_url'], 'https://go.drimify.com' )) {
+			return;
+		}
+
 		$embed = sprintf(
 			'<div class="drimify" data-app_url="%s" data-app_style="%s"></div>',
 			esc_attr( $attributes['app_url']),
