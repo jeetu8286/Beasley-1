@@ -14,6 +14,7 @@ import {
 	RecentSongs,
 	Offline,
 	PlayerAd,
+	GamPreroll,
 } from '../components/player';
 
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -243,6 +244,7 @@ class LivePlayer extends Component {
 						style={controlsStyle}
 						shouldMapSizes={shouldMapSizes}
 					/>
+					<GamPreroll adUnitId="test" />
 				</div>
 			</ErrorBoundary>
 		);
