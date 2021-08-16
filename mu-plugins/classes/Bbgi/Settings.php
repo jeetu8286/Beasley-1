@@ -257,6 +257,7 @@ class Settings extends \Bbgi\Module {
 		register_setting(self::option_group, 'vid_ad_html_tag_csv_setting', 'sanitize_text_field');
 		register_setting(self::option_group, 'ad_rubicon_zoneid_setting', 'sanitize_text_field');
 		register_setting(self::option_group, 'ad_appnexus_placementid_setting', 'sanitize_text_field');
+		register_setting(self::option_group, 'ad_ix_siteid_setting', 'sanitize_text_field');
 
 		register_setting(self::option_group, 'configurable_iframe_height', 'sanitize_text_field');
 		register_setting(self::option_group, 'configurable_iframe_src', 'sanitize_text_field');
