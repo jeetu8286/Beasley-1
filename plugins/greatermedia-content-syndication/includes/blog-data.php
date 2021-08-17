@@ -246,6 +246,8 @@ class BlogData {
 					$single_post['listicle_metas'],
 					$single_post['am_metas'],
 					$single_post['am_item_photo_attachment'],
+					$single_post['show_metas'],
+					$single_post['show_logo_metas'],
 					$single_post['term_tax'],
 					$force,
 					$single_post['page_metas']
@@ -505,7 +507,48 @@ class BlogData {
 			$am_metas['am_item_getitnowfromname'] = self::am_get_metavalue( 'am_item_getitnowfromname', $single_result->ID  );
 			$am_metas['am_item_getitnowfromurl'] = self::am_get_metavalue( 'am_item_getitnowfromurl', $single_result->ID  );
 		}
-		// echo "<pre>", print_r( $am_metas['am_item_photo'] ), "</pre>"; exit;
+
+		$show_metas				= array();
+		$show_logo_metas		= array();
+		$show_featured_metas	= array();
+		$show_favorite_metas	= array();
+		if ( 'show' == $single_result->post_type ) {
+			$image_id = intval( get_post_meta( $single_result->ID, 'logo_image', true ) );
+			if( $image_id )
+			{
+				$show_logo_postdata = get_post( $image_id );
+				$show_logo_metas[] = isset( $image_id ) && $image_id != "" ? $show_logo_postdata : "" ;
+			}
+			foreach ( $show_logo_metas as $show_logo_meta ) {
+				if( ! empty ( $show_logo_meta ) ) {
+					$show_logo_meta->guid = wp_get_attachment_image_url( $show_logo_meta->ID, 'full' );
+					$show_logo_meta->alt = get_post_meta( $show_logo_meta->ID, '_wp_attachment_image_alt', true );
+					$show_logo_meta->attribution = get_post_meta( $show_logo_meta->ID, 'gmr_image_attribution', true );
+				}
+			}
+			// Fetch featured meta array
+			$gmr_featured_post_ids = self::am_get_metavalue( 'gmr_featured_post_ids', $single_result->ID  );
+			if( isset( $gmr_featured_post_ids ) && $gmr_featured_post_ids != "" )
+			{
+				$gmr_featured_post_ids_array = explode (",", $gmr_featured_post_ids);
+				foreach( $gmr_featured_post_ids_array as $gmr_featured_post_id )
+				{
+					// $show_featured_metas[] = get_post( $gmr_featured_post_id );
+					$show_metas['show_featured_metas'][] = get_post( $gmr_featured_post_id );
+				}
+			}
+			// Fetch favorite meta array
+			$gmr_favorite_post_ids = self::am_get_metavalue( 'gmr_favorite_post_ids', $single_result->ID );
+			if( isset( $gmr_favorite_post_ids ) && $gmr_favorite_post_ids != "" )
+			{
+				$gmr_favorite_post_ids_array = explode (",", $gmr_favorite_post_ids);
+				foreach( $gmr_favorite_post_ids_array as $gmr_favorite_post_id )
+				{
+					// $show_favorite_metas[] = get_post( $gmr_favorite_post_id );
+					$show_metas['show_favorite_metas'][] = get_post( $gmr_favorite_post_id );
+				}
+			}
+		}
 
 		$term_tax = array();
 		$taxonomies = get_object_taxonomies( $single_result );
@@ -521,6 +564,8 @@ class BlogData {
 			'listicle_metas' 	  => $listicle_metas,
 			'am_metas'			  => $am_metas,
 			'am_item_photo_attachment'			  => $am_metas_photo_array,
+			'show_metas'		  => $show_metas,
+			'show_logo_metas'	  => $show_logo_metas,
 			'featured'            => $featured_id ? array( $featured_id, $featured_src ) : null,
 			'galleries'           => $galleries,
 			'term_tax'            => $term_tax,
@@ -557,7 +602,7 @@ class BlogData {
 	 *
 	 * @return int|\WP_Error
 	 */
-	public static function ImportPosts( $post, $metas, $defaults, $featured, $attachments, $gallery_attachments, $galleries, $listicle_metas,$am_metas, $am_item_photo_attachment, $term_tax, $force_update = false, $page_metas ) {
+	public static function ImportPosts( $post, $metas, $defaults, $featured, $attachments, $gallery_attachments, $galleries, $listicle_metas,$am_metas, $am_item_photo_attachment, $show_metas, $show_logo_metas, $term_tax, $force_update = false, $page_metas ) {
 		if ( ! $post ) {
 			return;
 		}
@@ -759,6 +804,64 @@ class BlogData {
 						add_post_meta( $post_id, 'gallery-image', $attachment );
 					}
 				}
+			}
+
+			if ( 'show' == $post_type ) {
+				delete_post_meta( $post_id, 'gmr_featured_post_ids' );
+				delete_post_meta( $post_id, 'gmr_favorite_post_ids' );
+				delete_post_meta( $post_id, 'logo_image' );
+
+				//Fetch Logo ID
+				$logo_import = self::ImportAttachedImages( $post_id, $show_logo_metas );
+
+				$show_featured_metas = isset( $show_metas['show_featured_metas'] ) ? $show_metas['show_featured_metas'] : "" ;
+				$show_favorite_metas = isset( $show_metas['show_favorite_metas'] ) ? $show_metas['show_favorite_metas'] : "" ;
+				// echo "<pre>", print_r($show_featured_metas), print_r($show_favorite_metas), print_r($show_logo_metas), "</pre>"; exit;
+				$gmr_featured_post_ids_array = array();
+				if( !empty($show_featured_metas) )
+				{
+					foreach( $show_featured_metas as $show_featured_meta ){
+						// fetch new postid as per old postid
+						$show_featured_new_post = get_page_by_path( $show_featured_meta->post_name, OBJECT, $show_featured_meta->post_type );
+						if( isset( $show_featured_new_post ) && !empty( $show_featured_new_post ) ){
+							$gmr_featured_post_ids_array[] = $show_featured_new_post->ID;
+						}
+						// echo "<pre>", print_r($show_featured_meta->post_name), print_r($new_post_data), "</pre>";
+					}
+				}
+				$gmr_favorite_post_ids_array = array();
+				if( !empty($show_favorite_metas) )
+				{
+					foreach( $show_favorite_metas as $show_favorite_meta ){
+						// fetch new postid as per old postid
+						$show_favorite_new_post = get_page_by_path( $show_favorite_meta->post_name, OBJECT, $show_favorite_meta->post_type );
+						if( isset( $show_favorite_new_post ) && !empty( $show_favorite_new_post ) ){
+							$gmr_favorite_post_ids_array[] = $show_favorite_new_post->ID;
+						}
+						// echo "<pre>", print_r($show_favorite_meta->post_name), print_r($new_post_data), "</pre>";
+					}
+				}
+				$gmr_featured_post_ids = implode(',', $gmr_featured_post_ids_array);
+				$gmr_favorite_post_ids = implode(',', $gmr_favorite_post_ids_array);
+				// echo "<pre>", print_r($gmr_favorite_post_ids), print_r($gmr_featured_post_ids), "</pre>";
+
+				update_post_meta( $post_id, 'gmr_featured_post_ids', $gmr_featured_post_ids );
+				update_post_meta( $post_id, 'gmr_favorite_post_ids', $gmr_favorite_post_ids );
+				foreach ( $logo_import as $logo_attachment ) {
+					if ( is_numeric( $logo_attachment ) ) {
+						update_post_meta( $post_id, 'logo_image', $logo_attachment );
+					}
+				}
+			}
+
+			if ( 'listicle_cpt' == $post_type ) {
+				delete_post_meta( $post_id, 'cpt_item_name' );
+				delete_post_meta( $post_id, 'cpt_item_order' );
+				delete_post_meta( $post_id, 'cpt_item_description' );
+
+				update_post_meta( $post_id, 'cpt_item_name', $listicle_metas['cpt_item_name'] );
+				update_post_meta( $post_id, 'cpt_item_order', $listicle_metas['cpt_item_order'] );
+				update_post_meta( $post_id, 'cpt_item_description', $listicle_metas['cpt_item_description'] );
 			}
 
 			if ( 'listicle_cpt' == $post_type ) {
