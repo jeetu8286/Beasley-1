@@ -132,6 +132,7 @@ class LivePlayer extends Component {
 		const {
 			status,
 			adPlayback,
+			gamAdPlayback,
 			adSynced,
 			pause,
 			resume,
@@ -174,6 +175,7 @@ class LivePlayer extends Component {
 
 		const isIos = isIOS();
 		const volumeControl = isIos ? null : <Volume colors={buttonsFillStyle} />;
+		const gamPreroll = gamAdPlayback ? <GamPreroll adUnitId="test" /> : null;
 
 		const children = (
 			<ErrorBoundary>
@@ -194,6 +196,8 @@ class LivePlayer extends Component {
 						</div>
 					</div>
 				</div>
+
+				{gamPreroll}
 
 				<div id="sync-banner" className={adSynced ? '' : '-hidden'} />
 
@@ -244,7 +248,6 @@ class LivePlayer extends Component {
 						style={controlsStyle}
 						shouldMapSizes={shouldMapSizes}
 					/>
-					<GamPreroll adUnitId="test" />
 				</div>
 			</ErrorBoundary>
 		);
@@ -257,6 +260,7 @@ LivePlayer.propTypes = {
 	station: PropTypes.string.isRequired,
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
+	gamAdPlayback: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
 	initTdPlayer: PropTypes.func.isRequired,
 	playStation: PropTypes.func.isRequired,
@@ -274,6 +278,7 @@ export default connect(
 		station: player.station,
 		status: player.status,
 		adPlayback: player.adPlayback,
+		gamAdPlayback: player.gamAdPlayback,
 		adSynced: player.adSynced,
 		duration: player.duration,
 	}),

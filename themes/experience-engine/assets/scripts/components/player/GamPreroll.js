@@ -7,12 +7,15 @@ class GamPreroll extends PureComponent {
 		// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
 		const { adUnitId } = this.props;
 
+		/*
 		// we use createElement to make sure we don't add empty spaces here, thus DFP can properly collapse it when nothing to show here
-		return React.createElement(
-			'div',
-			{ id: 'gam_preroll_background_div', className: 'preroll-player' },
-			[<div id={adUnitId}>[This Is Ad]</div>],
-		);
+		return React.createElement('div', {
+			id: adUnitId,
+			className: 'preroll-player',
+			style: { backgroundColor: 'red' },
+		});
+		*/
+		return <div className="preroll-wrapper -active">{adUnitId}</div>;
 	}
 }
 
