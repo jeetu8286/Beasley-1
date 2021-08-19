@@ -1,28 +1,261 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+	ACTION_GAM_AD_PLAYBACK_COMPLETE,
+	adPlaybackStop,
+} from '../../redux/actions/player';
 
 class GamPreroll extends PureComponent {
-	render() {
-		// backward compatibility with the legacy theme to make sure that everything keeps working correctly
-		// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
-		const { adUnitId } = this.props;
+	constructor(props) {
+		super(props);
+		this.state = { startedPrerollFlag: false, playingPrerollFlag: false };
 
+		this.adsManager = null;
+		this.adsLoader = null;
+		this.adDisplayContainer = null;
+		this.videoContent = null;
+
+		this.playPreroll = this.playPreroll.bind(this);
+		this.onAdsManagerLoaded = this.onAdsManagerLoaded.bind(this);
+		this.onAdEvent = this.onAdEvent.bind(this);
+		this.onAdError = this.onAdError.bind(this);
+		this.playAds = this.playAds.bind(this);
+		this.finalize = this.finalize.bind(this);
+	}
+
+	playPreroll() {
+		if (!window.google.ima) {
+			this.finalize();
+		}
+
+		// Fire only once
+		const { startedPrerollFlag } = this.state;
+		if (!startedPrerollFlag) {
+			this.videoContent = document.getElementById('gamPrerollContentElement');
+			this.setUpIMA();
+
+			// Mark State
+			this.setState({ startedPrerollFlag: true });
+
+			// Put In Delayed Guard
+			setTimeout(() => {
+				const { playingPrerollFlag } = this.state;
+				if (!playingPrerollFlag) {
+					this.finalize();
+				}
+			}, 3000);
+		}
+	}
+
+	setUpIMA() {
+		// Create the ad display container.
+		this.createAdDisplayContainer();
+		// Create ads loader.
+		this.adsLoader = new window.google.ima.AdsLoader(this.adDisplayContainer);
+		// Listen and respond to ads loaded and error events.
+		this.adsLoader.addEventListener(
+			window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+			this.onAdsManagerLoaded,
+			false,
+		);
+		this.adsLoader.addEventListener(
+			window.google.ima.AdErrorEvent.Type.AD_ERROR,
+			this.onAdError,
+			false,
+		);
+
+		// An event listener to tell the SDK that our content video
+		// is completed so the SDK can play any post-roll ads.
+		const contentEndedListener = () => {
+			this.adsLoader.contentComplete();
+		};
+		this.videoContent.onended = contentEndedListener;
+
+		// Request video ads.
+		const adsRequest = new window.google.ima.AdsRequest();
+		// adsRequest.adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?' +
+		//    'sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&' +
+		//    'impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&' +
+		//    'cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
+
+		adsRequest.adTagUrl =
+			'https://pubads.g.doubleclick.net/gampad/live/ads?iu=/26918149/WRIF_Preroll&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360%7C640x480%7C920x508&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=';
+
+		// Specify the linear and nonlinear slot sizes. This helps the SDK to
+		// select the correct creative if multiple are returned.
 		/*
-		// we use createElement to make sure we don't add empty spaces here, thus DFP can properly collapse it when nothing to show here
-		return React.createElement('div', {
-			id: adUnitId,
-			className: 'preroll-player',
-			style: { backgroundColor: 'red' },
-		});
+		adsRequest.linearAdSlotWidth = 640;
+		adsRequest.linearAdSlotHeight = 400;
+
+		adsRequest.nonLinearAdSlotWidth = 640;
+		adsRequest.nonLinearAdSlotHeight = 150;
+
+		this.adsLoader.requestAds(adsRequest);
 		*/
-		return <div className="preroll-wrapper -active">{adUnitId}</div>;
+	}
+
+	createAdDisplayContainer() {
+		// We assume the adContainer is the DOM id of the element that will house
+		// the ads.
+		this.adDisplayContainer = new window.google.ima.AdDisplayContainer(
+			document.getElementById('gamPrerollAdContainer'),
+			this.videoContent,
+		);
+	}
+
+	playAds() {
+		// Mark State
+		this.setState({ playingPrerollFlag: true });
+
+		// Initialize the container. Must be done via a user action on mobile devices.
+		this.videoContent.load();
+		this.adDisplayContainer.initialize();
+
+		try {
+			// Initialize the ads manager. Ad rules playlist will start at this time.
+			this.adsManager.init(640, 360, window.google.ima.ViewMode.NORMAL);
+			// Call play to start showing the ad. Single video and overlay ads will
+			// start at this time; the call will be ignored for ad rules.
+			this.adsManager.start();
+		} catch (adError) {
+			// An error may be thrown if there was a problem with the VAST response.
+			this.finalize();
+		}
+	}
+
+	onAdsManagerLoaded(adsManagerLoadedEvent) {
+		console.log('onAdsManagerLoaded');
+
+		console.log('1');
+		// Get the ads manager.
+		const adsRenderingSettings = new window.google.ima.AdsRenderingSettings();
+
+		console.log('2');
+		adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+
+		console.log('3');
+		// videoContent should be set to the content video element.
+		this.adsManager = adsManagerLoadedEvent.getAdsManager(
+			this.videoContent,
+			adsRenderingSettings,
+		);
+
+		console.log('4');
+		// Add listeners to the required events.
+		this.adsManager.addEventListener(
+			window.google.ima.AdErrorEvent.Type.AD_ERROR,
+			this.onAdError,
+		);
+
+		console.log('5');
+		this.adsManager.addEventListener(
+			window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
+			this.onAdEvent,
+		);
+
+		console.log('6');
+		// Listen to any additional events, if necessary.
+		this.adsManager.addEventListener(
+			window.google.ima.AdEvent.Type.LOADED,
+			this.onAdEvent,
+		);
+
+		console.log('7');
+		this.adsManager.addEventListener(
+			window.google.ima.AdEvent.Type.STARTED,
+			this.onAdEvent,
+		);
+
+		console.log('8');
+		this.adsManager.addEventListener(
+			window.google.ima.AdEvent.Type.COMPLETE,
+			this.onAdEvent,
+		);
+
+		console.log('Before Playing Ad');
+		this.playAds();
+		console.log('After Playing Ad');
+	}
+
+	onAdEvent(adEvent) {
+		// Retrieve the ad from the event. Some events (e.g. ALL_ADS_COMPLETED)
+		// don't have ad object associated.
+		const ad = adEvent.getAd();
+		switch (adEvent.type) {
+			case window.google.ima.AdEvent.Type.LOADED:
+				// This is the first event sent for an ad - it is possible to
+				// determine whether the ad is a video ad or an overlay.
+				if (!ad.isLinear()) {
+					// Position AdDisplayContainer correctly for overlay.
+					// Use ad.width and ad.height.
+					this.videoContent.play();
+				}
+				break;
+			case window.google.ima.AdEvent.Type.STARTED:
+				// This event indicates the ad has started - the video player
+				// can adjust the UI, for example display a pause button and
+				// remaining time.
+				break;
+			case window.google.ima.AdEvent.Type.COMPLETE:
+				// This event indicates the ad has finished - the video player
+				// can perform appropriate UI actions, such as removing the timer for
+				// remaining time detection.
+				this.finalize();
+				break;
+			default:
+				break;
+		}
+	}
+
+	onAdError(adErrorEvent) {
+		// Handle the error logging.
+		console.log(adErrorEvent.getError());
+		this.finalize();
+	}
+
+	componentDidMount() {
+		this.playPreroll();
+	}
+
+	componentWillUnmount() {
+		this.finalize();
+	}
+
+	finalize() {
+		const { adPlaybackStop } = this.props;
+		if (this.adsManager) {
+			this.adsManager.destroy();
+		}
+		// this.props.dispatch(adPlaybackStop(ACTION_AD_PLAYBACK_ERROR));
+		adPlaybackStop(ACTION_GAM_AD_PLAYBACK_COMPLETE);
+	}
+
+	render() {
+		return (
+			<div className="preroll-wrapper -active">
+				<div id="gamPrerollContent">
+					<video id="gamPrerollContentElement">
+						<track
+							src="captions_en.vtt"
+							kind="captions"
+							srcLang="en"
+							label="english_captions"
+						/>
+					</video>
+				</div>
+				<div id="gamPrerollAdContainer" className="gam-preroll-player" />
+			</div>
+		);
 	}
 }
 
 GamPreroll.propTypes = {
-	adUnitId: PropTypes.string.isRequired,
+	adPlaybackStop: PropTypes.func.isRequired,
 };
 
-GamPreroll.defaultProps = {};
+const mapDispatchToProps = dispatch =>
+	bindActionCreators({ adPlaybackStop }, dispatch);
 
-export default GamPreroll;
+export default connect(null, mapDispatchToProps)(GamPreroll);

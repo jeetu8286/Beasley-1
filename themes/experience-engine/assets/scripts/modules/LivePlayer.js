@@ -175,7 +175,7 @@ class LivePlayer extends Component {
 
 		const isIos = isIOS();
 		const volumeControl = isIos ? null : <Volume colors={buttonsFillStyle} />;
-		const gamPreroll = gamAdPlayback ? <GamPreroll adUnitId="test" /> : null;
+		const gamPreroll = gamAdPlayback ? <GamPreroll /> : null;
 
 		const children = (
 			<ErrorBoundary>
