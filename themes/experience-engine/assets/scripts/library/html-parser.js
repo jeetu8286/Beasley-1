@@ -311,6 +311,7 @@ export function getStateFromContent(container) {
 				'.discovery-cta',
 				getPayloadParams(),
 			),
+			...processEmbeds(container, 'dimers', '.dimers', getPayloadParams()),
 			...processEmbeds(
 				container,
 				'favorites',
