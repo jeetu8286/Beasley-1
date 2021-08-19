@@ -23,7 +23,7 @@ class Dimers extends \Bbgi\Module
 		$categories = get_the_category( $post );
 
 		foreach ( $categories as $category ) {
-			if ( $category->slug == 'dimers' ) {
+			if ( $category->slug == 'sports-betting' ) {
 				$category_match = true;
 			}
 		}
