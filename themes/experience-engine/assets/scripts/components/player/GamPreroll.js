@@ -126,6 +126,7 @@ class GamPreroll extends PureComponent {
 		try {
 			// Initialize the ads manager. Ad rules playlist will start at this time.
 			this.adsManager.init(640, 360, window.google.ima.ViewMode.NORMAL);
+			this.updateSize();
 			// Call play to start showing the ad. Single video and overlay ads will
 			// start at this time; the call will be ignored for ad rules.
 			this.adsManager.start();
