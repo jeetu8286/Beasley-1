@@ -33,6 +33,11 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'unitName' => 'adhesion',
 		);
 
+		$gampreroll = array(
+			'unitId'   => $ee->get_ad_slot_unit_id( 'gampreroll' ),
+			'unitName' => 'gampreroll',
+		);
+
 		$countdown = array(
 			'unitId'   => $ee->get_ad_slot_unit_id( 'countdown' ),
 			'unitName' => 'countdown',
@@ -42,6 +47,7 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'global'    => \Bbgi\Integration\Dfp::get_global_targeting(),
 			'sizes'     => $sizes,
 			'player'    => $player,
+			'gampreroll' => $gampreroll,
 			'countdown' => $countdown,
 		);
 

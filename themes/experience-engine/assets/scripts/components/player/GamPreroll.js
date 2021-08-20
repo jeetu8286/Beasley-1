@@ -48,7 +48,7 @@ class GamPreroll extends PureComponent {
 		}
 	}
 
-	playPreroll() {
+	playPreroll(adUnitID) {
 		const { startedPrerollFlag } = this.state;
 		if (startedPrerollFlag) {
 			return;
@@ -59,13 +59,13 @@ class GamPreroll extends PureComponent {
 		}
 
 		this.videoContent = document.getElementById('gamPrerollContentElement');
-		this.setUpIMA();
+		this.setUpIMA(adUnitID);
 
 		// Mark State
 		this.setState({ startedPrerollFlag: true, playingPrerollFlag: false });
 	}
 
-	setUpIMA() {
+	setUpIMA(adUnitID) {
 		// Create the ad display container.
 		this.createAdDisplayContainer();
 		// Create ads loader.
@@ -91,13 +91,7 @@ class GamPreroll extends PureComponent {
 
 		// Request video ads.
 		const adsRequest = new window.google.ima.AdsRequest();
-		// adsRequest.adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?' +
-		//    'sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&' +
-		//    'impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&' +
-		//    'cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
-
-		adsRequest.adTagUrl =
-			'https://pubads.g.doubleclick.net/gampad/live/ads?iu=/26918149/WRIF_Preroll&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360%7C640x480%7C920x508&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=';
+		adsRequest.adTagUrl = `https://pubads.g.doubleclick.net/gampad/live/ads?iu=${adUnitID}&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360%7C640x480%7C920x508&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`;
 
 		// Specify the linear and nonlinear slot sizes. This helps the SDK to
 		// select the correct creative if multiple are returned.
@@ -142,57 +136,45 @@ class GamPreroll extends PureComponent {
 	}
 
 	onAdsManagerLoaded(adsManagerLoadedEvent) {
-		console.log('onAdsManagerLoaded');
-
-		console.log('1');
 		// Get the ads manager.
 		const adsRenderingSettings = new window.google.ima.AdsRenderingSettings();
 
-		console.log('2');
 		adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
 
-		console.log('3');
 		// videoContent should be set to the content video element.
 		this.adsManager = adsManagerLoadedEvent.getAdsManager(
 			this.videoContent,
 			adsRenderingSettings,
 		);
 
-		console.log('4');
 		// Add listeners to the required events.
 		this.adsManager.addEventListener(
 			window.google.ima.AdErrorEvent.Type.AD_ERROR,
 			this.onAdError,
 		);
 
-		console.log('5');
 		this.adsManager.addEventListener(
 			window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
 			this.onAdEvent,
 		);
 
-		console.log('6');
 		// Listen to any additional events, if necessary.
 		this.adsManager.addEventListener(
 			window.google.ima.AdEvent.Type.LOADED,
 			this.onAdEvent,
 		);
 
-		console.log('7');
 		this.adsManager.addEventListener(
 			window.google.ima.AdEvent.Type.STARTED,
 			this.onAdEvent,
 		);
 
-		console.log('8');
 		this.adsManager.addEventListener(
 			window.google.ima.AdEvent.Type.COMPLETE,
 			this.onAdEvent,
 		);
 
-		console.log('Before Playing Ad');
 		this.playAds();
-		console.log('After Playing Ad');
 	}
 
 	onAdEvent(adEvent) {
@@ -234,16 +216,22 @@ class GamPreroll extends PureComponent {
 	componentDidMount() {
 		window.addEventListener('resize', this.onResize);
 
-		// Put In Delayed Guard
-		setTimeout(() => {
-			const { playingPrerollFlag } = this.state;
-			if (!playingPrerollFlag) {
-				this.finalize();
-			}
-		}, 3000);
+		const { gampreroll } = window.bbgiconfig.dfp;
 
-		// Play the preroll
-		this.playPreroll();
+		if (gampreroll && gampreroll.unitId) {
+			// Put In Delayed Guard
+			setTimeout(() => {
+				const { playingPrerollFlag } = this.state;
+				if (!playingPrerollFlag) {
+					this.finalize();
+				}
+			}, 3000);
+
+			// Play the preroll
+			this.playPreroll(gampreroll.unitId);
+		} else {
+			this.finalize();
+		}
 	}
 
 	componentWillUnmount() {
