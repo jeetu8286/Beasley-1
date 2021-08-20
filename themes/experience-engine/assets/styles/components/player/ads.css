@@ -40,7 +40,6 @@
 }
 
 .gam-preroll-player {
-	background-color: var(--global-black);
 	position: absolute;
 	left: 50%;
 	transform: translate(-50%, 0%);

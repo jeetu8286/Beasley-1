@@ -23,6 +23,29 @@ class GamPreroll extends PureComponent {
 		this.onAdError = this.onAdError.bind(this);
 		this.playAds = this.playAds.bind(this);
 		this.finalize = this.finalize.bind(this);
+
+		this.onResize = this.handleResize.bind(this);
+		this.updateSize = this.updateSize.bind(this);
+	}
+
+	handleResize() {
+		this.updateSize();
+	}
+
+	updateSize() {
+		if (this.adsManager) {
+			const containerElement = document.getElementById('gamPrerollAdContainer');
+			if (containerElement) {
+				const width = containerElement.clientWidth;
+				// Height Showing as 0 so compute... const height = containerElement.clientHeight;
+				const height = (width / 640) * 360;
+				this.adsManager.resize(
+					width,
+					height,
+					window.google.ima.ViewMode.NORMAL,
+				);
+			}
+		}
 	}
 
 	playPreroll() {
@@ -209,6 +232,8 @@ class GamPreroll extends PureComponent {
 	}
 
 	componentDidMount() {
+		window.addEventListener('resize', this.onResize);
+
 		// Put In Delayed Guard
 		setTimeout(() => {
 			const { playingPrerollFlag } = this.state;
@@ -222,6 +247,7 @@ class GamPreroll extends PureComponent {
 	}
 
 	componentWillUnmount() {
+		window.removeEventListener('resize', this.onResize);
 		this.finalize();
 	}
 
