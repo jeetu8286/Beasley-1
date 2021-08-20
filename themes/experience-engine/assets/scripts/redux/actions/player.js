@@ -19,6 +19,9 @@ export const ACTION_AD_PLAYBACK_COMPLETE = 'PLAYER_AD_PLAYBACK_COMPLETE';
 export const ACTION_AD_PLAYBACK_ERROR = 'PLAYER_AD_PLAYBACK_ERROR';
 export const ACTION_AD_BREAK_SYNCED = 'PLAYER_AD_BREAK_SYNCED';
 export const ACTION_AD_BREAK_SYNCED_HIDE = 'PLAYER_AD_BREAK_SYNCED_HIDE';
+export const ACTION_GAM_AD_PLAYBACK_START = 'PLAYER_GAM_AD_PLAYBACK_START';
+export const ACTION_GAM_AD_PLAYBACK_COMPLETE =
+	'PLAYER_GAM_AD_PLAYBACK_COMPLETE';
 
 export const ACTION_PLAYER_START = 'PLAYER_START';
 export const ACTION_PLAYER_STOP = 'PLAYER_STOP';
@@ -64,6 +67,15 @@ export function adPlaybackStop(actionType) {
 export function adPlaybackStart() {
 	return {
 		type: ACTION_AD_PLAYBACK_START,
+	};
+}
+
+/**
+ * gamAdPlaybackStart action creator
+ */
+export function gamAdPlaybackStart() {
+	return {
+		type: ACTION_GAM_AD_PLAYBACK_START,
 	};
 }
 
@@ -306,7 +318,8 @@ export function initTdPlayer(modules) {
 					dispatch(adPlaybackStop(ACTION_AD_PLAYBACK_ERROR)),
 				); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
 			} else {
-				dispatch(adPlaybackStop(ACTION_AD_PLAYBACK_ERROR)); // used to dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) );
+				dispatch(gamAdPlaybackStart());
+				// dispatch(adPlaybackStop(ACTION_AD_PLAYBACK_ERROR)); // used to dispatch( adPlaybackStop( ACTION_AD_PLAYBACK_ERROR ) );
 			}
 		});
 	};

@@ -30,6 +30,8 @@ import {
 	ACTION_AD_PLAYBACK_ERROR,
 	ACTION_AD_BREAK_SYNCED,
 	ACTION_AD_BREAK_SYNCED_HIDE,
+	ACTION_GAM_AD_PLAYBACK_START,
+	ACTION_GAM_AD_PLAYBACK_COMPLETE,
 	ACTION_SET_PLAYER_TYPE,
 	STATUSES,
 	ACTION_PLAY,
@@ -43,6 +45,7 @@ const { streams } = window.bbgiconfig || {};
 const adReset = {
 	adPlayback: false,
 	adSynced: false,
+	gamAdPlayback: false,
 };
 
 // Default state object
@@ -52,6 +55,7 @@ export const DEFAULT_STATE = {
 	cuePoint: false,
 	time: 0,
 	duration: 0,
+	gamAdPlayback: false,
 	player: {},
 	playerType: '', // Store player type (omny, mp3, td)
 	userInteraction: false, // Store userInteraction state
@@ -196,12 +200,20 @@ function reducer(state = {}, action = {}) {
 				adPlayback: true,
 			};
 
+		case ACTION_GAM_AD_PLAYBACK_START:
+			return {
+				...state,
+				gamAdPlayback: true,
+			};
+
 		// Catches in Saga Middleware
 		case ACTION_AD_PLAYBACK_ERROR:
-		case ACTION_AD_PLAYBACK_COMPLETE: {
+		case ACTION_AD_PLAYBACK_COMPLETE:
+		case ACTION_GAM_AD_PLAYBACK_COMPLETE: {
 			return {
 				...state,
 				adPlayback: false,
+				gamAdPlayback: false,
 			};
 		}
 

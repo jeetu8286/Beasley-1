@@ -39,6 +39,20 @@
 	}
 }
 
+.gam-preroll-player {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0%);
+
+	@media (--min-medium-viewport) {
+		min-width: 640px;
+	}
+
+	@media (--max-medium-viewport) {
+		width: 92%;
+	}
+}
+
 .preroll-notification {
 	background-color: var(--global-black);
 	color: var(--global-white);

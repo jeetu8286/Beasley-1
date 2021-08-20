@@ -9,3 +9,4 @@ export { default as Rewind } from './Rewind';
 export { default as Sponsor } from './Sponsor';
 export { default as Stations } from './Stations';
 export { default as Volume } from './Volume';
+export { default as GamPreroll } from './GamPreroll';
