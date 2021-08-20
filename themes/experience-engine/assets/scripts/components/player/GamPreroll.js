@@ -10,7 +10,11 @@ import {
 class GamPreroll extends PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = { startedPrerollFlag: false, playingPrerollFlag: false };
+		this.state = {
+			startedPrerollFlag: false,
+			playingPrerollFlag: false,
+			isFinalized: false,
+		};
 
 		this.adsManager = null;
 		this.adsLoader = null;
@@ -62,7 +66,11 @@ class GamPreroll extends PureComponent {
 		this.setUpIMA(adUnitID);
 
 		// Mark State
-		this.setState({ startedPrerollFlag: true, playingPrerollFlag: false });
+		this.setState({
+			startedPrerollFlag: true,
+			playingPrerollFlag: false,
+			isFinalized: false,
+		});
 	}
 
 	setUpIMA(adUnitID) {
@@ -126,6 +134,7 @@ class GamPreroll extends PureComponent {
 		try {
 			// Initialize the ads manager. Ad rules playlist will start at this time.
 			this.adsManager.init(640, 360, window.google.ima.ViewMode.NORMAL);
+			this.updateSize();
 			// Call play to start showing the ad. Single video and overlay ads will
 			// start at this time; the call will be ignored for ad rules.
 			this.adsManager.start();
@@ -240,14 +249,23 @@ class GamPreroll extends PureComponent {
 	}
 
 	finalize() {
-		const { adPlaybackStop } = this.props;
 		if (this.adsManager) {
 			this.adsManager.destroy();
 		}
 
-		// Mark State
-		this.setState({ startedPrerollFlag: false, playingPrerollFlag: false });
-		adPlaybackStop(ACTION_GAM_AD_PLAYBACK_COMPLETE);
+		const { isFinalized } = this.state;
+		if (!isFinalized) {
+			// Mark State
+			this.setState({
+				startedPrerollFlag: false,
+				playingPrerollFlag: false,
+				isFinalized: true,
+			});
+
+			// Call Player Action
+			const { adPlaybackStop } = this.props;
+			adPlaybackStop(ACTION_GAM_AD_PLAYBACK_COMPLETE);
+		}
 	}
 
 	render() {
