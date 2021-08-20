@@ -45,13 +45,13 @@
 	left: 50%;
 	transform: translate(-50%, 0%);
 
-@media (--min-medium-viewport) {
-	min-width: 640px;
-}
+	@media (--min-medium-viewport) {
+		min-width: 640px;
+	}
 
-@media (--max-medium-viewport) {
-	width: 92%;
-}
+	@media (--max-medium-viewport) {
+		width: 92%;
+	}
 }
 
 .preroll-notification {

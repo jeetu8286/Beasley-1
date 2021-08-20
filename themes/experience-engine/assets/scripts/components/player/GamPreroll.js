@@ -26,27 +26,20 @@ class GamPreroll extends PureComponent {
 	}
 
 	playPreroll() {
-		if (!window.google.ima) {
+		const { startedPrerollFlag } = this.state;
+		if (startedPrerollFlag) {
+			return;
+		}
+
+		if (!window.google.ima.AdsLoader) {
 			this.finalize();
 		}
 
-		// Fire only once
-		const { startedPrerollFlag } = this.state;
-		if (!startedPrerollFlag) {
-			this.videoContent = document.getElementById('gamPrerollContentElement');
-			this.setUpIMA();
+		this.videoContent = document.getElementById('gamPrerollContentElement');
+		this.setUpIMA();
 
-			// Mark State
-			this.setState({ startedPrerollFlag: true });
-
-			// Put In Delayed Guard
-			setTimeout(() => {
-				const { playingPrerollFlag } = this.state;
-				if (!playingPrerollFlag) {
-					this.finalize();
-				}
-			}, 3000);
-		}
+		// Mark State
+		this.setState({ startedPrerollFlag: true, playingPrerollFlag: false });
 	}
 
 	setUpIMA() {
@@ -91,9 +84,9 @@ class GamPreroll extends PureComponent {
 
 		adsRequest.nonLinearAdSlotWidth = 640;
 		adsRequest.nonLinearAdSlotHeight = 150;
+		*/
 
 		this.adsLoader.requestAds(adsRequest);
-		*/
 	}
 
 	createAdDisplayContainer() {
@@ -216,6 +209,15 @@ class GamPreroll extends PureComponent {
 	}
 
 	componentDidMount() {
+		// Put In Delayed Guard
+		setTimeout(() => {
+			const { playingPrerollFlag } = this.state;
+			if (!playingPrerollFlag) {
+				this.finalize();
+			}
+		}, 3000);
+
+		// Play the preroll
 		this.playPreroll();
 	}
 
@@ -228,7 +230,9 @@ class GamPreroll extends PureComponent {
 		if (this.adsManager) {
 			this.adsManager.destroy();
 		}
-		// this.props.dispatch(adPlaybackStop(ACTION_AD_PLAYBACK_ERROR));
+
+		// Mark State
+		this.setState({ startedPrerollFlag: false, playingPrerollFlag: false });
 		adPlaybackStop(ACTION_GAM_AD_PLAYBACK_COMPLETE);
 	}
 

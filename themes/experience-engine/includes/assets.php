@@ -53,10 +53,6 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 			enqueue_prebid_scripts();
 		}
 
-		if ( function_exists( 'enqueue_gampreroll_scripts' ) ) {
-			enqueue_gampreroll_scripts();
-		}
-
 		// TODO: refactor this to use wp_localize_script.
 $bbgiconfig = <<<EOL
 window.bbgiconfig = {};
