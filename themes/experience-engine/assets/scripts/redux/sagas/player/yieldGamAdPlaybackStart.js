@@ -6,8 +6,12 @@ import { ACTION_GAM_AD_PLAYBACK_START } from '../../actions/player';
  * Generator runs whenever ACTION_AD_PLAYBACK_START is dispatched
  */
 function* yieldGamAdPlaybackStart() {
-	// Add class to body
-	yield call([document.body.classList, 'add'], 'locked');
+	const { gampreroll } = window.bbgiconfig.dfp;
+
+	if (gampreroll && gampreroll.unitId) {
+		// Add class to body
+		yield call([document.body.classList, 'add'], 'locked');
+	}
 }
 
 /**
