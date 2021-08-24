@@ -14,6 +14,7 @@
 
 define( 'FVIDEOS_VERSION', '1.0.0' );
 
+add_action( 'init', 'register_custom_cap' );
 add_action( 'wp_enqueue_media', 'fvideos_enqueue_scripts' );
 add_action( 'admin_footer', 'fvideos_print_media_templates' );
 add_action( 'wp_footer', 'fvideos_print_media_templates' );
@@ -31,20 +32,42 @@ add_filter( 'post_class', 'fvideos_update_post_classes', 10, 3 );
 function fvideos_load_textdomain() {
 	load_plugin_textdomain( 'fvideos', false, basename( dirname( __FILE__ ) ) . '/languages' );
 }
+/**
+ * Register custom capability for admins and editors.
+ *
+ * @return void
+ */
+function register_custom_cap() {
+	$roles = [ 'administrator' ];
+
+	foreach ( $roles as $role ) {
+		$role_obj = get_role( $role );
+
+		if ( is_a( $role_obj, \WP_Role::class ) ) {
+			$role_obj->add_cap( 'manage_feature_image_with_video', false );
+		}
+	}
+	if( ! current_user_can( 'manage_feature_image_with_video' ) ) {
+		remove_action( 'wp_enqueue_media', 'fvideos_enqueue_scripts' );
+		remove_action( 'admin_footer', 'fvideos_print_media_templates' );
+		remove_action( 'wp_footer', 'fvideos_print_media_templates' );
+		remove_action( 'customize_controls_print_footer_scripts', 'fvideos_print_media_templates' );
+	}
+}
 
 function fvideos_enqueue_scripts() {
 	$min = defined( 'SCRIPT_DEBUG' ) && filter_var( SCRIPT_DEBUG, FILTER_VALIDATE_BOOLEAN ) ? '' : '.min';
-	
-	wp_enqueue_script( 'fvideo', plugins_url( "/assets/dist/media{$min}.js", __FILE__ ), array( 'wp-util' ), FVIDEOS_VERSION, true );
-	wp_localize_script( 'fvideo', 'fvideo', array(
-		'wrongUrl'    => esc_html__( 'Please, enter valid URL', 'fvideos' ),
-		'cannotEmbed' => esc_html__( 'Unexpected error happened during import', 'fvideos' ),
-		'missingImage' => esc_html__( 'Please, select thumbnail image', 'fvideos' ),
-		'missingMediaImage' => esc_html__( 'Please, select media thumbnail image', 'fvideos' ),
-		'cannotEmbedImage' => esc_html__( 'Unexpected error happened during image select', 'fvideos' ),
-	) );
-	wp_register_style('fvideostyle',plugins_url( "/assets/dist/media{$min}.css", __FILE__ ), array(), FVIDEOS_VERSION, 'all');
-	wp_enqueue_style('fvideostyle');
+
+		wp_enqueue_script( 'fvideo', plugins_url( "/assets/dist/media{$min}.js", __FILE__ ), array( 'wp-util' ), FVIDEOS_VERSION, true );
+		wp_localize_script( 'fvideo', 'fvideo', array(
+			'wrongUrl'    => esc_html__( 'Please, enter valid URL', 'fvideos' ),
+			'cannotEmbed' => esc_html__( 'Unexpected error happened during import', 'fvideos' ),
+			'missingImage' => esc_html__( 'Please, select thumbnail image', 'fvideos' ),
+			'missingMediaImage' => esc_html__( 'Please, select media thumbnail image', 'fvideos' ),
+			'cannotEmbedImage' => esc_html__( 'Unexpected error happened during image select', 'fvideos' ),
+		) );
+		wp_register_style('fvideostyle',plugins_url( "/assets/dist/media{$min}.css", __FILE__ ), array(), FVIDEOS_VERSION, 'all');
+		wp_enqueue_style('fvideostyle');
 }
 
 function fvideos_post_thumbnail_video( $html, $post_id, $thumbnail_id ) {
@@ -75,40 +98,40 @@ function fvideos_update_post_classes( $classes, $class, $post_id ) {
 }
 
 function fvideos_print_media_templates() {
-	?><script type="text/html" id="tmpl-video-embed-import">
-		<div class="video__embed embed-url cus_video__embed">
-			<label> Video URL </label>
-			<div class="video_input">
-				<input type="url" class="video__url" placeholder="https://...">
-				<button type="button" class="video__submit button button-primary button-hero" disabled>&rarr;</button>
-				<span class="spinner" id="video__submit_spinner"></span>
-			</div>
-			<div class="video__preview"></div>
-		</div>
-		<div class="image__embed embed-image">
-			<div class="radio__img__options">
-				<label>Thumbnail Image</label>
-				<div> 
-					<input type="radio" id="upload_image" name="image_option" value="upload_image"> Upload Image
-					<input type="radio" id="select_media_library" name="image_option" value="select_media_library"> Media library
+		?><script type="text/html" id="tmpl-video-embed-import">
+			<div class="video__embed embed-url cus_video__embed">
+				<label> Video URL </label>
+				<div class="video_input">
+					<input type="url" class="video__url" placeholder="https://...">
+					<button type="button" class="video__submit button button-primary button-hero" disabled>&rarr;</button>
+					<span class="spinner" id="video__submit_spinner"></span>
 				</div>
+				<div class="video__preview"></div>
 			</div>
-			
-			<!-- Open Media Library -->
-			<div class="media__img__option" style="display: none;">
-				<input type="button" class="button video__mediaimg" id="video__mediaimg" value="Open Media Library" />
-				<input type="hidden" name="media_image_id" id="media_image_id" />
-				<span class="spinner" id="image__preview_spinner"></span>
-				<div class="image__preview"></div>
+			<div class="image__embed embed-image">
+				<div class="radio__img__options">
+					<label>Thumbnail Image</label>
+					<div> 
+						<input type="radio" id="upload_image" name="image_option" value="upload_image"> Upload Image
+						<input type="radio" id="select_media_library" name="image_option" value="select_media_library"> Media library
+					</div>
+				</div>
+				
+				<!-- Open Media Library -->
+				<div class="media__img__option" style="display: none;">
+					<input type="button" class="button video__mediaimg" id="video__mediaimg" value="Open Media Library" />
+					<input type="hidden" name="media_image_id" id="media_image_id" />
+					<span class="spinner" id="image__preview_spinner"></span>
+					<div class="image__preview"></div>
+				</div>
+				
+				<div class="upload__img__option" style="display: none;">
+					<!-- Select file from local system -->
+					<input type="file" name="custom_featured_img" id="custom_featured_img" />
+				</div>
+				<div class="mediaimage__preview"></div>
 			</div>
-			
-			<div class="upload__img__option" style="display: none;">
-				<!-- Select file from local system -->
-				<input type="file" name="custom_featured_img" id="custom_featured_img" />
-			</div>
-			<div class="mediaimage__preview"></div>
-		</div>
-	</script><?php
+		</script><?php
 }
 
 function fvideos_get_oembed( $url ) {
