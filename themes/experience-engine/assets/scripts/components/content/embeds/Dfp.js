@@ -164,10 +164,11 @@ class Dfp extends PureComponent {
 			10,
 		);
 
+		console.log(`PageURL: ${pageURL}`);
 		const isAffiliateMarketingPage =
 			pageURL.endsWith('/category/shopping/') ||
 			pageURL.endsWith('/must-haves/') ||
-			pageURL.indexOf('/musthaves/');
+			pageURL.indexOf('/musthaves/') > -1;
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
