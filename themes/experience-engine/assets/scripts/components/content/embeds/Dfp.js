@@ -164,10 +164,10 @@ class Dfp extends PureComponent {
 			10,
 		);
 
-		console.log(`PageURL: ${pageURL}`);
+		console.log(`PageURL: ${pageURL}`); // TODO - Remove After Debugged
 		const isAffiliateMarketingPage =
-			pageURL.endsWith('/category/shopping/') ||
-			pageURL.endsWith('/must-haves/') ||
+			pageURL.indexOf('/category/shopping/') > -1 ||
+			pageURL.indexOf('/shows/must-haves/') > -1 ||
 			pageURL.indexOf('/musthaves/') > -1;
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
@@ -344,7 +344,7 @@ class Dfp extends PureComponent {
 	loadPrebid(unitID, prebidSizes) {
 		const { prebidEnabled } = this.state;
 		if (!prebidEnabled || !unitID || !prebidSizes) {
-			console.log('PREBID DISABLED');
+			console.log('PREBID DISABLED'); // TODO - Remove After Debugged
 			return false;
 		}
 
