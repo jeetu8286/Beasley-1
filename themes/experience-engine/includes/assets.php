@@ -126,10 +126,11 @@ endif;
 if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 	function ee_get_other_css_vars() {
 		$vars = [
-			'--brand-play-opacity'           => get_option( 'play_opacity_setting', '0.8' ),
-			'--brand-play-hover-opacity'     => get_option( 'play_hover_opacity_setting', '1' ),
-			'--brand-play-live-hover-opacity'     => get_option( 'play_live_hover_opacity_setting', '0.8' ),
-			'--configurable-iframe-height'     => get_option( 'configurable_iframe_height', '0' ) . 'px',
+			'--brand-play-opacity'           		=> get_option( 'play_opacity_setting', '0.8' ),
+			'--brand-play-hover-opacity'     		=> get_option( 'play_hover_opacity_setting', '1' ),
+			'--brand-play-live-hover-opacity'     	=> get_option( 'play_live_hover_opacity_setting', '0.8' ),
+			'--default-configurable-iframe-height'	=> get_option( 'configurable_iframe_height', '0' ) . 'px',
+			'--configurable-iframe-height'     		=> get_option( 'configurable_iframe_height', '0' ) . 'px',
 		];
 
 		return $vars;
