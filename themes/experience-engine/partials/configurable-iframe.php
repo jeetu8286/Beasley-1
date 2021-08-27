@@ -3,6 +3,7 @@ $iframe_height =  get_option( 'configurable_iframe_height', '0' );
 
 // Height Setting Of 0 Means "Do Not Display"
 if ( empty( $iframe_height ) ) {
+	echo "<script type='text/javascript'>var setIFrameVisible = Function.prototype;</script>";
 	return;
 }
 ?>
@@ -32,6 +33,19 @@ if ( empty( $iframe_height ) ) {
 		}
 	}
 </style>
+
+<script type='text/javascript'>
+	var setIFrameVisible = (isVisible) => {
+		document.documentElement.style.setProperty(
+    		'--configurable-iframe-height',
+    		isVisible
+    			? document.documentElement.style.getPropertyValue(
+    					'--default-configurable-iframe-height',
+    			  )
+    			: '0px',
+    	);
+	};
+</script>
 
 <div class="configurable-iframe-holder">
 	<?PHP
