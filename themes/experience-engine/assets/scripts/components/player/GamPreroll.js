@@ -187,6 +187,8 @@ class GamPreroll extends PureComponent {
 	}
 
 	onAdEvent(adEvent) {
+		const wrapperEl = document.getElementById('gamPrerollWrapper');
+
 		// Retrieve the ad from the event. Some events (e.g. ALL_ADS_COMPLETED)
 		// don't have ad object associated.
 		const ad = adEvent.getAd();
@@ -204,6 +206,9 @@ class GamPreroll extends PureComponent {
 				// This event indicates the ad has started - the video player
 				// can adjust the UI, for example display a pause button and
 				// remaining time.
+				if (wrapperEl) {
+					wrapperEl.classList.add('gampreroll-shade');
+				}
 				break;
 			case window.google.ima.AdEvent.Type.COMPLETE:
 				// This event indicates the ad has finished - the video player
@@ -270,7 +275,7 @@ class GamPreroll extends PureComponent {
 
 	render() {
 		return (
-			<div className="preroll-wrapper -active">
+			<div id="gamPrerollWrapper" className="gampreroll-wrapper -active">
 				<div id="gamPrerollContent">
 					<video id="gamPrerollContentElement">
 						<track
