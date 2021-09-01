@@ -24,6 +24,7 @@ import EditFeed from './embeds/EditFeed';
 import Embedly from './embeds/Embedly';
 import SongArchive from './embeds/SongArchive';
 import RelatedPosts from './embeds/RelatedPosts';
+import DrimifyEmbed from './embeds/DrimifyEmbed';
 import GoogleAnalytics from './embeds/GoogleAnalytics';
 import Instagram from './embeds/Instagram';
 import MapBox from './embeds/MapBox';
@@ -31,7 +32,6 @@ import HubspotForm from './embeds/HubspotForm';
 import StnBarker from './embeds/StnBarker';
 import StnPlayer from './embeds/StnPlayer';
 import BrandedContent from './embeds/BrandedContent';
-import DrimifyEmbed from './embeds/DrimifyEmbed';
 
 const mapping = {
 	audio: AudioEmbed,
