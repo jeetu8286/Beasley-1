@@ -50,6 +50,7 @@ const mapping = {
 	secondstreetprefcenter: SecondStreetPreferenceCenterEmbed,
 	secondstreetsignup: SecondStreetSignupEmbed,
 	share: Share,
+	drimify: DrimifyEmbed,
 	songarchive: SongArchive,
 	streamcta: StreamCta,
 	relatedposts: RelatedPosts,
@@ -60,7 +61,6 @@ const mapping = {
 	stnplayer: StnPlayer,
 	hubspotform: HubspotForm,
 	dmlbranded: BrandedContent,
-	drimify: DrimifyEmbed,
 };
 
 /**

@@ -52,6 +52,7 @@ abstract class Module {
 			'feed-pull'         => new \Bbgi\Integration\FeedPull(),
 			'notifications'     => new \Bbgi\Integration\PushNotifications(),
 			'webhooks'          => new \Bbgi\Webhooks(),
+			'drimify' 			=> new \Bbgi\Integration\Drimify(),
 			'enclosure'         => new \Bbgi\Media\Enclosure(),
 			'users'             => new \Bbgi\Users(),
 			'redirects'         => new \Bbgi\Redirects(),
@@ -60,8 +61,7 @@ abstract class Module {
 			'mapbox' 			=> new \Bbgi\Integration\Mapbox(),
 			'hsform'			=> new \Bbgi\Integration\HubspotForm(),
 			'feature_video'		=> new \Bbgi\Integration\FeatureVideo(),
-			'branded-content'	=> new \Bbgi\Integration\BrandedContent(),
-			'drimify' 			=> new \Bbgi\Integration\Drimify(),
+			'branded-content'	=> new \Bbgi\Integration\BrandedContent()
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {
