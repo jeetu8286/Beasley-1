@@ -23,6 +23,7 @@ mu-plugins/post-finder/
 !/plugins/gmr-*
 !/plugins/greatermedia-*
 !/plugins/gravityforms/
+!/plugins/thumbnail-video-jacapps
 !/plugins/user-role-editor-pro/
 !/plugins/configure-smtp/
 !/plugins/embedly
@@ -34,7 +35,6 @@ mu-plugins/post-finder/
 !/plugins/sendtonews
 !/plugins/prebidjs
 !/plugins/now-playing-jacapps
-!/plugins/thumbnail-video-jacapps
 
 themes/index.php
 themes/twentyfourteen
