@@ -167,6 +167,15 @@ function getMapboxParams(element) {
 	};
 }
 
+function getDrimifyParams(element) {
+	const { dataset } = element;
+
+	return {
+		app_url: dataset.app_url,
+		app_style: dataset.app_style,
+	};
+}
+
 function getHubspotFormParams(element) {
 	const { dataset } = element;
 
@@ -391,6 +400,7 @@ export function getStateFromContent(container, pageURL) {
 				'.dmlbranded',
 				getDatasetParams('stackid', 'layout'),
 			),
+			...processEmbeds(container, 'drimify', '.drimify', getDrimifyParams),
 		];
 
 		// extract <script> tags
