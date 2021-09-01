@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { IntersectionObserverContext } from '../../../context/intersection-observer';
-// import * as pbjs from '../../../library/prebid5.1.0';
+import { IntersectionObserverContext } from '../../../context';
 
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
@@ -81,6 +80,9 @@ const slotRenderEndedHandler = event => {
 		: null;
 
 	const placeholder = slot.getSlotElementId();
+
+	console.log(`slotRenderEndedHandler size: ${size}`);
+
 	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
 		if (isEmpty) {
@@ -93,10 +95,27 @@ const slotRenderEndedHandler = event => {
 				getSlotStat(placeholder).timeVisible = 10000000;
 			}
 		} else {
+			let adSize;
+			if (size && size.length === 2 && (size[0] !== 1 || size[1] !== 1)) {
+				adSize = size;
+			} else if (slot.getTargeting('hb_size')) {
+				const hbSizeString = slot.getTargeting('hb_size').toString();
+				console.log(`Prebid Sizestring: ${hbSizeString}`);
+				const idxOfX = hbSizeString.toLowerCase().indexOf('x');
+				if (idxOfX > -1) {
+					const widthString = hbSizeString.substr(0, idxOfX);
+					const heightString = hbSizeString.substr(idxOfX + 1);
+					adSize = [];
+					adSize[0] = parseInt(widthString, 10);
+					adSize[1] = parseInt(heightString, 10);
+				}
+			}
+
+			console.log(`USING Size: ${adSize}`);
 			// Adjust Container Div Height
-			if (size && size[0] && size[1]) {
-				const imageWidth = size[0];
-				const imageHeight = size[1];
+			if (adSize && adSize[0] && adSize[1]) {
+				const imageWidth = adSize[0];
+				const imageHeight = adSize[1];
 				const padBottomStr = window.getComputedStyle(slotElement).paddingBottom;
 				const padBottom =
 					padBottomStr.indexOf('px') > -1
@@ -128,8 +147,9 @@ const slotRenderEndedHandler = event => {
 
 class Dfp extends PureComponent {
 	constructor(props) {
-		const { bbgiconfig } = window;
 		super(props);
+		const { pageURL } = props;
+		const { bbgiconfig } = window;
 
 		const slotPollSecs = parseInt(
 			bbgiconfig.ad_rotation_polling_sec_setting,
@@ -143,6 +163,12 @@ class Dfp extends PureComponent {
 			bbgiconfig.ad_vid_rotation_refresh_sec_setting,
 			10,
 		);
+
+		console.log(`PageURL: ${pageURL}`);
+		const isAffiliateMarketingPage =
+			pageURL.endsWith('/category/shopping/') ||
+			pageURL.endsWith('/must-haves/') ||
+			pageURL.indexOf('/musthaves/') > -1;
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
@@ -160,8 +186,10 @@ class Dfp extends PureComponent {
 				slotVideoRefreshSecs && slotVideoRefreshSecs >= 30
 					? slotVideoRefreshSecs * 1000
 					: 60000,
+			ixSiteID: bbgiconfig.ad_ix_siteid_setting,
 			rubiconZoneID: bbgiconfig.ad_rubicon_zoneid_setting,
-			prebidEnabled: bbgiconfig.prebid_enabled,
+			appnexusPlacementID: bbgiconfig.ad_appnexus_placementid_setting,
+			prebidEnabled: bbgiconfig.prebid_enabled && !isAffiliateMarketingPage,
 		};
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
@@ -170,6 +198,10 @@ class Dfp extends PureComponent {
 		this.loadPrebid = this.loadPrebid.bind(this);
 		this.refreshBid = this.refreshBid.bind(this);
 		this.destroySlot = this.destroySlot.bind(this);
+		this.getPrebidBidders = this.getPrebidBidders.bind(this);
+		this.getBidderRubicon = this.getBidderRubicon.bind(this);
+		this.getBidderAppnexus = this.getBidderAppnexus.bind(this);
+		this.getBidderIx = this.getBidderIx.bind(this);
 	}
 
 	isConfiguredToRunInterval() {
@@ -248,10 +280,77 @@ class Dfp extends PureComponent {
 		this.setState({ interval: false });
 	}
 
+	getBidderRubicon() {
+		const { rubiconZoneID } = this.state;
+		if (!rubiconZoneID) {
+			return null;
+		}
+
+		const retval = {
+			bidder: 'rubicon',
+			params: {
+				accountId: 18458,
+				siteId: 375130,
+				zoneId: parseInt(rubiconZoneID, 10),
+			},
+		};
+
+		return retval;
+	}
+
+	getBidderAppnexus() {
+		const { appnexusPlacementID } = this.state;
+		if (!appnexusPlacementID) {
+			return null;
+		}
+
+		const retval = {
+			bidder: 'appnexus',
+			params: {
+				placementId: parseInt(appnexusPlacementID, 10),
+			},
+		};
+
+		return retval;
+	}
+
+	getBidderIx() {
+		const { ixSiteID } = this.state;
+		if (!ixSiteID) {
+			return null;
+		}
+
+		const retval = {
+			bidder: 'ix',
+			params: {
+				siteId: parseInt(ixSiteID, 10),
+			},
+		};
+
+		return retval;
+	}
+
+	getPrebidBidders() {
+		const retval = [];
+
+		retval.push(this.getBidderRubicon());
+		retval.push(this.getBidderAppnexus());
+		retval.push(this.getBidderIx());
+
+		return retval.filter(bidObj => bidObj);
+	}
+
+	// Returns whether Prebid is actually Enabled for this slot
 	loadPrebid(unitID, prebidSizes) {
-		const { prebidEnabled, rubiconZoneID } = this.state;
-		if (!prebidEnabled || !unitID || !prebidSizes || !rubiconZoneID) {
-			return;
+		const { prebidEnabled } = this.state;
+		if (!prebidEnabled || !unitID || !prebidSizes) {
+			console.log('PREBID DISABLED');
+			return false;
+		}
+
+		const prebidBidders = this.getPrebidBidders();
+		if (!prebidBidders || prebidBidders.length === 0) {
+			return false;
 		}
 
 		const pbjs = window.pbjs || {};
@@ -265,16 +364,7 @@ class Dfp extends PureComponent {
 						sizeConfig: prebidSizes,
 					},
 				},
-				bids: [
-					{
-						bidder: 'rubicon',
-						params: {
-							accountId: '18458',
-							siteId: '375130',
-							zoneId: rubiconZoneID,
-						},
-					},
-				],
+				bids: prebidBidders,
 			},
 		];
 
@@ -282,10 +372,31 @@ class Dfp extends PureComponent {
 			pbjs.setConfig({
 				bidderTimeout: 1000,
 				rubicon: { singleRequest: true },
+				priceGranularity: {
+					buckets: [
+						{
+							min: 0,
+							max: 5,
+							increment: 0.01,
+						},
+						{
+							min: 5,
+							max: 20,
+							increment: 0.05,
+						},
+						{
+							min: 20,
+							max: 50,
+							increment: 0.5,
+						},
+					],
+				},
 			});
 
 			pbjs.addAdUnits(adUnits);
 		});
+
+		return true;
 	}
 
 	registerSlot() {
@@ -535,13 +646,13 @@ class Dfp extends PureComponent {
 				slot.defineSizeMapping(sizeMapping);
 			}
 
-			this.loadPrebid(unitId, prebidSizeConfig);
+			const prebidEnabled = this.loadPrebid(unitId, prebidSizeConfig);
 
 			for (let i = 0; i < targeting.length; i++) {
 				slot.setTargeting(targeting[i][0], targeting[i][1]);
 			}
 
-			this.setState({ slot });
+			this.setState({ slot, prebidEnabled });
 			return true;
 		});
 	}
@@ -613,7 +724,7 @@ class Dfp extends PureComponent {
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
 				bidsBackHandler: () => {
-					pbjs.setTargetingForGPTAsync([unitId]);
+					pbjs.setTargetingForGPTAsync([slot]);
 					googletag.cmd.push(() => {
 						googletag.pubads().refresh([slot]);
 					});
@@ -625,12 +736,12 @@ class Dfp extends PureComponent {
 	refreshSlot() {
 		const { googletag } = window;
 		const { placeholder, unitName, unitId } = this.props;
-		const { slot, rubiconZoneID } = this.state;
+		const { slot, prebidEnabled } = this.state;
 
 		if (slot) {
 			googletag.cmd.push(() => {
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
-				if (rubiconZoneID) {
+				if (prebidEnabled) {
 					this.refreshBid(unitId, slot);
 				} else {
 					googletag.pubads().refresh([slot]);
@@ -679,11 +790,13 @@ Dfp.propTypes = {
 	unitName: PropTypes.string.isRequired,
 	targeting: PropTypes.arrayOf(PropTypes.array),
 	shouldMapSizes: PropTypes.bool,
+	pageURL: PropTypes.string,
 };
 
 Dfp.defaultProps = {
 	targeting: [],
 	shouldMapSizes: true,
+	pageURL: '',
 };
 
 Dfp.contextType = IntersectionObserverContext;

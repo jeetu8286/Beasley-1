@@ -110,25 +110,29 @@ function getSongArchiveParams(element) {
 	};
 }
 
-function getDfpParams({ dataset }) {
-	const { targeting } = dataset;
+// return a function which creates DFP Params including the passed in pageURL
+function getDfpParamsFunc(pageURL) {
+	return ({ dataset }) => {
+		const { targeting } = dataset;
 
-	let keyvalues = [];
+		let keyvalues = [];
 
-	try {
-		if (typeof targeting === 'string' && targeting) {
-			keyvalues = JSON.parse(targeting);
-		} else if (Array.isArray(targeting)) {
-			keyvalues = targeting;
+		try {
+			if (typeof targeting === 'string' && targeting) {
+				keyvalues = JSON.parse(targeting);
+			} else if (Array.isArray(targeting)) {
+				keyvalues = targeting;
+			}
+		} catch (err) {
+			// do nothing
 		}
-	} catch (err) {
-		// do nothing
-	}
 
-	return {
-		unitId: dataset.unitId,
-		unitName: dataset.unitName,
-		targeting: keyvalues,
+		return {
+			unitId: dataset.unitId,
+			unitName: dataset.unitName,
+			targeting: keyvalues,
+			pageURL,
+		};
 	};
 }
 
@@ -217,7 +221,7 @@ function processEmbeds(container, type, selector, callback) {
 	return embeds;
 }
 
-export function getStateFromContent(container) {
+export function getStateFromContent(container, pageURL) {
 	const state = {
 		scripts: {},
 		embeds: [],
@@ -226,7 +230,12 @@ export function getStateFromContent(container) {
 
 	if (container) {
 		state.embeds = [
-			...processEmbeds(container, 'dfp', '.dfp-slot', getDfpParams),
+			...processEmbeds(
+				container,
+				'dfp',
+				'.dfp-slot',
+				getDfpParamsFunc(pageURL),
+			),
 			...processEmbeds(
 				container,
 				'secondstreet',
@@ -311,6 +320,7 @@ export function getStateFromContent(container) {
 				'.discovery-cta',
 				getPayloadParams(),
 			),
+			...processEmbeds(container, 'dimers', '.dimers', getPayloadParams()),
 			...processEmbeds(
 				container,
 				'favorites',
@@ -403,13 +413,13 @@ export function getStateFromContent(container) {
 	return state;
 }
 
-export function parseHtml(html, selector = '#content') {
+export function parseHtml(pageURL, html, selector = '#content') {
 	const parser = new DOMParser();
 
 	const pageDocument = parser.parseFromString(html, 'text/html');
 	const content = pageDocument.querySelector(selector);
 
-	const state = getStateFromContent(content);
+	const state = getStateFromContent(content, pageURL);
 	state.document = pageDocument;
 
 	return state;

@@ -98,6 +98,7 @@ class ShowsCPT {
 			'menu_icon'           => 'dashicons-megaphone',
 			'has_archive'         => 'shows',
 			'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'comments', 'revisions' ),
+			'taxonomies'		  => array( 'category' ),
 			'labels'              => array(
 				'name'               => __( 'Shows', 'greatermedia' ),
 				'singular_name'      => __( 'Show', 'greatermedia' ),
@@ -181,6 +182,7 @@ class ShowsCPT {
 			'tribe_events',
 			'survey',
 			'gmr_gallery',
+			'listicle_cpt',
 			'affiliate_marketing',
 			'gmr_album',
 		);

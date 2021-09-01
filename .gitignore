@@ -30,10 +30,12 @@ mu-plugins/post-finder/
 !/plugins/amp
 !/plugins/semrush-seo-writing-assistant
 !/plugins/affiliate-marketing-cpt
+!/plugins/cpt-listicle
 !/plugins/sendtonews
 !/plugins/prebidjs
 !/plugins/now-playing-jacapps
 !/plugins/share-jacapps
+!/plugins/cpt-tag-permissions
 
 themes/index.php
 themes/twentyfourteen
@@ -55,3 +57,4 @@ themes/**/css/*.css
 themes/**/js/*.js
 themes/greatermedia/vendor/
 /themes/experience-engine/bundle/
+/wpmvc/

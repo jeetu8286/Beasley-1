@@ -30,6 +30,7 @@ if ( ! function_exists( 'ee_setup_theme' ) ) :
 		add_post_type_support( 'post', 'timed-content' );
 		add_post_type_support( 'page', 'timed-content' );
 		add_post_type_support( 'gmr_gallery', 'timed-content' );
+		add_post_type_support( 'listicle_cpt', 'timed-content' );
 		add_post_type_support( 'gmr_album', 'timed-content' );
 		add_post_type_support( 'episode', 'timed-content' );
 		add_post_type_support( 'tribe_events', 'timed-content' );
@@ -67,14 +68,14 @@ if ( ! function_exists( 'ee_update_main_query' ) ) :
 			}
 
 			$post_types_array = get_post_types( '', 'names' );
-			$exclude_post_type = array( 'gmr_homepage', 'gmr_mobile_homepage', 'page', 'nav_menu_item', 'user_request', 'acf-field-group', 'acf-field', 'cmm-redirect', 'attachment', 'revision', 'custom_css', 'customize_changeset', 'oembed_cache', 'live-stream', 'songs', 'redirect_rule' );
+			$exclude_post_type = array('show', 'gmr_homepage', 'gmr_mobile_homepage', 'page', 'nav_menu_item', 'user_request', 'acf-field-group', 'acf-field', 'cmm-redirect', 'attachment', 'revision', 'custom_css', 'customize_changeset', 'oembed_cache', 'live-stream', 'songs', 'redirect_rule' );
 			foreach ( $post_types_array as $posttype ) {
 				if( !in_array( $posttype, $exclude_post_type ) )
 				{
 					$post_type[] = $posttype;
 				}
-			} 
-			
+			}
+
 			$query->set( 'post_type', $post_type );
 		}
 
