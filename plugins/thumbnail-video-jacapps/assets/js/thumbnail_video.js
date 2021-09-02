@@ -37,7 +37,7 @@
                 };
 
                 if ($.trim(data.html) != "" && $.trim(data.title) != "" && $.trim(data.thumbnail) != "") {
-                    render($currentShare, data, vti);
+                    renderVideoThumbnailMobile($currentShare, data, vti);
                     vti++;
                 }
             })
@@ -60,7 +60,7 @@
     });
 })(jQuery);
 
-function render($el, data, vti = 0) {
+function renderVideoThumbnailMobile($el, data, vti = 0) {
     let { src, html, title, thumbnail } = data;
 
     let webp = false;
