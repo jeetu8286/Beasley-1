@@ -147,8 +147,9 @@ const slotRenderEndedHandler = event => {
 
 class Dfp extends PureComponent {
 	constructor(props) {
-		const { bbgiconfig } = window;
 		super(props);
+		const { pageURL } = props;
+		const { bbgiconfig } = window;
 
 		const slotPollSecs = parseInt(
 			bbgiconfig.ad_rotation_polling_sec_setting,
@@ -162,6 +163,12 @@ class Dfp extends PureComponent {
 			bbgiconfig.ad_vid_rotation_refresh_sec_setting,
 			10,
 		);
+
+		console.log(`PageURL: ${pageURL}`); // TODO - Remove After Debugged
+		const isAffiliateMarketingPage =
+			pageURL.indexOf('/category/shopping/') > -1 ||
+			pageURL.indexOf('/shows/must-haves/') > -1 ||
+			pageURL.indexOf('/musthaves/') > -1;
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
@@ -182,7 +189,7 @@ class Dfp extends PureComponent {
 			ixSiteID: bbgiconfig.ad_ix_siteid_setting,
 			rubiconZoneID: bbgiconfig.ad_rubicon_zoneid_setting,
 			appnexusPlacementID: bbgiconfig.ad_appnexus_placementid_setting,
-			prebidEnabled: bbgiconfig.prebid_enabled,
+			prebidEnabled: bbgiconfig.prebid_enabled && !isAffiliateMarketingPage,
 		};
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
@@ -337,6 +344,7 @@ class Dfp extends PureComponent {
 	loadPrebid(unitID, prebidSizes) {
 		const { prebidEnabled } = this.state;
 		if (!prebidEnabled || !unitID || !prebidSizes) {
+			console.log('PREBID DISABLED'); // TODO - Remove After Debugged
 			return false;
 		}
 
@@ -782,11 +790,13 @@ Dfp.propTypes = {
 	unitName: PropTypes.string.isRequired,
 	targeting: PropTypes.arrayOf(PropTypes.array),
 	shouldMapSizes: PropTypes.bool,
+	pageURL: PropTypes.string,
 };
 
 Dfp.defaultProps = {
 	targeting: [],
 	shouldMapSizes: true,
+	pageURL: '',
 };
 
 Dfp.contextType = IntersectionObserverContext;

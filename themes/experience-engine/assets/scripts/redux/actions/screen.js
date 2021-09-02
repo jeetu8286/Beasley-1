@@ -22,7 +22,7 @@ export const ACTION_HISTORY_HTML_SNAPSHOT = 'HISTORY_HTML_SNAPSHOT';
  */
 export function initPage() {
 	const content = document.getElementById('content');
-	const parsed = getStateFromContent(content);
+	const parsed = getStateFromContent(content, window.location.href);
 
 	// clean up content block for now, it will be poplated in the render function
 	removeChildren(content);
@@ -71,7 +71,7 @@ export const fetchFeedsContent = (
 			},
 		).then(res => res.json());
 
-		const parsedHtml = parseHtml(response.html);
+		const parsedHtml = parseHtml(url, response.html);
 		dispatch({
 			type: ACTION_LOADED_PAGE,
 			url,
@@ -130,7 +130,7 @@ export const fetchPage = (url, options = {}) => async dispatch => {
 			dispatch({ type: ACTION_LOAD_ERROR });
 			return;
 		}
-		const parsedHtml = parseHtml(response.html);
+		const parsedHtml = parseHtml(url, response.html);
 
 		dispatch({
 			type: ACTION_LOADED_PAGE,
@@ -162,7 +162,7 @@ export function loadPartialPage(url, placeholder) {
 		}
 
 		function onSuccess(data) {
-			const parsed = parseHtml(data, '#inner-content');
+			const parsed = parseHtml(url, data, '#inner-content');
 			dispatch({ type: ACTION_LOADED_PARTIAL, url, ...parsed, placeholder });
 			pageview(parsed.document.title, url);
 		}
