@@ -13,6 +13,24 @@
 	}
 }
 
+.gampreroll-wrapper {
+	display: none;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 100;
+
+	&.-active {
+		 display: block;
+	 }
+}
+
+.gampreroll-shade {
+	background-color: rgba(0, 0, 0, .75);
+}
+
 .preroll-container {
 	height: 0;
 	max-width: 100%;
@@ -32,6 +50,21 @@
 
 	@media (--min-medium-viewport) {
 		min-width: 640px;
+	}
+
+	@media (--max-medium-viewport) {
+		width: 92%;
+	}
+}
+
+.gam-preroll-player {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0%);
+
+	@media (--min-medium-viewport) {
+		min-width: 640px;
+		width: 46%;
 	}
 
 	@media (--max-medium-viewport) {

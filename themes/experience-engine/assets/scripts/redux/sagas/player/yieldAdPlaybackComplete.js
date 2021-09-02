@@ -3,6 +3,7 @@ import { loadNowPlaying } from '../../utilities';
 import {
 	ACTION_AD_PLAYBACK_COMPLETE,
 	ACTION_AD_PLAYBACK_ERROR,
+	ACTION_GAM_AD_PLAYBACK_COMPLETE,
 } from '../../actions/player';
 
 /**
@@ -24,7 +25,11 @@ function* yieldAdPlaybackComplete() {
  */
 export default function* watchAdPlaybackComplete() {
 	yield takeLatest(
-		[ACTION_AD_PLAYBACK_COMPLETE, ACTION_AD_PLAYBACK_ERROR],
+		[
+			ACTION_AD_PLAYBACK_COMPLETE,
+			ACTION_AD_PLAYBACK_ERROR,
+			ACTION_GAM_AD_PLAYBACK_COMPLETE,
+		],
 		yieldAdPlaybackComplete,
 	);
 }
