@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
-import Dfp from '../content/embeds/Dfp';
+import Dfp, { getIsAffiliateMarketingPage } from '../content/embeds/Dfp';
 
 class PlayerAd extends PureComponent {
 	constructor(props) {
@@ -11,15 +10,18 @@ class PlayerAd extends PureComponent {
 		this.state = { shouldRender: this.getWhetherShouldRender() };
 
 		this.onResize = this.handleResize.bind(this);
+		this.onSubtreeModified = this.handleSubtreeModified.bind(this);
 		this.onRef = this.handleSlotRef.bind(this);
 	}
 
 	componentDidMount() {
 		window.addEventListener('resize', this.onResize);
+		window.addEventListener('DOMSubtreeModified', this.onSubtreeModified);
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.onResize);
+		window.removeEventListener('DOMSubtreeModified', this.onSubtreeModified);
 	}
 
 	getWhetherShouldRender() {
@@ -27,6 +29,10 @@ class PlayerAd extends PureComponent {
 		const { unitId } = window.bbgiconfig.dfp.player;
 
 		if (unitId) {
+			if (getIsAffiliateMarketingPage(window.location.href)) {
+				return false;
+			}
+
 			if (
 				minWidth > 0 &&
 				window.matchMedia(`(min-width: ${minWidth}px)`).matches
@@ -50,8 +56,21 @@ class PlayerAd extends PureComponent {
 			const shouldRender = this.getWhetherShouldRender();
 			if (shouldRender !== this.state.shouldRender) {
 				this.setState({ shouldRender });
+				console.log(
+					`Reset Player Ad State Because Of Resize Change on ${window.location.href}`,
+				);
 			}
 		});
+	}
+
+	handleSubtreeModified() {
+		const shouldRender = this.getWhetherShouldRender();
+		if (shouldRender !== this.state.shouldRender) {
+			this.setState({ shouldRender });
+			console.log(
+				`Reset Player Ad State Because Of DOM Change on ${window.location.href}`,
+			);
+		}
 	}
 
 	handleSlotRef(dfp) {
@@ -61,6 +80,7 @@ class PlayerAd extends PureComponent {
 	}
 
 	render() {
+		console.log('PLAYER AD RENDER');
 		const { shouldMapSizes } = this.props;
 		const { shouldRender } = this.state;
 		if (!shouldRender) {

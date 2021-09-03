@@ -145,6 +145,14 @@ const slotRenderEndedHandler = event => {
 	}
 };
 
+export const getIsAffiliateMarketingPage = pageURL => {
+	return (
+		pageURL.indexOf('/category/shopping/') > -1 ||
+		pageURL.indexOf('/shows/must-haves/') > -1 ||
+		pageURL.indexOf('/musthaves/') > -1
+	);
+};
+
 class Dfp extends PureComponent {
 	constructor(props) {
 		super(props);
@@ -164,11 +172,7 @@ class Dfp extends PureComponent {
 			10,
 		);
 
-		console.log(`PageURL: ${pageURL}`); // TODO - Remove After Debugged
-		const isAffiliateMarketingPage =
-			pageURL.indexOf('/category/shopping/') > -1 ||
-			pageURL.indexOf('/shows/must-haves/') > -1 ||
-			pageURL.indexOf('/musthaves/') > -1;
+		const isAffiliateMarketingPage = getIsAffiliateMarketingPage(pageURL);
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
