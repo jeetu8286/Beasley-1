@@ -15,7 +15,7 @@
                     title: $currentShare.data("title")
                 };
                 if ($.trim(data.url) != "" && $.trim(data.title) != "") {
-                    render($currentShare, data, si);
+                    renderCopyUrlButtonsMobile($currentShare, data, si);
                     si++;
                 }
             })
@@ -60,7 +60,7 @@ function onCopyUrlClick(url, title, si) {
 }
 
 // Render the Social button along with copy url button
-function render($el, data, si = 0) {
+function renderCopyUrlButtonsMobile($el, data, si = 0) {
     let { url, title } = data;
     let html = `
         <div class="share">
