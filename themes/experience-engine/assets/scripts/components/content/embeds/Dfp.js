@@ -145,19 +145,24 @@ const slotRenderEndedHandler = event => {
 	}
 };
 
-export const getIsAffiliateMarketingPage = pageURL => {
-	return (
-		pageURL.indexOf('/category/shopping/') > -1 ||
-		pageURL.indexOf('/shows/must-haves/') > -1 ||
-		pageURL.indexOf('/musthaves/') > -1
-	);
-};
-
 class Dfp extends PureComponent {
 	constructor(props) {
 		super(props);
 		const { pageURL } = props;
 		const { bbgiconfig } = window;
+		this.getIsAffiliateMarketingPage = this.getIsAffiliateMarketingPage.bind(
+			this,
+		);
+		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
+		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
+		this.refreshSlot = this.refreshSlot.bind(this);
+		this.loadPrebid = this.loadPrebid.bind(this);
+		this.refreshBid = this.refreshBid.bind(this);
+		this.destroySlot = this.destroySlot.bind(this);
+		this.getPrebidBidders = this.getPrebidBidders.bind(this);
+		this.getBidderRubicon = this.getBidderRubicon.bind(this);
+		this.getBidderAppnexus = this.getBidderAppnexus.bind(this);
+		this.getBidderIx = this.getBidderIx.bind(this);
 
 		const slotPollSecs = parseInt(
 			bbgiconfig.ad_rotation_polling_sec_setting,
@@ -172,7 +177,7 @@ class Dfp extends PureComponent {
 			10,
 		);
 
-		const isAffiliateMarketingPage = getIsAffiliateMarketingPage(pageURL);
+		const isAffiliateMarketingPage = this.getIsAffiliateMarketingPage(pageURL);
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
@@ -195,17 +200,6 @@ class Dfp extends PureComponent {
 			appnexusPlacementID: bbgiconfig.ad_appnexus_placementid_setting,
 			prebidEnabled: bbgiconfig.prebid_enabled && !isAffiliateMarketingPage,
 		};
-
-		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
-		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
-		this.refreshSlot = this.refreshSlot.bind(this);
-		this.loadPrebid = this.loadPrebid.bind(this);
-		this.refreshBid = this.refreshBid.bind(this);
-		this.destroySlot = this.destroySlot.bind(this);
-		this.getPrebidBidders = this.getPrebidBidders.bind(this);
-		this.getBidderRubicon = this.getBidderRubicon.bind(this);
-		this.getBidderAppnexus = this.getBidderAppnexus.bind(this);
-		this.getBidderIx = this.getBidderIx.bind(this);
 	}
 
 	isConfiguredToRunInterval() {
@@ -215,6 +209,14 @@ class Dfp extends PureComponent {
 		return (
 			unitName === 'right-rail' ||
 			(isRotateAdsEnabled && isNotPlayerOrInterstitial(placeholder))
+		);
+	}
+
+	getIsAffiliateMarketingPage(pageURL) {
+		return (
+			pageURL.indexOf('/category/shopping/') > -1 ||
+			pageURL.indexOf('/shows/must-haves/') > -1 ||
+			pageURL.indexOf('/musthaves/') > -1
 		);
 	}
 
