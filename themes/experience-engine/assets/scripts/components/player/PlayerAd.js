@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
 import Dfp from '../content/embeds/Dfp';
 
 class PlayerAd extends PureComponent {
@@ -8,18 +7,24 @@ class PlayerAd extends PureComponent {
 		super(props);
 
 		this.getWhetherShouldRender = this.getWhetherShouldRender.bind(this);
-		this.state = { shouldRender: this.getWhetherShouldRender() };
+		this.state = {
+			shouldRender: this.getWhetherShouldRender(),
+			pageURL: window.location.href,
+		};
 
 		this.onResize = this.handleResize.bind(this);
+		this.onSubtreeModified = this.handleSubtreeModified.bind(this);
 		this.onRef = this.handleSlotRef.bind(this);
 	}
 
 	componentDidMount() {
 		window.addEventListener('resize', this.onResize);
+		window.addEventListener('DOMSubtreeModified', this.onSubtreeModified);
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.onResize);
+		window.removeEventListener('DOMSubtreeModified', this.onSubtreeModified);
 	}
 
 	getWhetherShouldRender() {
@@ -49,9 +54,22 @@ class PlayerAd extends PureComponent {
 		window.requestAnimationFrame(() => {
 			const shouldRender = this.getWhetherShouldRender();
 			if (shouldRender !== this.state.shouldRender) {
+				console.log(
+					`Resettin Player Ad State Because Of Resize Change on ${window.location.href}`,
+				);
 				this.setState({ shouldRender });
 			}
 		});
+	}
+
+	handleSubtreeModified() {
+		const currentPageURL = window.location.href;
+		if (currentPageURL !== this.state.pageURL) {
+			console.log(
+				`Resetting Player Ad State Because Page Changed To ${currentPageURL}`,
+			);
+			this.setState({ pageURL: currentPageURL });
+		}
 	}
 
 	handleSlotRef(dfp) {
@@ -62,7 +80,8 @@ class PlayerAd extends PureComponent {
 
 	render() {
 		const { shouldMapSizes } = this.props;
-		const { shouldRender } = this.state;
+		const { shouldRender, pageURL } = this.state;
+
 		if (!shouldRender) {
 			return false;
 		}
@@ -76,12 +95,13 @@ class PlayerAd extends PureComponent {
 		// we use createElement to make sure we don't add empty spaces here, thus DFP can properly collapse it when nothing to show here
 		return React.createElement('div', { id, className, style }, [
 			<Dfp
-				key="player-ad"
+				key={`player-ad-${pageURL}`}
 				ref={this.onRef}
 				placeholder={id}
 				unitId={unitId}
 				unitName={unitName}
 				shouldMapSizes={shouldMapSizes}
+				pageURL={pageURL}
 			/>,
 		]);
 	}
