@@ -23,6 +23,7 @@ mu-plugins/post-finder/
 !/plugins/gmr-*
 !/plugins/greatermedia-*
 !/plugins/gravityforms/
+!/plugins/thumbnail-video-jacapps
 !/plugins/user-role-editor-pro/
 !/plugins/configure-smtp/
 !/plugins/embedly
@@ -35,6 +36,8 @@ mu-plugins/post-finder/
 !/plugins/prebidjs
 !/plugins/now-playing-jacapps
 !/plugins/cpt-general-settings
+!/plugins/share-jacapps
+!/plugins/cpt-tag-permissions
 
 themes/index.php
 themes/twentyfourteen
@@ -56,3 +59,4 @@ themes/**/css/*.css
 themes/**/js/*.js
 themes/greatermedia/vendor/
 /themes/experience-engine/bundle/
+/wpmvc/

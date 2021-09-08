@@ -52,6 +52,7 @@ abstract class Module {
 			'feed-pull'         => new \Bbgi\Integration\FeedPull(),
 			'notifications'     => new \Bbgi\Integration\PushNotifications(),
 			'webhooks'          => new \Bbgi\Webhooks(),
+			'drimify' 			=> new \Bbgi\Integration\Drimify(),
 			'enclosure'         => new \Bbgi\Media\Enclosure(),
 			'users'             => new \Bbgi\Users(),
 			'redirects'         => new \Bbgi\Redirects(),
