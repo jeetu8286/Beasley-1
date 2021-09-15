@@ -57,26 +57,34 @@
 		$(".moveup").on("click", function() {
 			var elem	= $(this).closest("div.cpt-content-row");
 			var editorId = $(this).attr( "tiny-editorid" );
-			elem.prev().before(elem);
-			reInitialize( editorId );
+			if ( confirm('Are you sure you want to move this item?') ) {
+				elem.prev().before(elem);
+				reInitialize( editorId );
+			}
 		});
 		$(".movedown").on("click", function() {
 			var elem = $(this).closest("div.cpt-content-row");
 			var editorId = $(this).attr( "tiny-editorid" );
-			elem.next().after(elem);
-			reInitialize( editorId );
+			if ( confirm('Are you sure you want to move this item?') ) {
+				elem.next().after(elem);
+				reInitialize( editorId );
+			}
 		});
 		$(".movetop").on("click", function() {
 			var elem = $(this).closest("div.cpt-content-row");
 			var editorId = $(this).attr( "tiny-editorid" );
-			elem.siblings().first().before(elem);
-			reInitialize( editorId );
+			if ( confirm('Are you sure you want to move this item?') ) {
+				elem.siblings().first().before(elem);
+				reInitialize( editorId );
+			}
 		});
 		$(".movebottom").on("click", function() {
 			var elem = $(this).closest("div.cpt-content-row");
 			var editorId = $(this).attr( "tiny-editorid" );
-			elem.siblings().last().after(elem);
-			reInitialize( editorId );
+			if ( confirm('Are you sure you want to move this item?') ) {
+				elem.siblings().last().after(elem);
+				reInitialize( editorId );
+			}
 		});
 	}
 
@@ -173,29 +181,37 @@
 			$(".moveup").on("click", function() {
 				var elem	= $(this).closest("div.cpt-content-row");
 				var editorId = $(this).attr( "tiny-editorid" );
-				elem.prev().before(elem);
-				reInitialize( editorId );
+				if ( confirm('Are you sure you want to move this item?') ) {
+					elem.prev().before(elem);
+					reInitialize( editorId );
+				}
 			});
 			
 			$(".movedown").on("click", function() {
 				var elem = $(this).closest("div.cpt-content-row");
 				var editorId = $(this).attr( "tiny-editorid" );
-				elem.next().after(elem);
-				reInitialize( editorId );
+				if ( confirm('Are you sure you want to move this item?') ) {
+					elem.next().after(elem);
+					reInitialize( editorId );
+				}
 			});
 			
 			$(".movetop").on("click", function() {
 				var elem = $(this).closest("div.cpt-content-row");
 				var editorId = $(this).attr( "tiny-editorid" );
-				elem.siblings().first().before(elem);
-				reInitialize( editorId );
+				if ( confirm('Are you sure you want to move this item?') ) {
+					elem.siblings().first().before(elem);
+					reInitialize( editorId );
+				}
 			});
 			
 			$(".movebottom").on("click", function() {
 				var elem = $(this).closest("div.cpt-content-row");
 				var editorId = $(this).attr( "tiny-editorid" );
-				elem.siblings().last().after(elem);
-				reInitialize( editorId );
+				if ( confirm('Are you sure you want to move this item?') ) {
+					elem.siblings().last().after(elem);
+					reInitialize( editorId );
+				}
 			});
 		});
 	});
