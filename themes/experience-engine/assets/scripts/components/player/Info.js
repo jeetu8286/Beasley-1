@@ -61,32 +61,6 @@ class Info extends Component {
 		);
 	}
 
-	/*
-	renderAudio() {
-		const { cuePoint, colors } = this.props;
-		const info = Info.getCuePointInfo(cuePoint);
-		const tempDoc0 = new DOMParser().parseFromString(
-			info[0] || '',
-			'text/html',
-		);
-		const decodedInfo0 = tempDoc0.documentElement.textContent;
-		const tempDoc1 = new DOMParser().parseFromString(
-			info[1] || '',
-			'text/html',
-		);
-		const decodedInfo1 = tempDoc1.documentElement.textContent;
-
-		return (
-			<div className="controls-info" style={colors}>
-				<p>
-					<strong>{decodedInfo0}</strong>
-				</p>
-				<p>{decodedInfo1}</p>
-			</div>
-		);
-	}
-	*/
-
 	renderStation() {
 		const { station, streams, status, cuePoint, colors } = this.props;
 
