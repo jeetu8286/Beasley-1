@@ -50,6 +50,21 @@ class Info extends Component {
 	renderAudio() {
 		const { cuePoint, colors } = this.props;
 		const info = Info.getCuePointInfo(cuePoint);
+
+		return (
+			<div className="controls-info" style={colors}>
+				<p>
+					<strong>{info[0] || ''}</strong>
+				</p>
+				<p>{info[1] || ''}</p>
+			</div>
+		);
+	}
+
+	/*
+	renderAudio() {
+		const { cuePoint, colors } = this.props;
+		const info = Info.getCuePointInfo(cuePoint);
 		const tempDoc0 = new DOMParser().parseFromString(
 			info[0] || '',
 			'text/html',
@@ -70,6 +85,7 @@ class Info extends Component {
 			</div>
 		);
 	}
+	*/
 
 	renderStation() {
 		const { station, streams, status, cuePoint, colors } = this.props;
