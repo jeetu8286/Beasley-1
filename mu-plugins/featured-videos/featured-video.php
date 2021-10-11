@@ -289,6 +289,13 @@ function get_selected_media_image() {
 	
 	wp_send_json_success( $result );
 }
+	function cleanString($string) {
+		$string	=	mb_strtolower($string);
+		$string = 	str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+		$string = 	preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+		return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
+	}
+ 
 
 function fvideos_import_oembed() {
 	$url = filter_input( INPUT_POST, 'url', FILTER_VALIDATE_URL );
@@ -311,7 +318,8 @@ function fvideos_import_oembed() {
 			$img_atts = wp_get_attachment_image_src($_POST['mediaImageId'], 'full');
 			
 			if( !empty($img_atts) ) {
-				$file_array['name'] 	= str_replace( ' ', '-', mb_strtolower( $title ) ) . '.jpg';
+				$file_array['name'] 	= cleanString($title) . '.jpg';
+				
 				$file_array['tmp_name'] = download_url( $img_atts[0] );
 			}
 		} else {
