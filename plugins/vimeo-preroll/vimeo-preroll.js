@@ -6,7 +6,6 @@
 				  .map(filteredEl => {
 				  	return loadVimeoPlayer(filteredEl)
 				  });
-
 	}
 
 	const loadVimeoPlayer = (iframe) => {
@@ -21,6 +20,8 @@
 				console.log('Played And Instantly Pausing');
 				await vimeoplayer.pause();
 				console.log('Paused and now Playing Preroll');
+				/* PREROLL CODE HERE */
+				// For POC, fake preroll with a 5 second delay...
 				setTimeout(async () => {
 					await vimeoplayer.play();
 					isPlayingPreroll = false;
