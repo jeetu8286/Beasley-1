@@ -1,16 +1,34 @@
-
-
-	console.log('Vimeo-preroll loading.')
-	var isVideoUnitAddedToPrebid = false;
-
-	const loadVimeoPlayers = () => {
+	window.loadVimeoPlayers = () => {
 		const iframeList = Array.from(document.querySelectorAll('iframe'));
-		const filteredIframeFuncResults = iframeList.filter(iframeElement => iframeElement.src && iframeElement.src.toLowerCase().indexOf('vimeo') > -1)
-				  .map(filteredEl => {
-				  	return loadVimeoPlayer(filteredEl)
-				  });
+		const filteredList = iframeList.filter(iframeElement => iframeElement.src && iframeElement.src.toLowerCase().indexOf('vimeo') > -1);
 
-		return filteredIframeFuncResults.length > 0;
+		if (filteredList.length > 0) {
+			renderHTML();
+
+			filteredList.map(filteredEl => {
+				return loadVimeoPlayer(filteredEl)
+			});
+		}
+	}
+
+	const renderHTML = () => {
+		const containerEl = document.getElementsByClassName('container')[0]
+		const wrapperDiv = document.createElement('div');
+		wrapperDiv.id = 'vimeoPrerollWrapper';
+		wrapperDiv.classList.add(['gamPreroll-wrapper', 'active']);
+		wrapperDiv.innerHTML = `
+			<div id="vimeoPrerollContent">
+				<video id="vimeoPrerollContentElement">
+					<track
+						src="captions_en.vtt"
+						kind="captions"
+						srcLang="en"
+						label="english_captions"
+					/>
+				</video>
+			</div>
+			<div id="vimeoPrerollAdContainer" className="gam-preroll-player" />`;
+		containerEl.appendChild(wrapperDiv);
 	}
 
 	const loadVimeoPlayer = (iframe) => {
@@ -45,17 +63,6 @@
 		});
 	}
 
-	const oldOnload=window.onload;
-	window.onload = () => {
-		oldOnload && oldOnload();
-		loadVimeoPlayers();
-		setTimeout( ()=>{
-			setUpVimeoIMA();
-		}, 2000);
-
-		console.log('Vimeo-preroll loaded.')
-	}
-
 	const getUrlFromPrebid = (prerollCallback) => {
 		const {gampreroll} = window.bbgiconfig.dfp;
 		const videoAdUnit = {
@@ -75,10 +82,9 @@
 		};
 
 		pbjs.que.push(function () {
-			if (!isVideoUnitAddedToPrebid) {
-				isVideoUnitAddedToPrebid = true;
-				pbjs.addAdUnits(videoAdUnit);
-			}
+			pbjs.removeAdUnit(gampreroll.unitId);
+			pbjs.addAdUnits(videoAdUnit);
+
 
 			/*
 			pbjs.setConfig({
@@ -95,26 +101,29 @@
 					console.log(`Preroll Bids Returned:`);
 					console.log(JSON.stringify(bids));
 
-					if (bids = {}) {
-						prerollCallback();
-					} else {
-						const videoUrl = pbjs.adServers.dfp.buildVideoUrl({
-							adUnit: videoAdUnit,
-							params: {
-								iu: gampreroll.unitId
-							}
-						});
+					// TODO - Replace mock with actual callouts. This is only for placeholder until we get data back from Prebid
+
+					//if (bids = {}) {
+					//	prerollCallback();
+					//} else {
+					//	const videoUrl = pbjs.adServers.dfp.buildVideoUrl({
+					//		adUnit: videoAdUnit,
+					//		params: {
+					//			iu: gampreroll.unitId
+					//		}
+					//	});
+					const videoUrl = `https://pubads.g.doubleclick.net/gampad/live/ads?iu=${gampreroll.unitId}&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360%7C640x480%7C920x508&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`;
 						console.log(videoUrl);
 						if (videoUrl) {
-							try {
+							//try {
 								playVimeoIMAAds(videoUrl, prerollCallback);
-							} catch {
-								prerollCallback();
-							}
+							//} catch {
+							//	prerollCallback();
+							//}
 						} else {
 							prerollCallback();
 						}
-					}
+					//}
 				}
 			});
 		});

@@ -11,7 +11,7 @@ var videoContent;
 var imaIsSetUp = false;
 var prerollCallbackFunc;
 
-function setUpVimeoIMA() {
+window.setUpVimeoIMA = () => {
 	console.log(`Initializing IMA`);
 
 	if (!imaIsSetUp) {
@@ -34,9 +34,6 @@ function setUpVimeoIMA() {
 			adsLoader.contentComplete();
 		};
 		videoContent.onended = contentEndedListener;
-
-
-
 	}
 }
 
@@ -102,17 +99,6 @@ function onAdsManagerLoaded(adsManagerLoadedEvent) {
 		onContentResumeRequested);
 	adsManager.addEventListener(
 		window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED, onAdEvent);
-
-	// Listen to any additional events, if necessary.
-	adsManager.addEventListener(
-		window.google.ima.AdErrorEvent.Type.AD_ERROR,
-		this.onAdError,
-	);
-
-	adsManager.addEventListener(
-		window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
-		this.onAdEvent,
-	);
 	adsManager.addEventListener(window.google.ima.AdEvent.Type.LOADED, onAdEvent);
 	adsManager.addEventListener(window.google.ima.AdEvent.Type.STARTED, onAdEvent);
 	adsManager.addEventListener(window.google.ima.AdEvent.Type.COMPLETE, onAdEvent);
@@ -141,6 +127,11 @@ function onAdEvent(adEvent) {
 			// This event indicates the ad has finished - the video player
 			// can perform appropriate UI actions, such as removing the timer for
 			// remaining time detection.
+			prerollCallbackFunc();
+			break;
+		case window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
+			// This event indicates that ALL Ads have finished.
+			// This event was seen emitted from a Google example ad upon pressing a "Skip Ad" button.
 			prerollCallbackFunc();
 			break;
 	}
