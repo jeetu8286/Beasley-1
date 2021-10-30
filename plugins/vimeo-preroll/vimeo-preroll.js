@@ -17,91 +17,6 @@
 			oldVimeoPrerollWrapper.remove();
 		}
 
-		const oldStyle = document.getElementById('vimeoPrerollStyle');
-		if (oldStyle) {
-			oldStyle.remove();
-		}
-
-		const headerEl = document.getElementsByTagName('head')[0];
-		const styleEl = document.createElement('style');
-		styleEl.id = 'vimeoPrerollStyle';
-		styleEl.innerHTML = `
-			.preroll-wrapper {
-					background-color: rgba(0, 0, 0, .75);
-					display: none;
-					height: 100%;
-					left: 0;
-					position: fixed;
-					top: 0;
-					width: 100%;
-					z-index: 100;
-
-				&.-active {
-						display: block;
-					}
-				}
-
-			.gampreroll-wrapper {
-					display: none;
-					height: 100%;
-					left: 0;
-					position: fixed;
-					top: 0;
-					width: 100%;
-					z-index: 100;
-
-				&.-active {
-						display: block;
-					}
-				}
-
-			.gampreroll-shade {
-					background-color: rgba(0, 0, 0, .75);
-				}
-
-			.preroll-container {
-					height: 0;
-					max-width: 100%;
-					overflow: hidden;
-					padding-bottom: 56.25%;
-					position: relative;
-					top: 50%;
-					transform: translateY(-50%);
-				}
-
-			.preroll-player {
-					background-color: var(--global-black);
-					position: absolute;
-					top: 50%;
-					left: 50%;
-					transform: translate(-50%, -50%);
-
-				@media (--min-medium-viewport) {
-						min-width: 640px;
-				}
-
-				@media (--max-medium-viewport) {
-						width: 92%;
-					}
-				}
-
-			.gam-preroll-player {
-					position: absolute;
-					left: 50%;
-					transform: translate(-50%, 0%);
-
-				@media (--min-medium-viewport) {
-						min-width: 640px;
-					width: 46%;
-				}
-
-				@media (--max-medium-viewport) {
-						width: 92%;
-					}
-				}
-		`;
-		headerEl.appendChild(styleEl);
-
 		const containerEl = document.getElementsByClassName('container')[0]
 		const wrapperDiv = document.createElement('div');
 		wrapperDiv.id = 'vimeoPrerollWrapper';
@@ -118,7 +33,7 @@
 					/>
 				</video>
 			</div>
-			<div id="vimeoPrerollAdContainer" class="preroll-player" />`;
+			<div id="vimeoPrerollAdContainer" class="preroll-player" style="height: 360px" />`;
 		containerEl.appendChild(wrapperDiv);
 	}
 
@@ -137,7 +52,8 @@
 				vimeoplayer.isPlayingPreroll = false;
 			}
 		};
-		const thisCallBack = prerollCallbackFunc.bind(this);
+		//const thisCallBack = prerollCallbackFunc.bind(this);
+		vimeoplayer.thisCallBack = prerollCallbackFunc;
 
 		const onVimeoPlayHandler = async () => {
 			console.log('Vimeoplayer OnPlay Event');
@@ -148,11 +64,13 @@
 				await vimeoplayer.pause();
 				console.log('Paused and now Playing Preroll');
 				/* PREROLL CODE HERE */
-				getUrlFromPrebid(thisCallBack);
+				getUrlFromPrebid(vimeoplayer.thisCallBack);
 			}
 		};
-		const thisVimeoPlayHandler = onVimeoPlayHandler.bind(this);
-		vimeoplayer.on('play', thisVimeoPlayHandler);
+		//const thisVimeoPlayHandler = onVimeoPlayHandler.bind(this);
+		vimeoplayer.thisVimeoPlayHandler = onVimeoPlayHandler;
+
+		vimeoplayer.on('play', vimeoplayer.thisVimeoPlayHandler);
 
 		vimeoplayer.on('pause', async function () {
 			console.log('Paused the video');
