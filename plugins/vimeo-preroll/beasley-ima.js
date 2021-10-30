@@ -9,7 +9,7 @@ var adDisplayContainer;
 var playButton;
 var videoContent;
 var imaIsSetUp = false;
-var beasleyIMAContinueVideoHandler;
+var vimeoControlHolder;
 
 setUpVimeoIMA = () => {
 	console.log(`Initializing IMA`);
@@ -44,9 +44,9 @@ function createAdDisplayContainer() {
 		document.getElementById('vimeoPrerollAdContainer'), videoContent);
 }
 
-function playVimeoIMAAds(videoUrl, prerollCallbackFuncParam) {
+function playVimeoIMAAds(videoUrl, vimeoControl) {
 	console.log(`Playing IMA Ad`);
-	beasleyIMAContinueVideoHandler = prerollCallbackFuncParam;
+	vimeoControlHolder = vimeoControl;
 
 	setUpVimeoIMA();
 
@@ -126,17 +126,19 @@ function onAdEvent(adEvent) {
 			// This event indicates the ad has started - the video player
 			// can adjust the UI, for example display a pause button and
 			// remaining time.
+			const wrapperDiv = document.getElementById('vimeoPrerollWrapper');
+			wrapperDiv.classList.add('-active');
 			break;
 		case window.google.ima.AdEvent.Type.COMPLETE:
 			// This event indicates the ad has finished - the video player
 			// can perform appropriate UI actions, such as removing the timer for
 			// remaining time detection.
-			beasleyIMAContinueVideoHandler();
+			vimeoControlHolder.prerollCallBack();
 			break;
 		case window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
 			// This event indicates that ALL Ads have finished.
 			// This event was seen emitted from a Google example ad upon pressing a "Skip Ad" button.
-			beasleyIMAContinueVideoHandler();
+			vimeoControlHolder.prerollCallBack();
 			break;
 	}
 }
@@ -154,7 +156,7 @@ function onAdError(adErrorEvent) {
 		}
 	} finally {
 		console.log('Calling Callback');
-		beasleyIMAContinueVideoHandler();
+		vimeoControlHolder.prerollCallBack();
 	}
 }
 
