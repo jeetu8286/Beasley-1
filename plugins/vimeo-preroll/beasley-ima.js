@@ -148,16 +148,22 @@ function onAdError(adErrorEvent) {
 	console.log('IMA onAdError Event');
 	console.log(adErrorEvent.getError());
 
-	console.log('Clearing Ad Manager');
 	try {
-		imaIsSetUp = false;
-		if (adsManager.destroy) {
-			adsManager.destroy();
-		}
-	} finally {
 		console.log('Calling Callback');
 		vimeoControlHolder.prerollCallBack();
 	}
+	catch {}
+
+	try {
+		console.log('Clearing Ad Manager');
+		imaIsSetUp = false;
+		if (adsManager && adsManager.destroy) {
+			adsManager.destroy();
+		}
+	}
+	catch {}
+
+
 }
 
 function onContentPauseRequested() {
