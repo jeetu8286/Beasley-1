@@ -1,3 +1,5 @@
+// This code is heavily based on Google's Simple IMA Example at https://github.com/googleads/googleads-ima-html5
+
 // Copyright 2013 Google Inc. All Rights Reserved.
 // You may study, modify, and use this example for any purpose.
 // Note that this example is provided "as is", WITHOUT WARRANTY
@@ -11,7 +13,7 @@ var videoContent;
 var imaIsSetUp = false;
 var vimeoControlHolder;
 
-setUpVimeoIMA = () => {
+function setUpVimeoIMA() {
 	console.log(`Initializing IMA`);
 
 	  if (!imaIsSetUp) {

@@ -125,6 +125,8 @@ function* yieldLoadedPage(action) {
 	yield call(renderSendToNews);
 
 	yield call(handleInjectos);
+
+	yield call(window.loadVimeoPlayers);
 }
 
 /**
