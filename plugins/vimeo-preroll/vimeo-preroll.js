@@ -36,6 +36,7 @@
 		wrapperDiv.style.position = 'absolute';
 		wrapperDiv.style.backgroundColor = 'var(--global-theme-secondary)';
 		wrapperDiv.style.height = iFrameElement.style.height;
+		wrapperDiv.style.zIndex = '9';
 		wrapperDiv.innerHTML = `
 			<div id="vimeoPrerollContent" style="height: 0">
 				<video id="vimeoPrerollContentElement">
