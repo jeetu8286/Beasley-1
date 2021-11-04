@@ -63,6 +63,7 @@
 		wrapperDiv.id = 'vimeoPrerollWrapper';
 		wrapperDiv.classList.add('preroll-wrapper');
 		wrapperDiv.style.backgroundColor = 'black';
+		wrapperDiv.style.zIndex = '1000';
 		wrapperDiv.innerHTML = `
 			<div id="vimeoPrerollContent">
 				<video id="vimeoPrerollContentElement" style="height: 0;">
