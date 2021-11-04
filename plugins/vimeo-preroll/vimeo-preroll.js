@@ -22,11 +22,25 @@
 		if (document.fullscreenElement) {
 			renderFullScreenPreroll(iFrameElement);
 		} else {
-			renderVimeoWindowPreroll(iFrameElement)
+			renderVimeoPreroll(iFrameElement);
 		}
 	}
 
-	const renderVimeoWindowPreroll = (iFrameElement) => {
+	const getVimeoInnerHTML = (shouldAddPlayerStyle) => {
+		`<div id="vimeoPrerollContent">
+			<video id="vimeoVideoContentElement" style="height: 0;">
+				<track
+					src="captions_en.vtt"
+					kind="captions"
+					srcLang="en"
+					label="english_captions"
+				/>
+			</video>
+		</div>
+		<div id="vimeoPrerollAdContainer" ${shouldAddPlayerStyle ? 'class="gam-preroll-player"' : ''} />`;
+	}
+
+	const renderVimeoPreroll = (iFrameElement) => {
 		const vimeoPTag = iFrameElement.parentElement;
 		vimeoPTag.style.position = 'relative';
 		const wrapperDiv = document.createElement('div');
@@ -36,18 +50,7 @@
 		wrapperDiv.style.backgroundColor = 'var(--global-theme-secondary)';
 		wrapperDiv.style.height = iFrameElement.style.height;
 		wrapperDiv.style.zIndex = '9';
-		wrapperDiv.innerHTML = `
-			<div id="vimeoPrerollContent" style="height: 0">
-				<video id="vimeoPrerollContentElement">
-					<track
-						src="captions_en.vtt"
-						kind="captions"
-						srcLang="en"
-						label="english_captions"
-					/>
-				</video>
-			</div>
-			<div id="vimeoPrerollAdContainer"/>`;
+		wrapperDiv.innerHTML = getVimeoInnerHTML(false);
 		vimeoPTag.appendChild(wrapperDiv);
 	}
 
@@ -64,19 +67,7 @@
 		wrapperDiv.classList.add('preroll-wrapper');
 		wrapperDiv.style.backgroundColor = 'black';
 		wrapperDiv.style.zIndex = '1000';
-		wrapperDiv.innerHTML = `
-			<div id="vimeoPrerollContent">
-				<video id="vimeoPrerollContentElement" style="height: 0;">
-					<track
-						src="captions_en.vtt"
-						kind="captions"
-						srcLang="en"
-						label="english_captions"
-					/>
-				</video>
-			</div>
-			<div id="vimeoPrerollAdContainer" class="gam-preroll-player" />`;
-		iFrameElement.parentElement.appendChild(wrapperDiv);
+		wrapperDiv.innerHTML = getVimeoInnerHTML(true);
 
 		document.exitFullscreen().then(async () => {
 			await iFrameElement.parentElement.requestFullscreen();
