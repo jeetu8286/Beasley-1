@@ -1,3 +1,5 @@
+// This code is heavily based on Google's Simple IMA Example at https://github.com/googleads/googleads-ima-html5
+
 // Copyright 2013 Google Inc. All Rights Reserved.
 // You may study, modify, and use this example for any purpose.
 // Note that this example is provided "as is", WITHOUT WARRANTY
@@ -8,33 +10,29 @@ var adsLoader;
 var adDisplayContainer;
 var playButton;
 var videoContent;
-var imaIsSetUp = false;
 var vimeoControlHolder;
 
-setUpVimeoIMA = () => {
+function setUpVimeoIMA() {
 	console.log(`Initializing IMA`);
 
-	  if (!imaIsSetUp) {
-		imaIsSetUp = true;
-		videoContent = document.getElementById('vimeoPrerollContentElement');
-		// Create the ad display container.
-		createAdDisplayContainer();
-		// Create ads loader.
-		adsLoader = new window.google.ima.AdsLoader(adDisplayContainer);
-		// Listen and respond to ads loaded and error events.
-		adsLoader.addEventListener(
-			window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-			onAdsManagerLoaded, false);
-		adsLoader.addEventListener(
-			window.google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false);
+	videoContent = document.getElementById('vimeoVideoElement');
+	// Create the ad display container.
+	createAdDisplayContainer();
+	// Create ads loader.
+	adsLoader = new window.google.ima.AdsLoader(adDisplayContainer);
+	// Listen and respond to ads loaded and error events.
+	adsLoader.addEventListener(
+		window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+		onAdsManagerLoaded, false);
+	adsLoader.addEventListener(
+		window.google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false);
 
-		// An event listener to tell the SDK that our content video
-		// is completed so the SDK can play any post-roll ads.
-		var contentEndedListener = function () {
-			adsLoader.contentComplete();
-		};
-		videoContent.onended = contentEndedListener;
-	}
+	// An event listener to tell the SDK that our content video
+	// is completed so the SDK can play any post-roll ads.
+	var contentEndedListener = function () {
+		adsLoader.contentComplete();
+	};
+	videoContent.onended = contentEndedListener;
 }
 
 function createAdDisplayContainer() {
@@ -84,6 +82,40 @@ function playAds() {
 	}
 }
 
+function updateSize() {
+	if (adsManager) {
+		const containerElement = document.getElementById('vimeoPrerollAdContainer');
+		if (containerElement) {
+			const wrapperElement = document.getElementById('vimeoPrerollWrapper');
+			let vimeoContainerWidth = containerElement.clientWidth;
+			let vimeoContainerHeight = (vimeoContainerWidth / 640) * 360;
+
+			// Make sure Vimeo height does not exceed wrapper height(which is same dimension as parent);
+			if (vimeoContainerHeight > wrapperElement.clientHeight) {
+				vimeoContainerHeight = wrapperElement.clientHeight;
+				vimeoContainerWidth = (vimeoContainerHeight / 360) * 640;
+			}
+
+			this.adsManager.resize(
+				vimeoContainerWidth,
+				vimeoContainerHeight,
+				window.google.ima.ViewMode.NORMAL,
+			);
+
+			const wrapperHeightString = window.getComputedStyle(wrapperElement).height;
+			const wrapperHeight =
+				wrapperHeightString.indexOf('px') > -1
+					? wrapperHeightString.replace('px', '')
+					: '0';
+			const computedTop = (parseInt(wrapperHeight, 10) - vimeoContainerHeight) / 2;
+			containerElement.style.paddingTop = `${computedTop && computedTop > 0 ? computedTop : 0}px`;
+
+			const computedLeft = (containerElement.clientWidth - vimeoContainerWidth) / 2;
+			containerElement.style.paddingLeft = `${computedLeft && computedLeft > 0 ? computedLeft : 0}px`;
+		}
+	}
+}
+
 function onAdsManagerLoaded(adsManagerLoadedEvent) {
 	// Get the ads manager.
 	var adsRenderingSettings = new window.google.ima.AdsRenderingSettings();
@@ -128,17 +160,22 @@ function onAdEvent(adEvent) {
 			// remaining time.
 			const wrapperDiv = document.getElementById('vimeoPrerollWrapper');
 			wrapperDiv.classList.add('-active');
+			updateSize();
+			window.removeEventListener('resize', updateSize);
+			window.addEventListener('resize', updateSize);
 			break;
 		case window.google.ima.AdEvent.Type.COMPLETE:
 			// This event indicates the ad has finished - the video player
 			// can perform appropriate UI actions, such as removing the timer for
 			// remaining time detection.
-			vimeoControlHolder.prerollCallBack();
+			// vimeoControlHolder.prerollCallback();
+			// beasleyIMACleanup();
 			break;
 		case window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
 			// This event indicates that ALL Ads have finished.
 			// This event was seen emitted from a Google example ad upon pressing a "Skip Ad" button.
-			vimeoControlHolder.prerollCallBack();
+			vimeoControlHolder.prerollCallback();
+			beasleyIMACleanup();
 			break;
 	}
 }
@@ -150,20 +187,25 @@ function onAdError(adErrorEvent) {
 
 	try {
 		console.log('Calling Callback');
-		vimeoControlHolder.prerollCallBack();
+		vimeoControlHolder.prerollCallback();
 	}
 	catch {}
 
 	try {
 		console.log('Clearing Ad Manager');
-		imaIsSetUp = false;
+		// imaIsSetUp = false;
 		if (adsManager && adsManager.destroy) {
 			adsManager.destroy();
 		}
 	}
 	catch {}
 
+	beasleyIMACleanup();
+}
 
+function beasleyIMACleanup() {
+	console.log('Clearing Vimeo Control Holder');
+	vimeoControlHolder = null;
 }
 
 function onContentPauseRequested() {
