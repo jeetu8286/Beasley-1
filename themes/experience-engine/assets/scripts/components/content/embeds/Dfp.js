@@ -1,6 +1,7 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context';
+import { logPrebidTargeting } from '../../../redux/utilities/screen/refreshAllAds';
 
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
@@ -99,6 +100,16 @@ const slotRenderEndedHandler = event => {
 			if (size && size.length === 2 && (size[0] !== 1 || size[1] !== 1)) {
 				adSize = size;
 			} else if (slot.getTargeting('hb_size')) {
+				console.log(`PREBID AD SHOWN - ${slot.getTargeting('hb_bidder')}`);
+				try {
+					window.ga('send', {
+						hitType: 'event',
+						eventCategory: 'PrebidAdShown',
+						eventLabel: `${slot.getTargeting('hb_bidder')}`,
+					});
+				} catch (ex) {
+					console.log(`ERROR Sending to Google Analytics: `, ex);
+				}
 				const hbSizeString = slot.getTargeting('hb_size').toString();
 				console.log(`Prebid Sizestring: ${hbSizeString}`);
 				const idxOfX = hbSizeString.toLowerCase().indexOf('x');
@@ -743,6 +754,7 @@ class Dfp extends PureComponent {
 				adUnitCodes: [unitId],
 				bidsBackHandler: () => {
 					pbjs.setTargetingForGPTAsync([slot]);
+					logPrebidTargeting(pbjs);
 					googletag.cmd.push(() => {
 						googletag.pubads().refresh([slot]);
 					});
