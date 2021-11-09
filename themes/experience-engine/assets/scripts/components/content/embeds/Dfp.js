@@ -756,7 +756,7 @@ class Dfp extends PureComponent {
 				adUnitCodes: [unitId],
 				bidsBackHandler: () => {
 					pbjs.setTargetingForGPTAsync([slot]);
-					logPrebidTargeting(pbjs);
+					logPrebidTargeting(pbjs, unitId);
 					googletag.cmd.push(() => {
 						googletag.pubads().refresh([slot]);
 					});

@@ -33,12 +33,12 @@ export default function refreshAllAds() {
 	}
 }
 
-export function logPrebidTargeting(pbjsInstance) {
+export function logPrebidTargeting(pbjsInstance, unitId) {
 	const targeting = pbjsInstance.getAdserverTargeting();
 
 	if (targeting) {
 		Object.keys(targeting).map(tkey => {
-			if (targeting[tkey].hb_bidder) {
+			if (targeting[tkey].hb_bidder && (!unitId || unitId === tkey)) {
 				console.log(
 					`High Prebid Ad ID: ${tkey} Bidder: ${targeting[tkey].hb_bidder} Price: ${targeting[tkey].hb_pb}`,
 				);
