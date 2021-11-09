@@ -40,7 +40,7 @@ export function logPrebidTargeting(pbjsInstance) {
 		Object.keys(targeting).map(tkey => {
 			if (targeting[tkey].hb_bidder) {
 				console.log(
-					`Ad ID: ${tkey} Bidder: ${targeting[tkey].hb_bidder} Price: ${targeting[tkey].hb_pb}`,
+					`High Prebid Ad ID: ${tkey} Bidder: ${targeting[tkey].hb_bidder} Price: ${targeting[tkey].hb_pb}`,
 				);
 
 				try {
