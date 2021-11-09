@@ -47,7 +47,9 @@ export function logPrebidTargeting(pbjsInstance) {
 					window.ga('send', {
 						hitType: 'event',
 						eventCategory: 'PrebidTarget',
-						eventLabel: `${targeting[tkey].hb_bidder}`,
+						eventAction: `${targeting[tkey].hb_bidder}`,
+						eventLabel: `${tkey}`,
+						eventValue: `${targeting[tkey].hb_pb}`,
 					});
 				} catch (ex) {
 					console.log(`ERROR Sending to Google Analytics: `, ex);
