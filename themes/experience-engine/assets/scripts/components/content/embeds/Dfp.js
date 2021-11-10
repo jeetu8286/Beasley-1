@@ -772,7 +772,8 @@ class Dfp extends PureComponent {
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
 				bidsBackHandler: () => {
-					pbjs.setTargetingForGPTAsync([slot]);
+					// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
+					pbjs.setTargetingForGPTAsync([unitId]);
 					logPrebidTargeting(pbjs, unitId);
 					googletag.cmd.push(() => {
 						googletag.pubads().refresh([slot]);
