@@ -137,6 +137,9 @@ function onAdsManagerLoaded(adsManagerLoadedEvent) {
 	adsManager.addEventListener(window.google.ima.AdEvent.Type.STARTED, onAdEvent);
 	adsManager.addEventListener(window.google.ima.AdEvent.Type.COMPLETE, onAdEvent);
 
+	adsManager.addEventListener(window.google.ima.AdEvent.Type.CLICK, onAdEvent);
+	adsManager.addEventListener(window.google.ima.AdEvent.Type.VIDEO_CLICKED, onAdEvent);
+	adsManager.addEventListener(window.google.ima.AdEvent.Type.VIDEO_ICON_CLICKED, onAdEvent);
 	playAds();
 }
 
@@ -144,6 +147,7 @@ function onAdEvent(adEvent) {
 	// Retrieve the ad from the event. Some events (e.g. ALL_ADS_COMPLETED)
 	// don't have ad object associated.
 	var ad = adEvent.getAd();
+	console.log(`IMA Event - '${adEvent.type}'`);
 	switch (adEvent.type) {
 		case window.google.ima.AdEvent.Type.LOADED:
 			// This is the first event sent for an ad - it is possible to
@@ -164,18 +168,18 @@ function onAdEvent(adEvent) {
 			window.removeEventListener('resize', updateSize);
 			window.addEventListener('resize', updateSize);
 			break;
-		case window.google.ima.AdEvent.Type.COMPLETE:
-			// This event indicates the ad has finished - the video player
-			// can perform appropriate UI actions, such as removing the timer for
-			// remaining time detection.
-			// vimeoControlHolder.prerollCallback();
-			// beasleyIMACleanup();
-			break;
+		// case window.google.ima.AdEvent.Type.COMPLETE:
+		case window.google.ima.AdEvent.Type.CLICK:
+		case window.google.ima.AdEvent.Type.VIDEO_CLICKED:
+		case window.google.ima.AdEvent.Type.VIDEO_ICON_CLICKED:
 		case window.google.ima.AdEvent.Type.ALL_ADS_COMPLETED:
 			// This event indicates that ALL Ads have finished.
 			// This event was seen emitted from a Google example ad upon pressing a "Skip Ad" button.
 			vimeoControlHolder.prerollCallback();
 			beasleyIMACleanup();
+			break;
+		default:
+			console.log(`Unhandled IMA Event - '${adEvent.type}'`);
 			break;
 	}
 }
