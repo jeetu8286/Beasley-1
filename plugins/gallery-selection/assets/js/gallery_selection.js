@@ -55,14 +55,11 @@ wp.media.view.Toolbar.Custom = wp.media.view.Toolbar.extend({
 	customclickevent: function customclickevent() {
 		const value = jQuery('#gallery_selected_id').val()
 		
-		// console.log("value: ", value)
 		jQuery('textarea#content').trigger('click');
 		if( value ) {
 			if( ! tinyMCE.activeEditor || tinyMCE.activeEditor.isHidden()) {
-				// jQuery('textarea#content').val('[select-gallery gallery_id="'+$getImageAttrId+'"]');
 				jQuery('textarea#content').val(jQuery('textarea#content').val() + '<br>[select-gallery gallery_id="'+value+'"]');
 			} else {
-				// tinyMCE.execCommand('mceInsertRawHTML', false, '<br>[select-gallery gallery_id="'+$getImageAttrId+'"]');
 				tinyMCE.execCommand('mceInsertContent', false, '<br>[select-gallery gallery_id="'+value+'"]<br>');
 			}
 			jQuery('.select-gallery-ul li').removeClass(' . $jqueryEventSelectedClass .');
@@ -112,7 +109,9 @@ wp.media.view.Custom = wp.media.View.extend({
 
 		request('get_gmr_gallery_data', {
 			media: 'media_show',
-			s_mediaimage: $el.find('#s_mediaimage').val()
+			s_title: $el.find('#s_title').val(),
+			s_tag: $el.find('#s_tag').val(),
+			s_category: $el.find('#s_category').val()
 		})
 		.then((success) => {
 			$preview.html(success.html);
@@ -126,7 +125,7 @@ wp.media.view.Custom = wp.media.View.extend({
 		const $el = this.$el;
 		const $mediaLoadmore = $el.find('#media_loadmore');
 		const $previewMediaImgUl = $el.find('.select-gallery-ul');
-		const $pagedMediaimage = $el.find('#paged_mediaimage');
+		const $pageNumber = $el.find('#page_number');
 		const $loadmoreSpinner = $el.find('#loadmore_spinner');
 
 		$mediaLoadmore.attr('disabled', 'disabled');
@@ -134,12 +133,14 @@ wp.media.view.Custom = wp.media.View.extend({
 
 		request('load_more_gmr_gallery_data', {
 			media: 'media_show',
-			s_mediaimage: $el.find('#s_mediaimage').val(),
-			paged_mediaimage: $el.find('#paged_mediaimage').val()
+			s_title: $el.find('#s_title').val(),
+			s_tag: $el.find('#s_tag').val(),
+			s_category: $el.find('#s_category').val(),
+			page_number: $el.find('#page_number').val()
 		})
 		.then((success) => {
 			$previewMediaImgUl.append(success.media_image_list);
-			$pagedMediaimage.val(success.paged_mediaimage);
+			$pageNumber.val(success.page_number);
 			$loadmoreSpinner.removeClass('is-active');	// remove spinner load
 			$mediaLoadmore.removeAttr('disabled');
 			
