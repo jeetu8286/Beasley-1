@@ -61,35 +61,6 @@ const impressionViewableHandler = event => {
 	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		getSlotStat(placeholder).viewPercentage = 100;
 	}
-
-	if (
-		slot &&
-		slot.getTargeting('hb_bidder') &&
-		slot
-			.getTargeting('hb_bidder')
-			.toString()
-			.trim()
-	) {
-		console.log(
-			`PREBID AD SHOWN - ${slot.getTargeting(
-				'hb_bidder',
-			)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
-		);
-		try {
-			window.ga('send', {
-				hitType: 'event',
-				eventCategory: 'PrebidAdShown',
-				eventAction: `${slot.getTargeting('hb_bidder')}`,
-				eventLabel: `${slot.getAdUnitPath()}`,
-				eventValue: `${parseInt(
-					parseFloat(slot.getTargeting('hb_pb')) * 100,
-					10,
-				)}`,
-			});
-		} catch (ex) {
-			console.log(`ERROR Sending to Google Analytics: `, ex);
-		}
-	}
 };
 
 const slotVisibilityChangedHandler = event => {
@@ -129,6 +100,8 @@ const slotRenderEndedHandler = event => {
 			if (size && size.length === 2 && (size[0] !== 1 || size[1] !== 1)) {
 				adSize = size;
 			} else if (slot.getTargeting('hb_size')) {
+				// We ASSUME when an incomplete size is sent through event, we are dealing with Prebid.
+				// Compute Size From hb_size.
 				const hbSizeString = slot.getTargeting('hb_size').toString();
 				console.log(`Prebid Sizestring: ${hbSizeString}`);
 				const idxOfX = hbSizeString.toLowerCase().indexOf('x');
@@ -138,6 +111,36 @@ const slotRenderEndedHandler = event => {
 					adSize = [];
 					adSize[0] = parseInt(widthString, 10);
 					adSize[1] = parseInt(heightString, 10);
+				}
+
+				// Now Send GA Stats
+				if (
+					slot &&
+					slot.getTargeting('hb_bidder') &&
+					slot
+						.getTargeting('hb_bidder')
+						.toString()
+						.trim()
+				) {
+					console.log(
+						`PREBID AD SHOWN - ${slot.getTargeting(
+							'hb_bidder',
+						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
+					);
+					try {
+						window.ga('send', {
+							hitType: 'event',
+							eventCategory: 'PrebidAdShown',
+							eventAction: `${slot.getTargeting('hb_bidder')}`,
+							eventLabel: `${slot.getAdUnitPath()}`,
+							eventValue: `${parseInt(
+								parseFloat(slot.getTargeting('hb_pb')) * 100,
+								10,
+							)}`,
+						});
+					} catch (ex) {
+						console.log(`ERROR Sending to Google Analytics: `, ex);
+					}
 				}
 			}
 
