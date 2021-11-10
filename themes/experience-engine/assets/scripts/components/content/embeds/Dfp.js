@@ -58,8 +58,18 @@ const getSlotStat = placeholder => {
 const impressionViewableHandler = event => {
 	const { slot } = event;
 	const placeholder = slot.getSlotElementId();
+	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
+		getSlotStat(placeholder).viewPercentage = 100;
+	}
 
-	if (slot && slot.getTargeting('hb_bidder')) {
+	if (
+		slot &&
+		slot.getTargeting('hb_bidder') &&
+		slot
+			.getTargeting('hb_bidder')
+			.toString()
+			.trim()
+	) {
 		console.log(
 			`PREBID AD SHOWN - ${slot.getTargeting(
 				'hb_bidder',
@@ -79,10 +89,6 @@ const impressionViewableHandler = event => {
 		} catch (ex) {
 			console.log(`ERROR Sending to Google Analytics: `, ex);
 		}
-	}
-
-	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
-		getSlotStat(placeholder).viewPercentage = 100;
 	}
 };
 
