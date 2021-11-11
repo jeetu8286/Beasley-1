@@ -421,6 +421,7 @@ class Dfp extends PureComponent {
 
 		pbjs.que.push(() => {
 			pbjs.setConfig({
+				enableSendAllBids: false,
 				bidderTimeout: 1000,
 				rubicon: { singleRequest: true },
 				priceGranularity: {
