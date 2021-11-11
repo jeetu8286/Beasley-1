@@ -25,6 +25,7 @@ import Embedly from './embeds/Embedly';
 import SongArchive from './embeds/SongArchive';
 import RelatedPosts from './embeds/RelatedPosts';
 import DrimifyEmbed from './embeds/DrimifyEmbed';
+import TrackonomicsScript from './embeds/TrackonomicsScript';
 import GoogleAnalytics from './embeds/GoogleAnalytics';
 import Instagram from './embeds/Instagram';
 import MapBox from './embeds/MapBox';
@@ -52,6 +53,7 @@ const mapping = {
 	secondstreetsignup: SecondStreetSignupEmbed,
 	share: Share,
 	drimify: DrimifyEmbed,
+	trackonomicsscript: TrackonomicsScript,
 	songarchive: SongArchive,
 	streamcta: StreamCta,
 	relatedposts: RelatedPosts,

@@ -63,6 +63,7 @@ abstract class Module {
 			'feature_video'		=> new \Bbgi\Integration\FeatureVideo(),
 			'branded-content'	=> new \Bbgi\Integration\BrandedContent(),
 			'dimers-widget'		=> new \Bbgi\Integration\Dimers(),
+			'trackonomics-script'  => new \Bbgi\Integration\TrackonomicsScript(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {

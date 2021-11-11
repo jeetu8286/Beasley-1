@@ -176,6 +176,15 @@ function getDrimifyParams(element) {
 	};
 }
 
+/* function getTrackonomicsScriptParams(element) {
+	const { dataset } = element;
+
+	return {
+		postid: dataset.postid,
+		ishidden: dataset.posttype,
+	};
+} */
+
 function getHubspotFormParams(element) {
 	const { dataset } = element;
 
@@ -401,6 +410,21 @@ export function getStateFromContent(container, pageURL) {
 				getDatasetParams('stackid', 'layout'),
 			),
 			...processEmbeds(container, 'drimify', '.drimify', getDrimifyParams),
+			...processEmbeds(
+				container,
+				'trackonomicsscript',
+				'.trackonomics-script',
+				getDatasetParams('postid', 'posttype', 'trackonomicsscript'),
+			),
+			/* ...processEmbeds(
+				container,
+				'trackonomicsscript',
+				'.trackonomics-script',
+				getDatasetParams(
+					'postid',
+					'posttype',
+				),
+			), */
 		];
 
 		// extract <script> tags
