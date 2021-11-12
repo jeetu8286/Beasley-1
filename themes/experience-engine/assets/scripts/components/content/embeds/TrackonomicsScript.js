@@ -4,38 +4,35 @@ import PropTypes from 'prop-types';
 class TrackonomicsScript extends PureComponent {
 	componentDidMount() {
 		const { postid, posttype, trackonomicsscript } = this.props;
+		const trackonomicsScriptID = document.getElementById(
+			'funnel-relay-installer',
+		);
 		console.log('Post ID: ', postid);
-		console.log('Current Post type: ', posttype);
-		console.log('Show Trackonomics Script: ', trackonomicsscript);
-		/* 
-		call script in react	
-		https://stackoverflow.com/questions/34424845/adding-script-tag-to-react-jsx
-		if (posttype === '1') {
-			<script id="funnel-relay-installer" data-property-id="PROPERTY_ID" data-customer-id="bbgi_39ea5_bbgi" src="https://cdn-magiclinks.trackonomics.net/client/static/v2/bbgi_39ea5_bbgi.js" async="async"></script>
-		} */
-		/* if (posttype === '0') {
-			document.documentElement.style.setProperty(
-				'--configurable-iframe-height',
-				'0px',
-			);
+		console.log('Post type: ', posttype);
+		console.log('Trackonomics Script: ', trackonomicsscript);
+
+		if (trackonomicsscript === '1') {
+			console.log('Trackonomics Script status : Show');
+			console.log(trackonomicsScriptID);
+			if (!trackonomicsScriptID) {
+				console.log('Trackonomics Script Not exist');
+				const script = document.createElement('script');
+				script.id = 'funnel-relay-installer';
+				script.setAttribute('data-property-id', 'PROPERTY_ID');
+				script.setAttribute('data-customer-id', 'bbgi_39ea5_bbgi');
+				script.src = `https://cdn-magiclinks.trackonomics.net/client/static/v2/bbgi_39ea5_bbgi.js1`;
+				script.async = true;
+				document.body.appendChild(script);
+			} else {
+				console.log('Trackonomics Script exist');
+			}
 		} else {
-			document.documentElement.style.setProperty(
-				'--configurable-iframe-height',
-				document.documentElement.style.getPropertyValue(
-					'--default-configurable-iframe-height',
-				),
-			);
-		} */
+			console.log('Trackonomics Script status : Remove');
+			trackonomicsScriptID.remove();
+		}
 	}
 
-	componentWillUnmount() {
-		/* document.documentElement.style.setProperty(
-			'--configurable-iframe-height',
-			document.documentElement.style.getPropertyValue(
-				'--default-configurable-iframe-height',
-			),
-		); */
-	}
+	componentWillUnmount() {}
 
 	render() {
 		return false;
