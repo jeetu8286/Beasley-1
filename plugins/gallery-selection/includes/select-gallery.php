@@ -129,7 +129,7 @@ class ExistingGallerySelection {
 				$image_src = wp_get_attachment_image_src(get_post_thumbnail_id(), array(200, 150));
 	
 				$html .= '
-					<li class="select-exist-gallery-li" gallery-id="'.get_the_ID().'" onclick=" jQuery(\'.select-gallery-ul li\').removeClass(' . $jqueryEventSelectedClass .'); jQuery(\'.select-gallery-ul li\').css(\'box-shadow\', \'0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)\'); jQuery(this).addClass(' . $jqueryEventSelectedClass .'); " >
+					<li class="select-exist-gallery-li" gallery-id="'.get_the_ID().'" slug-name="'.$post->post_name.'" onclick=" jQuery(\'.select-gallery-ul li\').removeClass(' . $jqueryEventSelectedClass .'); jQuery(\'.select-gallery-ul li\').css(\'box-shadow\', \'0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)\'); jQuery(this).addClass(' . $jqueryEventSelectedClass .'); " >
 						<div style="width: 200px; height: 150px; display: flex;">
 							<img
 								class="img-attachment"
@@ -140,7 +140,7 @@ class ExistingGallerySelection {
 						<div class="desc-lower-container">
 							<div class="desc-lower-title">Author:</div> <div class="desc-lower-text"> '.(get_the_author_meta( 'display_name' ) ? get_the_author_meta( 'display_name' ) : "-").'</div>
 						</div>
-						<div class="desc-lower-container" style=" padding-bottom:10px;">
+						<div class="desc-lower-container" style="padding-bottom:10px;">
 							<div class="desc-lower-title">Date:</div> <div> '.self::get_modified_gallery_date($post).'</div>
 						</div>
 					</li>';
@@ -153,6 +153,7 @@ class ExistingGallerySelection {
 	public static function gallery_print_media_templates() {
 			?><script type="text/html" id="tmpl-gallery-selector">
 			<input type="hidden" name="gallery_selected_id" id="gallery_selected_id" />
+			<input type="hidden" name="gallery_selected_slug" id="gallery_selected_slug" />
 			<div class="selectgallery__preview">
 				<?php	
 					// Query to fetch galleries
@@ -205,7 +206,7 @@ class ExistingGallerySelection {
 				$image_src = wp_get_attachment_image_src(get_post_thumbnail_id(), array(200, 150));
 
 				$html .= '
-					<li class="select-exist-gallery-li" gallery-id="'.get_the_ID().'" onclick=" jQuery(\'.select-gallery-ul li\').removeClass(' . $jqueryEventSelectedClass .'); jQuery(\'.select-gallery-ul li\').css(\'box-shadow\', \'0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)\'); jQuery(this).addClass(' . $jqueryEventSelectedClass .'); " >
+					<li class="select-exist-gallery-li" gallery-id="'.get_the_ID().'" slug-name="'.$post->post_name.'" onclick=" jQuery(\'.select-gallery-ul li\').removeClass(' . $jqueryEventSelectedClass .'); jQuery(\'.select-gallery-ul li\').css(\'box-shadow\', \'0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)\'); jQuery(this).addClass(' . $jqueryEventSelectedClass .'); " >
 						<div style="width: 200px; height: 150px; display: flex;">
 							<img
 								class="img-attachment"
