@@ -6,8 +6,7 @@ function trackonomics_script() {
 	/*
 	?>
 	<script id="funnel-relay-installer" data-property-id="PROPERTY_ID" data-customer-id="bbgi_39ea5_bbgi" src="https://cdn-magiclinks.trackonomics.net/client/static/v2/bbgi_39ea5_bbgi.js" async="async"></script>
-	<?php
-	*/
+	<?php */
 	}	//End If condition
 }	//End Function
 
