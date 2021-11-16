@@ -780,6 +780,7 @@ class Dfp extends PureComponent {
 					logPrebidTargeting(pbjs, unitId);
 					googletag.cmd.push(() => {
 						googletag.pubads().refresh([slot]);
+						console.log(`Updated Slot Keys: ${slot.getTargetingKeys()}`);
 					});
 				},
 			});
