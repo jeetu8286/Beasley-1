@@ -786,7 +786,8 @@ class Dfp extends PureComponent {
 					pbjs.setTargetingForGPTAsync([unitId]);
 					const pbTargeting = logPrebidTargeting(pbjs, unitId);
 					googletag.cmd.push(() => {
-						googletag.pubads().refresh([slot]);
+						// googletag.pubads().refresh([slot]);
+						googletag.pubads().refresh([slot], { changeCorrelator: false });
 						// console.log(`Updated Slot Keys: ${slot.getTargetingKeys()}`);
 						const pbTargetKeys = Object.keys(pbTargeting);
 						pbTargetKeys.forEach(pbtk => {
