@@ -75,14 +75,23 @@ const slotVisibilityChangedHandler = event => {
 };
 
 const slotRenderEndedHandler = event => {
-	const { slot, isEmpty, size } = event;
+	const { slot, lineItemId, isEmpty, size } = event;
 	const htmlVidTagArray = window.bbgiconfig.vid_ad_html_tag_csv_setting
 		? window.bbgiconfig.vid_ad_html_tag_csv_setting.split(',')
 		: null;
 
 	const placeholder = slot.getSlotElementId();
 
-	console.log(`slotRenderEndedHandler size: ${size}`);
+	console.log(
+		`slotRenderEndedHandler for line item: ${lineItemId} of size: ${size}`,
+	);
+
+	// FOR DEBUG - LOG TARGETING
+	const pbTargetKeys = slot.getTargetingKeys();
+	console.log(`Slot Keys Of Rendered Ad`);
+	pbTargetKeys.forEach(pbtk => {
+		console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+	});
 
 	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
@@ -127,13 +136,6 @@ const slotRenderEndedHandler = event => {
 							'hb_bidder',
 						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
 					);
-
-					// FOR DEBUG - LOG TARGETING
-					const pbTargetKeys = slot.getTargetingKeys();
-					console.log(`Slot Keys Of Shown Ad`);
-					pbTargetKeys.forEach(pbtk => {
-						console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
-					});
 
 					try {
 						window.ga('send', {
