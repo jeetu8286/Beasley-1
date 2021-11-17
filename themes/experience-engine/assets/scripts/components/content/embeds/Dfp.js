@@ -200,7 +200,9 @@ class Dfp extends PureComponent {
 		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
 		this.loadPrebid = this.loadPrebid.bind(this);
-		this.refreshBid = this.refreshBid.bind(this);
+		this.pushRefreshBidIntoGoogleTag = this.pushRefreshBidIntoGoogleTag.bind(
+			this,
+		);
 		this.destroySlot = this.destroySlot.bind(this);
 		this.getPrebidBidders = this.getPrebidBidders.bind(this);
 		this.getBidderRubicon = this.getBidderRubicon.bind(this);
@@ -771,45 +773,44 @@ class Dfp extends PureComponent {
 		}
 	}
 
-	refreshBid(unitId, slot) {
+	pushRefreshBidIntoGoogleTag(unitId, slot) {
 		const { prebidEnabled } = this.state;
 		const { googletag } = window;
 
 		if (!prebidEnabled) {
 			// const { googletag } = window;
-			googletag.cmd.push(() => {
-				googletag.pubads().refresh([slot]);
-			});
+			// MFP - Remove googletag.cmd pushes
+			// googletag.cmd.push(() => {
+			googletag.pubads().refresh([slot]);
+			// });
 			return; // EXIT FUNCTION
 		}
 
-		googletag.cmd.push(() => {
-			const pbjs = window.pbjs || {};
-			pbjs.que = pbjs.que || [];
+		const pbjs = window.pbjs || {};
+		pbjs.que = pbjs.que || [];
 
-			pbjs.que.push(() => {
-				const PREBID_TIMEOUT = 2000;
-				// const {googletag} = window;
-				pbjs.requestBids({
-					timeout: PREBID_TIMEOUT,
-					adUnitCodes: [unitId],
-					bidsBackHandler: async () => {
-						// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
-						await pbjs.setTargetingForGPTAsync([unitId]);
-						const pbTargeting = logPrebidTargeting(pbjs, unitId);
-						// googletag.cmd.push(() => {
-						const pbTargetKeys = Object.keys(pbTargeting);
+		pbjs.que.push(() => {
+			const PREBID_TIMEOUT = 2000;
+			// const {googletag} = window;
+			pbjs.requestBids({
+				timeout: PREBID_TIMEOUT,
+				adUnitCodes: [unitId],
+				bidsBackHandler: () => {
+					// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
+					pbjs.setTargetingForGPTAsync([unitId]);
+					const pbTargeting = logPrebidTargeting(pbjs, unitId);
+					// googletag.cmd.push(() => {
+					const pbTargetKeys = Object.keys(pbTargeting);
 
-						// googletag.pubads().refresh([slot]);
-						googletag.pubads().refresh([slot], { changeCorrelator: false });
+					// googletag.pubads().refresh([slot]);
+					googletag.pubads().refresh([slot], { changeCorrelator: false });
 
-						console.log(`Slot Keys After Refresh`);
-						pbTargetKeys.forEach(pbtk => {
-							console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
-						});
-						// });
-					},
-				});
+					console.log(`Slot Keys After Refresh`);
+					pbTargetKeys.forEach(pbtk => {
+						console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+					});
+					// });
+				},
 			});
 		});
 	}
@@ -823,7 +824,7 @@ class Dfp extends PureComponent {
 			googletag.cmd.push(() => {
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
 				if (prebidEnabled) {
-					this.refreshBid(unitId, slot);
+					this.pushRefreshBidIntoGoogleTag(unitId, slot);
 				} else {
 					googletag.pubads().refresh([slot]);
 				}
