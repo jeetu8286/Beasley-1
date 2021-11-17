@@ -127,6 +127,14 @@ const slotRenderEndedHandler = event => {
 							'hb_bidder',
 						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
 					);
+
+					// FOR DEBUG - LOG TARGETING
+					const pbTargetKeys = slot.getTargetingKeys();
+					console.log(`Slot Keys Of Shown Ad`);
+					pbTargetKeys.forEach(pbtk => {
+						console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+					});
+
 					try {
 						window.ga('send', {
 							hitType: 'event',
@@ -781,15 +789,21 @@ class Dfp extends PureComponent {
 			pbjs.requestBids({
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
-				bidsBackHandler: () => {
+				bidsBackHandler: async () => {
 					// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
-					pbjs.setTargetingForGPTAsync([unitId]);
+					await pbjs.setTargetingForGPTAsync([unitId]);
 					const pbTargeting = logPrebidTargeting(pbjs, unitId);
 					googletag.cmd.push(() => {
+						const pbTargetKeys = Object.keys(pbTargeting);
+						console.log(`Slot Keys Before Refresh`);
+						pbTargetKeys.forEach(pbtk => {
+							console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+						});
+
 						// googletag.pubads().refresh([slot]);
 						googletag.pubads().refresh([slot], { changeCorrelator: false });
-						// console.log(`Updated Slot Keys: ${slot.getTargetingKeys()}`);
-						const pbTargetKeys = Object.keys(pbTargeting);
+
+						console.log(`Slot Keys After Refresh`);
 						pbTargetKeys.forEach(pbtk => {
 							console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
 						});
