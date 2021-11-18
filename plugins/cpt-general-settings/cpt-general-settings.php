@@ -21,4 +21,6 @@ if ( ! empty( $iframe_height ) ) :
 	include __DIR__ . '/includes/draftking-iframe-settings.php';
 endif;
 
+include __DIR__ . '/includes/embed_videourl.php';	// Code to add Embed Video URL Field in media
+
 include __DIR__ . '/includes/settings.php';
