@@ -775,10 +775,9 @@ class Dfp extends PureComponent {
 
 	pushRefreshBidIntoGoogleTag(unitId, slot) {
 		const { prebidEnabled } = this.state;
-		const { googletag } = window;
 
 		if (!prebidEnabled) {
-			// const { googletag } = window;
+			const { googletag } = window;
 			// MFP - Remove googletag.cmd pushes
 			// googletag.cmd.push(() => {
 			googletag.pubads().refresh([slot]);
@@ -786,19 +785,19 @@ class Dfp extends PureComponent {
 			return; // EXIT FUNCTION
 		}
 
-		const pbjs = window.pbjs || {};
-		pbjs.que = pbjs.que || [];
+		// const pbjs = window.pbjs || {};
+		window.pbjs.que = window.pbjs.que || [];
 
-		pbjs.que.push(() => {
+		window.pbjs.que.push(() => {
 			const PREBID_TIMEOUT = 2000;
-			// const {googletag} = window;
-			pbjs.requestBids({
+			window.pbjs.requestBids({
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
 				bidsBackHandler: () => {
+					const { googletag } = window;
 					// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
-					pbjs.setTargetingForGPTAsync([unitId]);
-					const pbTargeting = logPrebidTargeting(pbjs, unitId);
+					window.pbjs.setTargetingForGPTAsync([unitId]);
+					const pbTargeting = logPrebidTargeting(unitId);
 					// googletag.cmd.push(() => {
 					const pbTargetKeys = Object.keys(pbTargeting);
 
