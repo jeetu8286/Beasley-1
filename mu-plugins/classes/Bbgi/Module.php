@@ -64,6 +64,7 @@ abstract class Module {
 			'branded-content'	=> new \Bbgi\Integration\BrandedContent(),
 			'dimers-widget'		=> new \Bbgi\Integration\Dimers(),
 			'draftking-iframe'  => new \Bbgi\Integration\DraftkingIframe(),
+			'select-listicle' 	=> new \Bbgi\Integration\ListicleSelection(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {
