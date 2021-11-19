@@ -203,6 +203,7 @@ class Dfp extends PureComponent {
 		this.pushRefreshBidIntoGoogleTag = this.pushRefreshBidIntoGoogleTag.bind(
 			this,
 		);
+		this.bidsBackHandler = this.bidsBackHandler.bind(this);
 		this.destroySlot = this.destroySlot.bind(this);
 		this.getPrebidBidders = this.getPrebidBidders.bind(this);
 		this.getBidderRubicon = this.getBidderRubicon.bind(this);
@@ -773,43 +774,38 @@ class Dfp extends PureComponent {
 		}
 	}
 
+	bidsBackHandler() {
+		const { googletag } = window;
+		const { unitId } = this.props;
+		const { slot } = this.state;
+		// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
+		window.pbjs.setTargetingForGPTAsync([unitId]);
+		const pbTargeting = logPrebidTargeting(unitId);
+		const pbTargetKeys = Object.keys(pbTargeting);
+		googletag.pubads().refresh([slot], { changeCorrelator: false });
+
+		console.log(`Slot Keys After Refresh`);
+		pbTargetKeys.forEach(pbtk => {
+			console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+		});
+	}
+
 	pushRefreshBidIntoGoogleTag(unitId, slot) {
 		const { prebidEnabled } = this.state;
 
 		if (!prebidEnabled) {
 			const { googletag } = window;
-			// MFP - Remove googletag.cmd pushes
-			// googletag.cmd.push(() => {
 			googletag.pubads().refresh([slot]);
-			// });
 			return; // EXIT FUNCTION
 		}
 
-		// const pbjs = window.pbjs || {};
 		window.pbjs.que = window.pbjs.que || [];
-
 		window.pbjs.que.push(() => {
 			const PREBID_TIMEOUT = 2000;
 			window.pbjs.requestBids({
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
-				bidsBackHandler: () => {
-					const { googletag } = window;
-					// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
-					window.pbjs.setTargetingForGPTAsync([unitId]);
-					const pbTargeting = logPrebidTargeting(unitId);
-					// googletag.cmd.push(() => {
-					const pbTargetKeys = Object.keys(pbTargeting);
-
-					// googletag.pubads().refresh([slot]);
-					googletag.pubads().refresh([slot], { changeCorrelator: false });
-
-					console.log(`Slot Keys After Refresh`);
-					pbTargetKeys.forEach(pbtk => {
-						console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
-					});
-					// });
-				},
+				bidsBackHandler: this.bidsBackHandler,
 			});
 		});
 	}
