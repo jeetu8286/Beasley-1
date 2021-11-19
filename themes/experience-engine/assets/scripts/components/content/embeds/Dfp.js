@@ -83,7 +83,7 @@ const slotRenderEndedHandler = event => {
 	const placeholder = slot.getSlotElementId();
 
 	console.log(
-		`slotRenderEndedHandler for ${slot.getAdUnitPath()} with line item: ${lineItemId} of size: ${size}`,
+		`slotRenderEndedHandler for ${slot.getAdUnitPath()}(${placeholder}) with line item: ${lineItemId} of size: ${size}`,
 	);
 
 	// FOR DEBUG - LOG TARGETING
