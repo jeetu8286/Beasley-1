@@ -34,6 +34,7 @@ import StnBarker from './embeds/StnBarker';
 import StnPlayer from './embeds/StnPlayer';
 import BrandedContent from './embeds/BrandedContent';
 import Dimers from './embeds/Dimers';
+import DraftkingEmbed from './embeds/DraftkingEmbed';
 
 const mapping = {
 	audio: AudioEmbed,
@@ -54,6 +55,7 @@ const mapping = {
 	share: Share,
 	drimify: DrimifyEmbed,
 	trackonomicsscript: TrackonomicsScript,
+	draftkingiframe: DraftkingEmbed,
 	songarchive: SongArchive,
 	streamcta: StreamCta,
 	relatedposts: RelatedPosts,

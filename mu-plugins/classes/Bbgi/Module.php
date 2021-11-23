@@ -64,6 +64,7 @@ abstract class Module {
 			'branded-content'	=> new \Bbgi\Integration\BrandedContent(),
 			'dimers-widget'		=> new \Bbgi\Integration\Dimers(),
 			'trackonomics-script'  => new \Bbgi\Integration\TrackonomicsScript(),
+			'draftking-iframe'  => new \Bbgi\Integration\DraftkingIframe(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {

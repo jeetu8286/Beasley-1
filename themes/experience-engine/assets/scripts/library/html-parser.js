@@ -176,14 +176,14 @@ function getDrimifyParams(element) {
 	};
 }
 
-/* function getTrackonomicsScriptParams(element) {
+function getDraftkingIframeParams(element) {
 	const { dataset } = element;
 
 	return {
 		postid: dataset.postid,
-		ishidden: dataset.posttype,
+		ishidden: dataset.ishidden,
 	};
-} */
+}
 
 function getHubspotFormParams(element) {
 	const { dataset } = element;
@@ -412,19 +412,16 @@ export function getStateFromContent(container, pageURL) {
 			...processEmbeds(container, 'drimify', '.drimify', getDrimifyParams),
 			...processEmbeds(
 				container,
+				'draftkingiframe',
+				'.draftking-iframe',
+				getDraftkingIframeParams,
+			),
+			...processEmbeds(
+				container,
 				'trackonomicsscript',
 				'.trackonomics-script',
 				getDatasetParams('postid', 'posttype', 'trackonomicsscript'),
 			),
-			/* ...processEmbeds(
-				container,
-				'trackonomicsscript',
-				'.trackonomics-script',
-				getDatasetParams(
-					'postid',
-					'posttype',
-				),
-			), */
 		];
 
 		// extract <script> tags
