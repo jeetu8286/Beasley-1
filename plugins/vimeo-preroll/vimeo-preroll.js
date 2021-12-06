@@ -149,7 +149,7 @@
 			window.ga('send', {
 				hitType: 'event',
 				eventCategory: 'VimeoPlay',
-				eventAction: `${globalObj.cdomain}`,
+				eventAction: `${globalObj.cpage}`,
 				eventLabel: `${videoID}`,
 			});
 		} catch (ex) {
