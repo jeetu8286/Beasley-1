@@ -39,6 +39,7 @@ mu-plugins/post-finder/
 !/plugins/cpt-general-settings
 !/plugins/share-jacapps
 !/plugins/cpt-segment-navigation
+!/plugins/listicle-selection
 !/plugins/cpt-co-author-settings
 
 themes/index.php
