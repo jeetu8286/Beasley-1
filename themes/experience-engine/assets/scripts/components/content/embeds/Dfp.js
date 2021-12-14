@@ -75,14 +75,23 @@ const slotVisibilityChangedHandler = event => {
 };
 
 const slotRenderEndedHandler = event => {
-	const { slot, isEmpty, size } = event;
+	const { slot, lineItemId, isEmpty, size } = event;
 	const htmlVidTagArray = window.bbgiconfig.vid_ad_html_tag_csv_setting
 		? window.bbgiconfig.vid_ad_html_tag_csv_setting.split(',')
 		: null;
 
 	const placeholder = slot.getSlotElementId();
 
-	console.log(`slotRenderEndedHandler size: ${size}`);
+	console.log(
+		`slotRenderEndedHandler for ${slot.getAdUnitPath()}(${placeholder}) with line item: ${lineItemId} of size: ${size}`,
+	);
+
+	// FOR DEBUG - LOG TARGETING
+	const pbTargetKeys = slot.getTargetingKeys();
+	console.log(`Slot Keys Of Rendered Ad`);
+	pbTargetKeys.forEach(pbtk => {
+		console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+	});
 
 	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
@@ -99,6 +108,7 @@ const slotRenderEndedHandler = event => {
 			let adSize;
 			if (size && size.length === 2 && (size[0] !== 1 || size[1] !== 1)) {
 				adSize = size;
+				console.log(`Prebid Ad Not Shown - Using Size: ${adSize}`);
 			} else if (slot.getTargeting('hb_size')) {
 				// We ASSUME when an incomplete size is sent through event, we are dealing with Prebid.
 				// Compute Size From hb_size.
@@ -127,6 +137,7 @@ const slotRenderEndedHandler = event => {
 							'hb_bidder',
 						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
 					);
+
 					try {
 						window.ga('send', {
 							hitType: 'event',
@@ -144,7 +155,6 @@ const slotRenderEndedHandler = event => {
 				}
 			}
 
-			console.log(`USING Size: ${adSize}`);
 			// Adjust Container Div Height
 			if (adSize && adSize[0] && adSize[1]) {
 				const imageWidth = adSize[0];
@@ -190,7 +200,10 @@ class Dfp extends PureComponent {
 		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
 		this.loadPrebid = this.loadPrebid.bind(this);
-		this.refreshBid = this.refreshBid.bind(this);
+		this.pushRefreshBidIntoGoogleTag = this.pushRefreshBidIntoGoogleTag.bind(
+			this,
+		);
+		this.bidsBackHandler = this.bidsBackHandler.bind(this);
 		this.destroySlot = this.destroySlot.bind(this);
 		this.getPrebidBidders = this.getPrebidBidders.bind(this);
 		this.getBidderRubicon = this.getBidderRubicon.bind(this);
@@ -231,6 +244,7 @@ class Dfp extends PureComponent {
 			ixSiteID: bbgiconfig.ad_ix_siteid_setting,
 			rubiconZoneID: bbgiconfig.ad_rubicon_zoneid_setting,
 			appnexusPlacementID: bbgiconfig.ad_appnexus_placementid_setting,
+			resetDigitalEnabled: bbgiconfig.ad_reset_digital_enabled === 'on',
 			prebidEnabled: bbgiconfig.prebid_enabled && !isAffiliateMarketingPage,
 		};
 	}
@@ -370,6 +384,11 @@ class Dfp extends PureComponent {
 	}
 
 	getBidderResetDigital() {
+		const { resetDigitalEnabled } = this.state;
+		if (!resetDigitalEnabled) {
+			return null;
+		}
+
 		const retval = {
 			bidder: 'resetdigital',
 			params: {
@@ -401,6 +420,7 @@ class Dfp extends PureComponent {
 
 		const prebidBidders = this.getPrebidBidders();
 		if (!prebidBidders || prebidBidders.length === 0) {
+			console.log('No Bidders Enabled - PREBID Dysfunctional');
 			return false;
 		}
 
@@ -754,34 +774,32 @@ class Dfp extends PureComponent {
 		}
 	}
 
-	refreshBid(unitId, slot) {
+	bidsBackHandler() {
+		const { googletag } = window;
+		const { unitId } = this.props;
+		const { slot } = this.state;
+		// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
+		window.pbjs.setTargetingForGPTAsync([unitId]);
+		logPrebidTargeting(unitId);
+		googletag.pubads().refresh([slot], { changeCorrelator: false });
+	}
+
+	pushRefreshBidIntoGoogleTag(unitId, slot) {
 		const { prebidEnabled } = this.state;
 
 		if (!prebidEnabled) {
 			const { googletag } = window;
-			googletag.cmd.push(() => {
-				googletag.pubads().refresh([slot]);
-			});
+			googletag.pubads().refresh([slot]);
 			return; // EXIT FUNCTION
 		}
 
-		const pbjs = window.pbjs || {};
-		pbjs.que = pbjs.que || [];
-
-		pbjs.que.push(() => {
+		window.pbjs.que = window.pbjs.que || [];
+		window.pbjs.que.push(() => {
 			const PREBID_TIMEOUT = 2000;
-			const { googletag } = window;
-			pbjs.requestBids({
+			window.pbjs.requestBids({
 				timeout: PREBID_TIMEOUT,
 				adUnitCodes: [unitId],
-				bidsBackHandler: () => {
-					// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
-					pbjs.setTargetingForGPTAsync([unitId]);
-					logPrebidTargeting(pbjs, unitId);
-					googletag.cmd.push(() => {
-						googletag.pubads().refresh([slot]);
-					});
-				},
+				bidsBackHandler: this.bidsBackHandler,
 			});
 		});
 	}
@@ -795,7 +813,7 @@ class Dfp extends PureComponent {
 			googletag.cmd.push(() => {
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
 				if (prebidEnabled) {
-					this.refreshBid(unitId, slot);
+					this.pushRefreshBidIntoGoogleTag(unitId, slot);
 				} else {
 					googletag.pubads().refresh([slot]);
 				}

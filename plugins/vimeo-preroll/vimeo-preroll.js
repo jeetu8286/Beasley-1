@@ -116,6 +116,7 @@
 				vimeoplayer.isPlayingPreroll = true; // Reset since it was unset during pause all players
 				console.log('Paused and now Playing Preroll');
 				/* PREROLL CODE HERE */
+				await sendGAPlayEvent(vimeoplayer);
 				renderHTML(iFrameElement);
 				getUrlFromPrebid(vimeoplayer);
 			}
@@ -134,6 +135,28 @@
 		return vimeoplayer;
 	}
 
+	const sendGAPlayEvent = async (vimeoControl) => {
+		const {global} = window.bbgiconfig.dfp;
+		// global holds a 2 dimensional array like "global":[["cdomain","wmmr.com"],["cpage","home"],["ctest",""],["genre","rock"],["market","philadelphia, pa"]]
+		try {
+			const videoID = await vimeoControl.getVideoId();
+			const globalObj = global.reduce((acc, item) => {
+				const key = `${item[0]}`;
+				acc[key] = `${item[1]}`;
+				return acc;
+			}, {});
+
+			window.ga('send', {
+				hitType: 'event',
+				eventCategory: 'VimeoPlay',
+				eventAction: `${globalObj.cpage}`,
+				eventLabel: `${videoID}`,
+			});
+		} catch (ex) {
+			console.log(`ERROR Sending Vimeo Play Event to Google Analytics: `, ex);
+		}
+	}
+
 	const pauseAllVimeoPlayers = async () => {
 		await Promise.all(vimeoPlayerList.map(vp => {
 			vp.isPlayingPreroll = false;
@@ -149,9 +172,16 @@
 	}
 
 	const getUrlFromPrebid = (vimeoControl) => {
-		const {gampreroll} = window.bbgiconfig.dfp;
+		const { global, incontentpreroll } = window.bbgiconfig.dfp;
+
+		if  (!incontentpreroll || !incontentpreroll.unitId) {
+			console.log(`Not playing Vimeo preroll because no incontentpreroll.unitId was  found.`);
+			vimeoControl.prerollCallback();
+			return;
+		}
+
 		const videoAdUnit = {
-			code: gampreroll.unitId,
+			code: incontentpreroll.unitId,
 			mediaTypes: {
 				video: {
 					playerSize: [[640, 360]],
@@ -171,7 +201,7 @@
 
 		pbjs.que.push(function () {
 			console.log('Removing resetdigital Prebid Ad Unit');
-			pbjs.removeAdUnit(gampreroll.unitId);
+			pbjs.removeAdUnit(incontentpreroll.unitId);
 			console.log('Adding resetdigital Prebid Ad Unit');
 			pbjs.addAdUnits(videoAdUnit);
 
@@ -186,12 +216,13 @@
 			console.log('Requesting Vimeo Video Bids');
 			pbjs.requestBids({
 				timeout: 2000,
-				adUnitCodes: [gampreroll.unitId],
-				bidsBackHandler: function (bids) {
+				adUnitCodes: [incontentpreroll.unitId],
+				bidsBackHandler: async function (bids) {
 					console.log(`Preroll Bids Returned:`);
 					console.log(JSON.stringify(bids));
 
 					let videoUrl = '';
+					// NOTE: Bids Are Ignored. Change below to == in order to enable Prebid.
 					if (bids = {}) {
 						console.log('No Bids from Prebid');
 					} else {
@@ -199,7 +230,7 @@
 						videoUrl = pbjs.adServers.dfp.buildVideoUrl({
 							adUnit: videoAdUnit,
 							params: {
-								iu: gampreroll.unitId
+								iu: incontentpreroll.unitId
 							}
 						});
 						console.log(`URL Returned from Prebid: ${videoUrl}`);
@@ -208,12 +239,23 @@
 					// If No URL From Prebid, Default to our GAM Unit
 					if (!videoUrl) {
 						console.log('Using Default GAM Ad Unit for IMA');
-						videoUrl = `https://pubads.g.doubleclick.net/gampad/live/ads?iu=${gampreroll.unitId}&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360%7C640x480%7C920x508&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`;
+						const videoID = await vimeoControl.getVideoId();
+						console.log(`Video ID is ${videoID}`);
+
+						const partialCustParamsString = `&cust_params=VimeoVideoID%3D${videoID}`;
+						// global holds a 2 dimensional array like "global":[["cdomain","wmmr.com"],["cpage","home"],["ctest",""],["genre","rock"],["market","philadelphia, pa"]]
+						mappedGlobalParamArray = global.map(innerArray => {
+							return `%26${innerArray[0]}%3D${innerArray[1]}`;
+						});
+						const mappedGlobalParamString = mappedGlobalParamArray ? mappedGlobalParamArray.join('') : '';
+						const fullCustParamsString = partialCustParamsString.concat(mappedGlobalParamString);
+						// videoUrl = `https://pubads.g.doubleclick.net/gampad/live/ads?iu=${incontentpreroll.unitId}&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360%7C640x480%7C920x508&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`;
+						videoUrl = `https://pubads.g.doubleclick.net/gampad/live/ads?iu=${incontentpreroll.unitId}&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360${fullCustParamsString}&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`;
 					}
 
 					try {
 						IMAPlayVimeoIMAAdsFunc(videoUrl, vimeoControl);
-					} catch(err) {
+					} catch (err) {
 						console.log('Uncaught Error while playing preroll', err);
 						console.log('Attempting to mask error');
 						vimeoControl.prerollCallback();

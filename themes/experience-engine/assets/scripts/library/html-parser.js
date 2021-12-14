@@ -201,6 +201,7 @@ function getStnEmbedParams(element) {
 		fk: dataset.fk,
 		cid: dataset.cid,
 		videokey: dataset.key,
+		type: dataset.type,
 	};
 }
 
@@ -415,6 +416,12 @@ export function getStateFromContent(container, pageURL) {
 				'draftkingiframe',
 				'.draftking-iframe',
 				getDraftkingIframeParams,
+			),
+			...processEmbeds(
+				container,
+				'trackonomicsscript',
+				'.trackonomics-script',
+				getDatasetParams('postid', 'posttype', 'trackonomicsscript'),
 			),
 		];
 

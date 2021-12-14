@@ -26,15 +26,17 @@ export default function refreshAllAds() {
 		googletag.cmd.push(() => {
 			pbjs.que.push(() => {
 				pbjs.setTargetingForGPTAsync();
-				logPrebidTargeting(pbjs);
+				logPrebidTargeting();
 				googletag.pubads().refresh();
 			});
 		});
 	}
 }
 
-export function logPrebidTargeting(pbjsInstance, unitId) {
-	const targeting = pbjsInstance.getAdserverTargeting();
+export function logPrebidTargeting(unitId) {
+	const pbjs = window.pbjs || {};
+	const targeting = pbjs.getAdserverTargeting();
+	let retval;
 
 	if (targeting) {
 		Object.keys(targeting).map(tkey => {
@@ -57,8 +59,15 @@ export function logPrebidTargeting(pbjsInstance, unitId) {
 				} catch (ex) {
 					console.log(`ERROR Sending to Google Analytics: `, ex);
 				}
+
+				// Set retval when UnitID was specified and we have a high bidder
+				if (unitId && unitId === tkey) {
+					retval = targeting[tkey];
+				}
 			}
 			return tkey;
 		});
 	}
+
+	return retval;
 }
