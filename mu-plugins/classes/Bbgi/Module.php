@@ -63,6 +63,7 @@ abstract class Module {
 			'feature_video'		=> new \Bbgi\Integration\FeatureVideo(),
 			'branded-content'	=> new \Bbgi\Integration\BrandedContent(),
 			'dimers-widget'		=> new \Bbgi\Integration\Dimers(),
+			'select-gallery' 			=> new \Bbgi\Integration\GallerySelection(),
 			'trackonomics-script'  => new \Bbgi\Integration\TrackonomicsScript(),
 			'draftking-iframe'  => new \Bbgi\Integration\DraftkingIframe(),
 			'select-listicle' 	=> new \Bbgi\Integration\ListicleSelection(),
