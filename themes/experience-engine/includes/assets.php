@@ -86,18 +86,20 @@ function scrollToSegmentation(item) {
 // Add alt parameter to auto genrated images for lighthouse issue
 var checkTritonPixeltimes = 0;
 var checkTritonPixel = setInterval(function() {
-	checkTritonPixeltimes += 1;
-	var triton_pixel_image = document.getElementsByClassName('triton-pixel');
-	if(triton_pixel_image[0]) {
-		if(triton_pixel_image[0] && triton_pixel_image[0].tagName == "IMG") {
-			triton_pixel_image[0].alt = "Triton Pixel Image";
-		}
-		clearInterval(checkTritonPixel);
-	}
-	if(checkTritonPixeltimes > 10) {
-		clearInterval(checkTritonPixel);
-	}
- }, 500);
+    checkTritonPixeltimes += 1;
+    var triton_pixel_image = document.getElementsByClassName('triton-pixel');
+    if(triton_pixel_image.length > 0) {
+        for (var idx = 0; idx < triton_pixel_image.length; idx++) {
+            if(triton_pixel_image[idx] && triton_pixel_image[idx].tagName == "IMG") {
+                triton_pixel_image[idx].alt = "";
+            }
+        }
+        clearInterval(checkTritonPixel);
+    }
+    if(checkTritonPixeltimes > 10) {
+        clearInterval(checkTritonPixel);
+    }
+}, 500);
 
 // Add alt parameter to auto genrated images for lighthouse issue
 var checkResetPixeltimes = 0;
