@@ -66,6 +66,7 @@ abstract class Module {
 			'trackonomics-script'  => new \Bbgi\Integration\TrackonomicsScript(),
 			'draftking-iframe'  => new \Bbgi\Integration\DraftkingIframe(),
 			'select-gallery' 			=> new \Bbgi\Integration\GallerySelection(),
+			'select-listicle' 	=> new \Bbgi\Integration\ListicleSelection(),
 		);
 
 		if ( current_theme_supports( 'secondstreet' ) ) {
