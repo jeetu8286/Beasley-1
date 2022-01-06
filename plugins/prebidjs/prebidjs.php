@@ -21,8 +21,8 @@ function enqueue_prebid_scripts() {
 }
 
 function enqueue_reset_digital_pixel() {
-	echo "<script type='text/javascript'>window['manualFireResetPixel'] = true;</script>";
-	echo "<script src='https://meta.resetdigital.co/Scripts/smart.js?px=1000164'></script>";
+	// echo "<script type='text/javascript'>window['manualFireResetPixel'] = true;</script>";
+	// echo "<script src='https://meta.resetdigital.co/Scripts/smart.js?px=1000164'></script>";
 }
 
 
