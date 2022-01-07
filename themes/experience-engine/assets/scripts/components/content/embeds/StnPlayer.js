@@ -25,6 +25,16 @@ class StnPlayer extends PureComponent {
 			window.stnvideos.prevent = true;
 		} else if (videokey) {
 			if (type === 'featured') {
+				const hideCaption = () => {
+					const postThumbnailFeaturedCaption = document.querySelector(
+						'.description .post-thumbnail-caption',
+					);
+
+					if (postThumbnailFeaturedCaption) {
+						postThumbnailFeaturedCaption.style.display = 'none';
+					}
+				};
+
 				// prettier-ignore
 				const featuredDiv = document.getElementsByClassName('post-thumbnail')[0];
 				window.stnvideos.override = {
@@ -47,6 +57,8 @@ class StnPlayer extends PureComponent {
 							featuredDiv.classList.add('stn-video-thumbnail');
 							featuredDiv.appendChild(stndiv);
 							featuredDiv.appendChild(stn_barker_script);
+
+							hideCaption();
 						} else {
 							// prettier-ignore
 							const description = document.getElementsByClassName('description')[0];
@@ -61,6 +73,8 @@ class StnPlayer extends PureComponent {
 								thumbnailDiv2.appendChild(thumbnailDiv1);
 
 								description.insertBefore(thumbnailDiv2, description.firstChild);
+
+								hideCaption();
 							}
 						}
 					},
