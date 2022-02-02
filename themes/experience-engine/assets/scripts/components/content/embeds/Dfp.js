@@ -231,6 +231,7 @@ class Dfp extends PureComponent {
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
 		this.state = {
+			adjustedUnitId,
 			slot: false,
 			interval: false,
 			isRotateAdsEnabled: bbgiconfig.ad_rotation_enabled !== 'off',
@@ -272,7 +273,8 @@ class Dfp extends PureComponent {
 
 	getAdjustedUnitId(unitId, unitName, pageURL) {
 		let retval = unitId;
-		if (unitId && pageURL) {
+		// Change Ad Unit Depending On AdName If We Are On An Affiliate Page
+		if (unitId && pageURL && this.getIsAffiliateMarketingPage(pageURL)) {
 			const nameStartIdx = unitId.lastIndexOf('/');
 			if (nameStartIdx > -1) {
 				const prefix = unitId.substring(0, nameStartIdx + 1);
@@ -498,14 +500,9 @@ class Dfp extends PureComponent {
 	}
 
 	registerSlot() {
-		const {
-			placeholder,
-			unitId,
-			unitName,
-			targeting,
-			shouldMapSizes,
-		} = this.props;
+		const { placeholder, unitName, targeting, shouldMapSizes } = this.props;
 		const { googletag, bbgiconfig } = window;
+		const { adjustedUnitId } = this.state;
 
 		if (!document.getElementById(placeholder)) {
 			return;
@@ -516,13 +513,13 @@ class Dfp extends PureComponent {
 			return;
 		}
 
-		if (!unitId) {
+		if (!adjustedUnitId) {
 			return;
 		}
 
 		googletag.cmd.push(() => {
 			const size = bbgiconfig.dfp.sizes[unitName];
-			const slot = googletag.defineSlot(unitId, size, placeholder);
+			const slot = googletag.defineSlot(adjustedUnitId, size, placeholder);
 
 			// If Slot was already defined this will be null
 			// Ignored to fix the exception
@@ -744,7 +741,7 @@ class Dfp extends PureComponent {
 				slot.defineSizeMapping(sizeMapping);
 			}
 
-			const prebidEnabled = this.loadPrebid(unitId, prebidSizeConfig);
+			const prebidEnabled = this.loadPrebid(adjustedUnitId, prebidSizeConfig);
 
 			for (let i = 0; i < targeting.length; i++) {
 				slot.setTargeting(targeting[i][0], targeting[i][1]);
@@ -803,11 +800,10 @@ class Dfp extends PureComponent {
 
 	bidsBackHandler() {
 		const { googletag } = window;
-		const { unitId } = this.props;
-		const { slot } = this.state;
+		const { slot, adjustedUnitId } = this.state;
 		// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
-		window.pbjs.setTargetingForGPTAsync([unitId]);
-		logPrebidTargeting(unitId);
+		window.pbjs.setTargetingForGPTAsync([adjustedUnitId]);
+		logPrebidTargeting(adjustedUnitId);
 		googletag.pubads().refresh([slot], { changeCorrelator: false });
 	}
 
@@ -833,14 +829,14 @@ class Dfp extends PureComponent {
 
 	refreshSlot() {
 		const { googletag } = window;
-		const { placeholder, unitName, unitId } = this.props;
-		const { slot, prebidEnabled } = this.state;
+		const { placeholder, unitName } = this.props;
+		const { slot, prebidEnabled, adjustedUnitId } = this.state;
 
 		if (slot) {
 			googletag.cmd.push(() => {
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
 				if (prebidEnabled) {
-					this.pushRefreshBidIntoGoogleTag(unitId, slot);
+					this.pushRefreshBidIntoGoogleTag(adjustedUnitId, slot);
 				} else {
 					googletag.pubads().refresh([slot]);
 				}
@@ -856,8 +852,8 @@ class Dfp extends PureComponent {
 	}
 
 	destroySlot() {
-		const { placeholder, unitId } = this.props;
-		const { slot, prebidEnabled } = this.state;
+		const { placeholder } = this.props;
+		const { slot, prebidEnabled, adjustedUnitId } = this.state;
 
 		if (slot) {
 			const { googletag } = window;
@@ -865,10 +861,10 @@ class Dfp extends PureComponent {
 			delete getSlotStatsCollectionObject()[placeholder];
 
 			if (prebidEnabled) {
-				console.log(`Removing Ad Unit From Prebid: ${unitId}`);
+				console.log(`Removing Ad Unit From Prebid: ${adjustedUnitId}`);
 				const pbjs = window.pbjs || {};
 				// pbjs.removeAdUnit(adUnitCode)
-				pbjs.removeAdUnit(unitId);
+				pbjs.removeAdUnit(adjustedUnitId);
 			}
 
 			console.log(`Destroying Slot: ${placeholder}`);
