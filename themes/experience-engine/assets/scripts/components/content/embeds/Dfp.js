@@ -191,7 +191,7 @@ const slotRenderEndedHandler = event => {
 class Dfp extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { pageURL } = props;
+		const { unitId, unitName, pageURL } = props;
 		const { bbgiconfig } = window;
 		this.getIsAffiliateMarketingPage = this.getIsAffiliateMarketingPage.bind(
 			this,
@@ -224,6 +224,9 @@ class Dfp extends PureComponent {
 		);
 
 		const isAffiliateMarketingPage = this.getIsAffiliateMarketingPage(pageURL);
+
+		const adjustedUnitId = this.getAdjustedUnitId(unitId, unitName, pageURL);
+		console.log(`Adjusted Ad Unit: ${adjustedUnitId}`);
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
@@ -265,6 +268,30 @@ class Dfp extends PureComponent {
 			pageURL.indexOf('/shows/must-haves/') > -1 ||
 			pageURL.indexOf('/musthaves/') > -1
 		);
+	}
+
+	getAdjustedUnitId(unitId, unitName, pageURL) {
+		let retval = unitId;
+		if (unitId && pageURL) {
+			const nameStartIdx = unitId.lastIndexOf('/');
+			if (nameStartIdx > -1) {
+				const prefix = unitId.substring(0, nameStartIdx + 1);
+				switch (unitName) {
+					case 'top-leaderboard':
+						retval = `${prefix}MUST_HAVES_Leaderboard_pos1`;
+						break;
+					case 'bottom-leaderboard':
+						retval = `${prefix}MUST_HAVES_Leaderboard_pos2`;
+						break;
+					case 'right-rail':
+						retval = `${prefix}MUST_HAVES_RightRail_pos1`;
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		return retval;
 	}
 
 	componentDidMount() {
