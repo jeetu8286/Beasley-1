@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2861c7ad3a4948a2cb3d81cc64e8498",
+    "content-hash": "6d68a1a0f39d5af1595c08c97adf9b11",
     "packages": [
         {
             "name": "10up/post-finder",
@@ -1851,15 +1851,15 @@
         },
         {
             "name": "wpackagist-plugin/the-events-calendar",
-            "version": "5.14.0.4",
+            "version": "4.9.14.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/the-events-calendar/",
-                "reference": "tags/5.14.0.4"
+                "reference": "tags/4.9.14.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.5.14.0.4.zip"
+                "url": "https://downloads.wordpress.org/plugin/the-events-calendar.4.9.14.1.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
