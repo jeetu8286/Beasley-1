@@ -25,7 +25,7 @@ test_syntax:
 test_virusscan:
   stage: test
   script:
-    - ./10up-scripts/virus-scan
+    - /10up-scripts/virus-scan
   dependencies: []
   cache: {}
 
