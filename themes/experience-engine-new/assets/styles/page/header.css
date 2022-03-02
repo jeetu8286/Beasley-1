@@ -218,6 +218,14 @@
 					&  > strong {
 						   font-size:16px;
 					   }
+					&  > span {
+							color: #2c2e33;
+							font-size: 14px;
+							padding-right: 10px;
+							line-height: 1.2;
+							font-weight: normal;
+							text-transform: capitalize;
+					   	}
 				   }
 			  }
 		  }

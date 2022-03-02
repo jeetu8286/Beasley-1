@@ -15,6 +15,7 @@ import { setNavigationCurrent } from '../redux/actions/navigation';
 import { isWindowsBrowser, isSafari } from '../library';
 
 const $ = window.jQuery;
+const config = window.bbgiconfig;
 
 const navRoot = document.getElementById('js-primary-mega-nav');
 // const siteMenuToggle = document.getElementById('js-menu-toggle');
@@ -71,11 +72,6 @@ class PrimaryNav extends PureComponent {
 					}
 				});
 			}
-			// if(megaMenuContainer) {
-			// 	// const listElements = megaMenuContainer.children;
-			// 	// for (item in listElements) {}
-
-			// }
 		}
 
 		const container = this.primaryNavRef.current;
@@ -114,6 +110,47 @@ class PrimaryNav extends PureComponent {
 
 		// siteMenuToggle.removeEventListener('click', this.handleMobileNav);
 		document.removeEventListener('click', this.handleClickOutSide);
+
+		listenliveContainer.removeEventListener(
+			'click',
+			this.handleListenliveClick,
+		);
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.songs !== this.props.songs) {
+			const { songs } = this.props;
+			let callsign = '';
+			let viewMoreLink = '';
+			let recentHtml = ``;
+
+			if (!Array.isArray(songs) || !songs.length) {
+				return;
+			}
+
+			if (config.streams && config.streams.length > 0) {
+				callsign = config.streams[0].stream_call_letters;
+				viewMoreLink = `/stream/${callsign}/`;
+			}
+
+			const items = songs.map(song => {
+				return `<li><span>${song.artistName.toLowerCase()}</span></li>`;
+			});
+
+			const recentlyPlayed = document.getElementById(
+				'live-player-recently-played',
+			);
+			if (items.length) {
+				const filterItems = items.slice(0, 4);
+				recentHtml = `
+						<li><strong>Recently Played</strong></li>
+						${filterItems.join('')}`;
+				if (items.length > 4) {
+					recentHtml += `<li><a href="${viewMoreLink}">VIEW MORE</strong></li>`;
+				}
+				recentlyPlayed.innerHTML = recentHtml;
+			}
+		}
 	}
 
 	handleScrollNavigation() {
@@ -378,8 +415,6 @@ class PrimaryNav extends PureComponent {
 	handleListenliveClick() {
 		const dropdownToggle = document.getElementById('my-listen-dropdown2');
 		const dropdownStyle = window.getComputedStyle(dropdownToggle);
-		console.log('click');
-
 		if (dropdownStyle.display !== 'none') {
 			dropdownToggle.style.display = 'none';
 		} else {
@@ -408,12 +443,18 @@ PrimaryNav.propTypes = {
 	setNavigationCurrent: PropTypes.func.isRequired,
 	currentMenu: PropTypes.string.isRequired,
 	hideModal: PropTypes.func.isRequired,
+	songs: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-function mapStateToProps({ auth, navigation }) {
+PrimaryNav.defaultProps = {
+	songs: [],
+};
+
+function mapStateToProps({ auth, navigation, player }) {
 	return {
 		signedIn: !!auth.user,
 		currentMenu: navigation.current,
+		songs: player.songs,
 	};
 }
 

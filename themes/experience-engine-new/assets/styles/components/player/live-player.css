@@ -3,7 +3,7 @@
 	left: 0;
 	right: 0;
 	position: fixed;
-	z-index: 100;
+	z-index: 10000;
 }
 
 .cue-point-title + .cue-point-artist:before {
