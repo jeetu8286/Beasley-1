@@ -16,12 +16,12 @@ node --version
 
 composer install --no-dev -o
 
-pushd themes || exit 1
+pushd themes/experience-engine || exit 1
 npm install
-npm run build
+npm run bundle
 popd || exit 1
 
-pushd themes/experience-engine || exit 1
+pushd themes/experience-engine-new || exit 1
 npm install
 npm run bundle
 popd || exit 1
