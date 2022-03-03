@@ -43,6 +43,7 @@ mu-plugins/post-finder/
 !/plugins/listicle-selection
 !/plugins/cpt-co-author-settings
 !/plugins/recent-posts-and-nav-menu-widget
+!/plugins/megamenu
 
 themes/index.php
 themes/twentyfourteen
