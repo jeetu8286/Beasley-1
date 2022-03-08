@@ -1,4 +1,7 @@
-<header class="primary-mega-topbar">
+<header>
+	<?php get_template_part( 'partials/ads/top-scrolling' ); ?>
+</header>
+<div class="primary-mega-topbar">
 	<div class="container">
 		<div class="top-header">
 			<div class="brand-logo">
@@ -69,4 +72,4 @@
 		<div class="primary-sidebar-navigation-new">
 		</div>
 	</div>
-</header>
+</div>
