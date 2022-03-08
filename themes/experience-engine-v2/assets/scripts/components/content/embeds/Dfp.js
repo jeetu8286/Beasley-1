@@ -481,13 +481,7 @@ class Dfp extends PureComponent {
 	}
 
 	registerSlot() {
-		const {
-			placeholder,
-			unitId,
-			unitName,
-			targeting,
-			shouldMapSizes,
-		} = this.props;
+		const { placeholder, unitId, unitName, targeting } = this.props;
 		const { googletag, bbgiconfig } = window;
 
 		if (!document.getElementById(placeholder)) {
@@ -633,34 +627,25 @@ class Dfp extends PureComponent {
 					},
 				];
 			} else if (unitName === 'adhesion') {
-				if (shouldMapSizes) {
-					sizeMapping = googletag
-						.sizeMapping()
-						// does not display on 0 width
-						.addSize([0, 0], [])
+				sizeMapping = googletag
+					.sizeMapping()
+					// does not display on small screens
+					.addSize([0, 0], [])
 
-						// Div visibility is controlled in react so always show at small ad when at least 1 pixel wide
-						.addSize([1, 0], [[728, 90]])
+					// accepts common desktop banner formats
+					.addSize([300, 0], [[320, 50], 'fluid'])
+					.addSize([1160, 0], [[728, 90], [970, 90], 'fluid'])
 
-						// accepts both sizes
-						.addSize(
-							[1400, 0],
-							[
-								[728, 90],
-								[970, 90],
-							],
-						)
-						.build();
-				}
+					.build();
 
 				prebidSizeConfig = [
 					{ minViewPort: [0, 0], sizes: [] },
 					{
-						minViewPort: [1, 0],
-						sizes: [[728, 90]],
+						minViewPort: [300, 0],
+						sizes: [[320, 50]],
 					},
 					{
-						minViewPort: [1400, 0],
+						minViewPort: [1160, 0],
 						sizes: [
 							[728, 90],
 							[970, 90],
@@ -878,13 +863,11 @@ Dfp.propTypes = {
 	unitId: PropTypes.string.isRequired,
 	unitName: PropTypes.string.isRequired,
 	targeting: PropTypes.arrayOf(PropTypes.array),
-	shouldMapSizes: PropTypes.bool,
 	pageURL: PropTypes.string,
 };
 
 Dfp.defaultProps = {
 	targeting: [],
-	shouldMapSizes: true,
 	pageURL: '',
 };
 
