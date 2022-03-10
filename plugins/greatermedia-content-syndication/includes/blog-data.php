@@ -115,7 +115,7 @@ class BlogData {
 		}
 
 		if ($total !== 0) {
-			error_log( self::syndication_log_prefix()." Completed 'Syndicate Now' Process \n" );
+			error_log( self::syndication_log_prefix()." Syndication complete! \n" );
 		}
 
 		wp_send_json( array(
@@ -207,7 +207,7 @@ class BlogData {
 		unset( $result['max_pages'] );
 		unset( $result['found_posts'] );
 
-		// error_log( self::syndication_log_prefix(). "Received $total_posts posts ($max_pages max pages) from content site" ."\n" );
+		error_log( self::syndication_log_prefix(). "Found $total_posts posts ($max_pages max pages) from content site" ."\n" );
 
 		foreach( $taxonomy_names as $taxonomy ) {
 			$taxonomy = get_taxonomy( $taxonomy );
@@ -250,9 +250,11 @@ class BlogData {
 				if ( $post_id > 0 ) {
 					array_push( $imported_post_ids, $post_id );
 					self::NormalizeLinks( $post_id, $my_home_url, $content_home_url );
+					error_log( self::syndication_log_prefix(). " Success for import of post \"".$single_post['post_obj']->post_title."\" ($post_id)" );
 				}
 			} catch( Exception $e ) {
 				self::log( "[EXCEPTION-DURING-IMPORT_POST]: %s", $e->getMessage() );
+				error_log( self::syndication_log_prefix(). " Error During post import: ".$e->getMessage() );
 			}
 		}
 
@@ -607,6 +609,7 @@ class BlogData {
 		}
 
 		self::log( 'Start importing "%s" (%s) post...', $post->post_title, $post->ID );
+		error_log( self::syndication_log_prefix(). " Start importing \"$post->post_title\" ($post->ID) post..." );
 
 		$post_name = sanitize_title( $post->post_name );
 		$post_title = sanitize_text_field( $post->post_title );
