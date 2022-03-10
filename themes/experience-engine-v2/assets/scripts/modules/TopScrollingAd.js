@@ -10,9 +10,9 @@ const TopScrollingAd = () => {
 	// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
 	const id = 'div-top-scrolling-slot';
 
-	const { unitId, unitName } = window.bbgiconfig.dfp.headerad;
-	// const unitId = '/26918149/WAZZ_FM_Leaderboard_pos1';
-	// const unitName = 'top-leaderboard';
+	// const { unitId, unitName } = window.bbgiconfig.dfp.headerad;
+	const unitId = '/26918149/WAZZ_FM_Leaderboard_pos1';
+	const unitName = 'top-leaderboard';
 	const container = document.getElementById('top-scrolling-container');
 
 	const children = (
