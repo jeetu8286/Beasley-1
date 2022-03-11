@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { isIOS, isSafari, isAudioAdOnly } from '../library';
 
-import { Controls, Offline, GamPreroll } from '../components/player';
+import { ControlsV2, Offline, GamPreroll } from '../components/player';
 
 import ErrorBoundary from '../components/ErrorBoundary';
 
@@ -136,21 +136,26 @@ class PlayerButton extends Component {
 		const progressClass = !duration ? '-live' : '-podcast';
 		let { customColors } = this.container.dataset;
 		const controlsStyle = {};
-		const buttonsBackgroundStyle = {};
-		const buttonsFillStyle = {};
+		const buttonsStyle = {};
+		const svgStyle = {};
 		const textStyle = {};
 
 		customColors = JSON.parse(customColors);
 		controlsStyle.backgroundColor = 'transparent';
-		buttonsBackgroundStyle.backgroundColor =
+		buttonsStyle.backgroundColor =
 			customColors['--brand-button-color'] ||
 			customColors['--global-theme-secondary'];
-		buttonsFillStyle.fill =
-			customColors['--brand-button-color'] ||
+		buttonsStyle.borderColor =
+			customColors['--brand-text-color'] ||
 			customColors['--global-theme-secondary'];
-		buttonsFillStyle.stroke =
-			customColors['--brand-button-color'] ||
+		svgStyle.fill =
+			customColors['--brand-text-color'] ||
 			customColors['--global-theme-secondary'];
+		/*
+		svgStyle.stroke =
+			customColors['--brand-text-color'] ||
+			customColors['--global-theme-secondary'];
+		*/
 		textStyle.color =
 			customColors['--brand-text-color'] ||
 			customColors['--global-theme-secondary'];
@@ -188,7 +193,7 @@ class PlayerButton extends Component {
 
 				<div className="controls" style={controlsStyle}>
 					<div className={`button-holder ${progressClass}`}>
-						<Controls
+						<ControlsV2
 							status={status}
 							play={
 								adPlayback && isAudioAdOnly({ player, playerType })
@@ -197,9 +202,9 @@ class PlayerButton extends Component {
 							}
 							pause={pause}
 							resume={resume}
-							colors={buttonsBackgroundStyle}
+							buttonStyle={buttonsStyle}
+							svgStyle={svgStyle}
 							isIos={isIos}
-							progressClass={progressClass}
 						/>
 					</div>
 				</div>

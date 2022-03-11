@@ -20,12 +20,10 @@ function Controls({
 				className="play-btn"
 				onClick={play}
 				aria-label={`Play ${title}`}
+				style={colors}
 			>
-				<svg viewBox="0 0 17 24" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M10,0C4.5,0,0,4.5,0,10c0,5.5,4.5,10,10,10c5.5,0,10-4.5,10-10C20,4.5,15.5,0,10,0z M14,11.3l-6.2,3.6
-	c-0.8,0.5-1.5,0.1-1.5-0.9V6.9c0-1,0.7-1.4,1.5-0.9L14,9.5C14.9,10,14.9,10.8,14,11.3z"
-					/>
+				<svg viewBox="-2 0 17 25" xmlns="http://www.w3.org/2000/svg">
+					<path d="M16.1836 12.0055L0.910156 23.124L0.910156 0.887031L16.1836 12.0055Z" />
 				</svg>
 			</button>
 
@@ -36,13 +34,14 @@ function Controls({
 				aria-label="Pause"
 				style={colors}
 			>
-				<svg viewBox="0 0 17 24" xmlns="http://www.w3.org/2000/svg">
-					<path
-						d="M10,0C4.5,0,0,4.5,0,10c0,5.5,4.5,10,10,10c5.5,0,10-4.5,10-10C20,4.5,15.5,0,10,0z M8.4,15.2H6.5c-0.2,0-0.3-0.1-0.3-0.3
-	V6.1c0-0.2,0.1-0.3,0.3-0.3h1.9c0.2,0,0.3,0.1,0.3,0.3v8.8C8.7,15,8.5,15.2,8.4,15.2z
-	 					M13.5,15.1h-1.9c-0.2,0-0.3-0.1-0.3-0.3V6
-	c0-0.2,0.1-0.3,0.3-0.3h1.9c0.2,0,0.3,0.1,0.3,0.3v8.8C13.8,15,13.7,15.1,13.5,15.1z"
-					/>
+				<svg
+					width="13"
+					height="23"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<rect width="4" height="23" rx="1" fill="#fff" />
+					<rect x="9" width="4" height="23" rx="1" fill="#fff" />
 				</svg>
 			</button>
 
@@ -53,7 +52,7 @@ function Controls({
 				aria-label="Resume"
 				style={colors}
 			>
-				<svg viewBox="0 0 17 24" xmlns="http://www.w3.org/2000/svg">
+				<svg viewBox="-2 0 17 25" xmlns="http://www.w3.org/2000/svg">
 					<path d="M16.1836 12.0055L0.910156 23.124L0.910156 0.887031L16.1836 12.0055Z" />
 				</svg>
 			</button>
