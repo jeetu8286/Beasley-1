@@ -160,7 +160,7 @@
 		  }
 		& > div {
 			position: absolute;
-			z-index: 999;
+			z-index: 99;
 			display: none;
 			right: 0px;
 			left: auto;
