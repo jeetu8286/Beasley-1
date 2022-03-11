@@ -159,30 +159,31 @@
 			  }
 		  }
 		& > div {
-			  position: absolute;
-			  z-index: 99;
-			  display: none;
-			  right: 0px;
-			  left: auto;
-			  top: 100%;
-			  border: none;
-			  background: var(--brand-primary);
-			  padding: 30px;
-			  margin: 0;
-			  list-style: none;
-			  width: 500px;
-			  -webkit-border-radius: 0px;
-			  -moz-border-radius: 0px;
-			  border-radius: 0px;
-			  -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.15);
-			  -moz-box-shadow: 0 3px 8px rgba(0,0,0,.15);
-			  box-shadow: 0 3px 8px rgba(0,0,0,.15);
-			  /* opacity: 0;
-			  height: 0; */
-			  color: #2c2e33;
-				@media(--max-medium-viewport) {
-					width: 100vw !important;
-				}
+			position: absolute;
+			z-index: 999;
+			display: none;
+			right: 0px;
+			left: auto;
+			top: 100%;
+			border: none;
+			background: var(--brand-primary);
+			padding: 30px;
+			margin: 0;
+			list-style: none;
+			width: 500px;
+			-webkit-border-radius: 0px;
+			-moz-border-radius: 0px;
+			border-radius: 0px;
+			-webkit-box-shadow: 0 3px 8px rgba(0,0,0,.15);
+			-moz-box-shadow: 0 3px 8px rgba(0,0,0,.15);
+			box-shadow: 0 3px 8px rgba(0,0,0,.15);
+		   /* opacity: 0;
+			height: 0;
+			*/
+			color: #2c2e33;
+			@media(--max-medium-viewport) {
+				width: 100vw !important;
+		   }
 			& > button {
 				  position: absolute;
 				  top: 5px;
