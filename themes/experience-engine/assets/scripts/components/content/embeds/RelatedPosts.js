@@ -97,6 +97,7 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 				setLoading(true);
 				const result = await fetch(endpointURL).then(r => r.json());
 				setTestName(result.testname);
+				let transformedURL = result.url;
 
 				window.ga('send', {
 					hitType: 'event',
@@ -105,7 +106,9 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 					eventLabel: `test ${result.testname}`,
 				});
 
-				setPostsEndpointURL(result.url);
+				transformedURL = transformedURL.replace('{url}', url);
+
+				setPostsEndpointURL(transformedURL);
 			} catch (e) {
 				setLoading(false);
 				setPostsEndpointURL('');
