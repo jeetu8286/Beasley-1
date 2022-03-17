@@ -568,8 +568,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// accepts common desktop banner formats
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -598,8 +611,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// Same as top-leaderboard
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -652,8 +678,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// accepts common desktop banner formats
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
