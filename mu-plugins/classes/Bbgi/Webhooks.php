@@ -250,20 +250,14 @@ class Webhooks extends \Bbgi\Module {
 	public function get_supported_post_types() {
 		return [
 			'post',
-			'page',
-			'attachment',
 			'gmr_gallery',
-			'gmr_album',
 			'episode',
 			'tribe_events',
-			'subscription',
-			'content-kit',
 			'contest',
-			'songs',
-			'show',
 			'gmr_homepage',
 			'gmr_mobile_homepage',
-			'podcast',
+			'affiliate_cpt',
+			'listicle_cpt'
 		];
 	}
 
