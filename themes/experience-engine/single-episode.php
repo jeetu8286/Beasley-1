@@ -13,12 +13,11 @@
 						<?php echo esc_html( get_the_title( $podcast_id ) ); ?>
 					</a>
 				</p>
-				<?php ee_add_to_favorites( get_post_field( 'post_name', $podcast_id ) ); ?>
 			</div>
 		<?php endif; ?>
 
 		<div class="show-actions"><?php
-			if ( ! ee_is_jacapps() ) :
+			if ( ! ee_is_common_mobile() ) :
 				ee_the_episode_player();
 			endif;
 
@@ -42,7 +41,7 @@
 
 	<div class="entry-content content-wrap">
 		<div class="description"><?php
-			if ( ! ee_is_jacapps() ) :
+			if ( ! ee_is_common_mobile() ) :
 				add_filter( 'the_content', 'strip_shortcodes', 1 );
 				the_content();
 				remove_filter( 'the_content', 'strip_shortcodes', 1 );
