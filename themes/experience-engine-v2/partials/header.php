@@ -87,6 +87,5 @@
 		</div>
 	</div>
 </header>
-<div>
-	<?php get_template_part( 'partials/ads/top-scrolling' ); ?>
-</div>
+<?php get_template_part( 'partials/ads/top-scrolling' ); ?>
+
