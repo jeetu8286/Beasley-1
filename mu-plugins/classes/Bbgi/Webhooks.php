@@ -186,6 +186,7 @@ class Webhooks extends \Bbgi\Module {
 
 		$post_type = get_post_type( $post_id );
 
+
 		$request_args = [
 			'blocking'        => false,
 			'body'            => [
