@@ -61,9 +61,7 @@ class Info extends Component {
 
 		return (
 			<ErrorBoundary>
-				<h3>
-					<strong>{info[0] || ''}</strong>
-				</h3>
+				<h3>{info[0] || ''}</h3>
 				<p>{info[1] || ''}</p>
 			</ErrorBoundary>
 		);
@@ -84,10 +82,7 @@ class Info extends Component {
 
 		return (
 			<ErrorBoundary>
-				<h3>
-					<strong>{stream ? stream.title : station}</strong>
-					{status === 'LIVE_PLAYING' && <span className="live">Live</span>}
-				</h3>
+				<h3>{stream ? stream.title : station}</h3>
 				<p>{info}</p>
 			</ErrorBoundary>
 		);
