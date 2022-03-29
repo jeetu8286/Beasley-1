@@ -554,13 +554,13 @@ class Dfp extends PureComponent {
 					.sizeMapping()
 					// does not display on small screens
 					.addSize([0, 0], [])
-					.addSize([1160, 0], [[320, 50]])
+					.addSize([300, 0], [[320, 50]])
 					.build();
 
 				prebidSizeConfig = [
 					{ minViewPort: [0, 0], sizes: [] },
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [300, 0],
 						sizes: [[320, 50]],
 					},
 				];
