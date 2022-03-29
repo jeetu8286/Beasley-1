@@ -130,7 +130,7 @@ class ExperienceEngine extends \Bbgi\Module {
 
 	public function do_request($path, $args = array(), $cache_group = '') {
 		$cache_index = get_option( 'ee_cache_index', 0 );
-		$cache_key = $cache_group ? $cache_group : $cache_index;
+		$cache_key = empty($cache_group) ? $cache_index : $cache_group;
 
 		$response = wp_cache_get( $path, "experience_engine_api-{$cache_key}" );
 		if ( empty( $response ) ) {
