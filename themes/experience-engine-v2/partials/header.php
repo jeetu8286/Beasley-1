@@ -58,10 +58,8 @@
 							</ul>
 						</div>
 						<hr>
-						<div class="drop-add">
-							<div>
-								<img src="<?php echo get_template_directory_uri() ?>/assets/images/ad-banner-2.jpg" alt="AD Banner">
-							</div>
+						<div>
+							<?php get_template_part( 'partials/ads/drop-down' ); ?>
 						</div>
 					</div>
 					<button id='listen-live-button'>
