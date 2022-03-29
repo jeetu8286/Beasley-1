@@ -3,7 +3,7 @@
 		<div class="top-header">
 			<div class="brand-logo">
 				<div class="logo" itemscope itemtype="http://schema.org/Organization">
-					<?php ee_the_custom_logo( 154, 88 ); ?>
+					<?php ee_the_custom_logo( 154, 88, 'main-custom-logo' ); ?>
 					<span class="screen-reader-text"><?php wp_title(); ?></span>
 				</div>
 				<div class="additional-logos">
