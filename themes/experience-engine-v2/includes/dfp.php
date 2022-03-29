@@ -26,6 +26,7 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'in-content'         => array( array( 1, 1 ), array( 300, 250 ) ),
 			'countdown'          => array( array( 320, 50 ) ),
 			'adhesion'           => array( array( 970, 90 ), array( 728, 90 ) ),
+			'drop-down'          => array( array( 320, 50 ) ),
 		);
 
 		$headerad = array(

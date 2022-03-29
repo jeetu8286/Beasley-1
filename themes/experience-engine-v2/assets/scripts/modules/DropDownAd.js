@@ -12,7 +12,7 @@ const DropDownAd = () => {
 
 	// const { unitId, unitName } = window.bbgiconfig.dfp.headerad;
 	const unitId = '/26918149/TEST_RedZoneBanner';
-	const unitName = 'in-list';
+	const unitName = 'drop-down';
 	const container = document.getElementById('drop-down-container');
 
 	const children = (
