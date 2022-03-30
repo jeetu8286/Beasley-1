@@ -246,7 +246,6 @@
 	  }
 	}
 	& .drop-add {
-	  display: flex;
 	  align-items: center;
 	  & .add-links {
 		& h3 {

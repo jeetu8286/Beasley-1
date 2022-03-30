@@ -57,20 +57,34 @@
 		max-width: 50%;
 		height: auto;
 	}
+}
 
-	& .control-station-button {
-	  	padding: 0;
-	  	margin-left: 0;
-	  	margin-right: 0;
+.control-station-button {
+	cursor: pointer;
+	border-style: none;
+	padding: 1px;
+	text-align: left;
+  	margin-left: 0;
+  	margin-right: 0;
+  	width: 100%;
 
-		& img {
-		  	width: auto;
-	  	}
-
-		& span {
-		  	padding: 1rem;
-	  	}
-	}
+	align-items: center;
+	background: transparent 0 0;
+	color: var(--brand-text-color);
+	display: flex;
+	font-size: .875rem;
+	font-weight: 600;
+	transition: color .25s ease-in-out;
+	text-transform: uppercase;
+	&:hover {
+	 	color: var(--brand-secondary);
+    }
+	& img {
+  		height: 50px;
+  	}
+	& span {
+	  padding: 1rem;
+    }
 }
 
 .-light {
