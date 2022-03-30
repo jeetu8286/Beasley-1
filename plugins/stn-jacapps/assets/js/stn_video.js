@@ -173,7 +173,7 @@ function ee_is_whiz_stn_video() {
 	if($whiz_pos === null ) {
 		$whiz_pos = navigator.userAgent.toLowerCase().indexOf('whiz');
 		if($whiz_pos == -1) {
-			$whiz_pos = null;
+			$whiz_pos = false;
 		}
 
 		const $_GET = new URLSearchParams(location.search);
