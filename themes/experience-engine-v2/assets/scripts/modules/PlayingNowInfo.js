@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { STATUSES } from '../redux/actions/player';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { Stations } from '../components/player';
 
 const STATUS_LABELS = {
 	[STATUSES.LIVE_PAUSE]: 'Paused',
@@ -63,6 +64,7 @@ class Info extends Component {
 			<ErrorBoundary>
 				<h3>{info[0] || ''}</h3>
 				<p>{info[1] || ''}</p>
+				<Stations />
 			</ErrorBoundary>
 		);
 	}
@@ -84,6 +86,7 @@ class Info extends Component {
 			<ErrorBoundary>
 				<h3>{stream ? stream.title : station}</h3>
 				<p>{info}</p>
+				<Stations />
 			</ErrorBoundary>
 		);
 	}
