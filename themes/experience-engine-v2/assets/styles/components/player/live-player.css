@@ -77,7 +77,7 @@
 	transition: color .25s ease-in-out;
 	text-transform: uppercase;
 	&:hover {
-		 color:var(--global-theme-font-secondary) !important;
+		 color:inherit !important;
     }
 	& img {
   		height: 50px;
