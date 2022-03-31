@@ -32,9 +32,6 @@ main {
 }
 
 #inner-content {
-	border-top-color: var(--global-silver-chalice);
-	border-top-width: 1px;
-	border-top-style: solid;
 	display: flex;
 	flex-direction: column;
 	padding-top: 1rem;
