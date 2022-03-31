@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context';
 import { logPrebidTargeting } from '../../../redux/utilities/screen/refreshAllAds';
 
+const $ = window.jQuery;
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
 const playerAdhesionDivID = 'div-gpt-ad-player-0';
@@ -351,6 +352,9 @@ class Dfp extends PureComponent {
 					.addEventListener('slotRenderEnded', slotRenderEndedHandler);
 			});
 		}
+
+		// remove in-content ads from embeded content in post
+		this.removeAdsFromEmbed();
 	}
 
 	componentWillUnmount() {
@@ -564,8 +568,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// accepts common desktop banner formats
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -594,8 +611,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// Same as top-leaderboard
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -648,8 +678,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// accepts common desktop banner formats
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -903,6 +946,16 @@ class Dfp extends PureComponent {
 	tryDisplaySlot() {
 		if (!this.state.slot) {
 			this.registerSlot();
+		}
+	}
+
+	removeAdsFromEmbed() {
+		if ($('.am-meta-item-description').length) {
+			$('.am-meta-item-description').each(function(index, element) {
+				$(this)
+					.find('.placeholder-dfp')
+					.remove();
+			});
 		}
 	}
 
