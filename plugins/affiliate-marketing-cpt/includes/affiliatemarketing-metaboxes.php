@@ -122,7 +122,7 @@ class AffiliateMarketingCPTMetaboxes {
 				<h3 class="am-item-title"> <?php echo ($i+1)." . ".($isAMHeaderItem ? "Header" : "Item"); ?> </h3>
 				<div class="am-form-group">
 					<label class="ammetatitle" for="am_item_name_<?php echo $i; ?>"><?php $isAMHeaderItem ? _e( 'Headline', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ) : _e( 'Name', AFFILIATE_MARKETING_CPT_TEXT_DOMAIN ); ?> </label>
-					<input name="am_item_name[]" type="text" value="<?php echo $am_item_name[$i]; ?>">
+					<input name="am_item_name[]" type="text" value="<?php echo htmlspecialchars($am_item_name[$i]); ?>">
 				</div>
 				<input name="am_item_order[]" type="hidden" value="<?php echo $i; ?>">
 				<input name="am_item_unique_order[]" type="hidden" value="<?php echo $am_item_unique_order[$i] ? $am_item_unique_order[$i] : $post->ID.'221'.mt_rand() ; ?>">
@@ -609,7 +609,7 @@ class AffiliateMarketingCPTMetaboxes {
 
 	function clear_post_metadata_from_cache( $value, $post_id ) {
 		$key = 'am-store-' . $value . '-' . $post_id;
-		
+
 		$field = wp_cache_get( $key );
 		if ( isset($field) && !empty($field) ) {
 			wp_cache_delete( $key );
