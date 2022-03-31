@@ -20,7 +20,9 @@ const STATUS_LABELS = {
 };
 
 class Info extends Component {
-	static getCuePointInfo(cuePoint) {
+	getCuePointInfo(cuePoint) {
+		const { station } = this.props;
+
 		if (!cuePoint) {
 			return false;
 		}
@@ -31,7 +33,7 @@ class Info extends Component {
 			return false;
 		}
 
-		if (cueTitle && cueTitle.length) {
+		if (!station && cueTitle && cueTitle.length) {
 			info.push(
 				<span key="cue-title" className="cue-point-title">
 					{cueTitle}
@@ -58,15 +60,9 @@ class Info extends Component {
 
 	getAudioInfo() {
 		const { cuePoint } = this.props;
-		const info = Info.getCuePointInfo(cuePoint);
+		const info = this.getCuePointInfo(cuePoint);
 
-		return (
-			<ErrorBoundary>
-				<h3>{info[0] || ''}</h3>
-				<p>{info[1] || ''}</p>
-				<Stations />
-			</ErrorBoundary>
-		);
+		return this.getMockup(info[0] || '', info[1] || '');
 	}
 
 	getStationInfo() {
@@ -74,7 +70,7 @@ class Info extends Component {
 
 		let info = STATUS_LABELS[status] || '';
 		if (status === 'LIVE_PLAYING') {
-			const pointInfo = Info.getCuePointInfo(cuePoint);
+			const pointInfo = this.getCuePointInfo(cuePoint);
 			if (pointInfo) {
 				info = pointInfo;
 			}
@@ -82,10 +78,20 @@ class Info extends Component {
 
 		const stream = streams.find(item => item.stream_call_letters === station);
 
+		return this.getMockup(stream ? stream.title : station, info);
+	}
+
+	getMockup(title, description) {
 		return (
 			<ErrorBoundary>
-				<h3>{stream ? stream.title : station}</h3>
-				<p>{info}</p>
+				<div className="on-air-list">
+					<ul>
+						<li>
+							<strong>{title}</strong>
+						</li>
+						<li>{description}</li>
+					</ul>
+				</div>
 				<Stations />
 			</ErrorBoundary>
 		);
