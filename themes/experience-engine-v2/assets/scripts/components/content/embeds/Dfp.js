@@ -60,10 +60,15 @@ const slotVisibilityChangedHandler = event => {
 };
 
 const adjustContentMarginForTopAd = slotElement => {
-	const contentRegion = document.getElementById('inner-content');
+	const contentElement = document.getElementById('inner-content');
+	const adContainerElement = document.getElementById('top-scrolling-container');
 
-	if (slotElement && contentRegion) {
-		contentRegion.style.marginTop = slotElement.style.height;
+	if (slotElement && adContainerElement && contentElement) {
+		const adContainerStyle = window.getComputedStyle(adContainerElement);
+		const newContentTopMargin =
+			parseInt(slotElement.style.height, 10) +
+			parseInt(adContainerStyle.marginTop, 10);
+		contentElement.style.marginTop = `${newContentTopMargin}px`;
 	}
 };
 
@@ -73,7 +78,7 @@ const adjustContentPaddingForBottomAd = slotElement => {
 	if (slotElement && containerElement) {
 		const newHeight = parseInt(slotElement.style.height, 10);
 		if (newHeight && newHeight > 25) {
-			containerElement.style.paddingBottom = `${newHeight - 26}px`;
+			containerElement.style.paddingBottom = `${newHeight - 26}px`; // Account for mystery space at bottom of content
 		}
 	}
 };

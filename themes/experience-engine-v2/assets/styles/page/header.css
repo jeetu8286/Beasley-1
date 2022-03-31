@@ -244,6 +244,9 @@
 		  color: #fff;
 		}
 	  }
+	  & li {
+		font-size: 14px;
+	  }
 	}
 	& .drop-add {
 	  align-items: center;
