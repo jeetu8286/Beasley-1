@@ -22,3 +22,9 @@
 	height: 20px;
 	z-index: 110;
 }
+
+img.triton-pixel {
+	display: none;
+	height: 0;
+	width: 0;
+}
