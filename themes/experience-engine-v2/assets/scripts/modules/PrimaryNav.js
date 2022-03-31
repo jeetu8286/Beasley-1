@@ -18,6 +18,7 @@ const sidebarContainer = document.querySelector(
 	'.primary-sidebar-navigation-new',
 );
 const listenliveContainer = document.getElementById('listen-live-button');
+const sButtonContainer = document.getElementById('wp-search-submit');
 
 class PrimaryNav extends PureComponent {
 	constructor(props) {
@@ -28,18 +29,22 @@ class PrimaryNav extends PureComponent {
 			navHtml: navRoot.innerHTML,
 		};
 
+		this.onResize = this.onResize.bind(this);
 		this.handleSubMenu = this.handleSubMenu.bind(this);
 		this.onPageChange = this.handlePageChange.bind(this);
 		this.handleOnLoadFix = this.handleOnLoadFix.bind(this);
 		this.handleClickOutSide = this.handleClickOutSide.bind(this);
 		this.handleListenliveClick = this.handleListenliveClick.bind(this);
+		this.handleSearchClick = this.handleSearchClick.bind(this);
 		this.handleScrollNavigation = this.handleScrollNavigation.bind(this);
 		this.closeMenus = this.closeMenus.bind(this);
+		this.handleSubMenuSize = this.handleSubMenuSize.bind(this);
 
 		removeChildren(navRoot);
 	}
 
 	componentDidMount() {
+		window.addEventListener('resize', this.onResize);
 		window.addEventListener('scroll', this.handleScrollNavigation);
 		window.addEventListener('popstate', this.onPageChange);
 		window.addEventListener('pushstate', this.onPageChange);
@@ -62,11 +67,13 @@ class PrimaryNav extends PureComponent {
 		}
 
 		listenliveContainer.addEventListener('click', this.handleListenliveClick);
+		sButtonContainer.addEventListener('click', this.handleSearchClick);
 
 		document.body.classList.remove('-lock');
 	}
 
 	componentWillUnmount() {
+		window.removeEventListener('resize', this.onResize);
 		window.removeEventListener('scroll', this.handleScrollNavigation);
 		window.removeEventListener('popstate', this.onPageChange);
 		window.removeEventListener('pushstate', this.onPageChange);
@@ -80,6 +87,7 @@ class PrimaryNav extends PureComponent {
 			'click',
 			this.handleListenliveClick,
 		);
+		sButtonContainer.removeEventListener('click', this.handleSearchClick);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -118,8 +126,55 @@ class PrimaryNav extends PureComponent {
 		}
 	}
 
+	handleSubMenuSize() {
+		if (window.matchMedia('(min-width: 1301px)').matches) {
+			const adEle = document.getElementById('main-custom-logo');
+			let adEleStyleHeight = '';
+			if (adEle) {
+				const adEleStyle = window.getComputedStyle(adEle);
+				adEleStyleHeight = adEleStyle.height
+					? Math.ceil(parseFloat(adEleStyle.height))
+					: 0;
+			}
+			if (adEleStyleHeight > 40) {
+				const menuLinkEl = document.querySelectorAll('.mega-menu-link');
+				adEleStyleHeight -= 10;
+				for (let i = 0; i < menuLinkEl.length; i++) {
+					const mainel = menuLinkEl[i];
+					mainel.style.height = `${adEleStyleHeight}px`;
+				}
+			}
+
+			const mainUl = document.getElementById('mega-menu-primary-nav');
+			const mainUlLeft = mainUl ? mainUl.getBoundingClientRect().left : 0;
+			const container = this.primaryNavRef.current;
+
+			const mainlinks = container.querySelectorAll(
+				'.mega-menu-item-has-children > a',
+			);
+			for (let i = 0; i < mainlinks.length; i++) {
+				const mainel = mainlinks[i];
+				const nextEl = mainel.nextElementSibling;
+				if (
+					nextEl.nodeName.toUpperCase() === 'UL' &&
+					nextEl.classList.contains('mega-sub-menu')
+				) {
+					const leftoffset = `calc(-${mainUlLeft}px + 1vw)`;
+					nextEl.style.left = leftoffset;
+					nextEl.style.width = '98vw';
+				}
+			}
+		}
+	}
+
+	onResize() {
+		this.handleSubMenuSize();
+	}
+
 	handleOnLoadFix() {
 		if (window.matchMedia('(min-width: 1301px)').matches) {
+			this.handleSubMenuSize();
+
 			const container = this.primaryNavRef.current;
 			const { href, pathname } = window.location;
 
@@ -164,20 +219,19 @@ class PrimaryNav extends PureComponent {
 		const { y } = this.state;
 		const yOffset = window.scrollY;
 		const primaryTopbar = document.querySelector('.primary-mega-topbar');
-		if (y > yOffset) {
-			if (!window.matchMedia('(min-width: 1301px)').matches) {
+		if (!window.matchMedia('(min-width: 1301px)').matches) {
+			if (y > yOffset) {
 				primaryTopbar.classList.remove('sticky-header-listenlive');
-			}
-
-			if (yOffset === 0) {
-				primaryTopbar.classList.remove('sticky-header');
-			}
-		} else if (y < yOffset) {
-			if (yOffset > 100) {
-				primaryTopbar.classList.add('sticky-header');
-			}
-			if (!window.matchMedia('(min-width: 1301px)').matches && yOffset > 600) {
-				primaryTopbar.classList.add('sticky-header-listenlive');
+				if (yOffset === 0) {
+					primaryTopbar.classList.remove('sticky-header');
+				}
+			} else if (y < yOffset) {
+				if (yOffset > 100) {
+					primaryTopbar.classList.add('sticky-header');
+				}
+				if (yOffset > 600) {
+					primaryTopbar.classList.add('sticky-header-listenlive');
+				}
 			}
 		}
 		this.setState({ y: yOffset });
@@ -287,6 +341,18 @@ class PrimaryNav extends PureComponent {
 			dropdownToggle.style.display = 'none';
 		} else {
 			dropdownToggle.style.display = 'block';
+		}
+	}
+
+	handleSearchClick() {
+		const searchToggle = document.getElementsByClassName('header-search-form');
+		if (searchToggle[0]) {
+			const searchStyle = window.getComputedStyle(searchToggle[0]);
+			if (searchStyle.display !== 'none') {
+				searchToggle[0].style.display = 'none';
+			} else {
+				searchToggle[0].style.display = 'block';
+			}
 		}
 	}
 

@@ -3,14 +3,16 @@
 		<div class="top-header">
 			<div class="brand-logo">
 				<div class="logo" itemscope itemtype="http://schema.org/Organization">
-					<?php ee_the_custom_logo( 154, 88 ); ?>
+					<?php ee_the_custom_logo( 154, 88, 'main-custom-logo' ); ?>
 					<span class="screen-reader-text"><?php wp_title(); ?></span>
 				</div>
 				<div class="additional-logos">
 					<?php ee_the_subheader_logo( 'desktop', 154, 88 ); ?>
 				</div>
 			</div>
-
+			<nav id="js-primary-mega-nav" class="primary-nav top-primarynav" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+				<?php get_template_part( 'partials/primary', 'navigation' ); ?>
+			</nav>
 			<div class="top-right-menu">
 				<div class="head-social">
 					<?php if ( ee_has_publisher_information( 'facebook' ) ) : ?>
@@ -29,7 +31,14 @@
 						</a>
 					<?php endif; ?>
 				</div>
-				<?php echo get_search_form(); ?>
+				<?php
+					echo get_search_form(
+						array(
+							'aria_label' => 'header-search-form',
+							'for_header_section' => true
+						)
+					);
+				?>
 				<div class="listen-dropdown">
 					<div id="my-listen-dropdown2">
 						<button onclick="document.getElementById('my-listen-dropdown2').style.display = 'none';">
@@ -70,9 +79,6 @@
 				</div>
 			</div>
 		</div>
-		<nav id="js-primary-mega-nav" class="primary-nav top-primarynav" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
-			<?php get_template_part( 'partials/primary', 'navigation' ); ?>
-		</nav>
 		<div class="primary-sidebar-navigation-new">
 		</div>
 	</div>
