@@ -372,9 +372,8 @@ class PrimaryNav extends PureComponent {
 			dropdownToggle.style.display = 'none';
 		} else {
 			dropdownToggle.style.display = 'block';
+			window.refreshDropdownAd();
 		}
-
-		window.loadOrRefreshDropdownAd();
 	}
 
 	handleSearchClick() {

@@ -26,7 +26,6 @@ function* yieldHideSplashScreen(action) {
 			googletag.cmd.push(() => {
 				updateInterstitialAdDiv();
 				// Refresh All Ads
-				// googletag.pubads().refresh(); // Refresh ALL Slots
 				refreshAllAds();
 			});
 		}
