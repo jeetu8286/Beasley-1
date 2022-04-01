@@ -348,7 +348,7 @@ class ExperienceEngine extends \Bbgi\Module {
 			batcache_clear_url( $home . 'feed/' );
 		}
 
-		$track = $request->get_header('track_id');
+		$track = $request->get_header('track-id');
 
 		error_log($this->log_prefix() . "cache purged for track: $track\n");
 
