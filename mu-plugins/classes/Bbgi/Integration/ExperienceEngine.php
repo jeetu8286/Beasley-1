@@ -153,9 +153,9 @@ class ExperienceEngine extends \Bbgi\Module {
 				wp_cache_set( $path, $response, "experience_engine_api-{$cache_key}", $cache_time );
 			}
 
-			error_log($this->log_prefix() . "cached contents from $path into group: experience_engine_api-{$cache_key} for $cache_time seconds");
+			error_log($this->log_prefix() . "cached contents from $path into group: experience_engine_api-{$cache_key} for $cache_time seconds\n");
 		} else {
-			error_log($this->log_prefix() . "served from cache contents from $path in group: experience_engine_api-{$cache_key}");
+			error_log($this->log_prefix() . "served from cache contents from $path in group: experience_engine_api-{$cache_key}\n");
 		}
 
 		return $response;
@@ -348,7 +348,7 @@ class ExperienceEngine extends \Bbgi\Module {
 			batcache_clear_url( $home . 'feed/' );
 		}
 
-		error_log($this->log_prefix() . "cache purged");
+		error_log($this->log_prefix() . "cache purged\n");
 
 		return rest_ensure_response( 'Cache Flushed' );
 	}
