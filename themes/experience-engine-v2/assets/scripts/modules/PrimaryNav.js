@@ -242,13 +242,40 @@ class PrimaryNav extends PureComponent {
 	}
 
 	isPlayerButtonEvent(event) {
-		const playerButtonDiv = document.getElementById('player-button-div');
-		return (
-			event &&
-			event.target &&
-			playerButtonDiv &&
-			playerButtonDiv.contains(event.target)
-		);
+		const isListenLiveButtonEvent = () => {
+			const playerButtonDiv = document.getElementById('player-button-div');
+			return (
+				event &&
+				event.srcElement &&
+				playerButtonDiv &&
+				playerButtonDiv.contains(event.srcElement)
+			);
+		};
+		const isPodcastPlayButtonEvent = () => {
+			return (
+				event &&
+				event.srcElement &&
+				event.srcElement.parentElement &&
+				event.srcElement.parentElement.parentElement &&
+				(event.srcElement.className === 'play-btn' ||
+					event.srcElement.className === 'pause-btn' ||
+					event.srcElement.className === 'resume-btn' ||
+					event.srcElement.className === 'loading-btn' ||
+					event.srcElement.parentElement.className === 'play-btn' ||
+					event.srcElement.parentElement.className === 'pause-btn' ||
+					event.srcElement.parentElement.className === 'resume-btn' ||
+					event.srcElement.parentElement.className === 'loading-btn' ||
+					event.srcElement.parentElement.parentElement.className ===
+						'play-btn' ||
+					event.srcElement.parentElement.parentElement.className ===
+						'pause-btn' ||
+					event.srcElement.parentElement.parentElement.className ===
+						'resume-btn' ||
+					event.srcElement.parentElement.parentElement.className ===
+						'loading-btn')
+			);
+		};
+		return isListenLiveButtonEvent() || isPodcastPlayButtonEvent();
 	}
 
 	handleClickOutSide(event) {
