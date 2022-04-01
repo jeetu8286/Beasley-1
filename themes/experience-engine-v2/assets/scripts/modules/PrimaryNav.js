@@ -67,7 +67,11 @@ class PrimaryNav extends PureComponent {
 		}
 
 		listenliveContainer.addEventListener('click', this.handleListenliveClick);
-		sButtonContainer.addEventListener('click', this.handleSearchClick);
+
+		// Defend against null sButtonContainer which is occurring on some local environments including Mike's Local.
+		if (sButtonContainer) {
+			sButtonContainer.addEventListener('click', this.handleSearchClick);
+		}
 
 		document.body.classList.remove('-lock');
 	}
@@ -342,6 +346,8 @@ class PrimaryNav extends PureComponent {
 		} else {
 			dropdownToggle.style.display = 'block';
 		}
+
+		window.loadOrRefreshDropdownAd();
 	}
 
 	handleSearchClick() {
