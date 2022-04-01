@@ -133,6 +133,7 @@ class ExperienceEngine extends \Bbgi\Module {
 		$cache_key = empty($cache_group) ? $cache_index : $cache_group;
 
 		$response = wp_cache_get( $path, "experience_engine_api-{$cache_key}" );
+
 		if ( empty( $response ) ) {
 			$request = $this->send_request( $path, $args );
 			if ( is_wp_error( $request ) ) {
@@ -151,6 +152,10 @@ class ExperienceEngine extends \Bbgi\Module {
 
 				wp_cache_set( $path, $response, "experience_engine_api-{$cache_key}", $cache_time );
 			}
+
+			error_log($this->log_prefix() . "cached contents from $path into group: experience_engine_api-{$cache_key} for $cache_time seconds\n");
+		} else {
+			error_log($this->log_prefix() . "served from cache contents from $path in group: experience_engine_api-{$cache_key}\n");
 		}
 
 		return $response;
@@ -200,9 +205,6 @@ class ExperienceEngine extends \Bbgi\Module {
 		$publisher = $this->_get_publisher_key();
 		if ( ! empty( $publisher ) ) {
 			$url = "experience/channels/{$publisher}/feeds/content/";
-			if ( ! empty( $_REQUEST['authorization'] ) ) {
-				$url .= '?authorization=' . urlencode( $_REQUEST['authorization'] );
-			}
 
 			$data = $this->do_request( $url, array(), 'ee_data');
 			if ( is_wp_error( $data ) ) {
@@ -346,6 +348,8 @@ class ExperienceEngine extends \Bbgi\Module {
 			batcache_clear_url( $home . 'feed/' );
 		}
 
+		error_log($this->log_prefix() . "cache purged\n");
+
 		return rest_ensure_response( 'Cache Flushed' );
 	}
 
@@ -408,6 +412,16 @@ class ExperienceEngine extends \Bbgi\Module {
 			'status'    => 200,
 			'html'      => $data,
 		] );
+	}
+
+	public function log_prefix() {
+
+		$site_id	=	get_current_blog_id();
+		$site_name	=	get_blog_option( $site_id, 'blogname' );
+
+		$result = "[EE Event SiteID:{$site_id} SiteName:$site_name] ";
+
+		return $result;
 	}
 
 }
