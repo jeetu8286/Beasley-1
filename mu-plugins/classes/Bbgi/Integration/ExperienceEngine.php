@@ -335,7 +335,7 @@ class ExperienceEngine extends \Bbgi\Module {
 		return false;
 	}
 
-	public function rest_purge_cache() {
+	public function rest_purge_cache( \WP_REST_Request $request ) {
 		//clear ee content feed values
 		$publisher = $this->_get_publisher_key();
 		$url = "experience/channels/{$publisher}/feeds/content/";
@@ -348,7 +348,9 @@ class ExperienceEngine extends \Bbgi\Module {
 			batcache_clear_url( $home . 'feed/' );
 		}
 
-		error_log($this->log_prefix() . "cache purged\n");
+		$track = $request->get_header('track_id');
+
+		error_log($this->log_prefix() . "cache purged for track: $track\n");
 
 		return rest_ensure_response( 'Cache Flushed' );
 	}
