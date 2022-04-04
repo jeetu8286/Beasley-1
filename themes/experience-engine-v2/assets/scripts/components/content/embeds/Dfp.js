@@ -779,6 +779,12 @@ class Dfp extends PureComponent {
 		});
 	}
 
+	// HTML layout and CSS styles are preventing Google slotVisibilityChangedHandler event from properly detecting viewability
+	topAdReallyIsVisible(slotElement) {
+		const topAdHeight = parseInt(slotElement.style.height, 10);
+		return window.scrollY < topAdHeight / 2;
+	}
+
 	updateSlotVisibleTimeStat() {
 		const { placeholder, unitName } = this.props;
 		const {
@@ -789,10 +795,16 @@ class Dfp extends PureComponent {
 		} = this.state;
 
 		if (slot) {
+			const placeholderElement = document.getElementById(placeholder);
 			const slotStat = getSlotStat(placeholder);
 
 			if (slotStat.viewPercentage > 50) {
-				slotStat.timeVisible += slotPollMillisecs;
+				if (
+					placeholder !== topScrollingDivID ||
+					this.topAdReallyIsVisible(placeholderElement)
+				) {
+					slotStat.timeVisible += slotPollMillisecs;
+				}
 			}
 
 			const msecThreshold =
@@ -800,7 +812,6 @@ class Dfp extends PureComponent {
 					? slotVideoRefreshMillisecs
 					: slotRefreshMillisecs;
 			if (slotStat.timeVisible >= msecThreshold) {
-				const placeholderElement = document.getElementById(placeholder);
 				if (placeholderElement.style.opacity === '1') {
 					const placeholderClasslist = placeholderElement.classList;
 					placeholderClasslist.remove('fadeInAnimation');
