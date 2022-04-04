@@ -251,6 +251,13 @@ class PrimaryNav extends PureComponent {
 				playerButtonDiv.contains(event.srcElement)
 			);
 		};
+		const isListenLiveAlternativeStreamEvent = () => {
+			return (
+				event &&
+				event.srcElement &&
+				event.srcElement.className === 'control-station-button'
+			);
+		};
 		const isPodcastPlayButtonEvent = () => {
 			return (
 				event &&
@@ -275,7 +282,11 @@ class PrimaryNav extends PureComponent {
 						'loading-btn')
 			);
 		};
-		return isListenLiveButtonEvent() || isPodcastPlayButtonEvent();
+		return (
+			isListenLiveButtonEvent() ||
+			isListenLiveAlternativeStreamEvent() ||
+			isPodcastPlayButtonEvent()
+		);
 	}
 
 	handleClickOutSide(event) {
