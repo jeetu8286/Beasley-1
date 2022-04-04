@@ -76,8 +76,10 @@
 	font-weight: 600;
 	transition: color .25s ease-in-out;
 	text-transform: uppercase;
+	opacity: 0.9;
 	&:hover {
-		 color:inherit !important;
+		 text-decoration: underline;
+		 opacity: 1;
     }
 	& img {
   		height: 50px;
