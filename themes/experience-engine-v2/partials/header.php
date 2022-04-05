@@ -48,7 +48,7 @@
 							<?php get_template_part( 'partials/playing-now-info' ); ?>
 						</div>
 						<hr>
-						<div class="on-air-list">
+						<div class="on-air-list" id="live-player-recently-played">
 							<ul>
 								<li><strong>On Air Now:</strong></li>
 								<li><a href="">Dave & Chuck The Freak Full Show</a></li>
@@ -56,14 +56,6 @@
 								<li><a href="">Tasty Bits</a></li>
 								<li><a href="">Idiot Criminal of the Day</a></li>
 								<li><a href="">VIEW MORE</a></li>
-							</ul>
-							<ul id="live-player-recently-played">
-								<li><strong>Recently Played</strong></li>
-								<!-- <li><a href="">Dave & Chuck The Freak Full Show</a></li>
-								<li><a href="">Peep Show</a></li>
-								<li><a href="">Tasty Bits</a></li>
-								<li><a href="">Idiot Criminal of the Day</a></li>
-								<li><a href="">VIEW MORE</a></li> -->
 							</ul>
 						</div>
 						<hr>

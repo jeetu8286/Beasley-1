@@ -119,13 +119,26 @@ class PrimaryNav extends PureComponent {
 			);
 			if (items.length) {
 				const filterItems = items.slice(0, 4);
-				recentHtml = `
+
+				const previousRecentlyPlayed = document.querySelectorAll(
+					'.recently-played-section-ul',
+				);
+
+				if (previousRecentlyPlayed.length) {
+					previousRecentlyPlayed.forEach(el => {
+						el.remove();
+					});
+				}
+
+				recentHtml = `<ul class="recently-played-section-ul">`;
+				recentHtml += `
 						<li><strong>Recently Played</strong></li>
 						${filterItems.join('')}`;
 				if (items.length > 4) {
 					recentHtml += `<li><a href="${viewMoreLink}">VIEW MORE</strong></li>`;
 				}
-				recentlyPlayed.innerHTML = recentHtml;
+				recentHtml += `</ul>`;
+				recentlyPlayed.innerHTML += recentHtml;
 			}
 		}
 	}
