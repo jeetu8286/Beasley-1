@@ -1,7 +1,7 @@
 <?php
 
 $show = ee_get_current_show();
-if ( ! $show ) :
+if ( ! $show || ee_is_whiz()) :
 	return;
 endif;
 
