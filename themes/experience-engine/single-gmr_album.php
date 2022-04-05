@@ -3,7 +3,7 @@
 get_header();
 
 ee_switch_to_article_blog();
-the_post(); 
+the_post();
 
 ?><div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<?php if ( ee_is_first_page() ) : ?>
@@ -11,9 +11,7 @@ the_post();
 			<h1 class="album-title"><?php the_title(); ?></h1>
 			<?php if ( ee_is_first_page() ) :
 				get_template_part( 'partials/content/meta' );
-				if ( ! ee_is_whiz() ) :
-					get_template_part( 'partials/featured-media' );
-				endif;
+				get_template_part( 'partials/featured-media' );
 			endif; ?>
 		</div>
 	<?php endif; ?>
