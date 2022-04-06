@@ -23,6 +23,13 @@ class StnPlayer extends PureComponent {
 
 		if (videokey.toLowerCase() === 'none') {
 			window.stnvideos.prevent = true;
+		} else if (type === 'supplied') {
+			window.stnvideos.override = {
+				render: () => {
+					this.adPlaylistOrSmartlistPlayer(fk, cid, container);
+				},
+				type: 'default',
+			};
 		} else if (videokey) {
 			if (type === 'featured') {
 				const hideCaption = () => {
@@ -102,24 +109,28 @@ class StnPlayer extends PureComponent {
 		} else {
 			window.stnvideos.default = {
 				render: () => {
-					const stndiv = document.createElement('div');
-					stndiv.className = `s2nPlayer k-${fk} s2nSmartPlayer`;
-					stndiv.setAttribute('data-type', 'float');
-
-					const stn_barker_script = document.createElement('script');
-					stn_barker_script.setAttribute('type', 'text/javascript');
-					stn_barker_script.setAttribute(
-						'src',
-						`//embed.sendtonews.com/player3/embedcode.js?fk=${fk}&cid=${cid}&offsetx=0&offsety=75&floatwidth=400&floatposition=bottom-right`,
-					);
-					stn_barker_script.setAttribute('data-type', 's2nScript');
-
-					container.appendChild(stndiv);
-					container.appendChild(stn_barker_script);
+					this.adPlaylistOrSmartlistPlayer(fk, cid, container);
 				},
 				type: 'default',
 			};
 		}
+	}
+
+	adPlaylistOrSmartlistPlayer(fk, cid, container) {
+		const stndiv = document.createElement('div');
+		stndiv.className = `s2nPlayer k-${fk} s2nSmartPlayer`;
+		stndiv.setAttribute('data-type', 'float');
+
+		const stn_player_script = document.createElement('script');
+		stn_player_script.setAttribute('type', 'text/javascript');
+		stn_player_script.setAttribute(
+			'src',
+			`//embed.sendtonews.com/player3/embedcode.js?fk=${fk}&cid=${cid}&offsetx=0&offsety=75&floatwidth=400&floatposition=bottom-right`,
+		);
+		stn_player_script.setAttribute('data-type', 's2nScript');
+
+		container.appendChild(stndiv);
+		container.appendChild(stn_player_script);
 	}
 
 	render() {
