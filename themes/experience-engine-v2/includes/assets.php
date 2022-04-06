@@ -181,6 +181,10 @@ if ( ! function_exists( 'ee_get_css_colors' ) ) :
 			'--brand-button-color'           => get_option( 'ee_theme_button_color', '#ffe964' ),
 			'--brand-text-color'             => get_option( 'ee_theme_text_color', '#000000' ),
 			'--brand-sponsorship-text-color' => get_option( 'ee_theme_sponsorship_color', '#000000' ),
+			'--brand-header-background'							=> get_option( 'ee_theme_header_background_color', '#202020' ),
+			'--brand-header-navigation-drop-down-background'	=> get_option( 'ee_theme_header_nav_dd_background_color', '#313131' ),
+			'--brand-header-icons-color'						=> get_option( 'ee_theme_header_header_icons_color', '#ff0000' ),
+			'--brand-header-navigation-link-color'				=> get_option( 'ee_theme_header_header_navigation_link_color', '#ff0000' ),
 		];
 
 		if ( get_option( 'ee_theme_version', '-dark' ) == '-dark' ) {

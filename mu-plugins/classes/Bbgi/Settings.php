@@ -160,6 +160,7 @@ class Settings extends \Bbgi\Module {
 
 		add_settings_section( 'ee_site_settings', 'Station Settings', '__return_false', $this->_settings_page_hook );
 		add_settings_section( 'ee_site_colors', 'Brand Colors', '__return_false', $this->_settings_page_hook );
+		add_settings_section( 'ee_site_header_colors', 'Header Colors', '__return_false', $this->_settings_page_hook );
 
 		add_settings_section( 'opacity_section', 'Play Button Opacity', '__return_false', $this->_settings_page_hook );
 		add_settings_field('play_opacity_setting', 'Opacity', 'bbgi_input_field', $this->_settings_page_hook, 'opacity_section', 'name=play_opacity_setting&default=0.8');
@@ -185,6 +186,11 @@ class Settings extends \Bbgi\Module {
 		add_settings_field( 'ee_newsletter_signup_page', 'Newsletter Signup Page', 'wp_dropdown_pages', $this->_settings_page_hook, 'ee_site_settings', $newsletter_args );
 		add_settings_field( 'ee_publisher', 'Publisher', array( $this, 'render_publisher_select' ), $this->_settings_page_hook, 'ee_site_settings', $publisher_args );
 		add_settings_field( 'ee_login', 'EE Login Options', array( $this, 'render_ee_login' ), $this->_settings_page_hook, 'ee_site_settings', $ee_login_disabled_args );
+
+		add_settings_field( 'ee_theme_header_background_color', 'Header Background Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_background_color&default=#202020' );
+		add_settings_field( 'ee_theme_header_nav_dd_background_color', 'Navigation Drop Down Background Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_nav_dd_background_color&default=#313131' );
+		add_settings_field( 'ee_theme_header_header_icons_color', 'Header Icons Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_header_icons_color&default=#000000' );
+		add_settings_field( 'ee_theme_header_header_navigation_link_color', 'Header Navigation Link Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_header_navigation_link_color&default=#ff0000' );
 
 		add_settings_field( 'ee_theme_primary_color', 'Primary', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_primary_color&default=#ff0000' );
 		add_settings_field( 'ee_theme_secondary_color', 'Secondary', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_secondary_color&default=#ffe964' );
@@ -254,6 +260,11 @@ class Settings extends \Bbgi\Module {
 		register_setting( self::option_group, 'ee_theme_background_color', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_theme_button_color', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_theme_text_color', 'sanitize_text_field' );
+
+		register_setting( self::option_group, 'ee_theme_header_background_color', 'sanitize_text_field' );
+		register_setting( self::option_group, 'ee_theme_header_nav_dd_background_color', 'sanitize_text_field' );
+		register_setting( self::option_group, 'ee_theme_header_header_icons_color', 'sanitize_text_field' );
+		register_setting( self::option_group, 'ee_theme_header_header_navigation_link_color', 'sanitize_text_field' );
 
 		register_setting( self::option_group, 'ee_geotargetly_enabled', 'sanitize_text_field' );
 
