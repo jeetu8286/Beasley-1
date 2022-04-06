@@ -26,7 +26,7 @@ class StnPlayer extends PureComponent {
 		} else if (type === 'supplied') {
 			window.stnvideos.override = {
 				render: () => {
-					this.adPlaylistOrSmartlistPlayer(fk, cid, container);
+					this.adPlaylistOrSmartlistPlayer(fk, cid, container, false);
 				},
 				type: 'default',
 			};
@@ -116,9 +116,11 @@ class StnPlayer extends PureComponent {
 		}
 	}
 
-	adPlaylistOrSmartlistPlayer(fk, cid, container) {
+	adPlaylistOrSmartlistPlayer(fk, cid, container, displayheader = true) {
 		const stndiv = document.createElement('div');
-		stndiv.className = `s2nPlayer k-${fk} s2nSmartPlayer`;
+		stndiv.className = `s2nPlayer k-${fk} s2nSmartPlayer${
+			displayheader ? ' s2nheadshow' : ''
+		}`;
 		stndiv.setAttribute('data-type', 'float');
 
 		const stn_player_script = document.createElement('script');
