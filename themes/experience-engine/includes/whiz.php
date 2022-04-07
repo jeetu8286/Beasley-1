@@ -26,11 +26,11 @@ if ( ! function_exists( 'ee_is_hidefeature' ) ) :
 		if($hidefeature_pos === null ) {
 			// Allow way to toggle hidefeature through URL querystring
 			if ( isset( $_GET['hidefeature'] ) ) {
-				$hidefeature_pos = 1;
+				$hidefeature_pos = true;
 			}
 		}
 
-		return false !== $hidefeature_pos;
+		return true === $hidefeature_pos;
 	}
 endif;
 
