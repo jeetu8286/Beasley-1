@@ -268,7 +268,9 @@ class PrimaryNav extends PureComponent {
 			return (
 				event &&
 				event.srcElement &&
-				event.srcElement.className === 'control-station-button'
+				event.srcElement.parentElement &&
+				(event.srcElement.className === 'control-station-button' ||
+					event.srcElement.parentElement.className === 'control-station-button')
 			);
 		};
 		const isPodcastPlayButtonEvent = () => {
