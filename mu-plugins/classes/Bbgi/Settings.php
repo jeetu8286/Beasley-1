@@ -189,9 +189,9 @@ class Settings extends \Bbgi\Module {
 
 		add_settings_field( 'ee_theme_header_background_color', 'Header Background Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_background_color&default=#202020' );
 		add_settings_field( 'ee_theme_header_nav_dd_background_color', 'Navigation Drop Down Background Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_nav_dd_background_color&default=#313131' );
-		add_settings_field( 'ee_theme_header_icons_color', 'Header Icons Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_icons_color&default=#000000' );
 		add_settings_field( 'ee_theme_header_navigation_link_color', 'Header Navigation Link Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_navigation_link_color&default=#ff0000' );
-		add_settings_field( 'ee_theme_header_search_color', 'Header Navigation Link Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_search_color&default=#ffffff' );
+		add_settings_field( 'ee_theme_header_icons_color', 'Header Social Icons Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_icons_color&default=#000000' );
+		add_settings_field( 'ee_theme_header_search_color', 'Header Search Icon Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_header_colors', 'name=ee_theme_header_search_color&default=#ffffff' );
 
 		add_settings_field( 'ee_theme_primary_color', 'Primary', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_primary_color&default=#ff0000' );
 		add_settings_field( 'ee_theme_secondary_color', 'Secondary', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_secondary_color&default=#ffe964' );
