@@ -1,10 +1,16 @@
 import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Dfp from '../components/content/embeds/Dfp';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { dropdownAdRefreshed } from '../redux/actions/dropdownad';
 
 const DropDownAd = () => {
 	console.log('FIRED DropDownAd');
+	const dispatch = useDispatch();
+	const shouldRefresh = useSelector(
+		state => state.dropdownad.shouldRefreshDropdownAd,
+	);
 
 	const dropDropDownAdRef = useRef(null);
 	const container = document.getElementById('drop-down-container');
@@ -16,11 +22,10 @@ const DropDownAd = () => {
 	const unitId = '/26918149/TEST_RedZoneBanner';
 	const unitName = 'drop-down';
 
-	window.refreshDropdownAd = () => {
-		if (dropDropDownAdRef.current) {
-			dropDropDownAdRef.current.refreshSlot();
-		}
-	};
+	if (shouldRefresh && dropDropDownAdRef.current) {
+		dropDropDownAdRef.current.refreshSlot();
+		dispatch(dropdownAdRefreshed());
+	}
 
 	const children = (
 		<ErrorBoundary>
