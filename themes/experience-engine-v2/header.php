@@ -37,6 +37,5 @@ use Bbgi\Integration\Google;
 						Google::render_ga_placeholder();
 					}
 				?>
-				<?php do_action( 'show_breaking_news_banner' ); ?>
 				<div id="inner-content">
-
+					<?php do_action( 'show_breaking_news_banner' ); ?>
