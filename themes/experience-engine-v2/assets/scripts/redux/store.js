@@ -8,6 +8,9 @@ import authReducer, {
 import modalReducer, {
 	DEFAULT_STATE as MODAL_DEFAULT_STATE,
 } from './reducers/modal';
+import dropdownadReducer, {
+	DEFAULT_STATE as DROPDOWNAD_DEFAULT_STATE,
+} from './reducers/dropdownad';
 import navigationReducer, {
 	DEFAULT_STATE as NAVIGATION_DEFAULT_STATE,
 } from './reducers/navigation';
@@ -29,6 +32,7 @@ export default function() {
 	const rootReducer = combineReducers({
 		auth: authReducer,
 		modal: modalReducer,
+		dropdownad: dropdownadReducer,
 		navigation: navigationReducer,
 		screen: screenReducer,
 		// eslint-disable-next-line sort-keys
@@ -38,6 +42,7 @@ export default function() {
 	const defaultState = {
 		auth: AUTH_DEFAULT_STATE,
 		modal: MODAL_DEFAULT_STATE,
+		dropdownad: DROPDOWNAD_DEFAULT_STATE,
 		navigation: NAVIGATION_DEFAULT_STATE,
 		screen: SCREEN_DEFAULT_STATE,
 		// eslint-disable-next-line sort-keys
