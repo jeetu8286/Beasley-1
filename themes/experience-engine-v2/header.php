@@ -38,4 +38,3 @@ use Bbgi\Integration\Google;
 					}
 				?>
 				<div id="inner-content">
-					<?php do_action( 'show_breaking_news_banner' ); ?>

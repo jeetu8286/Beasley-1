@@ -79,6 +79,7 @@
 			<?php ee_the_subheader_logo( 'mobile', 462, 88 ); ?>
 		</div>
 	</div>
+	<?php do_action( 'show_breaking_news_banner' ); ?>
 </header>
 <?php get_template_part( 'partials/ads/top-scrolling' ); ?>
 
