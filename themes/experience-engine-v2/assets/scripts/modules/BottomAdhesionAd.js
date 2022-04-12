@@ -5,7 +5,14 @@ import ErrorBoundary from '../components/ErrorBoundary';
 
 const BottomAdhesionAd = () => {
 	console.log('FIRED BottomAdhesionAd');
-	const [shouldDisplay, setShouldDisplay] = useState(true);
+	const configurableIFrameHeightString = document.documentElement.style.getPropertyValue(
+		'--default-configurable-iframe-height',
+	);
+	const configurableIFrameHeightVal = configurableIFrameHeightString
+		? parseInt(configurableIFrameHeightString, 10)
+		: 0;
+	const isBottomIFrameConfigured = configurableIFrameHeightVal !== 0;
+	const [shouldDisplay, setShouldDisplay] = useState(isBottomIFrameConfigured);
 
 	const [pageURL] = document.location.href;
 	// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
