@@ -233,9 +233,22 @@ class PrimaryNav extends PureComponent {
 		}
 	}
 
+	// Set whether Breaking News Is Visible And Return New Scroll Position
+	setBreakingNewsVisibility(shouldShow) {
+		const breakingNewsElement = document.getElementById('breaking-news-banner');
+		if (breakingNewsElement) {
+			if (shouldShow) {
+				breakingNewsElement.style.display = 'block';
+			} else {
+				breakingNewsElement.style.display = 'none';
+			}
+		}
+		return window.scrollY;
+	}
+
 	handleScrollNavigation() {
 		const { y } = this.state;
-		const yOffset = window.scrollY;
+		let yOffset = window.scrollY;
 		const primaryTopbar = document.querySelector('.primary-mega-topbar');
 		if (!window.matchMedia('(min-width: 1301px)').matches) {
 			if (y > yOffset) {
@@ -243,12 +256,14 @@ class PrimaryNav extends PureComponent {
 				if (yOffset === 0) {
 					primaryTopbar.classList.remove('sticky-header');
 				}
+				yOffset = this.setBreakingNewsVisibility(true);
 			} else if (y < yOffset) {
 				if (yOffset > 100) {
 					primaryTopbar.classList.add('sticky-header');
 				}
 				if (yOffset > 600) {
 					primaryTopbar.classList.add('sticky-header-listenlive');
+					yOffset = this.setBreakingNewsVisibility(false);
 				}
 			}
 		}

@@ -1,10 +1,12 @@
-.primary-mega-topbar {
-	background: var(--brand-header-background);
-	padding: 0px 15px;
+.header-and-news-container {
 	position: -webkit-sticky;
 	position: sticky;
 	top: 0;
 	z-index: 1020;
+}
+.primary-mega-topbar {
+	background: var(--brand-header-background);
+	padding: 0px 15px;
 	@media(--max-x2large-viewport) {
 		padding-right:0;
 		padding-left:10px;
