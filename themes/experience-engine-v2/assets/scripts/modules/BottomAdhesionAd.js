@@ -5,15 +5,14 @@ import ErrorBoundary from '../components/ErrorBoundary';
 
 const BottomAdhesionAd = () => {
 	console.log('FIRED BottomAdhesionAd');
-	const configurableIFrameHeightString = document.documentElement.style.getPropertyValue(
-		'--default-configurable-iframe-height',
+	const { variables } = window.bbgiconfig.cssvars || {};
+	const configurableIFrameHeightString =
+		variables['--default-configurable-iframe-height'];
+	const configurableIFrameHeightNum =
+		parseInt(configurableIFrameHeightString, 10) || 0;
+	const [shouldDisplay, setShouldDisplay] = useState(
+		configurableIFrameHeightNum === 0,
 	);
-	const configurableIFrameHeightNum = configurableIFrameHeightString
-		? parseInt(configurableIFrameHeightString, 10)
-		: 0;
-	const isBottomIFrameConfigured =
-		configurableIFrameHeightNum !== 0 && !isNaN(configurableIFrameHeightNum);
-	const [shouldDisplay, setShouldDisplay] = useState(!isBottomIFrameConfigured);
 
 	const [pageURL] = document.location.href;
 	// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
