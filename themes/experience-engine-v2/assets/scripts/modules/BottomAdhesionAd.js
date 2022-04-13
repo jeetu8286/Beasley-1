@@ -8,13 +8,11 @@ const BottomAdhesionAd = () => {
 	const configurableIFrameHeightString = document.documentElement.style.getPropertyValue(
 		'--default-configurable-iframe-height',
 	);
-	const configurableIFrameHeightNum = configurableIFrameHeightString
-		? parseInt(configurableIFrameHeightString, 10)
-		: 0;
-	const isBottomIFrameConfigured =
-		configurableIFrameHeightNum !== 0 && !isNaN(configurableIFrameHeightNum);
-	console.log(`isBottomIFrameConfigured: ${isBottomIFrameConfigured}`);
-	const [shouldDisplay, setShouldDisplay] = useState(!isBottomIFrameConfigured);
+	const configurableIFrameHeightNum =
+		parseInt(configurableIFrameHeightString, 10) || 0;
+	const [shouldDisplay, setShouldDisplay] = useState(
+		configurableIFrameHeightNum === 0,
+	);
 
 	const [pageURL] = document.location.href;
 	// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
