@@ -19,6 +19,21 @@ if ( ! function_exists( 'ee_is_whiz' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'ee_is_hidefeature' ) ) :
+	function ee_is_hidefeature() {
+		static $hidefeature_pos = null;
+
+		if($hidefeature_pos === null ) {
+			// Allow way to toggle hidefeature through URL querystring
+			if ( isset( $_GET['hidefeature'] ) ) {
+				$hidefeature_pos = true;
+			}
+		}
+
+		return true === $hidefeature_pos;
+	}
+endif;
+
 if ( ! function_exists( 'ee_setup_whiz' ) ) :
 	function ee_setup_whiz() {
 		if ( ! ee_is_whiz() ) {
