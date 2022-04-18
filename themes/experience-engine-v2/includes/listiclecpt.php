@@ -3,7 +3,6 @@ add_filter( 'bbgi_listicle_cotnent', 'ee_update_incontent_listicle', 10, 5 );
 
 if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 	function ee_get_listiclecpt_html( $cpt_post_object, $cpt_item_name,	$cpt_item_description, $cpt_item_order, $source_post_object = null ) {
-		$listicle_author = '';
 		$cpt_image_slug = get_query_var( 'view' );
 		$current_post_id = get_post_thumbnail_id ($cpt_post_object);
 
@@ -41,10 +40,6 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 			echo "</div>";
 		}
 
-		if(isset($cpt_post_object) && !empty($cpt_post_object)) {
-			$listicle_author = get_the_author_meta( 'login', $cpt_post_object->post_author);
-		}
-
 		echo '<ul class="listicle-main-ul-item">';
 
 		foreach ( $cpt_item_name as $index => $cpt_item_name_data ) {
@@ -65,8 +60,8 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 								}
 								$image_full_url = $urls[ $cpt_post_object->ID ] . 'view/' . urlencode( $cpt_tracking_code ) . '/';
 								$tracking_url = ! $is_first ? $image_full_url : '';
-								$update_lazy_image = function( $html ) {
-									return str_replace( '<div ', '<div data-autoheight="1" ', $html );
+								$update_lazy_image = function( $html ) use ( $tracking_url ) {
+									return str_replace( '<div ', '<div data-autoheight="1" data-tracking="' . esc_attr( $tracking_url ) . '" ', $html );
 								};
 
 								add_filter( '_ee_the_lazy_image', $update_lazy_image );
@@ -75,9 +70,7 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 
 								$is_common_mobile = ee_is_common_mobile();
 								if($is_common_mobile){
-									echo '<div class="common-mobile-ga-info track" data-embed-author="' . esc_attr( $listicle_author ) . '" data-location="' . esc_attr( $tracking_url ) . '"></div>';
-								} else {
-									echo '<div class="ga-track-location" data-author="' . esc_attr( $listicle_author ) . '" data-tracking="' . esc_attr( $tracking_url ) . '"></div>';
+									echo '<div class="common-mobile-ga-info track" data-location="' . esc_attr( $tracking_url ) . '"></div>';
 								}
 
 								$amItemImageType = '<div class="am_imagecode">' . $image_html . '</div>';
