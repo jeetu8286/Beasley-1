@@ -35,6 +35,7 @@ import StnPlayer from './embeds/StnPlayer';
 import BrandedContent from './embeds/BrandedContent';
 import Dimers from './embeds/Dimers';
 import DraftkingEmbed from './embeds/DraftkingEmbed';
+import TrackLocation from './embeds/TrackLocation';
 
 const mapping = {
 	audio: AudioEmbed,
@@ -60,6 +61,7 @@ const mapping = {
 	streamcta: StreamCta,
 	relatedposts: RelatedPosts,
 	ga: GoogleAnalytics,
+	gatracklocation: TrackLocation,
 	instagram: Instagram,
 	mapbox: MapBox,
 	stnbarker: StnBarker,
