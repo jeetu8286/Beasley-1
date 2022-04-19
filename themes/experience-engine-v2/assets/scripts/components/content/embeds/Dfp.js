@@ -81,23 +81,23 @@ const adjustContentPaddingForBottomAd = slotElement => {
 };
 
 const slotRenderEndedHandler = event => {
-	const { slot, lineItemId, isEmpty, size } = event;
+	const { slot, isEmpty, size } = event;
 	const htmlVidTagArray = window.bbgiconfig.vid_ad_html_tag_csv_setting
 		? window.bbgiconfig.vid_ad_html_tag_csv_setting.split(',')
 		: null;
 
 	const placeholder = slot.getSlotElementId();
 
-	console.log(
-		`slotRenderEndedHandler for ${slot.getAdUnitPath()}(${placeholder}) with line item: ${lineItemId} of size: ${size}`,
-	);
+	// console.log(
+	//	`slotRenderEndedHandler for ${slot.getAdUnitPath()}(${placeholder}) with line item: ${lineItemId} of size: ${size}`,
+	// );
 
 	// FOR DEBUG - LOG TARGETING
-	const pbTargetKeys = slot.getTargetingKeys();
-	console.log(`Slot Keys Of Rendered Ad`);
-	pbTargetKeys.forEach(pbtk => {
-		console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
-	});
+	// const pbTargetKeys = slot.getTargetingKeys();
+	// console.log(`Slot Keys Of Rendered Ad`);
+	// pbTargetKeys.forEach(pbtk => {
+	//	console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+	// });
 
 	if (placeholder && isNotSponsorOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
@@ -114,12 +114,12 @@ const slotRenderEndedHandler = event => {
 			let adSize;
 			if (size && size.length === 2 && (size[0] !== 1 || size[1] !== 1)) {
 				adSize = size;
-				console.log(`Prebid Ad Not Shown - Using Size: ${adSize}`);
+				// console.log(`Prebid Ad Not Shown - Using Size: ${adSize}`);
 			} else if (slot.getTargeting('hb_size')) {
 				// We ASSUME when an incomplete size is sent through event, we are dealing with Prebid.
 				// Compute Size From hb_size.
 				const hbSizeString = slot.getTargeting('hb_size').toString();
-				console.log(`Prebid Sizestring: ${hbSizeString}`);
+				// console.log(`Prebid Sizestring: ${hbSizeString}`);
 				const idxOfX = hbSizeString.toLowerCase().indexOf('x');
 				if (idxOfX > -1) {
 					const widthString = hbSizeString.substr(0, idxOfX);
@@ -138,11 +138,11 @@ const slotRenderEndedHandler = event => {
 						.toString()
 						.trim()
 				) {
-					console.log(
-						`PREBID AD SHOWN - ${slot.getTargeting(
-							'hb_bidder',
-						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
-					);
+					// console.log(
+					//	`PREBID AD SHOWN - ${slot.getTargeting(
+					//		'hb_bidder',
+					//	)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
+					// );
 
 					try {
 						window.ga('send', {
