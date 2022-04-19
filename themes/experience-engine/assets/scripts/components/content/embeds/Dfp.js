@@ -76,7 +76,7 @@ const slotVisibilityChangedHandler = event => {
 };
 
 const slotRenderEndedHandler = event => {
-	const { slot, lineItemId, isEmpty, size } = event;
+	const { slot, isEmpty, size } = event;
 	const htmlVidTagArray = window.bbgiconfig.vid_ad_html_tag_csv_setting
 		? window.bbgiconfig.vid_ad_html_tag_csv_setting.split(',')
 		: null;
