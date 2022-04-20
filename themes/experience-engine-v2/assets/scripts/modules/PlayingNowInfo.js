@@ -111,6 +111,10 @@ class Info extends Component {
 	}
 }
 
+Info.defaultProps = {
+	station: '',
+};
+
 Info.propTypes = {
 	colors: PropTypes.shape({
 		'--global-theme-secondary': PropTypes.string,
@@ -118,7 +122,7 @@ Info.propTypes = {
 		'--brand-background-color': PropTypes.string,
 		'--brand-text-color': PropTypes.string,
 	}),
-	station: PropTypes.string.isRequired,
+	station: PropTypes.string,
 	streams: PropTypes.arrayOf(PropTypes.object).isRequired,
 	status: PropTypes.string.isRequired,
 	cuePoint: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
