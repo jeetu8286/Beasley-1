@@ -3,13 +3,22 @@ import ReactDOM from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Dfp from '../components/content/embeds/Dfp';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { dropdownAdRefreshed } from '../redux/actions/dropdownad';
+import {
+	dropdownAdHidden,
+	dropdownAdRefreshed,
+} from '../redux/actions/dropdownad';
 
 const DropDownAd = () => {
 	console.log('FIRED DropDownAd');
 	const dispatch = useDispatch();
 	const shouldRefresh = useSelector(
 		state => state.dropdownad.shouldRefreshDropdownAd,
+	);
+	const shouldHide = useSelector(
+		state => state.dropdownad.shouldHideDropdownAd,
+	);
+	const initialAdWasShown = useSelector(
+		state => state.dropdownad.initialAdWasShown,
 	);
 
 	const dropDropDownAdRef = useRef(null);
@@ -19,12 +28,22 @@ const DropDownAd = () => {
 	const id = 'div-drop-down-slot';
 
 	// const { unitId, unitName } = window.bbgiconfig.dfp.headerad;
-	const unitId = '/26918149/TEST_RedZoneBanner';
+	// const unitId = '/26918149/TEST_RedZoneBanner';
+	const unitId = '/26918149/TEST_NEW_APP_Banner';
+
 	const unitName = 'drop-down';
 
 	if (shouldRefresh && dropDropDownAdRef.current) {
-		dropDropDownAdRef.current.refreshSlot();
+		if (initialAdWasShown) {
+			dropDropDownAdRef.current.refreshSlot();
+		}
 		dispatch(dropdownAdRefreshed());
+	}
+
+	if (shouldHide && dropDropDownAdRef.current) {
+		dropDropDownAdRef.current.hideSlot();
+		dispatch(dropdownAdHidden());
+		console.log('Dropdown Ad Hidden');
 	}
 
 	const children = (

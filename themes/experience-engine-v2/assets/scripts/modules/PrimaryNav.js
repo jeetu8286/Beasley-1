@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { removeChildren } from '../library/dom';
 import { hideModal } from '../redux/actions/modal';
 import { setNavigationCurrent } from '../redux/actions/navigation';
-import { refreshDropdownAd } from '../redux/actions/dropdownad';
+import { refreshDropdownAd, hideDropdownAd } from '../redux/actions/dropdownad';
 
 import { isSafari } from '../library';
 
@@ -412,6 +412,8 @@ class PrimaryNav extends PureComponent {
 		const dropdownStyle = window.getComputedStyle(dropdownToggle);
 		if (dropdownStyle.display !== 'none') {
 			dropdownToggle.style.display = 'none';
+			const { hideDropdownAd } = this.props;
+			hideDropdownAd();
 		} else {
 			dropdownToggle.style.display = 'block';
 			const { refreshDropdownAd } = this.props;
@@ -449,6 +451,7 @@ PrimaryNav.propTypes = {
 	setNavigationCurrent: PropTypes.func.isRequired,
 	hideModal: PropTypes.func.isRequired,
 	refreshDropdownAd: PropTypes.func.isRequired,
+	hideDropdownAd: PropTypes.func.isRequired,
 	songs: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
@@ -467,6 +470,7 @@ function mapDispatchToProps(dispatch) {
 		setNavigationCurrent,
 		hideModal,
 		refreshDropdownAd,
+		hideDropdownAd,
 	};
 
 	return bindActionCreators(actions, dispatch);
