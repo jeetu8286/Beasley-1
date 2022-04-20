@@ -66,6 +66,7 @@ const adjustContentMarginForTopAd = slotElement => {
 	if (slotElement && adContainerElement && contentElement) {
 		const adContainerStyle = window.getComputedStyle(adContainerElement);
 		const newContentTopMargin =
+			1 +
 			parseInt(slotElement.style.height, 10) +
 			parseInt(adContainerStyle.marginTop, 10);
 		contentElement.style.marginTop = `${newContentTopMargin}px`;
@@ -211,6 +212,7 @@ class Dfp extends PureComponent {
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
 		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
+		this.hideSlot = this.hideSlot.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
 		this.loadPrebid = this.loadPrebid.bind(this);
 		this.pushRefreshBidIntoGoogleTag = this.pushRefreshBidIntoGoogleTag.bind(
@@ -843,7 +845,7 @@ class Dfp extends PureComponent {
 	}
 
 	updateSlotVisibleTimeStat() {
-		const { placeholder, unitName } = this.props;
+		const { placeholder } = this.props;
 		const {
 			slot,
 			slotPollMillisecs,
@@ -873,9 +875,7 @@ class Dfp extends PureComponent {
 					const placeholderClasslist = placeholderElement.classList;
 					placeholderClasslist.remove('fadeInAnimation');
 					placeholderClasslist.remove('fadeOutAnimation');
-					if (unitName !== 'adhesion') {
-						placeholderClasslist.add('fadeOutAnimation');
-					}
+					placeholderClasslist.add('fadeOutAnimation');
 				}
 				setTimeout(() => {
 					this.refreshSlot();
@@ -913,9 +913,16 @@ class Dfp extends PureComponent {
 		});
 	}
 
+	hideSlot() {
+		const { placeholder } = this.props;
+		const placeholderElement = document.getElementById(placeholder);
+		placeholderElement.classList.remove('fadeInAnimation');
+		placeholderElement.classList.remove('fadeOutAnimation');
+		placeholderElement.style.opacity = '0';
+	}
+
 	refreshSlot() {
 		const { googletag } = window;
-		const { placeholder } = this.props;
 		const { slot, prebidEnabled, adjustedUnitId } = this.state;
 
 		if (slot) {
@@ -926,9 +933,7 @@ class Dfp extends PureComponent {
 				} else {
 					googletag.pubads().refresh([slot]);
 				}
-				const placeholderElement = document.getElementById(placeholder);
-				placeholderElement.classList.remove('fadeOutAnimation');
-				placeholderElement.style.opacity = '0';
+				this.hideSlot();
 			});
 		}
 	}
