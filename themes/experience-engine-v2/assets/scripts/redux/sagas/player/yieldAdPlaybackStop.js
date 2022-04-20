@@ -3,14 +3,17 @@ import { put, takeLatest, select, call } from 'redux-saga/effects';
 
 // Import action constant(s)
 import { ACTION_AD_PLAYBACK_STOP } from '../../actions/player';
+import { refreshDropdownAd, hideDropdownAd } from '../../actions/dropdownad';
 
 function breiflyShowPlayerDropdown() {
 	const listenlivecontainer = document.getElementById('my-listen-dropdown2');
 	const listenliveStyle = window.getComputedStyle(listenlivecontainer);
 	if (listenliveStyle.display !== 'block') {
 		listenlivecontainer.style.display = 'block';
+		refreshDropdownAd();
 		setTimeout(() => {
 			listenlivecontainer.style.display = 'none';
+			hideDropdownAd();
 		}, 3500);
 	}
 }
