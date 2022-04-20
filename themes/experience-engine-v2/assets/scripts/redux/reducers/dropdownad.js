@@ -1,5 +1,5 @@
 import {
-	ACTION_REFRESH_DROPDOWN_AD,
+	ACTION_DROPDOWN_AD_REFRESH,
 	ACTION_DROPDOWN_AD_REFRESHED,
 } from '../actions/dropdownad';
 
@@ -9,7 +9,7 @@ export const DEFAULT_STATE = {
 
 function reducer(state = {}, action = {}) {
 	switch (action.type) {
-		case ACTION_REFRESH_DROPDOWN_AD:
+		case ACTION_DROPDOWN_AD_REFRESH:
 			return { ...state, shouldRefreshDropdownAd: true };
 		case ACTION_DROPDOWN_AD_REFRESHED:
 			return { ...state, shouldRefreshDropdownAd: false };
