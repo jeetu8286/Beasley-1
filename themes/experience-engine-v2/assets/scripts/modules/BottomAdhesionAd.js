@@ -18,9 +18,9 @@ const BottomAdhesionAd = () => {
 	// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
 	const id = 'div-bottom-adhesion-slot';
 
-	// const { unitId, unitName } = window.bbgiconfig.dfp.adhesionad;
-	const unitId = '/26918149/TEST_NEW_APP_Banner';
-	const unitName = 'adhesion';
+	const { unitId, unitName } = window.bbgiconfig.dfp.adhesionad;
+	// const unitId = '/26918149/TEST_NEW_APP_Banner';
+	// const unitName = 'adhesion';
 	const container = document.getElementById('bottom-adhesion-container');
 
 	// Remove Bottom Padding and Exit if shouldDisplay was toggled off
