@@ -94,6 +94,14 @@ const slotRenderEndedHandler = event => {
 	//	console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
 	// });
 
+	if (!isEmpty) {
+		if (placeholder === window.bbgiLeaderboardDivID) {
+			window.bbgiLeaderboardLoaded = true;
+		} else if (placeholder === playerAdhesionDivID) {
+			window.bbgiAdhesionLoaded = true;
+		}
+	}
+
 	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
 		if (isEmpty) {
@@ -561,6 +569,7 @@ class Dfp extends PureComponent {
 			let sizeMapping = false;
 			let prebidSizeConfig = false;
 			if (unitName === 'top-leaderboard') {
+				window.bbgiLeaderboardDivID = placeholder;
 				sizeMapping = googletag
 					.sizeMapping()
 
