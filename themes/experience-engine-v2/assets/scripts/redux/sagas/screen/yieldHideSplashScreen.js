@@ -5,6 +5,7 @@ import {
 	updateInterstitialAdDiv,
 	handleInjectos,
 	initializeVimeo,
+	setPlayerVisibility,
 } from '../../utilities';
 import refreshAllAds from '../../utilities/screen/refreshAllAds';
 
@@ -33,6 +34,7 @@ function* yieldHideSplashScreen(action) {
 		if (splashScreen) {
 			splashScreen.parentNode.removeChild(splashScreen);
 		}
+		setPlayerVisibility();
 
 		renderSendToNews();
 		handleInjectos();

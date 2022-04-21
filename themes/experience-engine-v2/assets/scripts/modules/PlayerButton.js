@@ -213,8 +213,12 @@ class PlayerButton extends Component {
 	}
 }
 
+PlayerButton.defaultProps = {
+	station: '',
+};
+
 PlayerButton.propTypes = {
-	station: PropTypes.string.isRequired,
+	station: PropTypes.string,
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	gamAdPlayback: PropTypes.bool.isRequired,

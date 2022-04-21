@@ -13,3 +13,4 @@ export { default as updateInterstitialAdDiv } from './screen/updateInterstitialA
 export { default as renderSendToNews } from './screen/renderSendToNews';
 export { default as handleInjectos } from './screen/handleInjectos';
 export { default as initializeVimeo } from './screen/initializeVimeo';
+export { default as setPlayerVisibility } from './player/setPlayerVisibility';
