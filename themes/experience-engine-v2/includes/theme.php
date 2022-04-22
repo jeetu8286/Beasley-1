@@ -63,6 +63,7 @@ if ( ! function_exists( 'ee_register_nav_menus' ) ) :
 			'primary-nav' => 'Primary Navigation',
 			'about-nav'   => 'Footer: About Menu',
 			'connect-nav' => 'Footer: Connect Menu',
+			'listen-live-nav' => 'Listen Live: On Air now',
 		) );
 	}
 endif;
