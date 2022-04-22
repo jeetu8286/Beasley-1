@@ -8,7 +8,7 @@ import {
 export const DEFAULT_STATE = {
 	shouldRefreshDropdownAd: false,
 	shouldHideDropdownAd: false,
-	initialAdWasShown: false,
+	initialDropdownAdWasShown: false,
 };
 
 function reducer(state = {}, action = {}) {
@@ -20,7 +20,11 @@ function reducer(state = {}, action = {}) {
 		case ACTION_DROPDOWN_AD_HIDE:
 			return { ...state, shouldHideDropdownAd: true };
 		case ACTION_DROPDOWN_AD_HIDDEN:
-			return { ...state, shouldHideDropdownAd: false, initialAdWasShown: true };
+			return {
+				...state,
+				shouldHideDropdownAd: false,
+				initialDropdownAdWasShown: true,
+			};
 		default:
 			// do nothing
 			break;

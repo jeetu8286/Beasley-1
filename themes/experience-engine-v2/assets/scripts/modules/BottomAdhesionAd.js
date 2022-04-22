@@ -4,7 +4,6 @@ import Dfp from '../components/content/embeds/Dfp';
 import ErrorBoundary from '../components/ErrorBoundary';
 
 const BottomAdhesionAd = () => {
-	console.log('FIRED BottomAdhesionAd');
 	const { variables } = window.bbgiconfig.cssvars || {};
 	const configurableIFrameHeightString =
 		variables['--default-configurable-iframe-height'];

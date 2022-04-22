@@ -9,7 +9,6 @@ import {
 } from '../redux/actions/dropdownad';
 
 const DropDownAd = () => {
-	console.log('FIRED DropDownAd');
 	const dispatch = useDispatch();
 	const shouldRefresh = useSelector(
 		state => state.dropdownad.shouldRefreshDropdownAd,
@@ -18,7 +17,7 @@ const DropDownAd = () => {
 		state => state.dropdownad.shouldHideDropdownAd,
 	);
 	const initialAdWasShown = useSelector(
-		state => state.dropdownad.initialAdWasShown,
+		state => state.dropdownad.initialDropdownAdWasShown,
 	);
 
 	const dropDropDownAdRef = useRef(null);
@@ -36,6 +35,8 @@ const DropDownAd = () => {
 	if (shouldRefresh && dropDropDownAdRef.current) {
 		if (initialAdWasShown) {
 			dropDropDownAdRef.current.refreshSlot();
+		} else {
+			dropDropDownAdRef.current.showSlot();
 		}
 		dispatch(dropdownAdRefreshed());
 	}
@@ -43,7 +44,6 @@ const DropDownAd = () => {
 	if (shouldHide && dropDropDownAdRef.current) {
 		dropDropDownAdRef.current.hideSlot();
 		dispatch(dropdownAdHidden());
-		console.log('Dropdown Ad Hidden');
 	}
 
 	const children = (
