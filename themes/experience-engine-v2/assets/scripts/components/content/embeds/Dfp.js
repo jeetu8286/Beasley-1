@@ -81,6 +81,11 @@ const adjustContentPaddingForBottomAd = slotElement => {
 	}
 };
 
+const showSlot = slotElement => {
+	slotElement.classList.add('fadeInAnimation');
+	slotElement.style.opacity = '1';
+};
+
 const slotRenderEndedHandler = event => {
 	const { slot, isEmpty, size } = event;
 	const htmlVidTagArray = window.bbgiconfig.vid_ad_html_tag_csv_setting
@@ -179,9 +184,9 @@ const slotRenderEndedHandler = event => {
 					adjustContentPaddingForBottomAd(slotElement);
 				}
 			}
-			slotElement.classList.add('fadeInAnimation');
 
-			slotElement.style.opacity = '1';
+			showSlot(slotElement);
+
 			getSlotStat(placeholder).timeVisible = 0; // Reset Timeout So That Next Few Polls Do Not Trigger A Refresh
 			const slotHTML = slot.getHtml();
 			let isVideo = false;
@@ -213,6 +218,7 @@ class Dfp extends PureComponent {
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
 		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.hideSlot = this.hideSlot.bind(this);
+		this.showSlot = this.showSlot.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
 		this.loadPrebid = this.loadPrebid.bind(this);
 		this.pushRefreshBidIntoGoogleTag = this.pushRefreshBidIntoGoogleTag.bind(
@@ -919,6 +925,15 @@ class Dfp extends PureComponent {
 		placeholderElement.classList.remove('fadeInAnimation');
 		placeholderElement.classList.remove('fadeOutAnimation');
 		placeholderElement.style.opacity = '0';
+	}
+
+	showSlot() {
+		const { slot } = this.state;
+		if (slot) {
+			const placeholder = slot.getSlotElementId();
+			const slotElement = document.getElementById(placeholder);
+			showSlot(slotElement);
+		}
 	}
 
 	refreshSlot() {
