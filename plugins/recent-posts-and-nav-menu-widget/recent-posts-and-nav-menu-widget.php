@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: Recent Posts And Menu Widget
-Description: Show recent post as per selected category and select naw menu into widget 
+Plugin Name: Max Mega Menu - Add on widget
+Description: Show recent post as per selected category and naw menu into widget
 Version: 1.0.0
 Author: Rupesh Jorkar (RJ)
 Author URI: https://bbgi.com/

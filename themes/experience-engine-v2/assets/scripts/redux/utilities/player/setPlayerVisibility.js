@@ -1,9 +1,12 @@
 export default function setPlayerVisibility() {
 	const { streams } = window.bbgiconfig;
-	console.log('called');
 	if (streams.length === 0) {
-		const listenLive = document.querySelector('.listen-dropdown');
-		listenLive.style.display = 'none';
+		const listenLiveClass = document.getElementsByClassName(
+			'primary-mega-topbar',
+		);
+		if (listenLiveClass && listenLiveClass.length) {
+			listenLiveClass[0].classList.add('no-ll');
+		}
 		const downloadApp = document.querySelector('.download');
 		downloadApp.style.display = 'none';
 	}
