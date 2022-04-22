@@ -186,6 +186,7 @@ if ( ! function_exists( 'ee_get_css_colors' ) ) :
 			'--brand-header-icons-color'						=> get_option( 'ee_theme_header_icons_color', '#000000' ),
 			'--brand-header-navigation-link-color'				=> get_option( 'ee_theme_header_navigation_link_color', '#ff0000' ),
 			'--brand-header-search-color'						=> get_option( 'ee_theme_header_search_color', '#ffffff' ),
+			'--brand-header-hamburger-menu-color'				=> get_option( 'ee_theme_header_hamburger_menu_color', '#ff0000' ),
 			];
 
 		if ( get_option( 'ee_theme_version', '-dark' ) == '-dark' ) {
