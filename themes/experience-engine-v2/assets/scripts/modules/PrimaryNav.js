@@ -9,7 +9,7 @@ import { hideModal } from '../redux/actions/modal';
 import { setNavigationCurrent } from '../redux/actions/navigation';
 import { refreshDropdownAd, hideDropdownAd } from '../redux/actions/dropdownad';
 
-import { isSafari } from '../library';
+import { fetchPublisherInformation, isSafari } from '../library';
 
 const $ = window.jQuery;
 const config = window.bbgiconfig;
@@ -182,6 +182,70 @@ class PrimaryNav extends PureComponent {
 					nextEl.style.width = '98vw';
 				}
 			}
+		} else {
+			const facebookURL = fetchPublisherInformation('facebook');
+			const twitterURL = fetchPublisherInformation('twitter');
+			const instagramURL = fetchPublisherInformation('instagram');
+			const menuUL = document.getElementById('mega-menu-primary-nav');
+
+			const newSocialEl = document.createElement('li');
+			newSocialEl.classList.add('mega-menu-item');
+			const ifSocialExist = document.getElementsByClassName(
+				'mobile-head-social',
+			);
+			if (ifSocialExist.length === 0) {
+				let mobileSocialHtml = `<div class="mobile-head-social">`;
+				if (facebookURL) {
+					mobileSocialHtml += `
+						<a href="${facebookURL}" aria-label="Go to station's Facebook page" target="_blank" rel="noopener">
+							<svg width="10" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<title>Facebook</title>
+								<path d="M6.12 19.428H2.448V9.714H0V6.366h2.449l-.004-1.973C2.445 1.662 3.19 0 6.435 0h2.7v3.348H7.449c-1.263 0-1.324.468-1.324 1.342l-.005 1.675h3.036l-.358 3.348-2.675.001-.003 9.714z"></path>
+							</svg>
+						</a>
+					`;
+				}
+				if (twitterURL) {
+					mobileSocialHtml += `
+						<a href="${twitterURL}" aria-label="Go to station's Twitter page" target="_blank" rel="noopener">
+							<svg width="21" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<title>Twitter</title>
+								<path d="M20.13 2.896a8.31 8.31 0 0 1-2.372.645 4.115 4.115 0 0 0 1.816-2.266c-.798.47-1.682.81-2.623.994A4.14 4.14 0 0 0 13.937.976c-2.281 0-4.13 1.833-4.13 4.095 0 .322.036.634.107.934A11.757 11.757 0 0 1 1.4 1.725a4.051 4.051 0 0 0-.559 2.06c0 1.42.73 2.674 1.838 3.409A4.139 4.139 0 0 1 .809 6.68v.052c0 1.985 1.423 3.64 3.312 4.016a4.172 4.172 0 0 1-1.865.07 4.13 4.13 0 0 0 3.858 2.845 8.33 8.33 0 0 1-5.129 1.754c-.333 0-.662-.02-.985-.058a11.758 11.758 0 0 0 6.33 1.84c7.597 0 11.75-6.24 11.75-11.654 0-.177-.003-.354-.011-.53a8.352 8.352 0 0 0 2.06-2.12z"></path>
+							</svg>
+						</a>
+					`;
+				}
+				if (instagramURL) {
+					mobileSocialHtml += `
+						<a href="${instagramURL}" aria-label="Go to station's Instagram page" target="_blank" rel="noopener">
+							<svg width="17" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<title>Instagram</title>
+								<path d="M15.3.976H1.7c-.935 0-1.7.765-1.7 1.7v13.6c0 .935.765 1.7 1.7 1.7h13.6c.935 0 1.7-.765 1.7-1.7v-13.6c0-.935-.765-1.7-1.7-1.7zm-6.8 5.1c1.87 0 3.4 1.53 3.4 3.4 0 1.87-1.53 3.4-3.4 3.4a3.41 3.41 0 0 1-3.4-3.4c0-1.87 1.53-3.4 3.4-3.4zm-6.375 10.2c-.255 0-.425-.17-.425-.425V8.626h1.785c-.085.255-.085.595-.085.85 0 2.805 2.295 5.1 5.1 5.1 2.805 0 5.1-2.295 5.1-5.1 0-.255 0-.595-.085-.85H15.3v7.225c0 .255-.17.425-.425.425H2.125zM15.3 4.8c0 .255-.17.425-.425.425h-1.7c-.255 0-.425-.17-.425-.425V3.1c0-.255.17-.425.425-.425h1.7c.255 0 .425.17.425.425v1.7z"></path>
+							</svg>
+						</a>
+					`;
+				}
+				mobileSocialHtml += `</div>`;
+				newSocialEl.innerHTML = mobileSocialHtml;
+				menuUL.insertBefore(newSocialEl, menuUL.firstChild);
+			}
+
+			const newFormEl = document.createElement('li');
+			newFormEl.classList.add('mega-menu-item');
+			const ifExist = document.getElementsByClassName('mobile-search-form');
+			if (ifExist.length === 0) {
+				newFormEl.innerHTML = `
+					<form role="search" method="get" class="mobile-search-form" action="${window.location.origin}/">
+						<label for="mobile-search-q" id="mobile-q" class="screen-reader-text">Search for:</label>
+						<input id="mobile-search-q" type="search" class="search-field" name="s" value="" placeholder="Search">
+						<button type="submit" class="search-submit" aria-label="Submit search">
+							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15">
+								<path d="M10.266 9.034h-.65l-.23-.222a5.338 5.338 0 0 0 1.216-4.385C10.216 2.144 8.312.32 6.012.042a5.342 5.342 0 0 0-5.97 5.97c.279 2.3 2.102 4.204 4.385 4.59a5.338 5.338 0 0 0 4.385-1.215l.222.23v.649l3.49 3.49c.337.336.887.336 1.224 0s.336-.887 0-1.224l-3.482-3.498zm-4.928 0c-2.044 0-3.695-1.65-3.695-3.696s1.65-3.695 3.695-3.695 3.696 1.65 3.696 3.695-1.65 3.696-3.696 3.696z" fill="currentcolor"/>
+							</svg>
+						</button>
+					</form>`;
+				menuUL.insertBefore(newFormEl, menuUL.firstChild);
+			}
 		}
 	}
 
@@ -190,9 +254,8 @@ class PrimaryNav extends PureComponent {
 	}
 
 	handleOnLoadFix() {
+		this.handleSubMenuSize();
 		if (window.matchMedia('(min-width: 1301px)').matches) {
-			this.handleSubMenuSize();
-
 			const container = this.primaryNavRef.current;
 			const { href, pathname } = window.location;
 
@@ -388,6 +451,17 @@ class PrimaryNav extends PureComponent {
 					.closest('li.mega-menu-item-has-children')
 					.classList.add('current-mega-main-menu-item');
 				setNavigationCurrent(element.parentNode.id);
+			}
+		}
+
+		if (!window.matchMedia('(min-width: 1301px)').matches) {
+			const mobileMenuContainer = document.getElementsByClassName(
+				'mega-menu-toggle',
+			);
+			if (mobileMenuContainer && mobileMenuContainer.length > 0) {
+				if (mobileMenuContainer[0].classList.contains('mega-menu-open')) {
+					mobileMenuContainer[0].classList.remove('mega-menu-open');
+				}
 			}
 		}
 
