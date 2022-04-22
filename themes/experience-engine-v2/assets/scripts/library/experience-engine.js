@@ -269,6 +269,64 @@ export function validateGender(gender) {
 	return !!gender;
 }
 
+/**
+ * Returns a boolean depending on whether the specified value is a
+ * valid URL or not.
+ *
+ * @param url The input string
+ * @return bool
+ */
+export function validateUrl(url) {
+	if (url) {
+		return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(
+			url,
+		);
+	}
+	return false;
+}
+
+export function fetchPublisherInformation(metaVal) {
+	const { publisher } = window.bbgiconfig;
+
+	if (publisher && Object.keys(publisher).length === 0) {
+		return null;
+	}
+
+	let response = publisher[metaVal];
+	switch (metaVal) {
+		case 'facebook':
+			if (!validateUrl(response)) {
+				response = `https://www.facebook.com/${encodeURIComponent(response)}`;
+			}
+			break;
+		case 'twitter':
+			if (!validateUrl(response)) {
+				response = `https://twitter.com/${encodeURIComponent(
+					response.replace(new RegExp('^@+'), ''),
+				)}`;
+			}
+			break;
+		case 'instagram':
+			if (!validateUrl(response)) {
+				response = `https://www.instagram.com/${encodeURIComponent(
+					response.replace(new RegExp('^@+'), ''),
+				)}`;
+			}
+			break;
+		case 'youtube':
+			if (!validateUrl(response)) {
+				response = `https://www.youtube.com/user/${encodeURIComponent(
+					response,
+				)}`;
+			}
+			break;
+		default:
+			break;
+	}
+
+	return response;
+}
+
 export default {
 	saveUser,
 	getUser,
@@ -278,4 +336,6 @@ export default {
 	deleteFeed,
 	searchKeywords,
 	validateDate,
+	validateUrl,
+	fetchPublisherInformation,
 };

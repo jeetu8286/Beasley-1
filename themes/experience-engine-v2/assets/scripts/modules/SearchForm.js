@@ -28,14 +28,21 @@ const SearchForm = ({ fetchPage }) => {
 
 	useEffect(() => {
 		const searchForm = document.querySelector('.search-form');
+		const mobileSearchForm = document.querySelector('.mobile-search-form');
 
 		if (searchForm) {
 			searchForm.addEventListener('submit', onSearchSubmit);
+		}
+		if (mobileSearchForm) {
+			mobileSearchForm.addEventListener('submit', onSearchSubmit);
 		}
 
 		return () => {
 			if (searchForm) {
 				searchForm.removeEventListener('submit', onSearchSubmit);
+			}
+			if (mobileSearchForm) {
+				mobileSearchForm.removeEventListener('submit', onSearchSubmit);
 			}
 		};
 	}, []);
