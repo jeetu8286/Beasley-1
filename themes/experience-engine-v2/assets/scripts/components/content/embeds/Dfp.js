@@ -81,7 +81,7 @@ const adjustContentPaddingForBottomAd = slotElement => {
 	}
 };
 
-const showSlot = slotElement => {
+const showSlotElement = slotElement => {
 	slotElement.classList.add('fadeInAnimation');
 	slotElement.style.opacity = '1';
 };
@@ -185,7 +185,7 @@ const slotRenderEndedHandler = event => {
 				}
 			}
 
-			showSlot(slotElement);
+			showSlotElement(slotElement);
 
 			getSlotStat(placeholder).timeVisible = 0; // Reset Timeout So That Next Few Polls Do Not Trigger A Refresh
 			const slotHTML = slot.getHtml();
@@ -932,7 +932,7 @@ class Dfp extends PureComponent {
 		if (slot) {
 			const placeholder = slot.getSlotElementId();
 			const slotElement = document.getElementById(placeholder);
-			showSlot(slotElement);
+			showSlotElement(slotElement);
 		}
 	}
 
