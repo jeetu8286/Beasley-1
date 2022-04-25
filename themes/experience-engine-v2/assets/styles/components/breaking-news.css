@@ -6,7 +6,7 @@
     text-align: center;
 
     & .breaking-news-banner__title {
-        color: var(--brand-primary);
+        color: var(--brand-breaking-news-bar-text-color);
     }
 
     & .breaking-news-banner__excerpt {
@@ -16,7 +16,7 @@
 
 body.-dark {
     & .breaking-news-banner {
-        background: var(--global-theme-secondary);
+        background: var(--brand-breaking-news-bar-background-color);
     }
 }
 
