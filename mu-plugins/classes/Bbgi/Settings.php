@@ -203,6 +203,8 @@ class Settings extends \Bbgi\Module {
 		add_settings_field( 'ee_theme_button_color', 'Button Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_button_color&default=#ffe964' );
 
 		add_settings_field( 'ee_theme_text_color', 'Text Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_text_color&default=#000000' );
+		add_settings_field( 'ee_theme_breaking_news_bar_text_color', 'Breaking News Bar Text Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_breaking_news_bar_text_color&default=#ff0000' );
+		add_settings_field( 'ee_theme_breaking_news_bar_background_color', 'Breaking News Bar Background Color', 'bbgi_input_field', $this->_settings_page_hook, 'ee_site_colors', 'name=ee_theme_breaking_news_bar_background_color&default=#282828' );
 
 		add_settings_section( 'contest_section', 'Contests', '__return_false', $this->_settings_page_hook );
 		add_settings_field('contest_show_dates_setting', 'Date Display', array($this, 'render_contest_show_dates'), $this->_settings_page_hook, 'contest_section', $contest_show_dates_args);
@@ -262,6 +264,8 @@ class Settings extends \Bbgi\Module {
 		register_setting( self::option_group, 'ee_theme_background_color', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_theme_button_color', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_theme_text_color', 'sanitize_text_field' );
+		register_setting( self::option_group, 'ee_theme_breaking_news_bar_text_color', 'sanitize_text_field' );
+		register_setting( self::option_group, 'ee_theme_breaking_news_bar_background_color', 'sanitize_text_field' );
 
 		register_setting( self::option_group, 'ee_theme_header_background_color', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_theme_header_nav_dd_background_color', 'sanitize_text_field' );
@@ -269,7 +273,7 @@ class Settings extends \Bbgi\Module {
 		register_setting( self::option_group, 'ee_theme_header_navigation_link_color', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_theme_header_search_color', 'sanitize_text_field' );
 		register_setting( self::option_group, 'ee_theme_header_hamburger_menu_color', 'sanitize_text_field' );
-		
+
 		register_setting( self::option_group, 'ee_geotargetly_enabled', 'sanitize_text_field' );
 
 		// Note: No Sanitization with the assumption that the GeoTargetly embed code is XSS safe
