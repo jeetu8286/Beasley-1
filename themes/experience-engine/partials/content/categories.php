@@ -1,7 +1,7 @@
 <?php if ( has_category() ) : ?>
 	<div>
 		<?php
-		$exclude_list	=	array( "must-haves-chr-ac", "stacker", "must-haves-rock", "must-haves-urban", "must-haves-sports", "must-haves-news-talk", "must-haves-country" );
+		$exclude_list	=	array( "must-haves-chr-ac", "stacker", "must-haves-rock", "must-haves-urban", "must-haves-sports", "must-haves-news-talk", "must-haves-country", "must-haves-adult-hits", "must-haves-classic-hits", "must-haves-classic-rock", "must-haves-praise", "must-haves-urban-urban-ac" );
 		$cate_details	=	get_the_category( $post->ID );
 		if(count($cate_details) > 0) {
 			echo '<ul class="post-categories">';
