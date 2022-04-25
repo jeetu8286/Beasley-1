@@ -105,6 +105,14 @@ const slotRenderEndedHandler = event => {
 	//	console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
 	// });
 
+	if (!isEmpty) {
+		if (placeholder === topScrollingDivID) {
+			window.bbgiLeaderboardLoaded = true;
+		} else if (placeholder === bottomAdhesionDivID) {
+			window.bbgiAdhesionLoaded = true;
+		}
+	}
+
 	if (placeholder && isNotSponsorOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
 		if (isEmpty) {
