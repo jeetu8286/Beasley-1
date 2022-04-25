@@ -398,7 +398,7 @@
 	& button[type="submit"] {
 		background-color: transparent;
 		border: none;
-		color: var(--brand-secondary);
+		color: var(--brand-header-search-color);
 		left: 17px;
 		padding: 0;
 		position: absolute;
