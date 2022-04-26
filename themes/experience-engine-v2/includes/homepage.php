@@ -126,10 +126,6 @@ if ( ! function_exists( 'ee_render_homepage_standard_feed' ) ) :
 			}
 		}
 
-		if ( 4 === $homepage_feed_row_count ) {
-			ee_render_discovery_cta();
-		}
-
 		$homepage_feed_row_count++;
 		$standard_feeds_count++;
 	}
