@@ -77,7 +77,12 @@ const adjustContentPaddingForBottomAd = slotElement => {
 	const containerElement = document.getElementById('main-container-div');
 
 	if (slotElement && containerElement) {
-		containerElement.style.paddingBottom = slotElement.style.height;
+		if (slotElement.style.display === 'none') {
+			console.log('Slot is not visible, so setting no padding.');
+			containerElement.style.paddingBottom = '0';
+		} else {
+			containerElement.style.paddingBottom = slotElement.style.height;
+		}
 	}
 };
 
