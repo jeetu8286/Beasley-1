@@ -52,9 +52,6 @@ function* yieldInitPage(action) {
 		window.fireResetPixel(location.href);
 	}
 
-	window.scrollTo(0, 0);
-	console.log('Scroll to top');
-
 	yield put(initPageLoaded(uuid, html));
 }
 
