@@ -77,7 +77,8 @@ const adjustContentPaddingForBottomAd = slotElement => {
 	const containerElement = document.getElementById('main-container-div');
 
 	if (slotElement && containerElement) {
-		if (slotElement.style.display === 'none') {
+		// If Slot Is Not Visible
+		if (slotElement.offsetParent === null) {
 			console.log('Slot is not visible, so setting no padding.');
 			containerElement.style.paddingBottom = '0';
 		} else {
@@ -121,6 +122,7 @@ const slotRenderEndedHandler = event => {
 	if (placeholder && isNotSponsorOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
 		if (isEmpty) {
+			console.log('Empty Ad Returned');
 			// If Slot Is Visible
 			if (slotElement.offsetParent !== null) {
 				// Trick Slot to pull new Ad on next poll.
@@ -128,6 +130,10 @@ const slotRenderEndedHandler = event => {
 				// NOTE: Minimum Poll Interval Is Set In DFP Constructor To Be Much Longer Than
 				// 	Round Trip to Ad Server So That Racing/Looping Condition Is Avoided.
 				getSlotStat(placeholder).timeVisible = 10000000;
+			}
+			if (placeholder === bottomAdhesionDivID) {
+				// Set Main Content Div Bottom Padding To 0 Since No Ad
+				adjustContentPaddingForBottomAd(slotElement);
 			}
 		} else {
 			let adSize;
