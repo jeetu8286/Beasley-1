@@ -550,12 +550,14 @@
 				& ul{
 				  display:flex;
 				  flex-wrap:wrap;
-				  justify-content:space-between;
+				  justify-content:flex-start;
 				  & li{
-					width:20vw;
+					width:18vw;
 					/* padding-right:20px; */
+					margin-right: 5vw;
 					@media(--max-x2large-viewport) {
 					  width:100%;
+					  margin-right:0;
 					}
 					&:last-child{
 					  padding-right:0;
@@ -569,8 +571,8 @@
 						height:auto;
 						margin:10px auto 0;
 						width:100%;
-						max-height:15vw;
-						min-height:15vw;
+						max-height:13.5vw;
+						min-height:13.5vw;
 						object-fit: cover;
 						@media(--max-medium-viewport) {
 						  height:auto;

@@ -14,7 +14,7 @@ class RPMW_Widget_Recent_Posts extends WP_Widget {
 		$this->defaults[ 'plugin_slug' ]		= 'recent-posts-and-nav-menu-widget';
 		$this->defaults[ 'thumb_alt' ]			= '';
 		$this->defaults[ 'category_ids' ]		= array( 0 );
-		$this->defaults[ 'thumb_dimensions' ]	= 'thumbnail'; 
+		$this->defaults[ 'thumb_dimensions' ]	= 'large'; 
 		parent::__construct( $this->defaults[ 'plugin_slug' ], __( 'Recent Posts Based On Category' ), $widget_ops );
 		$this->alt_option_name = 'recent-posts-and-nav-menu-widget';
 		add_action( 'save_post',				array( $this, 'flush_widget_cache' ) );
