@@ -327,6 +327,37 @@ export function fetchPublisherInformation(metaVal) {
 	return response;
 }
 
+export function getOffsetEl(el) {
+	const rect = el.getBoundingClientRect();
+	const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+	const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+}
+
+export function fixMegaSubMenuWidth() {
+	if (window.matchMedia('(min-width: 1301px)').matches) {
+		const mainUl = document.getElementById('mega-menu-primary-nav');
+		const mainUlLeft = mainUl ? getOffsetEl(mainUl).left : 0;
+		const container = document.getElementById('js-primary-mega-nav');
+
+		const mainlinks = container.querySelectorAll(
+			'.mega-menu-item-has-children > a',
+		);
+		for (let i = 0; i < mainlinks.length; i++) {
+			const mainel = mainlinks[i];
+			const nextEl = mainel.nextElementSibling;
+			if (
+				nextEl.nodeName.toUpperCase() === 'UL' &&
+				nextEl.classList.contains('mega-sub-menu')
+			) {
+				const leftoffset = `calc(-${mainUlLeft}px + 1vw)`;
+				nextEl.style.left = leftoffset;
+				nextEl.style.width = '98vw';
+			}
+		}
+	}
+}
+
 export default {
 	saveUser,
 	getUser,
@@ -338,4 +369,6 @@ export default {
 	validateDate,
 	validateUrl,
 	fetchPublisherInformation,
+	getOffsetEl,
+	fixMegaSubMenuWidth,
 };
