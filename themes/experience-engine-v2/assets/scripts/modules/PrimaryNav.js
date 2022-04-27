@@ -9,7 +9,11 @@ import { hideModal } from '../redux/actions/modal';
 import { setNavigationCurrent } from '../redux/actions/navigation';
 import { refreshDropdownAd, hideDropdownAd } from '../redux/actions/dropdownad';
 
-import { fetchPublisherInformation, isSafari } from '../library';
+import {
+	fetchPublisherInformation,
+	fixMegaSubMenuWidth,
+	isSafari,
+} from '../library';
 
 const $ = window.jQuery;
 const config = window.bbgiconfig;
@@ -163,25 +167,7 @@ class PrimaryNav extends PureComponent {
 				}
 			}
 
-			const mainUl = document.getElementById('mega-menu-primary-nav');
-			const mainUlLeft = mainUl ? mainUl.getBoundingClientRect().left : 0;
-			const container = this.primaryNavRef.current;
-
-			const mainlinks = container.querySelectorAll(
-				'.mega-menu-item-has-children > a',
-			);
-			for (let i = 0; i < mainlinks.length; i++) {
-				const mainel = mainlinks[i];
-				const nextEl = mainel.nextElementSibling;
-				if (
-					nextEl.nodeName.toUpperCase() === 'UL' &&
-					nextEl.classList.contains('mega-sub-menu')
-				) {
-					const leftoffset = `calc(-${mainUlLeft}px + 1vw)`;
-					nextEl.style.left = leftoffset;
-					nextEl.style.width = '98vw';
-				}
-			}
+			fixMegaSubMenuWidth();
 		} else {
 			const facebookURL = fetchPublisherInformation('facebook');
 			const twitterURL = fetchPublisherInformation('twitter');

@@ -1,3 +1,5 @@
+import { fixMegaSubMenuWidth } from '../../../library';
+
 export default function setPlayerVisibility() {
 	const { streams } = window.bbgiconfig;
 	if (streams.length === 0) {
@@ -9,5 +11,7 @@ export default function setPlayerVisibility() {
 		}
 		const downloadApp = document.querySelector('.download');
 		downloadApp.style.display = 'none';
+
+		fixMegaSubMenuWidth();
 	}
 }
