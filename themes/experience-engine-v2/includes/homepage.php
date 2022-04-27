@@ -333,7 +333,7 @@ endif;
 
 if ( ! function_exists( 'ee_render_checkpoint_hero' ) ) :
 	function ee_render_checkpoint_hero() {
-		get_template_part('partials/hero/checkpoint.php');
+		get_template_part('partials/hero/checkpoint');
 	}
 endif;
 
