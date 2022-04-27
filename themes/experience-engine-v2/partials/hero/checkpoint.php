@@ -4,7 +4,7 @@
         <span>
             <img src="/wp-content/uploads/sites/106/2022/04/WelcomeToTheNewCXP.png"/>
             <div class="cp-cta-button-container">
-                <a class="cp-watch-button" href="#">SUBSCRIBE</a>
+                <a class="cp-watch-button" href="https://www.youtube.com/channel/UCR9NWgab4omJxG79m0BLvag">SUBSCRIBE</a>
             </div>
         </span>
 	</div>
