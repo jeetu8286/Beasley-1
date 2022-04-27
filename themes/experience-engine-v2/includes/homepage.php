@@ -44,7 +44,14 @@ if ( ! function_exists( 'ee_homepage_feeds' ) ) :
 
             // And finally loop through the available rows and call associated functions
 			for ( $i = 0; $i < $count; $i++ ) {
-                $feed = $supported_feeds[ $i ];
+
+				if ($i === 0) {
+					if (str_contains(get_site_url(), "check")) {
+						ee_render_checkpoint_hero();
+					}
+				}
+
+				$feed = $supported_feeds[ $i ];
 				if ( ! empty( $feed['content'] ) && is_array( $feed['content'] ) ) {
 					call_user_func( $supported_types[ $feed['type'] ], $feed, $count_with_content );
 				}
@@ -321,6 +328,12 @@ if ( ! function_exists( 'ee_get_post_by_link' ) ) :
 		}
 
 		return false;
+	}
+endif;
+
+if ( ! function_exists( 'ee_render_checkpoint_hero' ) ) :
+	function ee_render_checkpoint_hero() {
+		get_template_part('partials/hero/checkpoint.php');
 	}
 endif;
 
