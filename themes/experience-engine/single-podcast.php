@@ -17,9 +17,6 @@ the_post();
 		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
 		<?php get_template_part( 'partials/podcast/episodes' ); ?>
 	</div>
-	<div class="content-wrap">
-		<?php get_template_part( 'partials/footer/common', 'description' ); ?>
-	</div>
 </div><?php
 
 get_footer();

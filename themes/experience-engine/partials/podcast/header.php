@@ -17,5 +17,8 @@
 				<?php echo esc_html( ee_get_episodes_count() ); ?> episodes
 			</p>
 		</div>
+		<div class="content-wrap">
+			<?php get_template_part( 'partials/footer/common', 'description' ); ?>
+		</div>
 	</div>
 </div>
