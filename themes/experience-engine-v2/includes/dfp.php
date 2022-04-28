@@ -39,6 +39,12 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'unitName' => 'adhesion',
 		);
 
+		$dropdown = array(
+			'unitId' 	=> $ee->get_ad_slot_unit_id( 'drop-down' ),
+			'unitName' 	=> 'drop-down',
+		);
+
+
 		$incontentpreroll = array(
 			'unitId'   => $ee->get_ad_slot_unit_id( 'in-content-preroll' ),
 			'unitName' => 'in-content-preroll',
@@ -62,6 +68,7 @@ if ( ! function_exists( 'ee_update_dfp_bbgiconfig' ) ) :
 			'incontentpreroll' => $incontentpreroll,
 			'tunerpreroll' => $tunerpreroll,
 			'countdown' => $countdown,
+			'dropdown' => $dropdown,
 		);
 
 		return $config;

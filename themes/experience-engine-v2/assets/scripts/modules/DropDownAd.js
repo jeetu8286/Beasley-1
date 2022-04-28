@@ -26,11 +26,7 @@ const DropDownAd = () => {
 	// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
 	const id = 'div-drop-down-slot';
 
-	// const { unitId, unitName } = window.bbgiconfig.dfp.headerad;
-	// const unitId = '/26918149/TEST_RedZoneBanner';
-	const unitId = '/26918149/TEST_NEW_APP_Banner';
-
-	const unitName = 'drop-down';
+	const { unitId, unitName } = window.bbgiconfig.dfp.dropdown;
 
 	if (shouldRefresh && dropDropDownAdRef.current) {
 		if (initialAdWasShown) {
