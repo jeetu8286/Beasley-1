@@ -149,6 +149,7 @@ if ( ! function_exists( 'ee_get_gallery_html' ) ) :
 	function ee_get_gallery_html( $gallery, $ids, $from_embed = false, $embed_gallery_object = null ) {
 		$gallery_author = '';
 		$sponsored_image = get_field( 'sponsored_image', $gallery );
+		$id_pretext = $from_embed ? "embed-gallery" : "gallery";
 		if ( ! empty( $sponsored_image ) ) {
 			array_unshift( $ids, $sponsored_image );
 		}
@@ -177,20 +178,21 @@ if ( ! function_exists( 'ee_get_gallery_html' ) ) :
 			$start_index = $is_desc ? $total_segment : 1;
 
 			if( $segmentation_ordering_type !== 'header' && $total_segment > 0 ) {
-			echo '<div style="padding: 1rem 0 1rem 0; position: sticky; top: 0; background-color: white; z-index: 1;">';
+				echo '<div style="padding: 1rem 0 1rem 0; position: sticky; top: 0; background-color: white; z-index: 1;">';
 
-			for ($i=1; $i <= $total_segment; $i++) {
+				for ($i=1; $i <= $total_segment; $i++) {
 					$diff = count($images) - (( $i - 1 ) * 10);
 					$diff = ($diff % 10 == 0) ? $diff - 1 : $diff;
 					$scroll_to = $is_desc ? ( floor( $diff / 10 ) * 10 ) : ( ($i - 1) * 10 );
 
-				$from_display = $is_desc ? ( $start_index * 10 ) : ( ( ($start_index - 1) * 10 ) + 1 );
-				$to_display =  $is_desc ? ( ( ($start_index - 1) * 10 ) + 1 ) : ( $start_index * 10 );
+					$from_display = $is_desc ? ( $start_index * 10 ) : ( ( ($start_index - 1) * 10 ) + 1 );
+					$to_display =  $is_desc ? ( ( ($start_index - 1) * 10 ) + 1 ) : ( $start_index * 10 );
 
 					echo '<button onclick=" scrollToSegmentation(\''.$id_pretext. '\', ' . ( $scroll_to + 1 ) . '); " class="btn" style="display: inline-block; color: white;margin-bottom: 0.5rem;margin-right: 1rem;">'. $from_display . ' - ' . $to_display . '</button>';
-				$start_index = $is_desc ? ($start_index - 1) : ($start_index + 1);
+					$start_index = $is_desc ? ($start_index - 1) : ($start_index + 1);
+				}
+				echo "</div>";
 			}
-			echo "</div>";
 		}
 
 		if(isset($embed_gallery_object) && !empty($embed_gallery_object)) {
