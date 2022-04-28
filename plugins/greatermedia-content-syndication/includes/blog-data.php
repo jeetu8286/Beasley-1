@@ -115,7 +115,7 @@ class BlogData {
 		}
 
 		if ($total !== 0) {
-			error_log( self::syndication_log_prefix()." Completed 'Syndicate Now' Process \n" );
+			error_log( self::syndication_log_prefix()." Syndication complete! \n" );
 		}
 
 		wp_send_json( array(
@@ -207,7 +207,7 @@ class BlogData {
 		unset( $result['max_pages'] );
 		unset( $result['found_posts'] );
 
-		// error_log( self::syndication_log_prefix(). "Received $total_posts posts ($max_pages max pages) from content site" ."\n" );
+		error_log( self::syndication_log_prefix(). "Found $total_posts posts ($max_pages max pages) from content site" ."\n" );
 
 		foreach( $taxonomy_names as $taxonomy ) {
 			$taxonomy = get_taxonomy( $taxonomy );
@@ -250,9 +250,11 @@ class BlogData {
 				if ( $post_id > 0 ) {
 					array_push( $imported_post_ids, $post_id );
 					self::NormalizeLinks( $post_id, $my_home_url, $content_home_url );
+					error_log( self::syndication_log_prefix(). " Success for import of post \"".$single_post['post_obj']->post_title."\" ($post_id)" );
 				}
 			} catch( Exception $e ) {
 				self::log( "[EXCEPTION-DURING-IMPORT_POST]: %s", $e->getMessage() );
+				error_log( self::syndication_log_prefix(). " Error During post import: ".$e->getMessage() );
 			}
 		}
 
@@ -465,6 +467,7 @@ class BlogData {
 			$listicle_metas['cpt_item_name'] = self::listicle_ge_metavalue( 'cpt_item_name', $single_result->ID  );
 			$listicle_metas['cpt_item_description'] = self::listicle_ge_metavalue( 'cpt_item_description', $single_result->ID );
 			$listicle_metas['cpt_item_order'] = self::listicle_ge_metavalue( 'cpt_item_order', $single_result->ID  );
+			$listicle_metas['cpt_item_type'] = self::listicle_ge_metavalue( 'cpt_item_type', $single_result->ID  );
 		}
 
 		$am_metas = array();
@@ -503,6 +506,7 @@ class BlogData {
 			$am_metas['am_item_getitnowtext'] = self::am_get_metavalue( 'am_item_getitnowtext', $single_result->ID  );
 			$am_metas['am_item_getitnowfromname'] = self::am_get_metavalue( 'am_item_getitnowfromname', $single_result->ID  );
 			$am_metas['am_item_getitnowfromurl'] = self::am_get_metavalue( 'am_item_getitnowfromurl', $single_result->ID  );
+			$am_metas['am_item_type'] = self::am_get_metavalue( 'am_item_type', $single_result->ID  );
 		}
 
 		$show_metas				= array();
@@ -605,6 +609,7 @@ class BlogData {
 		}
 
 		self::log( 'Start importing "%s" (%s) post...', $post->post_title, $post->ID );
+		error_log( self::syndication_log_prefix(). " Start importing \"$post->post_title\" ($post->ID) post..." );
 
 		$post_name = sanitize_title( $post->post_name );
 		$post_title = sanitize_text_field( $post->post_title );
@@ -675,7 +680,7 @@ class BlogData {
 			if ( is_wp_error( $featured_id ) ) {
 				error_log( self::syndication_log_prefix(). "Error during import feature media for $post_title: \"$featured_id->get_error_message()\" (" . json_encode( $featured ) .")\n" );
 			} else {
-				// error_log( self::syndication_log_prefix(). "Imported feature media for $post_title: \"$featured_id\" (" . json_encode( $featured ) .")\n" );
+				error_log( self::syndication_log_prefix(). "Imported feature media for $post_title: \"$featured_id\" (" . json_encode( $featured ) .")\n" );
 			}
 		}
 
@@ -731,7 +736,12 @@ class BlogData {
 			update_post_meta( $post_id, 'syndication_post_id', self::$syndication_id );
 
 			if ( ! is_wp_error( $featured_id ) && is_int( $featured_id ) ) {
-				set_post_thumbnail( $post_id, $featured_id );
+				$new_thumbnail_id = set_post_thumbnail( $post_id, $featured_id );
+				if(!$new_thumbnail_id) {
+					error_log( self::syndication_log_prefix(). "Error during Set Post Thumbnail \"$featured_id\" for post $post_title (\"$post_id\"): (" . json_encode( $featured ) .") \n" );
+				} else {
+					error_log( self::syndication_log_prefix(). "Success for Set Post Thumbnail \"$featured_id\" for $post_title (\"$post_id\"): (" . json_encode( $featured ) .") \n" );
+				}
 			}
 
 			if ( ! empty( $term_tax ) ) {
@@ -842,10 +852,12 @@ class BlogData {
 				delete_post_meta( $post_id, 'cpt_item_name' );
 				delete_post_meta( $post_id, 'cpt_item_order' );
 				delete_post_meta( $post_id, 'cpt_item_description' );
+				delete_post_meta( $post_id, 'cpt_item_type' );
 
 				update_post_meta( $post_id, 'cpt_item_name', $listicle_metas['cpt_item_name'] );
 				update_post_meta( $post_id, 'cpt_item_order', $listicle_metas['cpt_item_order'] );
 				update_post_meta( $post_id, 'cpt_item_description', $listicle_metas['cpt_item_description'] );
+				update_post_meta( $post_id, 'cpt_item_type', $listicle_metas['cpt_item_type'] );
 			}
 
 			if ( 'page' == $post_type ) {
@@ -866,6 +878,7 @@ class BlogData {
 				delete_post_meta( $post_id, 'am_item_getitnowtext' );
 				delete_post_meta( $post_id, 'am_item_getitnowfromname' );
 				delete_post_meta( $post_id, 'am_item_getitnowfromurl' );
+				delete_post_meta( $post_id, 'am_item_type' );
 
 				update_post_meta( $post_id, 'am_item_name', $am_metas['am_item_name'] );
 				// $am_item_photo_import = self::ImportAttachedImages( $post_id, $am_metas['am_item_photo'] );
@@ -891,6 +904,7 @@ class BlogData {
 				update_post_meta( $post_id, 'am_item_getitnowtext', $am_metas['am_item_getitnowtext'] );
 				update_post_meta( $post_id, 'am_item_getitnowfromname', $am_metas['am_item_getitnowfromname'] );
 				update_post_meta( $post_id, 'am_item_getitnowfromurl', $am_metas['am_item_getitnowfromurl'] );
+				update_post_meta( $post_id, 'am_item_type', $am_metas['am_item_type'] );
 			}
 		}
 

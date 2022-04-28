@@ -1,4 +1,4 @@
-<?php if ( has_post_thumbnail() ) : ?>
+<?php if ( !ee_is_hidefeature() && has_post_thumbnail() ) : ?>
 	<div class="post-thumbnail-wrapper">
 		<div class="post-thumbnail featured-media">
 			<?php ee_the_lazy_thumbnail(); ?>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context';
 import { logPrebidTargeting } from '../../../redux/utilities/screen/refreshAllAds';
 
+const $ = window.jQuery;
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
 const playerAdhesionDivID = 'div-gpt-ad-player-0';
@@ -75,23 +76,31 @@ const slotVisibilityChangedHandler = event => {
 };
 
 const slotRenderEndedHandler = event => {
-	const { slot, lineItemId, isEmpty, size } = event;
+	const { slot, isEmpty, size } = event;
 	const htmlVidTagArray = window.bbgiconfig.vid_ad_html_tag_csv_setting
 		? window.bbgiconfig.vid_ad_html_tag_csv_setting.split(',')
 		: null;
 
 	const placeholder = slot.getSlotElementId();
 
-	console.log(
-		`slotRenderEndedHandler for ${slot.getAdUnitPath()}(${placeholder}) with line item: ${lineItemId} of size: ${size}`,
-	);
+	// console.log(
+	// 	`slotRenderEndedHandler for ${slot.getAdUnitPath()}(${placeholder}) with line item: ${lineItemId} of size: ${size}`,
+	// );
 
 	// FOR DEBUG - LOG TARGETING
-	const pbTargetKeys = slot.getTargetingKeys();
-	console.log(`Slot Keys Of Rendered Ad`);
-	pbTargetKeys.forEach(pbtk => {
-		console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
-	});
+	// const pbTargetKeys = slot.getTargetingKeys();
+	// console.log(`Slot Keys Of Rendered Ad`);
+	// pbTargetKeys.forEach(pbtk => {
+	//	console.log(`${pbtk}: ${slot.getTargeting(pbtk)}`);
+	// });
+
+	if (!isEmpty) {
+		if (placeholder === window.bbgiLeaderboardDivID) {
+			window.bbgiLeaderboardLoaded = true;
+		} else if (placeholder === playerAdhesionDivID) {
+			window.bbgiAdhesionLoaded = true;
+		}
+	}
 
 	if (placeholder && isNotPlayerOrInterstitial(placeholder)) {
 		const slotElement = document.getElementById(placeholder);
@@ -108,12 +117,12 @@ const slotRenderEndedHandler = event => {
 			let adSize;
 			if (size && size.length === 2 && (size[0] !== 1 || size[1] !== 1)) {
 				adSize = size;
-				console.log(`Prebid Ad Not Shown - Using Size: ${adSize}`);
+				// console.log(`Prebid Ad Not Shown - Using Size: ${adSize}`);
 			} else if (slot.getTargeting('hb_size')) {
 				// We ASSUME when an incomplete size is sent through event, we are dealing with Prebid.
 				// Compute Size From hb_size.
 				const hbSizeString = slot.getTargeting('hb_size').toString();
-				console.log(`Prebid Sizestring: ${hbSizeString}`);
+				// console.log(`Prebid Sizestring: ${hbSizeString}`);
 				const idxOfX = hbSizeString.toLowerCase().indexOf('x');
 				if (idxOfX > -1) {
 					const widthString = hbSizeString.substr(0, idxOfX);
@@ -132,11 +141,11 @@ const slotRenderEndedHandler = event => {
 						.toString()
 						.trim()
 				) {
-					console.log(
-						`PREBID AD SHOWN - ${slot.getTargeting(
-							'hb_bidder',
-						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
-					);
+					// console.log(
+					//	`PREBID AD SHOWN - ${slot.getTargeting(
+					//		'hb_bidder',
+					//	)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
+					// );
 
 					try {
 						window.ga('send', {
@@ -231,7 +240,7 @@ class Dfp extends PureComponent {
 		const isAffiliateMarketingPage = this.isAffiliateMarketingPage(pageURL);
 
 		const adjustedUnitId = this.getAdjustedUnitId(unitId, unitName, pageURL);
-		console.log(`Adjusted Ad Unit: ${adjustedUnitId}`);
+		// console.log(`Adjusted Ad Unit: ${adjustedUnitId}`);
 
 		// Initialize State. NOTE: Ensure that Minimum Poll Intervavl Is Much Longer Than
 		// 	Round Trip to Ad Server. Initially we enforce 5 second minimum.
@@ -351,6 +360,9 @@ class Dfp extends PureComponent {
 					.addEventListener('slotRenderEnded', slotRenderEndedHandler);
 			});
 		}
+
+		// remove in-content ads from embeded content in post
+		this.removeAdsFromEmbed();
 	}
 
 	componentWillUnmount() {
@@ -557,6 +569,7 @@ class Dfp extends PureComponent {
 			let sizeMapping = false;
 			let prebidSizeConfig = false;
 			if (unitName === 'top-leaderboard') {
+				window.bbgiLeaderboardDivID = placeholder;
 				sizeMapping = googletag
 					.sizeMapping()
 
@@ -564,8 +577,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// accepts common desktop banner formats
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -594,8 +620,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// Same as top-leaderboard
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -648,8 +687,21 @@ class Dfp extends PureComponent {
 					.addSize([0, 0], [])
 
 					// accepts common desktop banner formats
-					.addSize([300, 0], [[320, 50], [320, 100], 'fluid'])
-					.addSize([1160, 0], [[728, 90], [970, 90], [970, 250], 'fluid'])
+					.addSize(
+						[300, 0],
+						[
+							[320, 50],
+							[320, 100],
+						],
+					)
+					.addSize(
+						[1160, 0],
+						[
+							[728, 90],
+							[970, 90],
+							[970, 250],
+						],
+					)
 
 					.build();
 
@@ -903,6 +955,16 @@ class Dfp extends PureComponent {
 	tryDisplaySlot() {
 		if (!this.state.slot) {
 			this.registerSlot();
+		}
+	}
+
+	removeAdsFromEmbed() {
+		if ($('.am-meta-item-description').length) {
+			$('.am-meta-item-description').each(function(index, element) {
+				$(this)
+					.find('.placeholder-dfp')
+					.remove();
+			});
 		}
 	}
 
