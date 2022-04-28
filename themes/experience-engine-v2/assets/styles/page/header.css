@@ -554,7 +554,7 @@
 				  & li{
 					width:18vw;
 					/* padding-right:20px; */
-					margin-right: 3vw;
+					margin-right: 4vw;
 					@media(--max-x2large-viewport) {
 					  width:100%;
 					  margin-right:0;
