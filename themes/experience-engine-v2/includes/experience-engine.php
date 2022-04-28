@@ -67,8 +67,8 @@ if ( ! function_exists( 'ee_update_api_bbgiconfig' ) ) :
 
 		$config['publisher'] = $publisher;
 		$config['publishers'] = $publishers_map;
-		$config['locations'] = $ee->get_locations();
-		$config['genres'] = $ee->get_genres();
+		$config['locations'] = array();// $ee->get_locations();
+		$config['genres'] = array();// $ee->get_genres();
 
 		$config['streams'] = array();
 		$feeds = $ee->get_publisher_feeds_with_content();
