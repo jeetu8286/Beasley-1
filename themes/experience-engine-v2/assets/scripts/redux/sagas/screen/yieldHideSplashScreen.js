@@ -8,7 +8,6 @@ import {
 	setPlayerVisibility,
 } from '../../utilities';
 import refreshAllAds from '../../utilities/screen/refreshAllAds';
-import resetScrollToTop from '../../utilities/player/resetScrollToTop';
 
 /**
  * Generator runs whenever [ ACTION_HIDE_SPLASH_SCREEN ]
@@ -40,7 +39,6 @@ function* yieldHideSplashScreen(action) {
 		renderSendToNews();
 		handleInjectos();
 		initializeVimeo();
-		resetScrollToTop();
 	});
 }
 
