@@ -225,13 +225,9 @@ class Dfp extends PureComponent {
 		super(props);
 		const { unitId, unitName, pageURL } = props;
 		const { bbgiconfig } = window;
-		this.isAffiliateMarketingPage = this.isAffiliateMarketingPage.bind(this);
-		this.isIncontentAdOnAffiliatePage = this.isIncontentAdOnAffiliatePage.bind(
-			this,
-		);
 
 		// No InContent Ads On Affiliate Pages
-		if (this.isIncontentAdOnAffiliatePage(unitName, pageURL)) {
+		if (this.isCreationCancelled(unitName, pageURL)) {
 			return;
 		}
 
@@ -321,6 +317,10 @@ class Dfp extends PureComponent {
 		);
 	}
 
+	isCreationCancelled(unitName, pageURL) {
+		return this.isIncontentAdOnAffiliatePage(unitName, pageURL);
+	}
+
 	getAdjustedUnitId(unitId, unitName, pageURL) {
 		let retval = unitId;
 		// Change Ad Unit Depending On AdName If We Are On An Affiliate Page
@@ -352,7 +352,7 @@ class Dfp extends PureComponent {
 	componentDidMount() {
 		const { googletag } = window;
 		const { placeholder, unitName, pageURL } = this.props;
-		if (this.isIncontentAdOnAffiliatePage(unitName, pageURL)) {
+		if (this.isCreationCancelled(unitName, pageURL)) {
 			return;
 		}
 
@@ -394,7 +394,7 @@ class Dfp extends PureComponent {
 
 	componentWillUnmount() {
 		const { unitName, pageURL } = this.props;
-		if (this.isIncontentAdOnAffiliatePage(unitName, pageURL)) {
+		if (this.isCreationCancelled(unitName, pageURL)) {
 			return;
 		}
 
