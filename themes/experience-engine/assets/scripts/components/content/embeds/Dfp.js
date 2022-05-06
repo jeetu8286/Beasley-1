@@ -199,10 +199,10 @@ const slotRenderEndedHandler = event => {
 class Dfp extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { unitId, unitName, pageURL } = props;
+		const { placeholder, unitId, unitName, pageURL } = props;
 		const { bbgiconfig } = window;
 
-		if (this.isCreationCancelled(unitName, pageURL)) {
+		if (this.isCreationCancelled(placeholder, unitName, pageURL)) {
 			return;
 		}
 
@@ -290,8 +290,17 @@ class Dfp extends PureComponent {
 		);
 	}
 
-	isCreationCancelled(unitName, pageURL) {
-		return this.isIncontentAdOnAffiliatePage(unitName, pageURL);
+	isAdInEmbeddedContent(placeholder) {
+		// Embedded content detected when slot is child element of a Div with class .am-meta-item-description
+		const slotElement = document.getElementById(placeholder);
+		return !!slotElement && !!slotElement.closest('.am-meta-item-description');
+	}
+
+	isCreationCancelled(placeholder, unitName, pageURL) {
+		return (
+			this.isIncontentAdOnAffiliatePage(unitName, pageURL) ||
+			this.isAdInEmbeddedContent(placeholder)
+		);
 	}
 
 	getAdjustedUnitId(unitId, unitName, pageURL) {
@@ -325,7 +334,7 @@ class Dfp extends PureComponent {
 	componentDidMount() {
 		const { googletag } = window;
 		const { placeholder, unitName, pageURL } = this.props;
-		if (this.isCreationCancelled(unitName, pageURL)) {
+		if (this.isCreationCancelled(placeholder, unitName, pageURL)) {
 			return;
 		}
 
@@ -363,8 +372,8 @@ class Dfp extends PureComponent {
 	}
 
 	componentWillUnmount() {
-		const { unitName, pageURL } = this.props;
-		if (this.isCreationCancelled(unitName, pageURL)) {
+		const { placeholder, unitName, pageURL } = this.props;
+		if (this.isCreationCancelled(placeholder, unitName, pageURL)) {
 			return;
 		}
 
@@ -926,6 +935,10 @@ class Dfp extends PureComponent {
 	}
 
 	destroySlot() {
+		if (!this.state) {
+			return;
+		}
+
 		const { placeholder } = this.props;
 		const { slot, prebidEnabled, adjustedUnitId } = this.state;
 
