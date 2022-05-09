@@ -207,6 +207,7 @@ class Dfp extends PureComponent {
 		}
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
+		this.isConfiguredToRunInterval = this.isConfiguredToRunInterval.bind(this);
 		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
 		this.loadPrebid = this.loadPrebid.bind(this);
