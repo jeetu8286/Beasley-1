@@ -301,6 +301,11 @@ class Dfp extends PureComponent {
 	}
 
 	isConfiguredToRunInterval() {
+		// Lack of State likely means Creation was cancelled
+		if (!this.state) {
+			return false;
+		}
+
 		const { placeholder, unitName } = this.props;
 		const { isRotateAdsEnabled } = this.state;
 
