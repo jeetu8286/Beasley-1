@@ -406,12 +406,12 @@ class Dfp extends PureComponent {
 			return;
 		}
 
-		this.destroySlot();
-
 		if (this.isConfiguredToRunInterval()) {
 			this.stopInterval();
 			document.removeEventListener('visibilitychange', this.onVisibilityChange);
 		}
+
+		this.destroySlot();
 	}
 
 	handleVisibilityChange() {
