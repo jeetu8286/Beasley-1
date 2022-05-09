@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context';
 import { logPrebidTargeting } from '../../../redux/utilities/screen/refreshAllAds';
 
-const $ = window.jQuery;
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
 const topScrollingDivID = 'div-top-scrolling-slot';
@@ -88,6 +87,21 @@ const adjustContentPaddingForBottomAd = slotElement => {
 	}
 };
 
+const setSotElementHeight = (placeholder, slotElement, newAdHeight) => {
+	const padBottomPxStr = window.getComputedStyle(slotElement).paddingBottom;
+	const padBottomNumStr =
+		padBottomPxStr.indexOf('px') > -1 ? padBottomPxStr.replace('px', '') : '0';
+
+	// Set Slot Height To New Height Plus paddingBottom
+	slotElement.style.height = `${newAdHeight + parseInt(padBottomNumStr, 10)}px`;
+
+	if (placeholder === topScrollingDivID) {
+		adjustContentMarginForTopAd(slotElement);
+	} else if (placeholder === bottomAdhesionDivID) {
+		adjustContentPaddingForBottomAd(slotElement);
+	}
+};
+
 const showSlotElement = slotElement => {
 	slotElement.classList.add('fadeInAnimation');
 	slotElement.style.opacity = '1';
@@ -134,7 +148,7 @@ const slotRenderEndedHandler = event => {
 			}
 			if (placeholder === bottomAdhesionDivID) {
 				// Set Main Content Div Bottom Padding To 0 Since No Ad
-				adjustContentPaddingForBottomAd(slotElement);
+				setSotElementHeight(placeholder, slotElement, 0);
 			}
 		} else {
 			let adSize;
@@ -189,20 +203,7 @@ const slotRenderEndedHandler = event => {
 
 			// Adjust Container Div Height
 			if (adSize && adSize[0] && adSize[1]) {
-				const imageHeight = adSize[1];
-				const padBottomStr = window.getComputedStyle(slotElement).paddingBottom;
-				const padBottom =
-					padBottomStr.indexOf('px') > -1
-						? padBottomStr.replace('px', '')
-						: '0';
-				slotElement.style.height = `${imageHeight + parseInt(padBottom, 10)}px`;
-
-				// Set Margin If Ad Is Top Scrolling Ad
-				if (placeholder === topScrollingDivID) {
-					adjustContentMarginForTopAd(slotElement);
-				} else if (placeholder === bottomAdhesionDivID) {
-					adjustContentPaddingForBottomAd(slotElement);
-				}
+				setSotElementHeight(placeholder, slotElement, adSize[1]);
 			}
 
 			showSlotElement(slotElement);
@@ -223,33 +224,38 @@ const slotRenderEndedHandler = event => {
 class Dfp extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { unitId, unitName, pageURL } = props;
+		const { placeholder, unitId, unitName, pageURL } = props;
 		const { bbgiconfig } = window;
-		this.isAffiliateMarketingPage = this.isAffiliateMarketingPage.bind(this);
-		this.isIncontentAdOnAffiliatePage = this.isIncontentAdOnAffiliatePage.bind(
-			this,
-		);
 
 		// No InContent Ads On Affiliate Pages
-		if (this.isIncontentAdOnAffiliatePage(unitName, pageURL)) {
+		if (this.isCreationCancelled(placeholder, unitName, pageURL)) {
 			return;
 		}
 
 		this.onVisibilityChange = this.handleVisibilityChange.bind(this);
-		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.hideSlot = this.hideSlot.bind(this);
 		this.showSlot = this.showSlot.bind(this);
+		this.isConfiguredToRunInterval = this.isConfiguredToRunInterval.bind(this);
+		this.startInterval = this.startInterval.bind(this);
+		this.stopInterval = this.stopInterval.bind(this);
+		this.registerSlot = this.registerSlot.bind(this);
+		this.updateSlotVisibleTimeStat = this.updateSlotVisibleTimeStat.bind(this);
 		this.refreshSlot = this.refreshSlot.bind(this);
-		this.loadPrebid = this.loadPrebid.bind(this);
+		this.destroySlot = this.destroySlot.bind(this);
+		this.tryDisplaySlot = this.tryDisplaySlot.bind(this);
+
 		this.pushRefreshBidIntoGoogleTag = this.pushRefreshBidIntoGoogleTag.bind(
 			this,
 		);
+
+		// Prebid Functions
+		this.loadPrebid = this.loadPrebid.bind(this);
 		this.bidsBackHandler = this.bidsBackHandler.bind(this);
-		this.destroySlot = this.destroySlot.bind(this);
 		this.getPrebidBidders = this.getPrebidBidders.bind(this);
 		this.getBidderRubicon = this.getBidderRubicon.bind(this);
 		this.getBidderAppnexus = this.getBidderAppnexus.bind(this);
 		this.getBidderIx = this.getBidderIx.bind(this);
+		this.getBidderResetDigital = this.getBidderResetDigital.bind(this);
 
 		const slotPollSecs = parseInt(
 			bbgiconfig.ad_rotation_polling_sec_setting,
@@ -295,6 +301,11 @@ class Dfp extends PureComponent {
 	}
 
 	isConfiguredToRunInterval() {
+		// Lack of State likely means Creation was cancelled
+		if (!this.state) {
+			return false;
+		}
+
 		const { placeholder, unitName } = this.props;
 		const { isRotateAdsEnabled } = this.state;
 
@@ -318,6 +329,19 @@ class Dfp extends PureComponent {
 				unitName === 'in-list-gallery' ||
 				unitName === 'in-content') &&
 			this.isAffiliateMarketingPage(pageURL)
+		);
+	}
+
+	isAdInEmbeddedContent(placeholder) {
+		// Embedded content detected when slot is child element of a Div with class .am-meta-item-description
+		const slotElement = document.getElementById(placeholder);
+		return !!slotElement && !!slotElement.closest('.am-meta-item-description');
+	}
+
+	isCreationCancelled(placeholder, unitName, pageURL) {
+		return (
+			this.isIncontentAdOnAffiliatePage(unitName, pageURL) ||
+			this.isAdInEmbeddedContent(placeholder)
 		);
 	}
 
@@ -351,8 +375,10 @@ class Dfp extends PureComponent {
 
 	componentDidMount() {
 		const { googletag } = window;
-		const { placeholder, unitName, pageURL } = this.props;
-		if (this.isIncontentAdOnAffiliatePage(unitName, pageURL)) {
+		const { placeholder } = this.props;
+
+		// Lack of State likely means Creation was cancelled
+		if (!this.state) {
 			return;
 		}
 
@@ -387,14 +413,11 @@ class Dfp extends PureComponent {
 					.addEventListener('slotRenderEnded', slotRenderEndedHandler);
 			});
 		}
-
-		// remove in-content ads from embeded content in post
-		this.removeAdsFromEmbed();
 	}
 
 	componentWillUnmount() {
-		const { unitName, pageURL } = this.props;
-		if (this.isIncontentAdOnAffiliatePage(unitName, pageURL)) {
+		// Lack of State likely means Creation was cancelled
+		if (!this.state) {
 			return;
 		}
 
@@ -977,6 +1000,11 @@ class Dfp extends PureComponent {
 	}
 
 	destroySlot() {
+		// Lack of State likely means Creation was cancelled
+		if (!this.state) {
+			return;
+		}
+
 		const { placeholder } = this.props;
 		const { slot, prebidEnabled, adjustedUnitId } = this.state;
 
@@ -1001,18 +1029,8 @@ class Dfp extends PureComponent {
 	}
 
 	tryDisplaySlot() {
-		if (!this.state.slot) {
+		if (this.state && !this.state.slot) {
 			this.registerSlot();
-		}
-	}
-
-	removeAdsFromEmbed() {
-		if ($('.am-meta-item-description').length) {
-			$('.am-meta-item-description').each(function(index, element) {
-				$(this)
-					.find('.placeholder-dfp')
-					.remove();
-			});
 		}
 	}
 
