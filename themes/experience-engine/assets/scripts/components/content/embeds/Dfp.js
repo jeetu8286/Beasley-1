@@ -342,8 +342,10 @@ class Dfp extends PureComponent {
 
 	componentDidMount() {
 		const { googletag } = window;
-		const { placeholder, unitName, pageURL } = this.props;
-		if (this.isCreationCancelled(placeholder, unitName, pageURL)) {
+		const { placeholder } = this.props;
+
+		// Lack of State likely means Creation was cancelled
+		if (!this.state) {
 			return;
 		}
 
@@ -381,8 +383,8 @@ class Dfp extends PureComponent {
 	}
 
 	componentWillUnmount() {
-		const { placeholder, unitName, pageURL } = this.props;
-		if (this.isCreationCancelled(placeholder, unitName, pageURL)) {
+		// Lack of State likely means Creation was cancelled
+		if (!this.state) {
 			return;
 		}
 
@@ -944,6 +946,7 @@ class Dfp extends PureComponent {
 	}
 
 	destroySlot() {
+		// Lack of State likely means Creation was cancelled
 		if (!this.state) {
 			return;
 		}
@@ -972,7 +975,7 @@ class Dfp extends PureComponent {
 	}
 
 	tryDisplaySlot() {
-		if (!this.state.slot) {
+		if (this.state && !this.state.slot) {
 			this.registerSlot();
 		}
 	}
