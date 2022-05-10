@@ -14,7 +14,6 @@ class PlayerAd extends PureComponent {
 
 		this.onResize = this.handleResize.bind(this);
 		this.onSubtreeModified = this.handleSubtreeModified.bind(this);
-		this.onRef = this.handleSlotRef.bind(this);
 	}
 
 	componentDidMount() {
@@ -62,12 +61,6 @@ class PlayerAd extends PureComponent {
 				`Resetting Player Ad State Because Page Changed To ${currentPageURL}`,
 			);
 			this.setState({ pageURL: currentPageURL });
-		}
-	}
-
-	handleSlotRef(dfp) {
-		if (dfp) {
-			setTimeout(dfp.refreshSlot.bind(dfp), 50);
 		}
 	}
 
