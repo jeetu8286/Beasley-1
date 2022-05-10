@@ -457,6 +457,11 @@ class PrimaryNav extends PureComponent {
 				megaMenuUl.children[i].classList.remove('mega-toggle-on');
 			}
 		}
+
+		const htmlElement = document.getElementsByTagName('html');
+		if (htmlElement && htmlElement[0]) {
+			htmlElement[0].classList.remove('mega-menu-primary-nav-off-canvas-open');
+		}
 	}
 
 	handleListenliveClick(event) {
