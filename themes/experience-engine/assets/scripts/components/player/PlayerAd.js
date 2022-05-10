@@ -28,20 +28,13 @@ class PlayerAd extends PureComponent {
 	}
 
 	getWhetherShouldRender() {
-		const { minWidth, maxWidth } = this.props;
+		const { minWidth } = this.props;
 		const { unitId } = window.bbgiconfig.dfp.player;
 
 		if (unitId) {
 			if (
 				minWidth > 0 &&
 				window.matchMedia(`(min-width: ${minWidth}px)`).matches
-			) {
-				return true;
-			}
-
-			if (
-				maxWidth > 0 &&
-				window.matchMedia(`(max-width: ${maxWidth}px)`).matches
 			) {
 				return true;
 			}
@@ -110,14 +103,12 @@ class PlayerAd extends PureComponent {
 PlayerAd.propTypes = {
 	className: PropTypes.string.isRequired,
 	minWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-	maxWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 	style: PropTypes.shape({}),
 	shouldMapSizes: PropTypes.bool,
 };
 
 PlayerAd.defaultProps = {
 	minWidth: 0,
-	maxWidth: 0,
 	style: {},
 	shouldMapSizes: true,
 };
