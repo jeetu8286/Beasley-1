@@ -14,6 +14,7 @@ use Bbgi\Integration\Google;
 		endif;
 		$headerCacheTag = $currentPostType.$currentPostSlug;
 		header("Cache-Tag: $headerCacheTag", false);
+		header("Cache-BBGI-Tag: $headerCacheTag", false);
 	}
 ?>
 <!doctype html>
