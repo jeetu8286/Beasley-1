@@ -16,6 +16,7 @@ use Bbgi\Integration\Google;
 		header("Cache-Tag: $headerCacheTag", true);
 		header("X-Cache-BBGI-Tag: $headerCacheTag", true);
 		header("Cache-BBGI-Tag: Testing", true);
+		header("X-Cache-BBGI-Tag: Testing", true);
 	}
 ?>
 <!doctype html>
