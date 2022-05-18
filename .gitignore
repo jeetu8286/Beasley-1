@@ -48,6 +48,7 @@ mu-plugins/post-finder/
 !/plugins/cpt-public-post-preview
 !/plugins/cpt-tag-category-import-export
 !/plugins/wp-multisite-user-sync
+!/plugins/vimeovideoselector
 
 themes/index.php
 themes/twentyfourteen
