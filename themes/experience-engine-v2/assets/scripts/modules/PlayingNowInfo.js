@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { STATUSES } from '../redux/actions/player';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { Stations } from '../components/player';
+import { PodcastScrubber, Stations } from '../components/player';
 
 const STATUS_LABELS = {
 	[STATUSES.LIVE_PAUSE]: 'Paused',
@@ -108,6 +108,9 @@ class Info extends Component {
 						</li>
 						<li>{description}</li>
 					</ul>
+				</div>
+				<div className="top-progress-holder">
+					<PodcastScrubber />
 				</div>
 				<Stations />
 			</ErrorBoundary>

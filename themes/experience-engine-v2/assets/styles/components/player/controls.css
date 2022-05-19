@@ -530,32 +530,16 @@
 }
 
 .controls-progress {
-display: none;
-	&.-mobile {
-		display: block;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	opacity: 1;
 
-		@media(--min-medium-viewport) {
-			display: none;
-		}
-	}
-
-	&.-desktop {
-		transition: opacity 250ms ease-in-out;
-		opacity: 0;
-
-		@media(--min-medium-viewport) {
-			display: flex;
-			flex-flow: row nowrap;
-			justify-content: space-between;
-			opacity: 1;
-		}
-
-		& .-progress {
-			align-self: center;
-			margin: 0 10px 0 0;
-			position: relative;
-			width: 84px;
-		}
+	& .-progress {
+		align-self: center;
+		margin: 0 10px 0 0;
+		position: relative;
+	    width: calc(100% - 78px);
 	}
 
 	& .time {
@@ -582,9 +566,7 @@ display: none;
 }
 
 .top-progress-holder {
-	width: calc(100% - 78px);
-	margin-left: 78px;
-	position: absolute;
+	margin-bottom: 20px;
 }
 
 #player-button-div > div.controls > div > div > button > svg {
