@@ -288,28 +288,26 @@ class Webhooks extends \Bbgi\Module {
         $post = get_post( $postID );
         $slug = $post->post_type.'-'.$post->post_name;
         
-        if( isset( $zone_id ) && !empty($zone_id) ){
-            $permalink = get_permalink( $postID );
-            $request_url = 'https://api.cloudflare.com/client/v4/zones/'.$zone_id.'/purge_cache';
-            $data = [ "tags" => [$slug] ];  
+		$request_url = 'https://api.cloudflare.com/client/v4/zones/'.$zone_id.'/purge_cache';
+		$data = [ "tags" => [$slug] ];  
 
-            $response = wp_remote_post( $request_url, array(
-                    'method' => 'POST',
-                    'headers' => array(
-                            'Content-Type' => 'application/json',
-                            'Authorization' => 'Bearer _unAkz2VlqZXiW02gJq5FzrPc9QnH1nTtDkaGKny',
-                            ),
-                            'body' => wp_json_encode( $data )
-                        )
-                    );
+		$response = wp_remote_post( $request_url, array(
+				'method' => 'POST',
+				'headers' => array(
+						'Content-Type' => 'application/json',
+						'Authorization' => 'Bearer _unAkz2VlqZXiW02gJq5FzrPc9QnH1nTtDkaGKny',
+						),
+						'body' => wp_json_encode( $data )
+					)
+				);
 
-            $response_json = 'Cloudflare response 4: '. json_encode( $response );
-            error_log( $response_json );
+		$response_json = 'Cloudflare response: '. json_encode( $response );
+		error_log( $response_json );
 
-            if ( is_wp_error( $response ) ) {
-                error_log( 'Cloudflare error notice query var from is_wp_error function 5' );
-            }
-        }
+		if ( is_wp_error( $response ) ) {
+			error_log( 'Cloudflare error notice query var from is_wp_error function' );
+		}
+        
     }
 
 }
