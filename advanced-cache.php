@@ -458,7 +458,6 @@ $batcache->keys = array(
 
 if ( $batcache->is_ssl() )
 	$batcache->keys['ssl'] = true;
-	echo md5(serialize($batcache->keys)).'</br>';
 // Recreate the permalink from the URL
 $batcache->permalink = 'http://' . $batcache->keys['host'] . $batcache->keys['path'] . ( isset($batcache->keys['query']['p']) ? "?p=" . $batcache->keys['query']['p'] : '' );
 $batcache->url_key = md5($batcache->permalink);
@@ -469,7 +468,7 @@ $batcache->generate_keys();
 
 // Get the batcache
 $batcache->cache = wp_cache_get($batcache->key, $batcache->group);
-print_r($batcache->cache);
+
 // Are we only caching frequently-requested pages?
 if ( $batcache->seconds < 1 || $batcache->times < 2 ) {
 	$batcache->do = true;
