@@ -315,6 +315,26 @@
 		}
 	  }
 	}
+	& .ll-menu-section {
+	  display: block;
+	  width: 100%;
+	  & ul {
+		width: 49%;
+		padding-right: 10px;
+		display: inline-block;
+		vertical-align: top;
+		& li {
+		  & > span {
+			padding-right: 0px;
+		  }
+		}
+	  }
+	}
+	& .full-width-menu {
+		& ul {
+			width: 100%;
+		}
+	}
   }
   & .search-form {
 	margin: 0;
@@ -714,7 +734,7 @@
 	}
 	& .top-primarynav{
 		@media(--min-x2large-viewport) {
-			width:50%;
+			width:auto;
 		}
 	}
 }

@@ -116,7 +116,19 @@ class PrimaryNav extends PureComponent {
 			}
 
 			const items = songs.map(song => {
-				return `<li><span>${song.artistName.toLowerCase()}</span></li>`;
+				let time = ``;
+				const songTitle = song?.cueTitle ? song.cueTitle : ``;
+				const artistName = song?.artistName ? `- ${song.artistName}` : ``;
+				if (song?.cueTimeStart) {
+					time = new Date(+song.cueTimeStart);
+					time = time.toLocaleString('en-US', {
+						hour: 'numeric',
+						minute: 'numeric',
+						hour12: true,
+					});
+				}
+
+				return `<li><span>${time} ${songTitle} ${artistName}</span></li>`;
 			});
 
 			const recentlyPlayed = document.getElementById(
@@ -232,8 +244,34 @@ class PrimaryNav extends PureComponent {
 		}
 	}
 
+	setRightRailTopMargin() {
+		const rightRailAdAside = document.querySelector('aside.ad.-sticky');
+		if (rightRailAdAside) {
+			const rightRailAdContainer = rightRailAdAside.querySelector(
+				'aside.ad.-sticky > .wrapper',
+			);
+			if (rightRailAdContainer) {
+				const rightRailAsideTop = rightRailAdAside.getBoundingClientRect().top;
+				const topAdContainer = document.getElementById(
+					'top-scrolling-container',
+				);
+				if (topAdContainer) {
+					const topAdContainerBoundingRect = topAdContainer.getBoundingClientRect();
+					const topAdTop = topAdContainerBoundingRect.top;
+					const pixelsScrolledPastRightRailTop = topAdTop - rightRailAsideTop;
+					if (pixelsScrolledPastRightRailTop < 0) {
+						rightRailAdContainer.style.top = `0px`;
+					} else {
+						rightRailAdContainer.style.top = `${topAdTop}px`;
+					}
+				}
+			}
+		}
+	}
+
 	onResize() {
 		this.handleSubMenuSize();
+		this.setRightRailTopMargin();
 	}
 
 	handleOnLoadFix() {
@@ -314,6 +352,7 @@ class PrimaryNav extends PureComponent {
 			}
 		}
 		this.setState({ y: yOffset });
+		this.setRightRailTopMargin();
 	}
 
 	isPlayerButtonEvent(event) {
