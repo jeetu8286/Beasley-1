@@ -526,65 +526,40 @@
 			}
 		}
 	}
-
 }
 
 .controls-progress {
-display: none;
-	&.-mobile {
-		display: block;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	opacity: 1;
 
-		@media(--min-medium-viewport) {
-			display: none;
-		}
-	}
-
-	&.-desktop {
-		transition: opacity 250ms ease-in-out;
-		opacity: 0;
-
-		@media(--min-medium-viewport) {
-			display: flex;
-			flex-flow: row nowrap;
-			justify-content: space-between;
-			opacity: 1;
-		}
-
-		& .-progress {
-			align-self: center;
-			margin: 0 10px 0 0;
-			position: relative;
-			width: 84px;
-		}
+	& .-progress {
+		align-self: center;
+		margin: 0 10px 0 0;
+		position: relative;
+	    width: calc(100% - 78px);
 	}
 
 	& .time {
-		display: none;
+	    display: inline-flex;
 	    align-items: center;
 	    font-size: .675rem;
 	    margin-top: 3px;
 	    margin-right: 10px;
 
 		&.-desktop4digits {
-			@media(--min-medium-viewport) {
-				display: inline-flex;
-				width: 1.75rem;
-			}
+			width: 1.75rem;
 		}
 
 		&.-desktop6digits {
-			@media(--min-medium-viewport) {
-				display: inline-flex;
-				width: 2.75rem;
-			}
+			width: 2.75rem;
 		}
 	}
 }
 
 .top-progress-holder {
-	width: calc(100% - 78px);
-	margin-left: 78px;
-	position: absolute;
+	margin-bottom: 20px;
 }
 
 #player-button-div > div.controls > div > div > button > svg {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { STATUSES } from '../redux/actions/player';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { Stations, Volume } from '../components/player';
+import { PodcastScrubber, Stations, Volume } from '../components/player';
 import { isIOS } from '../library';
 
 const STATUS_LABELS = {
@@ -129,6 +129,9 @@ class Info extends Component {
 					<div className="ll-volume-control">
 						<div className="button-holder">{volumeControl}</div>
 					</div>
+				</div>
+				<div className="top-progress-holder">
+					<PodcastScrubber />
 				</div>
 				<Stations />
 			</ErrorBoundary>
