@@ -15,10 +15,10 @@ use Bbgi\Integration\Google;
 			$currentPostSlug = "-".$post->post_name;
 		endif;
 		$headerCacheTag = $currentPostType.$currentPostSlug;
-	}	
-	
-	header("Cache-Tag: $headerCacheTag", true);
-	header("X-Cache-BBGI-Tag: $headerCacheTag", true);	
+	}
+
+	header("Cache-Tag: $headerCacheTag" . ",content", true);
+	header("X-Cache-BBGI-Tag: $headerCacheTag", true);
 ?>
 <!doctype html>
 <html lang="en">

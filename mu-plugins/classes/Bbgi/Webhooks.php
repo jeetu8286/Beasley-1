@@ -180,6 +180,8 @@ class Webhooks extends \Bbgi\Module {
 		$base_url  = get_site_option( 'ee_host', false );
 		$appkey    = get_site_option( 'ee_appkey', false );
 
+		$this->clearCloudFlareCache($post_id);
+
 		// Abort if notification URL isn't set
 		if ( ! $base_url || ! $publisher || ! $appkey ) {
 			$this->log( 'do_webhook notification url is not set.', $debug_params );
@@ -211,8 +213,6 @@ class Webhooks extends \Bbgi\Module {
 		$this->log( 'calling webohook', $request_args );
 
 		wp_remote_post( $url, $request_args );
-
-		$this->clearCloudFlareCache($post_id);
 	}
 
 	/**
@@ -280,16 +280,16 @@ class Webhooks extends \Bbgi\Module {
         }
 
         $zone_id = get_option('cloud_flare_zoneid');
-		
+
         if(!$zone_id){
             return false;
         }
 
         $post = get_post( $postID );
         $slug = $post->post_type.'-'.$post->post_name;
-        
+
 		$request_url = 'https://api.cloudflare.com/client/v4/zones/'.$zone_id.'/purge_cache';
-		$data = [ "tags" => [$slug] ];  
+		$data = [ "tags" => [$slug] ];
 
 		$response = wp_remote_post( $request_url, array(
 				'method' => 'POST',
@@ -307,7 +307,7 @@ class Webhooks extends \Bbgi\Module {
 		if ( is_wp_error( $response ) ) {
 			error_log( 'Cloudflare error notice query var from is_wp_error function' );
 		}
-        
+
     }
 
 }
