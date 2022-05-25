@@ -97,7 +97,6 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 				const result = await fetch(endpointURL).then(r => r.json());
 				if (!result.url) {
 					setLoading(false);
-					setPostsEndpointURL('');
 					return;
 				}
 
