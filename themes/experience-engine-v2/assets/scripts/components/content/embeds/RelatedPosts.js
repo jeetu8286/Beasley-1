@@ -95,6 +95,12 @@ const RelatedPosts = ({ posttype, posttitle, categories, url }) => {
 			try {
 				setLoading(true);
 				const result = await fetch(endpointURL).then(r => r.json());
+				if (!result.url) {
+					setLoading(false);
+					setPostsEndpointURL('');
+					return;
+				}
+
 				setTestName(result.testname);
 				let transformedURL = result.url;
 
