@@ -45,7 +45,7 @@ class PlayerButton extends Component {
 	 * Sets up the TdPlayer
 	 */
 	setUpPlayer() {
-		const { initTdPlayer, lastAdPlaybackTime } = this.props;
+		const { initTdPlayer } = this.props;
 
 		// @see: https://userguides.tritondigital.com/spc/tdplay2/
 		const tdmodules = [];
@@ -77,7 +77,7 @@ class PlayerButton extends Component {
 			elements: [{ id: 'sync-banner', width: 320, height: 50 }],
 		});
 
-		initTdPlayer(tdmodules, lastAdPlaybackTime);
+		initTdPlayer(tdmodules);
 	}
 
 	handleOnline() {
@@ -222,7 +222,6 @@ PlayerButton.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	gamAdPlayback: PropTypes.bool.isRequired,
-	lastAdPlaybackTime: PropTypes.number.isRequired,
 	adSynced: PropTypes.bool.isRequired,
 	initTdPlayer: PropTypes.func.isRequired,
 	playStation: PropTypes.func.isRequired,
@@ -243,7 +242,6 @@ export default connect(
 		gamAdPlayback: player.gamAdPlayback,
 		adSynced: player.adSynced,
 		duration: player.duration,
-		lastAdPlaybackTime: player.lastAdPlaybackTime,
 	}),
 	{
 		initTdPlayer: actions.initTdPlayer,
