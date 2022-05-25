@@ -255,6 +255,7 @@ function errorCatcher(prefix = '') {
  * @param {*} modules
  */
 export function initTdPlayer(modules, lastAdPlaybackTime) {
+	console.log(`TD Player Init With Timestamp: ${lastAdPlaybackTime}`);
 	return dispatch => {
 		let adSyncedTimeout = false;
 
@@ -320,8 +321,8 @@ export function initTdPlayer(modules, lastAdPlaybackTime) {
 				); // used to dispatchPlaybackStop( ACTION_AD_PLAYBACK_ERROR )( );
 			} else {
 				const nowDate = new Date();
-				const timeSineLastPreroll = nowDate.getTime() - lastAdPlaybackTime;
-				if (timeSineLastPreroll > 10 * 60 * 1000) {
+				const timeSinceLastPreroll = nowDate.getTime() - lastAdPlaybackTime;
+				if (timeSinceLastPreroll > 10 * 60 * 1000) {
 					console.log(
 						'Sufficient time has passed. Dispatching GAM Preroll Start',
 					);
