@@ -123,7 +123,7 @@ class Page extends Module {
 			$response->set_headers([
 				'X-Cache-BBGI-Tag' => $headers['x-cache-bbgi-tag'],
 				'Cache-Tag' => $headers['x-cache-bbgi-tag']
-		]);
+			]);
 		}
 
 		return  $response;
