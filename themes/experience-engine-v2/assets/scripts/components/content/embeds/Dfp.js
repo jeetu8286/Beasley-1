@@ -649,14 +649,20 @@ class Dfp extends PureComponent {
 						],
 					)
 					.addSize(
-						[1160, 0],
+						[1020, 0],
+						[
+							[728, 90],
+							[970, 90],
+						],
+					)
+					.addSize(
+						[1020, 650],
 						[
 							[728, 90],
 							[970, 90],
 							[970, 250],
 						],
 					)
-
 					.build();
 
 				prebidSizeConfig = [
@@ -669,7 +675,14 @@ class Dfp extends PureComponent {
 						],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [1020, 0],
+						sizes: [
+							[728, 90],
+							[970, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 650],
 						sizes: [
 							[728, 90],
 							[970, 90],
@@ -707,7 +720,14 @@ class Dfp extends PureComponent {
 						],
 					)
 					.addSize(
-						[1160, 0],
+						[1020, 0],
+						[
+							[728, 90],
+							[970, 90],
+						],
+					)
+					.addSize(
+						[1020, 650],
 						[
 							[728, 90],
 							[970, 90],
@@ -727,7 +747,14 @@ class Dfp extends PureComponent {
 						],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [1020, 0],
+						sizes: [
+							[728, 90],
+							[970, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 650],
 						sizes: [
 							[728, 90],
 							[970, 90],
@@ -774,7 +801,14 @@ class Dfp extends PureComponent {
 						],
 					)
 					.addSize(
-						[1160, 0],
+						[1020, 0],
+						[
+							[728, 90],
+							[970, 90],
+						],
+					)
+					.addSize(
+						[1020, 650],
 						[
 							[728, 90],
 							[970, 90],
@@ -794,7 +828,14 @@ class Dfp extends PureComponent {
 						],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [1020, 0],
+						sizes: [
+							[728, 90],
+							[970, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 650],
 						sizes: [
 							[728, 90],
 							[970, 90],
@@ -811,7 +852,7 @@ class Dfp extends PureComponent {
 					// accepts common desktop banner formats
 					.addSize([300, 0], [[320, 50]])
 					.addSize(
-						[1160, 0],
+						[1020, 0],
 						[
 							[728, 90],
 							[970, 90],
@@ -827,7 +868,7 @@ class Dfp extends PureComponent {
 						sizes: [[320, 50]],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [1020, 0],
 						sizes: [
 							[728, 90],
 							[970, 90],
