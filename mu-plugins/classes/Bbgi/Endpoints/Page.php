@@ -103,7 +103,7 @@ class Page extends Module {
 
 		if ( $matched_redirect ) {
 			$requestHeaders = apache_request_headers($url);
- print_r($requestHeaders);
+ print_r($requestHeaders.'test');
 			$is_absolute = $this->is_absolute_url( $matched_redirect );
 			$response['redirect']['url']      = $is_absolute ? $matched_redirect : home_url( $matched_redirect );
 			$response['redirect']['internal'] = ! $is_absolute;
