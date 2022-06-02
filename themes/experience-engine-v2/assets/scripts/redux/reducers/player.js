@@ -36,6 +36,7 @@ import {
 	STATUSES,
 	ACTION_PLAY,
 } from '../actions/player';
+import getWhetherPlayGAMPreroll from '../utilities/player/getWhetherPlayGAMPreroll';
 
 // Destructure streams from window global
 const { streams } = window.bbgiconfig || {};
@@ -55,7 +56,7 @@ export const DEFAULT_STATE = {
 	cuePoint: false,
 	time: 0,
 	duration: 0,
-	gamAdPlayback: false,
+	lastAdPlaybackTime: 0,
 	player: {},
 	playerType: '', // Store player type (omny, mp3, td)
 	userInteraction: false, // Store userInteraction state
@@ -200,20 +201,39 @@ function reducer(state = {}, action = {}) {
 				adPlayback: true,
 			};
 
-		case ACTION_GAM_AD_PLAYBACK_START:
+		case ACTION_GAM_AD_PLAYBACK_START: {
+			const { lastAdPlaybackTime } = state;
+			const shouldPlayGAMPreroll = getWhetherPlayGAMPreroll(
+				action.nowTime,
+				lastAdPlaybackTime,
+			);
+
 			return {
 				...state,
-				gamAdPlayback: true,
+				gamAdPlayback: shouldPlayGAMPreroll,
 			};
+		}
 
 		// Catches in Saga Middleware
-		case ACTION_AD_PLAYBACK_ERROR:
-		case ACTION_AD_PLAYBACK_COMPLETE:
-		case ACTION_GAM_AD_PLAYBACK_COMPLETE: {
+		case ACTION_AD_PLAYBACK_ERROR: {
+			console.log('Preroll complete but unsuccesful');
+
 			return {
 				...state,
 				adPlayback: false,
 				gamAdPlayback: false,
+			};
+		}
+
+		case ACTION_AD_PLAYBACK_COMPLETE:
+		case ACTION_GAM_AD_PLAYBACK_COMPLETE: {
+			console.log('Successful Preroll complete - updating time stamp ');
+			const nowDate = new Date();
+			return {
+				...state,
+				adPlayback: false,
+				gamAdPlayback: false,
+				lastAdPlaybackTime: nowDate.getTime(),
 			};
 		}
 

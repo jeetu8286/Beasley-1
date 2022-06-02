@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
+	ACTION_AD_PLAYBACK_ERROR,
 	ACTION_GAM_AD_PLAYBACK_COMPLETE,
 	adPlaybackStop,
 } from '../../redux/actions/player';
@@ -283,11 +284,12 @@ class GamPreroll extends PureComponent {
 	}
 
 	finalize() {
+		console.log('GAM Preroll Finalize()');
 		if (this.adsManager) {
 			this.adsManager.destroy();
 		}
 
-		const { isFinalized } = this.state;
+		const { isFinalized, playingPrerollFlag } = this.state;
 		if (!isFinalized) {
 			// Mark State
 			this.setState({
@@ -296,9 +298,17 @@ class GamPreroll extends PureComponent {
 				isFinalized: true,
 			});
 
+			console.log(
+				`GAM Preroll Actually Finalizing - playingPrerollFlag: ${playingPrerollFlag}`,
+			);
 			// Call Player Action
 			const { adPlaybackStop } = this.props;
-			adPlaybackStop(ACTION_GAM_AD_PLAYBACK_COMPLETE);
+			// If we even started a preroll, pretend it was a success
+			if (playingPrerollFlag) {
+				adPlaybackStop(ACTION_GAM_AD_PLAYBACK_COMPLETE);
+			} else {
+				adPlaybackStop(ACTION_AD_PLAYBACK_ERROR);
+			}
 		}
 	}
 

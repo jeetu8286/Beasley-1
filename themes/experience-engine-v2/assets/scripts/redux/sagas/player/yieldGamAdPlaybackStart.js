@@ -1,16 +1,22 @@
-import { call, takeLatest } from 'redux-saga/effects';
-import { ACTION_GAM_AD_PLAYBACK_START } from '../../actions/player';
+import { put, select, takeLatest } from 'redux-saga/effects';
+import {
+	ACTION_AD_PLAYBACK_ERROR,
+	ACTION_GAM_AD_PLAYBACK_START,
+	adPlaybackStop,
+} from '../../actions/player';
+import getWhetherPlayGAMPreroll from '../../utilities/player/getWhetherPlayGAMPreroll';
 
 /**
- * @function yieldAdPlaybackStart
+ * @function yieldGamAdPlaybackStart
  * Generator runs whenever ACTION_AD_PLAYBACK_START is dispatched
  */
-function* yieldGamAdPlaybackStart() {
-	const { gampreroll } = window.bbgiconfig.dfp;
+function* yieldGamAdPlaybackStart({ nowTime }) {
+	// Get player from state
+	const playerStore = yield select(({ player }) => player);
+	const { lastAdPlaybackTime } = playerStore;
 
-	if (gampreroll && gampreroll.unitId) {
-		// Add class to body
-		yield call([document.body.classList, 'add'], 'locked');
+	if (!getWhetherPlayGAMPreroll(nowTime, lastAdPlaybackTime)) {
+		yield put(adPlaybackStop(ACTION_AD_PLAYBACK_ERROR));
 	}
 }
 
