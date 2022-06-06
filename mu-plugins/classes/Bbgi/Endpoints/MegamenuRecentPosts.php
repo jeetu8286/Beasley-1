@@ -86,6 +86,10 @@ class MegamenuRecentPosts extends Module {
 						'type'     => 'string',
 						'required' => true,
 					],
+					'thumb_size'       => [
+							'type'     => 'string',
+							'required' => true,
+					],
 				]
 			]
 		);
@@ -118,18 +122,22 @@ class MegamenuRecentPosts extends Module {
 
 		if ( count($recent_posts_array) > 0 ) {
 			$recent_post_result['status'] = 200;
-			echo "Created new cache setup for ". $key ." Key";
+			// echo "Created new cache setup for ". $key ." Key";
 			foreach ($recent_posts_array as $key => $recent_posts) {
 				// print_r($recent_posts);
 				$post_data = array(
 					'title' 	=> $recent_posts['post_title'],
-					'excerpt' 	=> get_permalink( $recent_posts['ID'] ),
+					'permalink' 	=> get_permalink( $recent_posts['ID'] ),
 				);
 				// $categories = get_the_category( $recent_posts['ID'] );
 				// print_r($categories);
 
 				if( isset($request['show_thumb']) && $request['show_thumb'] == 'yes' ) {
-					$post_data['thumbnail'] = get_the_post_thumbnail_url( $recent_posts['ID'],'full' );
+					// echo get_the_post_thumbnail( $recent_posts['ID'], 'full' );
+					// $post_data['thumbnail'] = get_the_post_thumbnail_url( $recent_posts['ID'],'full' );
+					$post_data['thumbnail_show'] = $request['show_thumb'];
+					$post_data['thumbnail_size'] = isset( $request['thumb_size'] ) && $request['thumb_size'] != "" ? $request['thumb_size'] : 'full' ;
+					$post_data['thumbnail'] = get_the_post_thumbnail( $recent_posts['ID'], 'full' );
 				}
 				$recent_post_result['recent_posts'][] = $post_data;
 			}

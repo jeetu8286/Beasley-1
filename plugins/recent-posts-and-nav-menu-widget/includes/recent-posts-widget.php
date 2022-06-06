@@ -36,42 +36,54 @@ class RPMW_Widget_Recent_Posts extends WP_Widget {
 		if ( ! isset( $args['widget_id'] ) ) {
 			$args['widget_id'] = $this->id;
 		}
-		$number    = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
-		$default_title = __( 'Recent Posts' );
-		$title         = ( ! empty( $instance['title'] ) ) ? $instance['title'] : $default_title;
-		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
-		$show_thumb = isset( $instance['show_thumb'] ) ? (bool) $instance['show_thumb'] : false;
+		$number			= isset( $instance['number'] ) ? absint( $instance['number'] ) : 4;
+		$default_title	= __( 'Recent Posts' );
+		$title			= ( ! empty( $instance['title'] ) ) ? $instance['title'] : $default_title;
+		$title			= apply_filters( 'widget_title', $title, $instance, $this->id_base );
+		$show_thumb		= isset( $instance['show_thumb'] ) ? (bool) $instance['show_thumb'] : false;
+		$thumbnail_size	= isset( $instance['show_thumb'] ) ? (bool) $instance['show_thumb'] : false;
 
-		$category_ids = ( ! empty( $instance[ 'category_ids' ] ) ) ? array_map('absint', $instance[ 'category_ids' ] ) : array(0);
+		$category_ids	= ( ! empty( $instance[ 'category_ids' ] ) ) ? array_map('absint', $instance[ 'category_ids' ] ) : array(0);
 		if ( in_array( 0, $category_ids ) ) {
 			$category_ids = 0;
 		}
-		$query_args = array('post_type' => $this->allow_megamenu_recent_posts_posttype(), 'posts_per_page' => $number, 'no_found_rows' => true,'post_status' => 'publish', 'ignore_sticky_posts' => true);
+		/* $query_args		= array('post_type' => $this->allow_megamenu_recent_posts_posttype(), 'posts_per_page' => $number, 'no_found_rows' => true,'post_status' => 'publish', 'ignore_sticky_posts' => true);
 		if ($category_ids != 0 && !in_array( 0, $category_ids ) ) {
 			$query_args[ 'category__in' ] = $category_ids;
-		}
-		$thumb_dimensions = ( ! empty( $instance[ 'thumb_dimensions' ] ) ) ? $instance[ 'thumb_dimensions' ] : $this->defaults[ 'thumb_dimensions' ];
+		} */
+		/* $thumb_dimensions = ( ! empty( $instance[ 'thumb_dimensions' ] ) ) ? $instance[ 'thumb_dimensions' ] : $this->defaults[ 'thumb_dimensions' ];
 		list( $ints[ 'thumb_width' ], $ints[ 'thumb_height' ] ) = $this->get_image_dimensions( $thumb_dimensions );
 		$this->customs[ 'thumb_dimensions' ] = $thumb_dimensions;
-		$r = new WP_Query($query_args);
+		$r = new WP_Query($query_args); */
 
-		if ($r->have_posts())
-		{
+		// if ($r->have_posts()) {
 			echo '<div id="rpwwt-recent-posts-widget-with-thumbnails-3" class="rpwwt-widget">';
 			echo $args['before_widget'];
 
 			if ( $title ) {
 				echo $args['before_title'] . $title . $args['after_title'];
 			}
-			$format = current_theme_supports( 'html5', 'navigation-widgets' ) ? 'html5' : 'xhtml';
+			/* $format = current_theme_supports( 'html5', 'navigation-widgets' ) ? 'html5' : 'xhtml';
 			$format = apply_filters( 'navigation_widgets_format', $format );
 			if ( 'html5' === $format ) {
 				$title      = trim( strip_tags( $title ) );
 				$aria_label = $title ? $title : $default_title;
 				echo '<nav aria-label="' . esc_attr( $aria_label ) . '">';
-			}
+			} */
 
-			echo '<ul>';
+			echo sprintf(
+					'<div class="megamenu-recent-posts-endpoint"
+						  data-postsperpage="%s"
+						  data-categories="%s"
+						  data-showthumb="%s"
+						  data-showthumbsize="%s"></div>',
+					$number,
+					implode( ',', $category_ids ),
+					$show_thumb,
+					$thumbnail_size
+			);
+
+			/* echo '<ul>';
 			while ( $r->have_posts() )
 			{
 				$r->the_post();
@@ -94,11 +106,11 @@ class RPMW_Widget_Recent_Posts extends WP_Widget {
 			echo '</ul>';
 			if ( 'html5' === $format ) {
 				echo '</nav>';
-			}
+			} */
 			echo $args['after_widget'];
 			echo '</div>';
 
-		}
+		// } close if
 	}
 
 	/**

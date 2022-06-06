@@ -383,6 +383,17 @@ export function getStateFromContent(container, pageURL) {
 				),
 			),
 			...processEmbeds(
+				document,
+				'megamenurecentposts',
+				'.megamenu-recent-posts-endpoint',
+				getDatasetParams(
+					'postsperpage',
+					'categories',
+					'showthumb',
+					'showthumbsize',
+				),
+			),
+			...processEmbeds(
 				container,
 				'ga',
 				'.ga-info',
