@@ -1,8 +1,7 @@
 <?php
 /**
- * Page endpoint for the hybrid react implementation
- * http://wmmr.beasley.test/wp-json/megamenu_recent_posts/v1/get_posts?per_page=5&page=1&post_type=post&cat=32&show_thumb=yes
- * http://wmmr.beasley.test/wp-json/megamenu_recent_posts/v1/get_posts?per_page=4&page=1&post_type=post&cat=653&show_thumb=yes
+ * Mega menu recent posts endpoint
+ * http://985thesportshub.beasley.test/wp-json/megamenu_recent_posts/v1/get_posts?per_page=1&cat=8&show_thumb=1&thumb_size=1
  * @package Bbgi
  */
 namespace Bbgi\Endpoints;
@@ -132,7 +131,7 @@ class MegamenuRecentPosts extends Module {
 				// $categories = get_the_category( $recent_posts['ID'] );
 				// print_r($categories);
 
-				if( isset($request['show_thumb']) && $request['show_thumb'] == 'yes' ) {
+				if( isset($request['show_thumb']) && $request['show_thumb'] == 1 ) {
 					// echo get_the_post_thumbnail( $recent_posts['ID'], 'full' );
 					// $post_data['thumbnail'] = get_the_post_thumbnail_url( $recent_posts['ID'],'full' );
 					$post_data['thumbnail_show'] = $request['show_thumb'];

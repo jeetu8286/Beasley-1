@@ -28,9 +28,9 @@ class RPMW_Widget_Recent_Posts extends WP_Widget {
 	/**
 	 * Mega menu - Returns array of post type for recent post widgets.
 	 */
-	public function allow_megamenu_recent_posts_posttype() {
+	/* public function allow_megamenu_recent_posts_posttype() {
 		return (array) apply_filters( 'allow-megamenu-recent-posts-for-posttypes', array( 'post', 'gmr_gallery', 'listicle_cpt', 'affiliate_marketing' )  );
-	}
+	} */
 
 	public function widget( $args, $instance ) {
 		if ( ! isset( $args['widget_id'] ) ) {
@@ -57,7 +57,7 @@ class RPMW_Widget_Recent_Posts extends WP_Widget {
 		$r = new WP_Query($query_args); */
 
 		// if ($r->have_posts()) {
-			echo '<div id="rpwwt-recent-posts-widget-with-thumbnails-3" class="rpwwt-widget">';
+			echo '<div id="rpwwt-recent-posts-widget-with-thumbnails-3" class="rpwwt-widget rpwwt-widget-'.$args['widget_id'].'">';
 			echo $args['before_widget'];
 
 			if ( $title ) {
@@ -76,11 +76,13 @@ class RPMW_Widget_Recent_Posts extends WP_Widget {
 						  data-postsperpage="%s"
 						  data-categories="%s"
 						  data-showthumb="%s"
-						  data-showthumbsize="%s"></div>',
+						  data-showthumbsize="%s"
+						  data-menuareaid="%s"></div>',
 					$number,
 					implode( ',', $category_ids ),
 					$show_thumb,
-					$thumbnail_size
+					$thumbnail_size,
+					$args['widget_id']
 			);
 
 			/* echo '<ul>';
@@ -298,9 +300,14 @@ class RPMW_Widget_Recent_Posts extends WP_Widget {
 		<p><label for="<?php echo $field_ids[ 'thumb_dimensions' ]; ?>"><?php esc_html_e( 'Size of thumbnail', RPMW_TEXT_DOMAIN ); ?>:</label>
 			<select id="<?php echo $field_ids[ 'thumb_dimensions' ]; ?>" name="<?php echo $this->get_field_name( 'thumb_dimensions' ); ?>">
 				<option value=""><?php esc_html_e( 'Select Size of thumbnail', RPMW_TEXT_DOMAIN ); ?></option>
-				<?php foreach ( $size_options as $option ) { ?>
+				<?php $thumbsizearray = array( "thumbnail", "medium", "large", "full" );
+				foreach ( $thumbsizearray as $thumbsize ) { ?>
+					<option value="<?php echo esc_attr( $thumbsize ); ?>"<?php selected( $thumb_dimensions, $thumbsize ); ?>> <?php echo esc_html( $thumbsize ); ?> </option>
+				<?php } ?>
+				<?php /* foreach ( $size_options as $option ) { ?>
+						<?php if( in_array( $option[ 'size_name' ], array( "thumbnail", "medium", "large", "full" ) ) ) ?>
 					<option value="<?php echo esc_attr( $option[ 'size_name' ] ); ?>"<?php selected( $thumb_dimensions, $option[ 'size_name' ] ); ?>><?php echo esc_html( $option[ 'name' ] ); ?> (<?php echo absint( $option[ 'width' ] ); ?> &times; <?php echo absint( $option[ 'height' ] ); ?>)</option>
-				<?php }	?>
+				<?php }	*/ ?>
 			</select>
 			<em><?php printf( esc_html__( 'If you use a specified size the following sizes will be taken, otherwise they will be ignored and the selected dimension as stored in %s will be used:', RPMW_TEXT_DOMAIN ), $media_trail ); ?></em>
 		</p><?php

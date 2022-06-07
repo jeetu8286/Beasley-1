@@ -391,6 +391,7 @@ export function getStateFromContent(container, pageURL) {
 					'categories',
 					'showthumb',
 					'showthumbsize',
+					'menuareaid',
 				),
 			),
 			...processEmbeds(
