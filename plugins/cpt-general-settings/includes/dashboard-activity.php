@@ -14,7 +14,7 @@ class DashboardActivity {
 		add_action( 'save_post_gmr_gallery', array( $this, 'remove_dashboard_activity_cache_result'), 10, 3 );
 		add_action( 'save_post_listicle_cpt', array( $this, 'remove_dashboard_activity_cache_result'), 10, 3 );
 		// add_action( 'save_post_post', array( $this, 'remove_dashboard_activity_cache_result'), 10, 3 );
-		add_action( 'save_post', array( $this, 'remove_dashboard_activity_cache_result'), 10, 3 );
+		// add_action( 'save_post', array( $this, 'remove_dashboard_activity_cache_result'), 10, 3 );
 	}
 	public function remove_dashboard_activity_cache_result( $post_id, $post, $update ) {
 		// bail out if this is an autosave
