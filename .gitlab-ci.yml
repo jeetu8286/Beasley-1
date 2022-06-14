@@ -46,7 +46,7 @@ deploy_stage:
 notify_slack:
   stage: test
   script:
-    - "curl -X POST -H 'Content-type: application/json' --data \"{\"username\":\"Gitlab Pipeline\", \"text\":\"Gitlab pipeline is running the Production Deployment.\"}\" $SLACK_WEBHOOK"
+    - curl -X POST -H \"Content-type: application/json\" --data \"{\"username\":\"Gitlab Pipeline\", \"text\":\"Gitlab pipeline is running the Production Deployment.\"}\" $SLACK_WEBHOOK
   only:
     - master
 
