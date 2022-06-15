@@ -17,7 +17,7 @@ class DashboardActivity {
 	}
 
 	public function remove_dashboard_activity_cache_result_post($post_ID, $post_after, $post_before){
-		if ( ! isset($post_after->post_type) || $post_after->post_type !== 'post' ) {
+		if ( ! isset($post_after->post_type) || $post_after->post_type !== 'post' ){
 			return;
 		}
 
@@ -35,10 +35,6 @@ class DashboardActivity {
 			return;
 		}
 
-		// Only set for post_type = post !
-		/* if ( 'post' !== $post->post_type && 'affiliate_marketing' !== $post->post_type && 'gmr_gallery' !== $post->post_type && 'listicle_cpt' !== $post->post_type ) {
-			return;
-		} */
 		$found_dashboard	= false;
 		$key				= md5('bbgi_recent_published_posts');
 		$cachedata			= wp_cache_get( $key, 'bbgi', false, $found_dashboard );
@@ -80,8 +76,6 @@ class DashboardActivity {
 				)
 			);
 			// Set the cache to expire the data after 1800 seconds = 30 min
-			// $expiration = get_site_option( 'recently_published_posts_expiration' );
-			// $value      = ( ( isset( $expiration ) && $expiration != "" ) ? $expiration : 15 );
 			wp_cache_set( $key, $dashboard_activity_result, 'bbgi', '1800' );
 		}
 		echo  $dashboard_activity_result;
