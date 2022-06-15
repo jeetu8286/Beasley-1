@@ -20,6 +20,16 @@ const DropDownAd = () => {
 	);
 
 	const dropDropDownAdRef = useRef(null);
+
+	const isListenLiveShowing = useSelector(
+		state => state.screen.isListenLiveShowing,
+	);
+	if (!isListenLiveShowing) {
+		console.log('NOT SHOWING DD AD');
+		return false;
+	}
+
+	console.log('SHOWING DD AD');
 	const [pageURL] = document.location.href;
 	// this id is also compared in /assets/scripts/components/content/embeds/Dfp.js
 	const id = 'div-drop-down-slot';
