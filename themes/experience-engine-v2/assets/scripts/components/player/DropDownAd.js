@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Dfp from '../components/content/embeds/Dfp';
-import ErrorBoundary from '../components/ErrorBoundary';
+import Dfp from '../content/embeds/Dfp';
+import ErrorBoundary from '../ErrorBoundary';
 import {
 	dropdownAdHidden,
 	dropdownAdRefreshed,
-} from '../redux/actions/dropdownad';
+} from '../../redux/actions/dropdownad';
 
 const DropDownAd = () => {
 	const dispatch = useDispatch();
