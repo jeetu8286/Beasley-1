@@ -1,3 +1,11 @@
+window.amSelectionIndex = false;
+
+jQuery(document).ready(function () {
+	jQuery('#insert-media-button').click(function (e) {
+		window.amSelectionIndex = true;
+	});
+});
+
 // Function for ajax get request_am
 const request_am = (action, data) => new Promise((resolve, reject) => {
 	wp.ajax.send(action, {
@@ -180,21 +188,24 @@ wp.media.view.MediaFrame.Post = oldMediaFrameAffiliateMarketing.extend({
 	initialize: function () {
 		oldMediaFrameAffiliateMarketing.prototype.initialize.apply(this, arguments);
 
-		this.states.add([
-			new mediaControllerAffiliateMarketing({
-				id: 'existingam-action',
-				menu: 'default', // menu event = menu:render:default
-				content: 'existingam',
-				title: wp.media.view.l10n.customMenuTitleAffiliateMarketing, // added via 'media_view_strings' filter
-				priority: 52,
-				toolbar: 'main-existingam-action', // toolbar event = toolbar:create:main-existingam-action
-				type: 'link'
-			})
-		]);
+		if(window.amSelectionIndex !== false) {
+			this.states.add([
+				new mediaControllerAffiliateMarketing({
+					id: 'existingam-action',
+					menu: 'default', // menu event = menu:render:default
+					content: 'existingam',
+					title: wp.media.view.l10n.customMenuTitleAffiliateMarketing, // added via 'media_view_strings' filter
+					priority: 52,
+					toolbar: 'main-existingam-action', // toolbar event = toolbar:create:main-existingam-action
+					type: 'link'
+				})
+			]);
 
-		this.on('content:render:existingam', this.customContentAffiliateMarketing, this);
-		this.on('toolbar:create:main-existingam-action', this.createCustomToolbarAffiliateMarketing, this);
-		this.on('toolbar:render:main-existingam-action', this.renderCustomToolbarAffiliateMarketing, this);
+			this.on('content:render:existingam', this.customContentAffiliateMarketing, this);
+			this.on('toolbar:create:main-existingam-action', this.createCustomToolbarAffiliateMarketing, this);
+			this.on('toolbar:render:main-existingam-action', this.renderCustomToolbarAffiliateMarketing, this);
+			window.amSelectionIndex = false;
+		}
 	},
 
 	createCustomToolbarAffiliateMarketing: function (toolbar) {
@@ -213,6 +224,6 @@ wp.media.view.MediaFrame.Post = oldMediaFrameAffiliateMarketing.extend({
 			model: this.state().props
 		});
 
-		// this.content.set(view);
+		this.content.set(view);
 	},
 });
