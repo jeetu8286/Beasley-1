@@ -13,7 +13,7 @@ class GeneralSettingsFrontRendering {
 	function author_pre_get_posts($query) {
 		if ( !is_admin() && $query->is_main_query() ) {
 			if ($query->is_author()) {
-				$query->set( 'posts_per_page', 6 );
+				$query->set( 'posts_per_page', 16 );
 				$query->set('post_type', array('post', 'gmr_gallery', 'listicle_cpt', 'affiliate_marketing'));
 			}
 		}
