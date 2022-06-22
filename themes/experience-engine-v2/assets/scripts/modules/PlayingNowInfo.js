@@ -102,7 +102,7 @@ class Info extends Component {
 	getStationInfo() {
 		const { station, streams, status, cuePoint } = this.props;
 
-		let info = STATUS_LABELS[status] || null;
+		let info = STATUS_LABELS[status] || '';
 		if (status === 'LIVE_PLAYING') {
 			const pointInfo = this.getCuePointInfo(cuePoint);
 			if (pointInfo) {
