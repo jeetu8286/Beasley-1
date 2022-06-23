@@ -47,7 +47,7 @@ notify_slack:
   stage: test
   script:
     #- 'curl -X POST -H "Content-type: application/json" --data \"{\"username\":\"Gitlab Pipeline\", \"text\":\"Gitlab pipeline is running the Production Deployment.\"}\" "$SLACK_WEBHOOK"'
-    - curl -X POST --data '{"Username":Gitlab Pipeline, "text":Gitlab pipeline is running the Production Deployment.}' $SLACK_WEBHOOK
+    - curl -X POST --data '{"Username":Gitlab Pipeline, "text":Gitlab pipeline is running the Production Deployment.}' https://hooks.slack.com/services/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
   only:
     - feature/add-slackalert-gitlab-pipeline
 
