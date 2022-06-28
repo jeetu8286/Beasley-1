@@ -353,8 +353,6 @@ class ExperienceEngine extends \Bbgi\Module {
 		return false;
 	}
 
-	public function cache_feeds($publisherId, $feed)
-
 	public function test_post( \WP_REST_Request $request ) {
 		if ($request->is_json_content_type()) {
 			error_log( $this->log_prefix() . 'received json' );
