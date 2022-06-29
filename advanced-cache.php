@@ -409,11 +409,6 @@ if ( ! include_once( WP_CONTENT_DIR . '/object-cache.php' ) )
 
 wp_cache_init(); // Note: wp-settings.php calls wp_cache_init() which clobbers the object made here.
 
-if(strpos($_SERVER['HTTP_HOST'], 'wmmr.bbgistage') !== false){
-	error_log( 'batcache bypassed for wmmr.bbgistage.com' );
-	return;
-}
-
 if ( ! is_object( $wp_object_cache ) )
 	return;
 
