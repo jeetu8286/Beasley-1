@@ -128,6 +128,15 @@ class ExperienceEngine extends \Bbgi\Module {
 		return wp_remote_request( $host . $path, $args );
 	}
 
+	protected function _cacheEEValue($path, $value, $group, $expires) {
+		$replace = wp_cache_replace($path, $value, $group, $expires);
+
+		if ($replace === false) {
+			wp_cache_add($path, $value, $group, $expires);
+		}
+
+	}
+
 	public function do_request($path, $args = array(), $cache_group = '') {
 		$cache_index = get_option( 'ee_cache_index', 0 );
 		$cache_key = empty($cache_group) ? $cache_index : $cache_group;
@@ -339,7 +348,17 @@ class ExperienceEngine extends \Bbgi\Module {
 		//clear ee content feed values
 		$publisher = $this->_get_publisher_key();
 		$url = "experience/channels/{$publisher}/feeds/content/";
-		wp_cache_delete($url, 'experience_engine_api-ee_data');
+		$track = $request->get_header('track-id');
+
+		if (!$request->is_json_content_type()) {
+			error_log($this->log_prefix() . "pushed contents from $publisher by track: $track not json\n");
+			return rest_ensure_response( 'No Json' );
+		}
+
+		$content = $request->get_body();
+
+		$this->_cacheEEValue( $url, json_decode($content,true), 'experience_engine_api-ee_data',86400 );
+		error_log($this->log_prefix() . "cached pushed contents from $publisher by track: $track into group: experience_engine_api-ee_data for 86400 seconds\n");
 
 		// Clear specific page caches
 		if ( function_exists( 'batcache_clear_url' ) && class_exists( 'batcache' ) ) {
@@ -349,10 +368,6 @@ class ExperienceEngine extends \Bbgi\Module {
 		}
 
 		$this->clearCloudFlareHomeCache();
-
-		$track = $request->get_header('track-id');
-
-		error_log($this->log_prefix() . "cache purged for track: $track\n");
 
 		return rest_ensure_response( 'Cache Flushed' );
 	}

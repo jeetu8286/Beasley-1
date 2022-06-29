@@ -67,7 +67,7 @@ const adjustContentMarginForTopAd = slotElement => {
 	if (slotElement && adContainerElement && contentElement) {
 		const adContainerStyle = window.getComputedStyle(adContainerElement);
 		const newContentTopMargin =
-			1 +
+			24 +
 			parseInt(slotElement.style.height, 10) +
 			parseInt(adContainerStyle.marginTop, 10);
 		contentElement.style.marginTop = `${newContentTopMargin}px`;
@@ -135,7 +135,7 @@ const slotRenderEndedHandler = event => {
 			window.bbgiAdhesionLoaded = true;
 		}
 
-		// Dropdown Ads May Have Display: None Set - Show Them
+		// Dropdown Ads May Have Display: None. Set Them To Show
 		if (placeholder === dropDownDivID) {
 			if (slotElement) {
 				slotElement.style.display = 'flex';
@@ -607,6 +607,9 @@ class Dfp extends PureComponent {
 		const { adjustedUnitId } = this.state;
 
 		if (!document.getElementById(placeholder)) {
+			console.log(
+				`NOT REGISTERRING AD BECAUSE NO PLACE HOLDER FOR - ${unitName}`,
+			);
 			return;
 		}
 
@@ -649,14 +652,28 @@ class Dfp extends PureComponent {
 						],
 					)
 					.addSize(
-						[1160, 0],
+						[800, 0],
+						[
+							[320, 50],
+							[320, 100],
+							[728, 90],
+						],
+					)
+					.addSize(
+						[1020, 0],
+						[
+							[728, 90],
+							[970, 90],
+						],
+					)
+					.addSize(
+						[1020, 650],
 						[
 							[728, 90],
 							[970, 90],
 							[970, 250],
 						],
 					)
-
 					.build();
 
 				prebidSizeConfig = [
@@ -669,7 +686,22 @@ class Dfp extends PureComponent {
 						],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [800, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+							[728, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 0],
+						sizes: [
+							[728, 90],
+							[970, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 650],
 						sizes: [
 							[728, 90],
 							[970, 90],
@@ -678,6 +710,7 @@ class Dfp extends PureComponent {
 					},
 				];
 			} else if (unitName === 'drop-down') {
+				console.log('Building sizes for Dropdown');
 				sizeMapping = googletag
 					.sizeMapping()
 					// does not display on small screens
@@ -707,7 +740,22 @@ class Dfp extends PureComponent {
 						],
 					)
 					.addSize(
-						[1160, 0],
+						[800, 0],
+						[
+							[320, 50],
+							[320, 100],
+							[728, 90],
+						],
+					)
+					.addSize(
+						[1020, 0],
+						[
+							[728, 90],
+							[970, 90],
+						],
+					)
+					.addSize(
+						[1020, 650],
 						[
 							[728, 90],
 							[970, 90],
@@ -727,7 +775,22 @@ class Dfp extends PureComponent {
 						],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [800, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+							[728, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 0],
+						sizes: [
+							[728, 90],
+							[970, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 650],
 						sizes: [
 							[728, 90],
 							[970, 90],
@@ -774,7 +837,22 @@ class Dfp extends PureComponent {
 						],
 					)
 					.addSize(
-						[1160, 0],
+						[800, 0],
+						[
+							[320, 50],
+							[320, 100],
+							[728, 90],
+						],
+					)
+					.addSize(
+						[1020, 0],
+						[
+							[728, 90],
+							[970, 90],
+						],
+					)
+					.addSize(
+						[1020, 650],
 						[
 							[728, 90],
 							[970, 90],
@@ -794,7 +872,22 @@ class Dfp extends PureComponent {
 						],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [800, 0],
+						sizes: [
+							[320, 50],
+							[320, 100],
+							[728, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 0],
+						sizes: [
+							[728, 90],
+							[970, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 650],
 						sizes: [
 							[728, 90],
 							[970, 90],
@@ -811,7 +904,14 @@ class Dfp extends PureComponent {
 					// accepts common desktop banner formats
 					.addSize([300, 0], [[320, 50]])
 					.addSize(
-						[1160, 0],
+						[800, 0],
+						[
+							[320, 50],
+							[728, 90],
+						],
+					)
+					.addSize(
+						[1020, 0],
 						[
 							[728, 90],
 							[970, 90],
@@ -827,7 +927,14 @@ class Dfp extends PureComponent {
 						sizes: [[320, 50]],
 					},
 					{
-						minViewPort: [1160, 0],
+						minViewPort: [800, 0],
+						sizes: [
+							[320, 50],
+							[728, 90],
+						],
+					},
+					{
+						minViewPort: [1020, 0],
 						sizes: [
 							[728, 90],
 							[970, 90],

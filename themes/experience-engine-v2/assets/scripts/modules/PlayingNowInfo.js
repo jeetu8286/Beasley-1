@@ -4,8 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { STATUSES } from '../redux/actions/player';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { PodcastScrubber, Stations, Volume } from '../components/player';
+import {
+	PodcastScrubber,
+	Stations,
+	Volume,
+	DropDownAd,
+} from '../components/player';
 import { isIOS } from '../library';
+import PlayerButton from './PlayerButton';
 
 const STATUS_LABELS = {
 	[STATUSES.LIVE_PAUSE]: 'Paused',
@@ -33,7 +39,7 @@ class Info extends Component {
 			return false;
 		}
 
-		const info = [];
+		const retval = [];
 		const { artistName, cueTitle, type } = cuePoint;
 		if (type === 'ad') {
 			return false;
@@ -52,22 +58,30 @@ class Info extends Component {
 
 		if (!isStationCuePointHoldingPodcastInfo) {
 			if (cueTitle && cueTitle.length) {
-				info.push(
-					<span key="cue-title" className="cue-point-title">
-						{cueTitle.trim()}
-					</span>,
+				retval.push(
+					<span
+						key="cue-title"
+						className="cue-point-title"
+						dangerouslySetInnerHTML={{
+							__html: cueTitle.trim(),
+						}}
+					/>,
 				);
 			}
 			if (artistName && artistName.length) {
-				info.push(
-					<span key="cue-artist" className="cue-point-artist">
-						{artistName.trim()}
-					</span>,
+				retval.push(
+					<span
+						key="cue-artist"
+						className="cue-point-artist"
+						dangerouslySetInnerHTML={{
+							__html: artistName.trim(),
+						}}
+					/>,
 				);
 			}
 		}
 
-		return info.length ? info : false;
+		return retval.length ? retval : false;
 	}
 
 	constructor(props) {
@@ -80,7 +94,9 @@ class Info extends Component {
 		const { cuePoint } = this.props;
 		const info = this.getCuePointInfo(cuePoint);
 
-		return this.getMockup(info[0] || '', info[1] || '');
+		return info
+			? this.getControlMarkup(info[0] || null, info[1] || null)
+			: false;
 	}
 
 	getStationInfo() {
@@ -96,10 +112,10 @@ class Info extends Component {
 
 		const stream = streams.find(item => item.stream_call_letters === station);
 
-		return this.getMockup(stream ? stream.title : station, info);
+		return this.getControlMarkup(stream ? stream.title : station, info);
 	}
 
-	getMockup(title, description) {
+	getControlMarkup(title, description) {
 		const container = document.getElementById('player-button-div');
 		const buttonsFillStyle = {};
 
@@ -121,8 +137,8 @@ class Info extends Component {
 			<ErrorBoundary>
 				<div className="on-air-list ll-top-container">
 					<ul>
-						<li>
-							<strong>{title}</strong>
+						<li className="ll-title-with-play-btn">
+							<PlayerButton inDropDown customTitle={title} />
 						</li>
 						<li>{description}</li>
 					</ul>
@@ -134,6 +150,12 @@ class Info extends Component {
 					<PodcastScrubber />
 				</div>
 				<Stations />
+				<hr />
+				<div
+					className="on-air-list ll-menu-section full-width-menu"
+					id="live-player-recently-played"
+				/>
+				<DropDownAd />
 			</ErrorBoundary>
 		);
 	}
