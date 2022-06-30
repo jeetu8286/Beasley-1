@@ -182,6 +182,8 @@ class Webhooks extends \Bbgi\Module {
 		$base_url  = get_site_option( 'ee_host', false );
 		$appkey    = get_site_option( 'ee_appkey', false );
 
+		$this->clearCloudFlareCache($post_id);
+
 		// Abort if notification URL isn't set
 		if ( ! $base_url || ! $publisher || ! $appkey ) {
 			$this->log( 'do_webhook notification url is not set.', $debug_params );
@@ -286,5 +288,50 @@ class Webhooks extends \Bbgi\Module {
 			'listicle_cpt'
 		];
 	}
+
+	public function clearCloudFlareCache($postID){
+        if(!$postID){
+            return false;
+        }
+
+		$cloudflaretoken = get_site_option( 'ee_cloudflare_token' );
+		$zone_id = get_option('cloud_flare_zoneid');
+
+		if ( empty($cloudflaretoken) || empty($zone_id) ) {
+			error_log( 'Cloudflare not configured for this site' );
+			return false;
+		}
+
+		// Clear specific page caches
+		if ( function_exists( 'batcache_clear_url' ) && class_exists( 'batcache' ) ) {
+			$url = get_permalink($postID);
+			$this->log( 'Batcache URL' , [ 'url' => $url ] );
+			batcache_clear_url( $url );
+		}
+
+        $post = get_post( $postID );
+        $slug = $post->post_type.'-'.$post->post_name;
+
+		$request_url = 'https://api.cloudflare.com/client/v4/zones/'.$zone_id.'/purge_cache';
+		$data = [ "tags" => [$slug] ];
+
+		$response = wp_remote_post( $request_url, array(
+				'method' => 'POST',
+				'headers' => array(
+						'Content-Type' => 'application/json',
+						'Authorization' => 'Bearer ' . $cloudflaretoken,
+						),
+						'body' => wp_json_encode( $data )
+					)
+				);
+
+		$response_json = 'Cloudflare response: '. json_encode( $response );
+		error_log( $response_json );
+
+		if ( is_wp_error( $response ) ) {
+			error_log( 'Cloudflare error notice query var from is_wp_error function' );
+		}
+
+    }
 
 }
