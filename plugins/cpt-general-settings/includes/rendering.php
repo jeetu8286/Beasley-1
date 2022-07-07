@@ -9,6 +9,23 @@ class GeneralSettingsFrontRendering {
 		// Register scripts
 		// add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ), 1 );
 		add_action('pre_get_posts', array( __CLASS__, 'author_pre_get_posts') );
+
+		add_action( 'template_redirect', array( __CLASS__,'show_404_for_disabled_feeds' ) );
+	}
+	function show_404_for_disabled_feeds() {
+		if ( is_feed() && !is_post_type_archive() && in_array( get_post_type(), GeneralSettingsFrontRendering::restrict_feeds_posttype_list() ) ) {
+			global $wp_query;
+
+			$wp_query->set_404();	// Mark the current query as a 404
+			status_header(404);	// Return 404 HTTP status code instead of the default 200
+			header('Content-Type: text/html; charset=utf-8');	// By default, this page returns XML, so we change the Content-Type header // Because we want to show a 404 page
+			get_template_part( 404 );	// Render the 404 template
+			exit();	// You should exit from the script after that
+		}
+	}
+
+	function restrict_feeds_posttype_list() {
+		return (array) apply_filters( 'restrict-feeds-for-posttypes', array( 'post', 'affiliate_marketing', 'gmr_gallery', 'contest', 'tribe_events', 'listicle_cpt' ) );
 	}
 	function author_pre_get_posts($query) {
 		if ( !is_admin() && $query->is_main_query() ) {
