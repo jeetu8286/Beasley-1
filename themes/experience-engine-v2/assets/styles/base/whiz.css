@@ -38,4 +38,8 @@
 & div .post-meta .meta .share-wrap-icons {
 	  display: none;
   }
+
+& #whiz-leaderboard-container {
+	  height: 50px;
+  }
 }
