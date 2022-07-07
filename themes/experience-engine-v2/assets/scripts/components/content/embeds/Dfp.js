@@ -184,7 +184,6 @@ const slotRenderEndedHandler = event => {
 					adSize[1] = parseInt(heightString, 10);
 				}
 
-				/*
 				// Now Send GA Stats
 				if (
 					slot &&
@@ -215,7 +214,6 @@ const slotRenderEndedHandler = event => {
 						console.log(`ERROR Sending to Google Analytics: `, ex);
 					}
 				}
-				*/
 			}
 
 			// Adjust Container Div Height
