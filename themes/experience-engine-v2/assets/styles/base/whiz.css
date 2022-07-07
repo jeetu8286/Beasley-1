@@ -39,6 +39,13 @@
 	  display: none;
   }
 
+& .content-wrap {
+	& .dfp-slot {
+		margin-bottom: 1.775rem;
+		padding-bottom: 1.775rem;
+	}
+}
+
 & #whiz-leaderboard-container {
 	  height: 50px;
   }
