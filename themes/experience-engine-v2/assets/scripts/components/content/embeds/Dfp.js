@@ -161,11 +161,8 @@ const slotRenderEndedHandler = event => {
 				// 	Round Trip to Ad Server So That Racing/Looping Condition Is Avoided.
 				getSlotStat(placeholder).timeVisible = 10000000;
 			}
-			if (
-				placeholder === topScrollingDivID ||
-				placeholder === bottomAdhesionDivID
-			) {
-				// Set Ad Height To 0 Since No Ad
+			if (placeholder === bottomAdhesionDivID) {
+				// Set Main Content Div Bottom Padding To 0 Since No Ad
 				setSotElementHeight(placeholder, slotElement, 0);
 			}
 		} else {
@@ -187,6 +184,7 @@ const slotRenderEndedHandler = event => {
 					adSize[1] = parseInt(heightString, 10);
 				}
 
+				/*
 				// Now Send GA Stats
 				if (
 					slot &&
@@ -217,6 +215,7 @@ const slotRenderEndedHandler = event => {
 						console.log(`ERROR Sending to Google Analytics: `, ex);
 					}
 				}
+				*/
 			}
 
 			// Adjust Container Div Height
