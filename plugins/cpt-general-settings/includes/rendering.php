@@ -10,7 +10,7 @@ class GeneralSettingsFrontRendering {
 		// add_action( 'wp_enqueue_scripts', array( __CLASS__, 'register_scripts' ), 1 );
 		add_action('pre_get_posts', array( __CLASS__, 'author_pre_get_posts') );
 
-		add_action( 'template_redirect', array( __CLASS__,'show_404_for_disabled_feeds' ) );
+		//add_action( 'template_redirect', array( __CLASS__,'show_404_for_disabled_feeds' ) );
 	}
 	function show_404_for_disabled_feeds() {
 		if ( is_feed() && !is_post_type_archive() && in_array( get_post_type(), GeneralSettingsFrontRendering::restrict_feeds_posttype_list() ) ) {
