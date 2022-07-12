@@ -67,15 +67,11 @@ const adjustContentMarginForTopAd = newAdHeight => {
 
 	if (adContainerElement && contentElement) {
 		const contentStyle = window.getComputedStyle(contentElement);
-		const adContainerStyle = window.getComputedStyle(adContainerElement);
-
 		const lastVerticalScroll = window.scrollY;
 		const lastContentTopMargin = parseInt(contentStyle.marginTop, 10);
-		const adContainerTopMargin = parseInt(adContainerStyle.marginTop, 10);
-		const newContentTopMargin =
-			24 + (newAdHeight || 0) + (adContainerTopMargin || 0);
+		const newContentTopMargin = newAdHeight || 0;
 		const newVerticalScroll =
-			lastVerticalScroll + (newContentTopMargin - lastContentTopMargin);
+			lastVerticalScroll - (lastContentTopMargin - newContentTopMargin);
 
 		console.log(
 			`New Leaderboard => Old Scroll:${lastVerticalScroll} NewScroll:${newVerticalScroll} Old Top Margin:${lastContentTopMargin} New Top Margin:${newContentTopMargin}`,
