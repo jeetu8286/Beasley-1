@@ -368,6 +368,7 @@ class ExperienceEngine extends \Bbgi\Module {
 			$home = trailingslashit( get_option( 'home' ) );
 			batcache_clear_url( $home );
 			batcache_clear_url( $home . 'feed/' );
+			error_log( $this->log_prefix() . 'cleared batcache url ' .  $home);
 		}
 
 		$this->clearCloudFlareHomeCache();
@@ -469,7 +470,7 @@ class ExperienceEngine extends \Bbgi\Module {
 				);
 
 		$response_json = 'Cloudflare response 4: '. json_encode( $response );
-		error_log( $response_json );
+		error_log( $this->log_prefix() . $response_json );
 
 		if ( is_wp_error( $response ) ) {
 			error_log( 'Cloudflare error notice query var from is_wp_error function 5' );
