@@ -19,6 +19,7 @@ import resetScrollToTop from '../../utilities/player/resetScrollToTop';
  * Scrolls to the top of content.
  */
 function scrollIntoView() {
+	/* Scrolling Content Into View Caused Page Shift on V2
 	// Get content container
 	const content = document.getElementById('content');
 
@@ -26,6 +27,8 @@ function scrollIntoView() {
 	if (content) {
 		content.scrollIntoView(true);
 	}
+	*/
+	resetScrollToTop();
 }
 
 /**
