@@ -13,23 +13,7 @@ import {
 	hideSplashScreen,
 } from '../../actions/screen';
 import { slugify, dispatchEvent, updateCanonicalUrl } from '../../../library';
-import resetScrollToTop from '../../utilities/player/resetScrollToTop';
-
-/**
- * Scrolls to the top of content.
- */
-function scrollIntoView() {
-	/* Scrolling Content Into View Caused Page Shift on V2
-	// Get content container
-	const content = document.getElementById('content');
-
-	// Scroll to top of content
-	if (content) {
-		content.scrollIntoView(true);
-	}
-	*/
-	resetScrollToTop();
-}
+// import resetScrollToTop from '../../utilities/player/resetScrollToTop';
 
 /**
  * Updates window.history with new url and title
@@ -110,7 +94,7 @@ function* yieldLoadedPage(action) {
 	yield call(manageScripts, parsedHtml.scripts, screenStore.scripts);
 
 	// make sure the user scroll bar is into view.
-	yield call(scrollIntoView);
+	// yield call(scrollIntoView);
 
 	// make sure to hide splash screen.
 	yield put(hideSplashScreen());
@@ -134,7 +118,8 @@ function* yieldLoadedPage(action) {
 
 	yield call(handleInjectos);
 
-	resetScrollToTop();
+	console.log('***Yield Loaded and NOT scrolling to top');
+	// resetScrollToTop();
 }
 
 /**

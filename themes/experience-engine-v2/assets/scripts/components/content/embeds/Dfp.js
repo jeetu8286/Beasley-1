@@ -85,13 +85,13 @@ const adjustContentMarginForTopAd = newAdHeight => {
 	}
 };
 
-const adjustContentPaddingForBottomAd = slotElement => {
+const adjustContentPaddingForAdhesionAd = slotElement => {
 	const containerElement = document.getElementById('main-container-div');
 
 	if (slotElement && containerElement) {
 		// If Slot Is Not Visible
 		if (slotElement.offsetParent === null) {
-			console.log('Slot is not visible, so setting no padding.');
+			console.log('Adhesion Slot is not visible, so setting no padding.');
 			containerElement.style.paddingBottom = '0';
 		} else {
 			containerElement.style.paddingBottom = slotElement.style.height;
@@ -110,7 +110,7 @@ const setSlotElementHeight = (placeholder, slotElement, newAdHeight) => {
 	if (placeholder === topScrollingDivID) {
 		adjustContentMarginForTopAd(newAdHeight);
 	} else if (placeholder === bottomAdhesionDivID) {
-		adjustContentPaddingForBottomAd(slotElement);
+		adjustContentPaddingForAdhesionAd(slotElement);
 	}
 };
 
@@ -156,7 +156,7 @@ const slotRenderEndedHandler = event => {
 
 	if (placeholder && isNotSponsorOrInterstitial(placeholder)) {
 		if (isEmpty) {
-			console.log('Empty Ad Returned');
+			console.log(`Empty Ad Returned - ${slot.getAdUnitPath()}`);
 			// DropDown Ads Should Not Retain Their Realestate
 			if (placeholder === dropDownDivID) {
 				if (slotElement) {
