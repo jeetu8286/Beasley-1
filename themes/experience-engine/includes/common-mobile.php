@@ -15,7 +15,7 @@ if ( ! function_exists( 'ee_is_common_mobile' ) ) :
 		}
 
 		if($whiz_pos === null ) {
-			$whiz_pos = stripos( $_SERVER['HTTP_USER_AGENT'], 'whiz' );
+			$whiz_pos = stripos( $_SERVER['HTTP_USER_AGENT'], 'Whiz-App' );
 
 			// Allow way to toggle whiz through URL querystring
 			if ( isset( $_GET['whiz'] ) ) {
