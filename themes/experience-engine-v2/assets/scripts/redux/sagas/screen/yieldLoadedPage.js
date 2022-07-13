@@ -93,6 +93,7 @@ function* yieldLoadedPage(action) {
 	// Update Scripts.
 	yield call(manageScripts, parsedHtml.scripts, screenStore.scripts);
 
+	console.log('***Yield Loading Page and NOT scrolling to top');
 	// make sure the user scroll bar is into view.
 	// yield call(scrollIntoView);
 
@@ -107,9 +108,6 @@ function* yieldLoadedPage(action) {
 		document.body.classList.add('admin-bar');
 	}
 
-	console.log('***Yield Loading Page and scrolling to top');
-	yield call(resetScrollToTop);
-
 	// last step is update history, return early if it's not needed.
 	if (options.suppressHistory) {
 		return;
@@ -121,8 +119,8 @@ function* yieldLoadedPage(action) {
 
 	yield call(handleInjectos);
 
-	console.log('***Yield Load Finished and NOT scrolling to top');
-	// resetScrollToTop();
+	console.log('***Yield Load Finished and scrolling to top');
+	yield call(resetScrollToTop);
 }
 
 /**
