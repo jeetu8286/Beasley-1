@@ -7,3 +7,11 @@
 	z-index: 1;
 }
 
+#div-top-scrolling-slot {
+	height: var(--ad_leaderboard_initial_height);
+}
+
+#inner-content {
+	margin-top: var(--ad_leaderboard_initial_height);
+}
+

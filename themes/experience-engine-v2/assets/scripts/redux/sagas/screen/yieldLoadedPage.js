@@ -16,19 +16,6 @@ import { slugify, dispatchEvent, updateCanonicalUrl } from '../../../library';
 import resetScrollToTop from '../../utilities/player/resetScrollToTop';
 
 /**
- * Scrolls to the top of content.
- */
-function scrollIntoView() {
-	// Get content container
-	const content = document.getElementById('content');
-
-	// Scroll to top of content
-	if (content) {
-		content.scrollIntoView(true);
-	}
-}
-
-/**
  * Updates window.history with new url and title
  *
  * @param {string} url The URL to update history with
@@ -106,8 +93,9 @@ function* yieldLoadedPage(action) {
 	// Update Scripts.
 	yield call(manageScripts, parsedHtml.scripts, screenStore.scripts);
 
+	console.log('***Yield Loading Page and NOT scrolling to top');
 	// make sure the user scroll bar is into view.
-	yield call(scrollIntoView);
+	// yield call(scrollIntoView);
 
 	// make sure to hide splash screen.
 	yield put(hideSplashScreen());
@@ -131,7 +119,8 @@ function* yieldLoadedPage(action) {
 
 	yield call(handleInjectos);
 
-	resetScrollToTop();
+	console.log('***Yield Load Finished and scrolling to top');
+	yield call(resetScrollToTop);
 }
 
 /**
