@@ -156,7 +156,7 @@ const slotRenderEndedHandler = event => {
 
 	if (placeholder && isNotSponsorOrInterstitial(placeholder)) {
 		if (isEmpty) {
-			console.log(`Empty Ad Returned - ${slot.getAdUnitPath()}`);
+			console.log('Empty Ad Returned');
 			// DropDown Ads Should Not Retain Their Realestate
 			if (placeholder === dropDownDivID) {
 				if (slotElement) {
