@@ -13,7 +13,7 @@ import {
 	hideSplashScreen,
 } from '../../actions/screen';
 import { slugify, dispatchEvent, updateCanonicalUrl } from '../../../library';
-// import resetScrollToTop from '../../utilities/player/resetScrollToTop';
+import resetScrollToTop from '../../utilities/player/resetScrollToTop';
 
 /**
  * Updates window.history with new url and title
@@ -107,6 +107,9 @@ function* yieldLoadedPage(action) {
 		document.body.classList.add('admin-bar');
 	}
 
+	console.log('***Yield Loading Page and scrolling to top');
+	yield call(resetScrollToTop);
+
 	// last step is update history, return early if it's not needed.
 	if (options.suppressHistory) {
 		return;
@@ -118,7 +121,7 @@ function* yieldLoadedPage(action) {
 
 	yield call(handleInjectos);
 
-	console.log('***Yield Loaded and NOT scrolling to top');
+	console.log('***Yield Load Finished and NOT scrolling to top');
 	// resetScrollToTop();
 }
 
