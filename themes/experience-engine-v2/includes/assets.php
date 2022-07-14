@@ -100,7 +100,7 @@ if ( ! function_exists( 'ee_enqueue_front_scripts' ) ) :
 		}
 
 		// TODO: refactor this to use wp_localize_script.
-		$bbgiconfig = <<<EOL
+$bbgiconfig = <<<EOL
 window.bbgiconfig = {};
 try {
 	window.bbgiconfig = JSON.parse( document.getElementById( 'bbgiconfig' ).innerHTML );
@@ -165,10 +165,10 @@ var checkResetPixel = setInterval(function() {
 EOL;
 
 		$deps = array(
-				'googletag',
-				'td-sdk',
-				'iframe-resizer',
-				'branded-content-scripts'
+			'googletag',
+			'td-sdk',
+			'iframe-resizer',
+			'branded-content-scripts'
 		);
 
 		wp_enqueue_script( 'ee-app', "{$base}/bundle/app.js", $deps, GREATERMEDIA_VERSION, true );
@@ -183,23 +183,23 @@ endif;
 if ( ! function_exists( 'ee_get_css_colors' ) ) :
 	function ee_get_css_colors() {
 		$vars = [
-				'--brand-primary'                => get_option( 'ee_theme_primary_color', '#ff0000' ),
-				'--brand-secondary'              => get_option( 'ee_theme_secondary_color', '#ffe964' ),
-				'--brand-tertiary'               => get_option( 'ee_theme_tertiary_color', '#ffffff' ),
-				'--brand-background-color'       => get_option( 'ee_theme_background_color', '#ffffff' ),
-				'--brand-button-color'           => get_option( 'ee_theme_button_color', '#ffe964' ),
-				'--brand-text-color'             => get_option( 'ee_theme_text_color', '#000000' ),
-				'--brand-sponsorship-text-color' => get_option( 'ee_theme_sponsorship_color', '#000000' ),
-				'--brand-header-background'							=> get_option( 'ee_theme_header_background_color', '#202020' ),
-				'--brand-header-navigation-drop-down-background'	=> get_option( 'ee_theme_header_nav_dd_background_color', '#313131' ),
-				'--brand-header-icons-color'						=> get_option( 'ee_theme_header_icons_color', '#000000' ),
-				'--brand-header-navigation-link-color'				=> get_option( 'ee_theme_header_navigation_link_color', '#ff0000' ),
-				'--brand-header-search-color'						=> get_option( 'ee_theme_header_search_color', '#ffffff' ),
-				'--brand-header-hamburger-menu-color'				=> get_option( 'ee_theme_header_hamburger_menu_color', '#ff0000' ),
-				'--brand-breaking-news-bar-text-color'				=> get_option( 'ee_theme_breaking_news_bar_text_color', '#ff0000' ),
-				'--brand-breaking-news-bar-background-color'		=> get_option( 'ee_theme_breaking_news_bar_background_color', '#282828' ),
-				'--brand-music-control-color'		=> get_option( 'ee_theme_music_control_color', '#ffe964' ),
-		];
+			'--brand-primary'                => get_option( 'ee_theme_primary_color', '#ff0000' ),
+			'--brand-secondary'              => get_option( 'ee_theme_secondary_color', '#ffe964' ),
+			'--brand-tertiary'               => get_option( 'ee_theme_tertiary_color', '#ffffff' ),
+			'--brand-background-color'       => get_option( 'ee_theme_background_color', '#ffffff' ),
+			'--brand-button-color'           => get_option( 'ee_theme_button_color', '#ffe964' ),
+			'--brand-text-color'             => get_option( 'ee_theme_text_color', '#000000' ),
+			'--brand-sponsorship-text-color' => get_option( 'ee_theme_sponsorship_color', '#000000' ),
+			'--brand-header-background'							=> get_option( 'ee_theme_header_background_color', '#202020' ),
+			'--brand-header-navigation-drop-down-background'	=> get_option( 'ee_theme_header_nav_dd_background_color', '#313131' ),
+			'--brand-header-icons-color'						=> get_option( 'ee_theme_header_icons_color', '#000000' ),
+			'--brand-header-navigation-link-color'				=> get_option( 'ee_theme_header_navigation_link_color', '#ff0000' ),
+			'--brand-header-search-color'						=> get_option( 'ee_theme_header_search_color', '#ffffff' ),
+			'--brand-header-hamburger-menu-color'				=> get_option( 'ee_theme_header_hamburger_menu_color', '#ff0000' ),
+			'--brand-breaking-news-bar-text-color'				=> get_option( 'ee_theme_breaking_news_bar_text_color', '#ff0000' ),
+			'--brand-breaking-news-bar-background-color'		=> get_option( 'ee_theme_breaking_news_bar_background_color', '#282828' ),
+			'--brand-music-control-color'		=> get_option( 'ee_theme_music_control_color', '#ffe964' ),
+			];
 
 		if ( get_option( 'ee_theme_version', '-dark' ) == '-dark' ) {
 			$vars['--global-theme-primary'] = '#1a1a1a';
@@ -208,7 +208,7 @@ if ( ! function_exists( 'ee_get_css_colors' ) ) :
 			$vars['--global-theme-font-secondary'] = '#a5a5a5';
 			$vars['--global-theme-font-tertiary'] = 'var(--global-dove-gray)';
 			$vars['--global-theme-footer-image'] = 'url(\'' . get_template_directory_uri() . '/assets/images/beasley-dark-logo-cropped.png\')';
-		}
+ 		}
 
 		if ( get_option( 'ee_theme_version', '-light' ) == '-light' ) {
 			$vars['--global-black'] = '#000000';
@@ -238,12 +238,12 @@ endif;
 if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 	function ee_get_other_css_vars() {
 		$vars = [
-				'--brand-play-opacity'           		=> get_option( 'play_opacity_setting', '0.8' ),
-				'--brand-play-hover-opacity'     		=> get_option( 'play_hover_opacity_setting', '1' ),
-				'--brand-play-live-hover-opacity'     	=> get_option( 'play_live_hover_opacity_setting', '0.8' ),
-				'--default-configurable-iframe-height'	=> get_option( 'configurable_iframe_height', '0' ) . 'px',
-				'--configurable-iframe-height'     		=> get_option( 'configurable_iframe_height', '0' ) . 'px',
-				'--ad_leaderboard_initial_height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '250' ) . 'px',
+			'--brand-play-opacity'           		=> get_option( 'play_opacity_setting', '0.8' ),
+			'--brand-play-hover-opacity'     		=> get_option( 'play_hover_opacity_setting', '1' ),
+			'--brand-play-live-hover-opacity'     	=> get_option( 'play_live_hover_opacity_setting', '0.8' ),
+			'--default-configurable-iframe-height'	=> get_option( 'configurable_iframe_height', '0' ) . 'px',
+			'--configurable-iframe-height'     		=> get_option( 'configurable_iframe_height', '0' ) . 'px',
+			'--ad_leaderboard_initial_height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '250' ) . 'px',
 		];
 
 		if (ee_is_common_mobile()) {
@@ -264,13 +264,13 @@ if ( ! function_exists( 'ee_the_custom_logo' ) ) :
 				$site_logo_2x = bbgi_get_image_url( $site_logo_id, 2 * $base_w, 2 * $base_h, false );
 				$site_logo_id = $img_id ? 'id = "'.$img_id.'"' : '';
 				echo '<a href="', esc_url( home_url() ), '" class="custom-logo-link" rel="home" itemprop="url">';
-				printf(
+					printf(
 						'<img src="%s" srcset="%s 2x" alt="%s" %s class="custom-logo" itemprop="logo">',
 						esc_url( $site_logo ),
 						esc_url( $site_logo_2x ),
 						esc_attr( $alt ),
 						$site_logo_id
-				);
+					);
 				echo '</a>';
 			}
 		}
@@ -279,8 +279,8 @@ endif;
 
 if ( ! function_exists( 'ee_the_subheader_logo' ) ) :
 	function ee_the_subheader_logo( $mobile_or_desktop, $base_w = 150, $base_h = 150 ) {
-		$field_name = 'ee_subheader_' . $mobile_or_desktop . '_logo';
-		$atag_class_name = $mobile_or_desktop . '-subheader-logo-link';
+	    $field_name = 'ee_subheader_' . $mobile_or_desktop . '_logo';
+	    $atag_class_name = $mobile_or_desktop . '-subheader-logo-link';
 		$site_logo_id = get_option( $field_name, 0 );
 		if ( $site_logo_id ) {
 			$site_logo = bbgi_get_image_url( $site_logo_id, $base_w, $base_h, false );
@@ -289,10 +289,10 @@ if ( ! function_exists( 'ee_the_subheader_logo' ) ) :
 				$site_logo_2x = bbgi_get_image_url( $site_logo_id, 2 * $base_w, 2 * $base_h, false );
 				echo '<a href="', esc_url( home_url() ), '" class="', $atag_class_name, '" rel="home" itemprop="url">';
 				printf(
-						'<img src="%s" srcset="%s 2x" alt="%s" class="custom-logo" itemprop="logo">',
-						esc_url( $site_logo ),
-						esc_url( $site_logo_2x ),
-						esc_attr( $alt )
+					'<img src="%s" srcset="%s 2x" alt="%s" class="custom-logo" itemprop="logo">',
+					esc_url( $site_logo ),
+					esc_url( $site_logo_2x ),
+					esc_attr( $alt )
 				);
 				echo '</a>';
 			}
@@ -311,26 +311,26 @@ endif;
 if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 	function ee_the_bbgiconfig() {
 		$config = array(
-				'cssvars' => array( 'variables' => array_merge(ee_get_css_colors(), ee_get_other_css_vars()) ),
-				'geotargetly' => ee_current_page_needs_geotargetly(),
-				'related_article_title' => get_option( 'related_article_title', 'You May Also Like' ),
-				'ad_leaderboard_initial_height_setting' => get_option( 'ad_leaderboard_initial_height_setting', '250' ),
-				'ad_rotation_enabled' => get_option( 'ad_rotation_enabled', 'on' ),
-				'ad_rotation_polling_sec_setting' => get_option( 'ad_rotation_polling_sec_setting', '5' ),
-				'ad_rotation_refresh_sec_setting' => get_option( 'ad_rotation_refresh_sec_setting', '30' ),
-				'ad_vid_rotation_refresh_sec_setting' => get_option( 'ad_vid_rotation_refresh_sec_setting', '60' ),
-				'vid_ad_html_tag_csv_setting' => get_option( 'vid_ad_html_tag_csv_setting', 'mixpo' ),
-				'ad_rubicon_zoneid_setting' => get_option( 'ad_rubicon_zoneid_setting', '' ),
-				'ad_appnexus_placementid_setting' => get_option( 'ad_appnexus_placementid_setting', '' ),
-				'ad_ix_siteid_setting' => get_option( 'ad_ix_siteid_setting', '' ),
-				'ad_reset_digital_enabled' => get_option( 'ad_reset_digital_enabled', 'off' ),
-				'prebid_enabled' => function_exists( 'enqueue_prebid_scripts' ),
+			'cssvars' => array( 'variables' => array_merge(ee_get_css_colors(), ee_get_other_css_vars()) ),
+			'geotargetly' => ee_current_page_needs_geotargetly(),
+			'related_article_title' => get_option( 'related_article_title', 'You May Also Like' ),
+			'ad_leaderboard_initial_height_setting' => get_option( 'ad_leaderboard_initial_height_setting', '250' ),
+			'ad_rotation_enabled' => get_option( 'ad_rotation_enabled', 'on' ),
+			'ad_rotation_polling_sec_setting' => get_option( 'ad_rotation_polling_sec_setting', '5' ),
+			'ad_rotation_refresh_sec_setting' => get_option( 'ad_rotation_refresh_sec_setting', '30' ),
+			'ad_vid_rotation_refresh_sec_setting' => get_option( 'ad_vid_rotation_refresh_sec_setting', '60' ),
+			'vid_ad_html_tag_csv_setting' => get_option( 'vid_ad_html_tag_csv_setting', 'mixpo' ),
+			'ad_rubicon_zoneid_setting' => get_option( 'ad_rubicon_zoneid_setting', '' ),
+			'ad_appnexus_placementid_setting' => get_option( 'ad_appnexus_placementid_setting', '' ),
+			'ad_ix_siteid_setting' => get_option( 'ad_ix_siteid_setting', '' ),
+			'ad_reset_digital_enabled' => get_option( 'ad_reset_digital_enabled', 'off' ),
+			'prebid_enabled' => function_exists( 'enqueue_prebid_scripts' ),
 
 			/** Live Streaming Intervals */
-				'intervals'  => [
-						'live_streaming' => absint( get_option( 'gmr_live_streaming_interval', 1 ) ),
-						'inline_audio'   => absint( get_option( 'gmr_inline_audio_interval', 1 ) ),
-				],
+			'intervals'  => [
+				'live_streaming' => absint( get_option( 'gmr_live_streaming_interval', 1 ) ),
+				'inline_audio'   => absint( get_option( 'gmr_inline_audio_interval', 1 ) ),
+			],
 		);
 
 		$custom_logo_id = get_option( 'gmr_site_logo' );
@@ -338,11 +338,11 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			$image = wp_get_attachment_image_src( $custom_logo_id, 'original' );
 			if ( is_array( $image ) && ! empty( $image ) ) {
 				$config['theme'] = array(
-						'logo' => array(
-								'url'    => $image[0],
-								'width'  => $image[1],
-								'height' => $image[2],
-						),
+					'logo' => array(
+						'url'    => $image[0],
+						'width'  => $image[1],
+						'height' => $image[2],
+					),
 				);
 			}
 		}
@@ -365,9 +365,9 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 		}
 
 		printf(
-				'<script id="bbgiconfig" type="application/json">%s</script>%s',
-				json_encode( apply_filters( 'bbgiconfig', $config ) ),
-				$override_css_var
+			'<script id="bbgiconfig" type="application/json">%s</script>%s',
+			json_encode( apply_filters( 'bbgiconfig', $config ) ),
+			$override_css_var
 		);
 	}
 endif;
@@ -379,11 +379,11 @@ if ( ! function_exists( 'ee_gmr_site_logo' ) ) :
 			$image = wp_get_attachment_image_src( $custom_logo_id, 'original' );
 			if ( is_array( $image ) && ! empty( $image ) ) {
 				$config['theme'] = array(
-						'logo' => array(
-								'url'    => $image[0],
-								'width'  => $image[1],
-								'height' => $image[2],
-						),
+					'logo' => array(
+						'url'    => $image[0],
+						'width'  => $image[1],
+						'height' => $image[2],
+					),
 				);
 			}
 		}
@@ -428,14 +428,14 @@ if ( ! function_exists( '_ee_the_lazy_image' ) ) :
 		$is_common_mobile = ee_is_common_mobile();
 
 		$image = sprintf(
-				$is_common_mobile
-						? '<div class="non-lazy-image"><img src="%s" width="%s" height="%s" alt="%s"><div class="non-lazy-image-attribution">%s</div></div>'
-						: '<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s" data-alt="%s" data-attribution="%s"></div>',
-				esc_attr( $url ),
-				esc_attr( $width ),
-				esc_attr( $height ),
-				esc_attr( $alt ),
-				esc_attr( $attribution )
+			$is_common_mobile
+				? '<div class="non-lazy-image"><img src="%s" width="%s" height="%s" alt="%s"><div class="non-lazy-image-attribution">%s</div></div>'
+				: '<div class="lazy-image" data-src="%s" data-width="%s" data-height="%s" data-alt="%s" data-attribution="%s"></div>',
+			esc_attr( $url ),
+			esc_attr( $width ),
+			esc_attr( $height ),
+			esc_attr( $alt ),
+			esc_attr( $attribution )
 		);
 
 		$image = apply_filters( '_ee_the_lazy_image', $image, $is_common_mobile, $url, $width, $height, $alt );
