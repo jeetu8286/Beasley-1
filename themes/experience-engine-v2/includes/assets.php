@@ -247,7 +247,7 @@ if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 		];
 
 		if (ee_is_common_mobile()) {
-			$vars['--ad_leaderboard_initial_height'] = '50px';
+			$vars['--ad_leaderboard_initial_height'] = '1rem';
 		}
 
 		return $vars;
