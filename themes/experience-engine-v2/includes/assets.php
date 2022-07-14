@@ -243,8 +243,12 @@ if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 			'--brand-play-live-hover-opacity'     	=> get_option( 'play_live_hover_opacity_setting', '0.8' ),
 			'--default-configurable-iframe-height'	=> get_option( 'configurable_iframe_height', '0' ) . 'px',
 			'--configurable-iframe-height'     		=> get_option( 'configurable_iframe_height', '0' ) . 'px',
-			'--ad_leaderboard_initial_height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '255' ) . 'px',
+			'--ad_leaderboard_initial_height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '250' ) . 'px',
 		];
+
+		if (ee_is_common_mobile()) {
+			$vars['--ad_leaderboard_initial_height'] = '50px';
+		}
 
 		return $vars;
 	}
