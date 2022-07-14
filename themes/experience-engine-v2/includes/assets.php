@@ -237,13 +237,15 @@ endif;
 
 if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 	function ee_get_other_css_vars() {
+		$inner_content_top_margin = intval( get_option( 'ad_leaderboard_initial_height_setting', '255' ) ) + 44;
 		$vars = [
 			'--brand-play-opacity'           		=> get_option( 'play_opacity_setting', '0.8' ),
 			'--brand-play-hover-opacity'     		=> get_option( 'play_hover_opacity_setting', '1' ),
 			'--brand-play-live-hover-opacity'     	=> get_option( 'play_live_hover_opacity_setting', '0.8' ),
 			'--default-configurable-iframe-height'	=> get_option( 'configurable_iframe_height', '0' ) . 'px',
 			'--configurable-iframe-height'     		=> get_option( 'configurable_iframe_height', '0' ) . 'px',
-			'--ad_leaderboard_initial_height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '255' ) . 'px',
+			'--ad-leaderboard-initial-height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '255' ) . 'px',
+			'--inner-content-top-margin'     		=> $inner_content_top_margin . 'px',
 		];
 
 		return $vars;

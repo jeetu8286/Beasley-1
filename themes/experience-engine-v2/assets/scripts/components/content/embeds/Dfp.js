@@ -62,6 +62,7 @@ const slotVisibilityChangedHandler = event => {
 };
 
 const adjustContentMarginForTopAd = newAdHeight => {
+	console.log(`Adjusting Page For Top Ad Number ${window.topAdsShown + 1}`);
 	const contentElement = document.getElementById('inner-content');
 	const adContainerElement = document.getElementById('top-scrolling-container');
 
@@ -74,14 +75,28 @@ const adjustContentMarginForTopAd = newAdHeight => {
 		const adContainerTopMargin = parseInt(adContainerStyle.marginTop, 10);
 		const newContentTopMargin =
 			24 + (newAdHeight || 0) + (adContainerTopMargin || 0);
-		const newVerticalScroll =
-			lastVerticalScroll + (newContentTopMargin - lastContentTopMargin);
 
 		console.log(
-			`New Leaderboard => Old Scroll:${lastVerticalScroll} NewScroll:${newVerticalScroll} Old Top Margin:${lastContentTopMargin} New Top Margin:${newContentTopMargin}`,
+			`New Leaderboard => Old Scroll:${lastVerticalScroll} Old Top Margin:${lastContentTopMargin} New Top Margin:${newContentTopMargin}`,
 		);
+
 		contentElement.style.marginTop = `${newContentTopMargin}px`;
-		window.scrollTo(window.scrollX, newVerticalScroll);
+
+		if (lastVerticalScroll <= lastContentTopMargin) {
+			console.log('NOT ADJUSTING SCROLL');
+		} else {
+			let marginDelta = newContentTopMargin - lastContentTopMargin;
+			// Adjust Margin Delta If Ad Had Not Been Loaded Before Now
+			if (!window.topAdsShown) {
+				marginDelta -= lastContentTopMargin - 44;
+			}
+			const newVerticalScroll = lastVerticalScroll + marginDelta;
+			window.scrollTo(window.scrollX, newVerticalScroll);
+			console.log(
+				`ADJUSTED PAGE SCROLL BY ${marginDelta} TO ${newVerticalScroll} BECAUSE OF TOP AD`,
+			);
+		}
+		window.topAdsShown++;
 	}
 };
 

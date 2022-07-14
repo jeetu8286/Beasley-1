@@ -1,17 +1,17 @@
 .top-scrolling-container {
 	background-color: white;
 	position: fixed;
-	margin-top: 1.3rem;
+	margin-top: 20px;
 	left: 0;
 	right: 0;
 	z-index: 1;
 }
 
 #div-top-scrolling-slot {
-	height: var(--ad_leaderboard_initial_height);
+	height: var(--ad-leaderboard-initial-height);
 }
 
 #inner-content {
-	margin-top: var(--ad_leaderboard_initial_height);
+	margin-top: var(--inner-content-top-margin);
 }
 
