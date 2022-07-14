@@ -40,7 +40,7 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 				'post_status' => 'any',
 				'post_type'   => 'affiliate_marketing'
 			);
-	
+
 			$existing = get_posts( $meta_query_args );
 
 			if ( !empty( $existing ) ) {
@@ -56,7 +56,7 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 		if(empty($am_id)) {
 			return;
 		}
-		
+
 		$post_object = get_queried_object();
 
 		$affiliatemarketing_post_object = $this->verify_post( $am_id, $attributes['syndication_name'] );
@@ -119,7 +119,7 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 			$content_updated = "<h2 class=\"section-head\"><span>".$affiliatemarketing_post_object->post_title."</span></h2>";
 			$the_content = apply_filters('the_content', $affiliatemarketing_post_object->post_content);
 			if ( !empty($the_content) ) {
-				$content_updated .= "<div class=\"am-embed-description\">".$the_content."</p>";
+				$content_updated .= "<div class=\"am-embed-description\">".$the_content."</div>";
 			}
 			$content_updated .= $content."<p>&nbsp;</p><h6><em>Please note that items are in stock and prices are accurate at the time we published this list. Have an idea for a fun theme for a gift idea list you’d like us to create?&nbsp; Drop us a line at <a href=\"mailto:shopping@bbgi.com\" data-uri=\"98cfaf73989c872d3384892acc280543\">shopping@bbgi.com</a>.&nbsp;</em></h6>";
 			return $content_updated;
@@ -135,7 +135,7 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 	 */
 	function get_post_metadata_from_post( $value, $post ) {
 		$field = get_post_meta( $post->ID, $value, true );
-		
+
 		if ( ! empty( $field ) ) {
             return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
         } else {
@@ -155,7 +155,7 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 		if( $post->post_type !== 'affiliate_marketing' || $post->post_name !== $syndication_name ) {
 			return null;
 		}
-		
+
 		if ( !empty( $post ) ) {
 			return $post;
 		}
