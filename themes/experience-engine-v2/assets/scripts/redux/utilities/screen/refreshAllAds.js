@@ -1,6 +1,9 @@
+import { topScrollingDivID, hidePlaceholder } from '../../../library/ad-utils';
+
 export default function refreshAllAds() {
 	const { prebid_enabled } = window.bbgiconfig;
 	window.topAdsShown = 0;
+	hidePlaceholder(topScrollingDivID);
 
 	if (!prebid_enabled) {
 		const { googletag } = window;
