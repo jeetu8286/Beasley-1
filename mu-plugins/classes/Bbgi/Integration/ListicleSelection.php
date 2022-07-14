@@ -41,7 +41,7 @@ class ListicleSelection extends \Bbgi\Module {
 				'post_status' => 'any',
 				'post_type'   => 'listicle_cpt'
 			);
-	
+
 			$existing = get_posts( $meta_query_args );
 
 			if ( !empty( $existing ) ) {
@@ -57,7 +57,7 @@ class ListicleSelection extends \Bbgi\Module {
 		if(empty($listicle_id)) {
 			return;
 		}
-		
+
 		$post_object = get_queried_object();
 
 		$cpt_post_object = $this->verify_post( $listicle_id, $attributes['syndication_name'] );
@@ -84,7 +84,7 @@ class ListicleSelection extends \Bbgi\Module {
 			if( !empty( $attributes['description'] ) &&  ($attributes['description'] == 'yes') ) {
 				$the_content = apply_filters('the_content', $cpt_post_object->post_content);
 				if ( !empty($the_content) ) {
-					$content_updated .= "<div class=\"listicle-embed-description\">".$the_content."</p>";
+					$content_updated .= "<div class=\"listicle-embed-description\">".$the_content."</div>";
 				}
 			}
 			$content_updated .= $content;
@@ -101,7 +101,7 @@ class ListicleSelection extends \Bbgi\Module {
 	 */
 	function get_post_metadata_from_post( $value, $post ) {
 		$field = get_post_meta( $post->ID, $value, true );
-		
+
 		if ( ! empty( $field ) ) {
             return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
         } else {
@@ -121,7 +121,7 @@ class ListicleSelection extends \Bbgi\Module {
 		if( $post->post_type !== 'listicle_cpt' || $post->post_name !== $syndication_name ) {
 			return null;
 		}
-		
+
 		if ( !empty( $post ) ) {
 			return $post;
 		}
