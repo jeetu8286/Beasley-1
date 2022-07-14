@@ -41,7 +41,7 @@ class GallerySelection extends \Bbgi\Module {
 				'post_status' => 'any',
 				'post_type'   => 'gmr_gallery'
 			);
-	
+
 			$existing = get_posts( $meta_query_args );
 
 			if ( !empty( $existing ) ) {
@@ -68,7 +68,7 @@ class GallerySelection extends \Bbgi\Module {
 			if( !empty( $attributes['description'] ) &&  ($attributes['description'] == 'yes') ) {
 				$the_content = apply_filters('the_content', $gallery_object->post_content);
 				if ( !empty($the_content) ) {
-					$content_updated .= "<div class=\"gallery-embed-description\">".$the_content."</p>";
+					$content_updated .= "<div class=\"gallery-embed-description\">".$the_content."</div>";
 				}
 			}
 			$content_updated .= $content;
@@ -106,7 +106,7 @@ class GallerySelection extends \Bbgi\Module {
 		if( !empty( $attributes['description'] ) &&  ($attributes['description'] == 'yes') ) {
 			$the_content = apply_filters('the_content', $gallery_object->post_content);
 			if ( !empty($the_content) ) {
-				$content_updated .= "<div class=\"gallery-embed-description\">".$the_content."</p>";
+				$content_updated .= "<div class=\"gallery-embed-description\">".$the_content."</div>";
 			}
 		}
 		$content_updated .= $content;
@@ -125,7 +125,7 @@ class GallerySelection extends \Bbgi\Module {
 		if( $post->post_type !== 'gmr_gallery' || $post->post_name !== $syndication_name ) {
 			return null;
 		}
-		
+
 		if ( ! isset( $ids[ $post->ID ] ) ) {
 			$array_ids = get_post_meta( $post->ID, 'gallery-image' );
 			$array_ids = array_filter( array_map( 'intval', $array_ids ) );
