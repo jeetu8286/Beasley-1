@@ -243,6 +243,7 @@ if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 			'--brand-play-live-hover-opacity'     	=> get_option( 'play_live_hover_opacity_setting', '0.8' ),
 			'--default-configurable-iframe-height'	=> get_option( 'configurable_iframe_height', '0' ) . 'px',
 			'--configurable-iframe-height'     		=> get_option( 'configurable_iframe_height', '0' ) . 'px',
+			'--ad_leaderboard_initial_height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '255' ) . 'px',
 		];
 
 		return $vars;
@@ -309,6 +310,7 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			'cssvars' => array( 'variables' => array_merge(ee_get_css_colors(), ee_get_other_css_vars()) ),
 			'geotargetly' => ee_current_page_needs_geotargetly(),
 			'related_article_title' => get_option( 'related_article_title', 'You May Also Like' ),
+			'ad_leaderboard_initial_height_setting' => get_option( 'ad_leaderboard_initial_height_setting', '250' ),
 			'ad_rotation_enabled' => get_option( 'ad_rotation_enabled', 'on' ),
 			'ad_rotation_polling_sec_setting' => get_option( 'ad_rotation_polling_sec_setting', '5' ),
 			'ad_rotation_refresh_sec_setting' => get_option( 'ad_rotation_refresh_sec_setting', '30' ),
@@ -341,9 +343,27 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			}
 		}
 
+		$override_css_var = '';
+		if(ee_is_common_mobile()) {
+			$override_variables = array_merge(ee_get_css_colors(), ee_get_other_css_vars());
+			$override_css_var = '
+				<script type="text/javascript">
+					var override_variables = '.json_encode($override_variables).';
+					if( Object.keys(override_variables).length > 0 ) {
+						for (const key in override_variables) {
+							if (key && override_variables[key]) {
+								document.documentElement.style.setProperty(key, override_variables[key]);
+							}
+						}
+					}
+				</script>
+			';
+		}
+
 		printf(
-			'<script id="bbgiconfig" type="application/json">%s</script>',
-			json_encode( apply_filters( 'bbgiconfig', $config ) )
+			'<script id="bbgiconfig" type="application/json">%s</script>%s',
+			json_encode( apply_filters( 'bbgiconfig', $config ) ),
+			$override_css_var
 		);
 	}
 endif;
@@ -421,7 +441,7 @@ if ( ! function_exists( '_ee_the_lazy_image' ) ) :
 endif;
 
 if ( ! function_exists( 'ee_the_lazy_image' ) ) :
-	function ee_the_lazy_image( $image_id, $echo = true ) {
+	function ee_the_lazy_image( $image_id, $echo = true, $remove_crop = false ) {
 		$html = '';
 		if ( ! empty( $image_id ) ) {
 			$alt = trim( strip_tags( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) ) );
@@ -430,9 +450,15 @@ if ( ! function_exists( 'ee_the_lazy_image' ) ) :
 			if ( ee_is_common_mobile() ) {
 				$width = 800;
 				$height = 500;
-				$url = bbgi_get_image_url( $image_id, $width, $height );
-
-				$html = _ee_the_lazy_image( $url, $width, $height, $alt, $attribution );
+				if($remove_crop) {
+					$img = wp_get_attachment_image_src( $image_id, 'original' );
+					if ( ! empty( $img ) ) {
+						$html = _ee_the_lazy_image( $img[0], $width, $height, $alt, $attribution );
+					}
+				} else {
+					$url = bbgi_get_image_url( $image_id, $width, $height );
+					$html = _ee_the_lazy_image( $url, $width, $height, $alt, $attribution );
+				}
 			} else {
 				$img = wp_get_attachment_image_src( $image_id, 'original' );
 				if ( ! empty( $img ) ) {

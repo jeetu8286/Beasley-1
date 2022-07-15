@@ -2,6 +2,7 @@ import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context';
 import { logPrebidTargeting } from '../../../redux/utilities/screen/refreshAllAds';
+import { isAndroid, isIOS } from '../../../library';
 
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
 const interstitialDivID = 'div-gpt-ad-1484200509775-3';
@@ -60,27 +61,37 @@ const slotVisibilityChangedHandler = event => {
 	}
 };
 
-const adjustContentMarginForTopAd = slotElement => {
+const adjustContentMarginForTopAd = newAdHeight => {
 	const contentElement = document.getElementById('inner-content');
 	const adContainerElement = document.getElementById('top-scrolling-container');
 
-	if (slotElement && adContainerElement && contentElement) {
+	if (adContainerElement && contentElement) {
+		const contentStyle = window.getComputedStyle(contentElement);
 		const adContainerStyle = window.getComputedStyle(adContainerElement);
+
+		const lastVerticalScroll = window.scrollY;
+		const lastContentTopMargin = parseInt(contentStyle.marginTop, 10);
+		const adContainerTopMargin = parseInt(adContainerStyle.marginTop, 10);
 		const newContentTopMargin =
-			24 +
-			parseInt(slotElement.style.height, 10) +
-			parseInt(adContainerStyle.marginTop, 10);
+			24 + (newAdHeight || 0) + (adContainerTopMargin || 0);
+		const newVerticalScroll =
+			lastVerticalScroll + (newContentTopMargin - lastContentTopMargin);
+
+		console.log(
+			`New Leaderboard => Old Scroll:${lastVerticalScroll} NewScroll:${newVerticalScroll} Old Top Margin:${lastContentTopMargin} New Top Margin:${newContentTopMargin}`,
+		);
 		contentElement.style.marginTop = `${newContentTopMargin}px`;
+		window.scrollTo(window.scrollX, newVerticalScroll);
 	}
 };
 
-const adjustContentPaddingForBottomAd = slotElement => {
+const adjustContentPaddingForAdhesionAd = slotElement => {
 	const containerElement = document.getElementById('main-container-div');
 
 	if (slotElement && containerElement) {
 		// If Slot Is Not Visible
 		if (slotElement.offsetParent === null) {
-			console.log('Slot is not visible, so setting no padding.');
+			console.log('Adhesion Slot is not visible, so setting no padding.');
 			containerElement.style.paddingBottom = '0';
 		} else {
 			containerElement.style.paddingBottom = slotElement.style.height;
@@ -88,7 +99,7 @@ const adjustContentPaddingForBottomAd = slotElement => {
 	}
 };
 
-const setSotElementHeight = (placeholder, slotElement, newAdHeight) => {
+const setSlotElementHeight = (placeholder, slotElement, newAdHeight) => {
 	const padBottomPxStr = window.getComputedStyle(slotElement).paddingBottom;
 	const padBottomNumStr =
 		padBottomPxStr.indexOf('px') > -1 ? padBottomPxStr.replace('px', '') : '0';
@@ -97,9 +108,9 @@ const setSotElementHeight = (placeholder, slotElement, newAdHeight) => {
 	slotElement.style.height = `${newAdHeight + parseInt(padBottomNumStr, 10)}px`;
 
 	if (placeholder === topScrollingDivID) {
-		adjustContentMarginForTopAd(slotElement);
+		adjustContentMarginForTopAd(newAdHeight);
 	} else if (placeholder === bottomAdhesionDivID) {
-		adjustContentPaddingForBottomAd(slotElement);
+		adjustContentPaddingForAdhesionAd(slotElement);
 	}
 };
 
@@ -161,9 +172,12 @@ const slotRenderEndedHandler = event => {
 				// 	Round Trip to Ad Server So That Racing/Looping Condition Is Avoided.
 				getSlotStat(placeholder).timeVisible = 10000000;
 			}
-			if (placeholder === bottomAdhesionDivID) {
-				// Set Main Content Div Bottom Padding To 0 Since No Ad
-				setSotElementHeight(placeholder, slotElement, 0);
+			if (
+				placeholder === topScrollingDivID ||
+				placeholder === bottomAdhesionDivID
+			) {
+				// Set Ad Height To 0 Since No Ad
+				setSlotElementHeight(placeholder, slotElement, 0);
 			}
 		} else {
 			let adSize;
@@ -184,7 +198,6 @@ const slotRenderEndedHandler = event => {
 					adSize[1] = parseInt(heightString, 10);
 				}
 
-				// Now Send GA Stats
 				if (
 					slot &&
 					slot.getTargeting('hb_bidder') &&
@@ -193,12 +206,13 @@ const slotRenderEndedHandler = event => {
 						.toString()
 						.trim()
 				) {
-					// console.log(
-					//	`PREBID AD SHOWN - ${slot.getTargeting(
-					//		'hb_bidder',
-					//	)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
-					// );
+					console.log(
+						`PREBID AD SHOWN - ${slot.getTargeting(
+							'hb_bidder',
+						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
+					);
 
+					/* Disable GA Stats due to high usage
 					try {
 						window.ga('send', {
 							hitType: 'event',
@@ -213,12 +227,13 @@ const slotRenderEndedHandler = event => {
 					} catch (ex) {
 						console.log(`ERROR Sending to Google Analytics: `, ex);
 					}
+					*/
 				}
 			}
 
 			// Adjust Container Div Height
 			if (adSize && adSize[0] && adSize[1]) {
-				setSotElementHeight(placeholder, slotElement, adSize[1]);
+				setSlotElementHeight(placeholder, slotElement, adSize[1]);
 			}
 
 			showSlotElement(slotElement);
@@ -272,6 +287,12 @@ class Dfp extends PureComponent {
 		this.getBidderIx = this.getBidderIx.bind(this);
 		this.getBidderResetDigital = this.getBidderResetDigital.bind(this);
 
+		// Initial leaderboard height = 50 for Mobile, otherwise use setting
+		const initialLeaderboardAdHeight =
+			isAndroid() || isIOS()
+				? 50
+				: parseInt(bbgiconfig.ad_leaderboard_initial_height_setting, 10);
+
 		const slotPollSecs = parseInt(
 			bbgiconfig.ad_rotation_polling_sec_setting,
 			10,
@@ -297,6 +318,7 @@ class Dfp extends PureComponent {
 			slot: false,
 			interval: false,
 			isRotateAdsEnabled: bbgiconfig.ad_rotation_enabled !== 'off',
+			initialLeaderboardAdHeight,
 			slotPollMillisecs:
 				slotPollSecs && slotPollSecs >= 5 ? slotPollSecs * 1000 : 5000,
 			slotRefreshMillisecs:
@@ -604,7 +626,7 @@ class Dfp extends PureComponent {
 	registerSlot() {
 		const { placeholder, unitName, targeting } = this.props;
 		const { googletag, bbgiconfig } = window;
-		const { adjustedUnitId } = this.state;
+		const { adjustedUnitId, initialLeaderboardAdHeight } = this.state;
 
 		if (!document.getElementById(placeholder)) {
 			console.log(
@@ -709,6 +731,13 @@ class Dfp extends PureComponent {
 						],
 					},
 				];
+
+				// Adjust Default Content Margin To Help With Page Shift
+				const contentElement = document.getElementById('inner-content');
+				if (contentElement) {
+					contentElement.style.marginTop = `${initialLeaderboardAdHeight +
+						44}px`;
+				}
 			} else if (unitName === 'drop-down') {
 				console.log('Building sizes for Dropdown');
 				sizeMapping = googletag

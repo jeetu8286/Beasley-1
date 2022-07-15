@@ -12,6 +12,7 @@ class ExperienceEngine extends \Bbgi\Module {
 		'ee_cache_token'      => 'Cache Clear Token',
 		'ee_appkey'           => 'EE App Key',
 		'ee_notification_key' => 'EE Notification App Key',
+		'ee_cloudflare_token' => 'Cloudflare Cache Clear Token'
 	);
 
 	/**
@@ -170,7 +171,6 @@ class ExperienceEngine extends \Bbgi\Module {
 		return $response;
 	}
 
-
 	public function get_publisher_list() {
 		$publishers = $this->do_request( 'publishers' );
 		if ( is_wp_error( $publishers ) ) {
@@ -301,12 +301,6 @@ class ExperienceEngine extends \Bbgi\Module {
 			'show_in_index'       => false,
 		) );
 
-		register_rest_route( $namespace, '/test', array(
-				'methods'             => 'POST',
-				'callback'            => $this( 'test_post' ),
-				'show_in_index'       => false,
-		) );
-
 		register_rest_route( $namespace, '/purge-ee-cache', array(
 				'methods'             => 'POST',
 				'callback'            => $this( 'rest_purge_ee_cache' ),
@@ -354,14 +348,6 @@ class ExperienceEngine extends \Bbgi\Module {
 		return false;
 	}
 
-	public function test_post( \WP_REST_Request $request ) {
-		if ($request->is_json_content_type()) {
-			error_log( $this->log_prefix() . 'received json' );
-			$content = $request->get_body();
-			return wp_send_json($content);
-		}
-	}
-
 	public function rest_purge_cache( \WP_REST_Request $request ) {
 		//clear ee content feed values
 		$publisher = $this->_get_publisher_key();
@@ -383,7 +369,10 @@ class ExperienceEngine extends \Bbgi\Module {
 			$home = trailingslashit( get_option( 'home' ) );
 			batcache_clear_url( $home );
 			batcache_clear_url( $home . 'feed/' );
+			error_log( $this->log_prefix() . 'cleared batcache url ' .  $home);
 		}
+
+		$this->clearCloudFlareHomeCache();
 
 		return rest_ensure_response( 'Cache Flushed' );
 	}
@@ -457,6 +446,36 @@ class ExperienceEngine extends \Bbgi\Module {
 		$result = "[EE Event SiteID:{$site_id} SiteName:$site_name] ";
 
 		return $result;
+	}
+
+	public function clearCloudFlareHomeCache(){
+
+		$cloudflaretoken = get_site_option( 'ee_cloudflare_token' );
+		$zone_id = get_option('cloud_flare_zoneid');
+
+		if ( empty($cloudflaretoken) || empty($zone_id) ) {
+            return false;
+        }
+
+		$request_url = 'https://api.cloudflare.com/client/v4/zones/'.$zone_id.'/purge_cache';
+		$data = [ "tags" => [$_SERVER['HTTP_HOST'].'-'.'home'] ];
+
+		$response = wp_remote_post( $request_url, array(
+				'method' => 'POST',
+				'headers' => array(
+						'Content-Type' => 'application/json',
+						'Authorization' => 'Bearer ' . $cloudflaretoken,
+						),
+						'body' => wp_json_encode( $data )
+					)
+				);
+
+		$response_json = 'Cloudflare response 4: '. json_encode( $response );
+		error_log( $this->log_prefix() . $response_json );
+
+		if ( is_wp_error( $response ) ) {
+			error_log( 'Cloudflare error notice query var from is_wp_error function 5' );
+		}
 	}
 
 }
