@@ -237,17 +237,21 @@ endif;
 
 if ( ! function_exists( 'ee_get_other_css_vars' ) ) :
 	function ee_get_other_css_vars() {
+		$leaderboard_height_setting = intval( get_option( 'ad_leaderboard_initial_height_setting', '250' ) );
+		$inner_content_top_margin = $leaderboard_height_setting + 44;
 		$vars = [
 			'--brand-play-opacity'           		=> get_option( 'play_opacity_setting', '0.8' ),
 			'--brand-play-hover-opacity'     		=> get_option( 'play_hover_opacity_setting', '1' ),
 			'--brand-play-live-hover-opacity'     	=> get_option( 'play_live_hover_opacity_setting', '0.8' ),
 			'--default-configurable-iframe-height'	=> get_option( 'configurable_iframe_height', '0' ) . 'px',
 			'--configurable-iframe-height'     		=> get_option( 'configurable_iframe_height', '0' ) . 'px',
-			'--ad_leaderboard_initial_height'     	=> get_option( 'ad_leaderboard_initial_height_setting', '250' ) . 'px',
+			'--ad-leaderboard-initial-height'     	=> $leaderboard_height_setting . 'px',
+			'--inner-content-top-margin'     		=> $inner_content_top_margin . 'px',
 		];
 
 		if (ee_is_common_mobile()) {
-			$vars['--ad_leaderboard_initial_height'] = '1rem';
+			$vars['--ad-leaderboard-initial-height'] = '50px';
+			$vars['--inner-content-top-margin'] = '1rem';
 		}
 
 		return $vars;
