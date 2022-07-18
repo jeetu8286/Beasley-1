@@ -13,6 +13,10 @@
 	z-index: 110;
 	justify-content: center;
 	background-color: var(--global-theme-secondary);
+	height: 50px;
+	@media(--min-large-viewport) {
+		  height: 90px;
+	}
 }
 
 .ad-button-holder {

@@ -21,6 +21,13 @@ html {
 	}
 }
 
+#main-container-div {
+	padding-bottom: 50px;
+	@media(--min-large-viewport) {
+		padding-bottom: 90px;
+	}
+}
+
 main {
 	background-color: white;
 	position: relative;
