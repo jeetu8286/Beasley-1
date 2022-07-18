@@ -17,7 +17,7 @@
 #inner-content {
 	margin-top: var(--inner-content-top-margin);
 	@media(--max-medium-viewport) {
-		margin-top: 50px;
+		margin-top: 94px;
 	}
 }
 
