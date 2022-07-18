@@ -95,15 +95,20 @@ const adjustContentMarginForTopAd = newAdHeight => {
 };
 
 const adjustContentPaddingForAdhesionAd = slotElement => {
-	const containerElement = document.getElementById('main-container-div');
+	const mainContainerElement = document.getElementById('main-container-div');
+	const adContainerElement = document.getElementById(
+		'bottom-adhesion-container',
+	);
 
-	if (slotElement && containerElement) {
+	if (slotElement && mainContainerElement && adContainerElement) {
 		// If Slot Is Not Visible
 		if (slotElement.offsetParent === null) {
 			console.log('Adhesion Slot is not visible, so setting no padding.');
-			containerElement.style.paddingBottom = '0';
+			mainContainerElement.style.paddingBottom = '0';
+			adContainerElement.style.height = '0';
 		} else {
-			containerElement.style.paddingBottom = slotElement.style.height;
+			mainContainerElement.style.paddingBottom = slotElement.style.height;
+			adContainerElement.style.height = slotElement.style.height;
 		}
 	}
 };
