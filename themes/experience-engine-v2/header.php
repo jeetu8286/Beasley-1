@@ -5,7 +5,26 @@ use Bbgi\Integration\Google;
 
 	if (  is_front_page() ) {
 		$headerCacheTag  = $_SERVER['HTTP_HOST'].'-'.'home';
-	} else {
+	} else if (is_archive()) {
+
+
+		$obj = get_queried_object();
+
+		$headerCacheTag = "";
+
+		if (isset($obj->slug)) {
+			$currentCategorySlug = "-" . $obj->slug;
+			$headerCacheTag .= "archive" . $currentCategorySlug;
+		}
+
+		if (isset($wp_query->query['post_type'])) {
+			$currentPostType = $wp_query->query['post_type'];
+			if (empty($currentPostType) === false) {
+				$headerCacheTag .= ",";
+			}
+			$headerCacheTag .=  "archive-" . $currentPostType;
+		}
+	}  else {
 		global $post;
 		$currentPostType	= "";
 		$currentPostSlug	= "";
@@ -18,12 +37,8 @@ use Bbgi\Integration\Google;
 		$headerCacheTag = $currentPostType.$currentPostSlug;
 	}
 
-	if (ee_is_common_mobile()) {
-		$headerCacheTag .= ',mobile';
-	} else {
-		$headerCacheTag .= ',desktop';
-	}
-	$headerCacheTag .= ',content';
+	$currentCacheTag = $headerCacheTag;
+	$headerCacheTag = append_current_device_to_cache_tag($headerCacheTag);
 
 	header("Cache-Tag: $headerCacheTag", true);
 	header("X-Cache-BBGI-Tag: $headerCacheTag", true);
