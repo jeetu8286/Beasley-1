@@ -13,9 +13,9 @@
 	z-index: 110;
 	justify-content: center;
 	background-color: var(--global-theme-secondary);
-	height: 50px;
-	@media(--min-large-viewport) {
-		  height: 90px;
+	height: 90px;
+	@media(--max-medium-viewport) {
+		  height: 50px;
 	}
 }
 

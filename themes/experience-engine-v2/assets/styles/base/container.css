@@ -22,9 +22,9 @@ html {
 }
 
 #main-container-div {
-	padding-bottom: 50px;
-	@media(--min-large-viewport) {
-		padding-bottom: 90px;
+	padding-bottom: 90px;
+	@media(--max-medium-viewport) {
+		padding-bottom: 50px;
 	}
 }
 
