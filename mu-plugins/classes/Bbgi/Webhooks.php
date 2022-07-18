@@ -217,8 +217,9 @@ class Webhooks extends \Bbgi\Module {
 			}
 		}
 
-
-		$this->clearCloudFlareCache($post_id, $post_type, $categories);
+		if ($post_type !== 'gmr_homepage-homepage') {
+			$this->clearCloudFlareCache($post_id, $post_type, $categories);
+		}
 
 		$request_args = [
 			'blocking'        => false,
@@ -314,20 +315,11 @@ class Webhooks extends \Bbgi\Module {
 			return false;
 		}
 
-
-		// Clear specific page caches
-		if ( function_exists( 'batcache_clear_url' ) && class_exists( 'batcache' ) ) {
-			$url = get_permalink($postID);
-			$this->log( 'Batcache URL' , [ 'url' => $url ] );
-			batcache_clear_url( $url );
-		}
-
         $post = get_post( $postID );
         $post_slug = $post->post_type.'-'.$post->post_name;
 
 		$cache_tags = [$post_slug];
-
-		if ( !empty($categories) ) {
+		if ( !empty($categories)) {
 			foreach ($categories as $category) {
 				$cache_tags[] = 'archive-' . $category->slug;
 			}
@@ -337,7 +329,20 @@ class Webhooks extends \Bbgi\Module {
 			$cache_tags[] = 'archive-' . $posttype;
 		}
 
+
+		// Clear specific page caches
+		if ( function_exists( 'batcache_clear_url' ) && class_exists( 'batcache' ) ) {
+			$url = get_permalink($postID);
+			$this->log( 'Batcache URL' , [ 'url' => $url ] );
+			batcache_clear_url( $url );
+		}
+
+
+
 		error_log('Cloudflare Clearing Cache Tags ' . join( ",", $cache_tags));
+
+
+
 
 		$data = [ "tags" => $cache_tags];
 		$request_url = 'https://api.cloudflare.com/client/v4/zones/'.$zone_id.'/purge_cache';
