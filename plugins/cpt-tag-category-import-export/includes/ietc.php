@@ -16,8 +16,8 @@ class ImportExportTagCategory {
 		add_action( 'wp_ajax_ietc_export_tag_category', array( __CLASS__, 'ietc_export_tag_category' ) );
 		add_action( 'wp_ajax_nopriv_ietc_export_tag_category', array( __CLASS__, 'ietc_export_tag_category' ) );
 
-		add_action( 'wp_ajax_ietc_export_users', array( __CLASS__, 'ietc_export_users' ) );
-		add_action( 'wp_ajax_nopriv_ietc_export_users', array( __CLASS__, 'ietc_export_users' ) );
+		add_action( 'wp_ajax_ietc_export_users', array( __CLASS__, 'ietc_export_users_posts' ) );
+		add_action( 'wp_ajax_nopriv_ietc_export_users', array( __CLASS__, 'ietc_export_users_posts' ) );
 
 		add_action( 'wp_ajax_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
 		add_action( 'wp_ajax_nopriv_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
@@ -255,7 +255,7 @@ class ImportExportTagCategory {
 		exit;
    }
 
-   public static function ietc_export_users() {
+   public static function ietc_export_users_posts() {
 	   $blog_id			= filter_input( INPUT_POST, 'network_source', FILTER_SANITIZE_STRIPPED);
 	   $input_type		= filter_input( INPUT_POST, 'input_type', FILTER_SANITIZE_STRIPPED);
 	   $network_name	= filter_input( INPUT_POST, 'network_name', FILTER_SANITIZE_STRIPPED);
@@ -265,15 +265,9 @@ class ImportExportTagCategory {
 	   $users = $wpdb->get_results(sprintf('SELECT * FROM '. $wpdb_prefix .'users'));
 	   /* $userstest = get_userdata(1);
 	   echo "<pre>";print_r($userstest); exit; */
-
-
-
-
-
-	   echo "<pre>";
-	   print_r($result);
-	   echo "<pre>"; exit;
-
+	   /* echo "<pre>";
+	   print_r($users);
+	   echo "<pre>"; exit; */
 
 	   // Create User Export file
 	   $todayDate	= date('YmdHis');
@@ -308,6 +302,7 @@ class ImportExportTagCategory {
 		   }
 		   fclose($fileDirPath);
 	   } else {
+		   echo "In else condition for Post list"; exit;
 		   /*  switch_to_blog( $blog_id );
 		  // Create Export file
 		  $todayDate	= date('YmdHis');
@@ -339,11 +334,6 @@ class ImportExportTagCategory {
 		  fclose($fileDirPath);
 		  restore_current_blog(); */
 		}
-
-
-
-
-
 	   $result = array( 'message' => ' Users file successfully Exported', 'file_path' => $file_url, 'network_name' => $network_name, 'log_id' => $lastid );
 	   wp_send_json_success( $result );
 	   exit;

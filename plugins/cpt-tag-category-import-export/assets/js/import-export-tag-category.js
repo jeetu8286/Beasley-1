@@ -213,9 +213,6 @@
 		var network_name 	= $("#network_source  option:selected").text();
 		var input_type		= $('#type').val();
 
-
-		// alert(network_name);
-
 		if(!network_source){
 			network_source = 'all';
 		}
