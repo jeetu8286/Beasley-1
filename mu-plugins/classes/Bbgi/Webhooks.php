@@ -291,6 +291,8 @@ class Webhooks extends \Bbgi\Module {
 	}
 
 	public function clearCloudFlareCache($postID, $posttype, $categories){
+		error_log('clearCloudFlareCache reached');
+
         if(!$postID){
             return false;
         }
