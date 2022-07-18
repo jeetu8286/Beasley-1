@@ -203,19 +203,17 @@ class Webhooks extends \Bbgi\Module {
 		$categories = get_the_category( $post_id );
 		if (!$categories && isset($opts['category_list'])){
 			$categories = $opts['category_list'];
+			$this->write_to_log( 'Categories From Ops',[ 'categories' => $categories ] );
 		}
 
 		$categoryCSV = '';
-		try {
-			foreach ( $categories as $category ) {
-				if (strlen($categoryCSV) > 0) {
-					$categoryCSV .= ',';
-				}
-				$categoryCSV .=  $category->slug;
+		foreach ( $categories as $category ) {
+			if (strlen($categoryCSV) > 0) {
+				$categoryCSV .= ',';
 			}
-		} catch (Exception $e) {
-			$this->write_to_log( 'Exception Getting EE Categories:  ' . $e->getMessage() . ' ' . $e->getTraceAsString() . ' type of categories is ' . gettype($categories) );
+			$categoryCSV .=  $category->slug;
 		}
+
 
 		$this->clearCloudFlareCache($post_id, $post_type, $categories);
 
