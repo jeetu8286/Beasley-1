@@ -203,15 +203,18 @@ class Webhooks extends \Bbgi\Module {
 		$categories = get_the_category( $post_id );
 		if (!$categories && isset($opts['category_list'])){
 			$categories = $opts['category_list'];
-			$this->write_to_log( 'Categories From Ops',[ 'categories' => $categories ] );
+			$this->write_to_log( 'Categories From Ops', [ 'categories' => $categories, 'post_id' => $post_id ] );
 		}
 
 		$categoryCSV = '';
-		foreach ( $categories as $category ) {
-			if (strlen($categoryCSV) > 0) {
-				$categoryCSV .= ',';
+
+		if ( !empty($categories) ) {
+			foreach ( $categories as $category ) {
+				if (strlen($categoryCSV) > 0) {
+					$categoryCSV .= ',';
+				}
+				$categoryCSV .=  $category->slug;
 			}
-			$categoryCSV .=  $category->slug;
 		}
 
 
@@ -324,8 +327,10 @@ class Webhooks extends \Bbgi\Module {
 
 		$cache_tags = [$post_slug];
 
-		foreach ( $categories as $category ) {
-			$cache_tags[] = 'archive-' . $category->slug;
+		if ( !empty($categories) ) {
+			foreach ($categories as $category) {
+				$cache_tags[] = 'archive-' . $category->slug;
+			}
 		}
 
 		if (!empty($posttype)) {
