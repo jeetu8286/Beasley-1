@@ -217,7 +217,7 @@ class Webhooks extends \Bbgi\Module {
 			}
 		}
 
-		if ($post_type !== 'gmr_homepage-homepage') {
+		if ($post_type !== 'gmr_homepage') {
 			$this->clearCloudFlareCache($post_id, $post_type, $categories);
 		}
 
