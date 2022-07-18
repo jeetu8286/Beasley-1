@@ -35,19 +35,23 @@ class Webhooks extends \Bbgi\Module {
 	 */
 	protected function log( $message, $params = [] ) {
 		if ( $this->debug ) {
-			$blog_id = get_current_blog_id();
-			$details = get_blog_details( $blog_id );
-
-			error_log(
-				sprintf(
-					'[#%d - %s] %s - %s',
-					$blog_id,
-					$details->blogname,
-					$message,
-					print_r( $params, true )
-				)
-			);
+			$this->write_to_log(@$message, $params);
 		}
+	}
+
+	protected function write_to_log( $message, $params = [] ) {
+		$blog_id = get_current_blog_id();
+		$details = get_blog_details( $blog_id );
+
+		error_log(
+			sprintf(
+				'[#%d - %s] %s - %s',
+				$blog_id,
+				$details->blogname,
+				$message,
+				print_r( $params, true )
+			)
+		);
 	}
 
 
@@ -202,11 +206,15 @@ class Webhooks extends \Bbgi\Module {
 		}
 
 		$categoryCSV = '';
-		foreach ( $categories as $category ) {
-			if (strlen($categoryCSV) > 0) {
-				$categoryCSV .= ',';
+		try {
+			foreach ( $categories as $category ) {
+				if (strlen($categoryCSV) > 0) {
+					$categoryCSV .= ',';
+				}
+				$categoryCSV .=  $category->slug;
 			}
-			$categoryCSV .=  $category->slug;
+		} catch (Exception $e) {
+			$this->write_to_log( 'Exception Getting EE Categories:  ' . $e->getMessage() . ' ' . $e->getTraceAsString() . ' type of categories is ' . gettype($categories) );
 		}
 
 		$this->clearCloudFlareCache($post_id, $post_type, $categories);
@@ -226,7 +234,7 @@ class Webhooks extends \Bbgi\Module {
 			],
 		];
 
-		$this->log( 'calling webohook', $request_args );
+		$this->log( 'calling webhook', $request_args );
 
 		wp_remote_post( $url, $request_args );
 	}
