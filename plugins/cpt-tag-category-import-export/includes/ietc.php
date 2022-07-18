@@ -99,7 +99,7 @@ class ImportExportTagCategory {
 			wp_enqueue_style( 'general-settings-select2css', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL .'assets/css/select2.min.css', array(),TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_VERSION, 'all');
 			wp_enqueue_script( 'general-settings-select2js', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL .'assets/js/select2.min.js', 'jquery', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_VERSION);
 
-			wp_enqueue_script( 'import-export-tag-category', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL ."assets/js/import-export-tag-category$postfix.js", array('jquery'));
+			wp_enqueue_script( 'import-export-tag-category', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL ."assets/js/import-export-tag-category$postfix.js", array('jquery'), TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_VERSION);
 			wp_localize_script( 'import-export-tag-category', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 			wp_enqueue_media();
 			wp_enqueue_editor();
