@@ -16,6 +16,9 @@ class ImportExportTagCategory {
 		add_action( 'wp_ajax_ietc_export_tag_category', array( __CLASS__, 'ietc_export_tag_category' ) );
 		add_action( 'wp_ajax_nopriv_ietc_export_tag_category', array( __CLASS__, 'ietc_export_tag_category' ) );
 
+		add_action( 'wp_ajax_ietc_export_users', array( __CLASS__, 'ietc_export_users' ) );
+		add_action( 'wp_ajax_nopriv_ietc_export_users', array( __CLASS__, 'ietc_export_users' ) );
+
 		add_action( 'wp_ajax_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
 		add_action( 'wp_ajax_nopriv_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
 
@@ -54,6 +57,14 @@ class ImportExportTagCategory {
 			'ietc_export',
 			array( __CLASS__, 'ietc_export_form' )
 		);
+	   add_submenu_page(
+		   'ietc_logs',
+		   __('Export user posts', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN),
+		   __('Export user posts', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN),
+		   'manage_options',
+		   'ietc_export_users',
+		   array( __CLASS__, 'ietc_export_users_form' )
+	   );
    }
 
 	public static function ietc_logs_form() {
@@ -67,6 +78,12 @@ class ImportExportTagCategory {
 			include_once TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . 'includes/import-export-tag-category/ietc-export.php';
 		}
 	}
+
+	public static function ietc_export_users_form() {
+		if (is_file( TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . 'includes/import-export-tag-category/ietc-export-user.php')) {
+			include_once TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . 'includes/import-export-tag-category/ietc-export-user.php';
+		}
+	}
 	public static function ietc_import_form() {
 		if (is_file( TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . 'includes/import-export-tag-category/ietc-import.php')) {
 			include_once TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . 'includes/import-export-tag-category/ietc-import.php';
@@ -76,7 +93,7 @@ class ImportExportTagCategory {
 	public static function ietc_enqueue_scripts() {
 		global $typenow, $pagenow;
 		$admin_page = filter_input(INPUT_GET, "page", FILTER_SANITIZE_STRIPPED) != "" ? filter_input(INPUT_GET, "page", FILTER_SANITIZE_STRIPPED) : "" ;
-		if ( in_array( $admin_page, array( 'ietc_export', 'ietc_logs', 'ietc_import' ) ) && in_array( $pagenow, array( 'admin.php' ) ) ) {
+		if ( in_array( $admin_page, array( 'ietc_export', 'ietc_logs', 'ietc_import', 'ietc_export_users' ) ) && in_array( $pagenow, array( 'admin.php' ) ) ) {
 			$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 			//Add the Select2 CSS file
 			wp_enqueue_style( 'general-settings-select2css', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL .'assets/css/select2.min.css', array(),TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_VERSION, 'all');
@@ -236,6 +253,100 @@ class ImportExportTagCategory {
 		$result = array( 'message' => $network_name. ' - File successfully Exported', 'file_path' => $file_url, 'network_name' => $network_name, 'log_id' => $lastid );
 		wp_send_json_success( $result );
 		exit;
+   }
+
+   public static function ietc_export_users() {
+	   $blog_id			= filter_input( INPUT_POST, 'network_source', FILTER_SANITIZE_STRIPPED);
+	   $input_type		= filter_input( INPUT_POST, 'input_type', FILTER_SANITIZE_STRIPPED);
+	   $network_name	= filter_input( INPUT_POST, 'network_name', FILTER_SANITIZE_STRIPPED);
+	   // $user_id			= get_current_user_id();
+	   global $wpdb;
+	   $wpdb_prefix = $wpdb->prefix;
+	   $users = $wpdb->get_results(sprintf('SELECT * FROM '. $wpdb_prefix .'users'));
+	   /* $userstest = get_userdata(1);
+	   echo "<pre>";print_r($userstest); exit; */
+
+
+
+
+
+	   echo "<pre>";
+	   print_r($result);
+	   echo "<pre>"; exit;
+
+
+	   // Create User Export file
+	   $todayDate	= date('YmdHis');
+	   $date		= date('Y-m-d H:i:s');
+	   $file_name 	= 'User-'.$todayDate.'.csv';
+	   $fileDirPath	= fopen(TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . "ietc_uploads/import-export-tag-category/export/".$file_name, "w");
+	   $file_url	= TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL . "ietc_uploads/import-export-tag-category/export/".$file_name;
+
+	   if($input_type == 'station_list'){
+		   fputcsv($fileDirPath, array('Username', 'Email', 'Name', 'Role', 'Last login', 'Active Status', 'Station Name'));
+		   // $users = get_users();
+		   foreach($users as $user){
+			   $userdata			= get_userdata( $user->ID );
+			   $stationName			= array();
+			   $roles				= implode(', ', $userdata->roles );
+			   $lastLoginmeta		= get_user_meta($user->ID, 'bbgi_user_last_login_meta', true);
+			   $lastlogin			= isset($lastLoginmeta) && $lastLoginmeta != "" ? date('Y-m-d H:i:s', $lastLoginmeta) : '' ;
+			   $activeStatusMeta	= get_user_meta($user->ID, 'bbgi_is_user_disabled', true);
+			   $activestatus		= isset($activeStatusMeta) && $activeStatusMeta === "0" ? 'Yes' : 'No' ;
+			   $getBlogsdetials 	= get_blogs_of_user( $user->ID );
+
+			   if(count($getBlogsdetials) > 0 ){
+				   foreach($getBlogsdetials as $getBlogsdetial){
+					   $stationName[] = $getBlogsdetial->domain;
+				   }
+			   }
+			   $stationName			= implode(' || ', $stationName);
+
+			   $file_row = array( $userdata->user_login, $userdata->user_email, $userdata->display_name, $roles, $lastlogin, $activestatus, $stationName );
+			   // echo "<pre>", print_r($file_row);
+			   fputcsv($fileDirPath, $file_row);
+		   }
+		   fclose($fileDirPath);
+	   } else {
+		   /*  switch_to_blog( $blog_id );
+		  // Create Export file
+		  $todayDate	= date('YmdHis');
+		  $date		= date('Y-m-d H:i:s');
+		  //echo get_temp_dir(); exit;
+		  $string = str_replace(' ', '', $network_name);
+		  $file_name 	= $string.'-'.$todayDate.'.csv';
+		  $fileDirPath= fopen(TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . "ietc_uploads/import-export-tag-category/export/".$file_name, "w");
+		  $file_url	= TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL . "ietc_uploads/import-export-tag-category/export/".$file_name;
+
+		  $terms_array = get_terms( array(
+			  'taxonomy' => $network_type,
+			  'hide_empty' => false,
+		  ) );
+		  // echo "<pre>", print_r($terms), "</pre>";
+		  $term_type = "";
+		  if( $network_type === 'category' ) {
+			  $term_type = 'category';
+			  fputcsv($fileDirPath, array('blog_id', 'Type', 'Category ID', 'Category Name', 'Category Slug', 'Description'));
+		  } else {
+			  $term_type = 'tag';
+			  fputcsv($fileDirPath, array('blog_id', 'Type', 'Tag ID', 'Tag Name', 'Tag Slug', 'Description'));
+		  }
+
+		  foreach($terms_array as $terms) {
+			  $file_row = array($blog_id, $term_type, $terms->term_id, $terms->name, $terms->slug, $terms->description);
+			  fputcsv($fileDirPath, $file_row);
+		  }
+		  fclose($fileDirPath);
+		  restore_current_blog(); */
+		}
+
+
+
+
+
+	   $result = array( 'message' => ' Users file successfully Exported', 'file_path' => $file_url, 'network_name' => $network_name, 'log_id' => $lastid );
+	   wp_send_json_success( $result );
+	   exit;
    }
    public static function ietc_imp_exp_init(){
 		if(filter_input( INPUT_POST, 'list_publish', FILTER_SANITIZE_STRIPPED) != '')

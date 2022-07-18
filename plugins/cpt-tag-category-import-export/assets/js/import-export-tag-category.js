@@ -206,6 +206,56 @@
 		});
 	});
 
+	$("#export_users_data").on("click", function() {
+		$('#export_msg').html('');
+		$( '#export_users_spinner' ).addClass( 'is-active' );
+		var network_source 	= $('#network_source').val();
+		var network_name 	= $("#network_source  option:selected").text();
+		var input_type		= $('#type').val();
+
+
+		// alert(network_name);
+
+		if(!network_source){
+			network_source = 'all';
+		}
+
+		if(!input_type){
+			alert('Select type');
+			$( '#export_users_spinner' ).removeClass( 'is-active' );
+			return;
+		}
+
+		$.ajax({
+			type: "POST",
+			dataType: 'json',
+			url: my_ajax_object.ajax_url,
+			data : {
+				action: "ietc_export_users",
+				network_source: network_source,
+				input_type: input_type,
+				network_name: network_name,
+			},
+			success: function(result){
+				console.log(result);
+				if(result.success == true){
+					console.log(result.success);
+					var data = result.data;
+					$('#export_msg').append('<div class="notice notice-success is-dismissible"><p>'+data.message+'</p></div> </br> <span id="timestamp" class="timestamp"><a href ="' + data.file_path + '" download> Download file manually </a> </span>');
+					$( '#export_users_spinner' ).removeClass( 'is-active' );
+					window.location.href = data.file_path;
+				} else {
+					$('#export_msg').prev().append('<div id="errormsg"><p class="error">Error in result. Please reload the page.</p></div>');
+					$( '#export_users_spinner' ).removeClass( 'is-active' );
+				}
+			},
+			error : function(r) {
+				$('#export_msg').prev().append('<div id="errormsg"><p class="error">There was an error. Please reload the page.</p></div>');
+				$('#export_users_spinner').removeClass('is-active');
+			}
+		});
+	});
+
   	$('.userfiltercls').change(function(){
     	var getUserid=$(this).val();
     	var getTypeid=$('.typefiltercls').val();
