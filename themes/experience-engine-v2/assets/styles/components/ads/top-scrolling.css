@@ -18,6 +18,9 @@
 	margin-top: var(--inner-content-top-margin);
 	@media(--max-medium-viewport) {
 		margin-top: 94px;
+		& .whiz {
+		  margin-top: var(--inner-content-top-margin);
+	    }
 	}
 }
 
