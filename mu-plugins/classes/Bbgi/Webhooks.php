@@ -203,7 +203,7 @@ class Webhooks extends \Bbgi\Module {
 		$categories = get_the_category( $post_id );
 		if (!$categories && isset($opts['category_list'])){
 			$categories = $opts['category_list'];
-			$this->write_to_log( 'Categories From Ops',[ 'categories' => $categories ] ););
+			$this->write_to_log( 'Categories From Ops',[ 'categories' => $categories ] );
 		}
 
 		$categoryCSV = '';
