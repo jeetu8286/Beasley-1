@@ -182,7 +182,6 @@ class Webhooks extends \Bbgi\Module {
 		$base_url  = get_site_option( 'ee_host', false );
 		$appkey    = get_site_option( 'ee_appkey', false );
 
-		$this->clearCloudFlareCache($post_id);
 
 		// Abort if notification URL isn't set
 		if ( ! $base_url || ! $publisher || ! $appkey ) {
@@ -209,6 +208,8 @@ class Webhooks extends \Bbgi\Module {
 			}
 			$categoryCSV .=  $category->slug;
 		}
+
+		$this->clearCloudFlareCache($post_id, $post_type, $categories);
 
 		$request_args = [
 			'blocking'        => false,
@@ -289,7 +290,9 @@ class Webhooks extends \Bbgi\Module {
 		];
 	}
 
-	public function clearCloudFlareCache($postID){
+	public function clearCloudFlareCache($postID, $posttype, $categories){
+		error_log('clearCloudFlareCache reached');
+
         if(!$postID){
             return false;
         }
@@ -302,6 +305,7 @@ class Webhooks extends \Bbgi\Module {
 			return false;
 		}
 
+
 		// Clear specific page caches
 		if ( function_exists( 'batcache_clear_url' ) && class_exists( 'batcache' ) ) {
 			$url = get_permalink($postID);
@@ -310,11 +314,22 @@ class Webhooks extends \Bbgi\Module {
 		}
 
         $post = get_post( $postID );
-        $slug = $post->post_type.'-'.$post->post_name;
+        $post_slug = $post->post_type.'-'.$post->post_name;
 
+		$cache_tags = [$post_slug];
+
+		foreach ( $categories as $category ) {
+			$cache_tags[] = 'archive-' . $category->slug;
+		}
+
+		if (!empty($posttype)) {
+			$cache_tags[] = 'archive-' . $posttype;
+		}
+
+		error_log('Cloudflare Clearing Cache Tags ' . join( ",", $cache_tags));
+
+		$data = [ "tags" => $cache_tags];
 		$request_url = 'https://api.cloudflare.com/client/v4/zones/'.$zone_id.'/purge_cache';
-		$data = [ "tags" => [$slug] ];
-
 		$response = wp_remote_post( $request_url, array(
 				'method' => 'POST',
 				'headers' => array(

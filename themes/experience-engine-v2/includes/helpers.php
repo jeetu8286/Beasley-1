@@ -202,6 +202,20 @@ if ( ! function_exists( 'ee_filter_primary_category' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'append_current_device_to_cache_tag' ) ) :
+	function append_current_device_to_cache_tag(string $headerCacheTag): string
+	{
+		if (ee_is_common_mobile()) {
+			$headerCacheTag .= ',mobile';
+		} else {
+			$headerCacheTag .= ',desktop';
+		}
+		$headerCacheTag .= ',content';
+		return $headerCacheTag;
+	}
+endif;
+
+
 if ( ! function_exists( 'ee_the_permalink' ) ) :
 	function ee_the_permalink() {
 		$post = get_post();
