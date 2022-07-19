@@ -206,16 +206,10 @@
 		});
 	});
 
-	$("#export_users_data").on("click", function() {
+	$("#export_users_station").on("click", function() {
 		$('#export_msg').html('');
 		$( '#export_users_spinner' ).addClass( 'is-active' );
-		var network_source 	= $('#network_source').val();
-		var network_name 	= $("#network_source  option:selected").text();
 		var input_type		= $('#type').val();
-
-		if(!network_source){
-			network_source = 'all';
-		}
 
 		if(!input_type){
 			alert('Select type');
@@ -228,10 +222,8 @@
 			dataType: 'json',
 			url: my_ajax_object.ajax_url,
 			data : {
-				action: "ietc_export_users",
-				network_source: network_source,
+				action: "ietc_export_users_station",
 				input_type: input_type,
-				network_name: network_name,
 			},
 			success: function(result){
 				console.log(result);
@@ -251,6 +243,73 @@
 				$('#export_users_spinner').removeClass('is-active');
 			}
 		});
+	});
+
+	$("#export_users_post").on("click", function() {
+		$('#export_msg').html('');
+		$( '#export_users_spinner' ).addClass( 'is-active' );
+		var input_type		= $('#type').val();
+		var export_from		= $('#export_from').val();
+		var export_to		= $('#export_to').val();
+
+		if(!input_type){
+			alert('Select type');
+			$( '#export_users_spinner' ).removeClass( 'is-active' );
+			return;
+		}
+
+		if(!export_from){
+			alert('Select from field');
+			$( '#export_users_spinner' ).removeClass( 'is-active' );
+			return;
+		}
+
+		if(!export_to){
+			alert('Select to field');
+			$( '#export_users_spinner' ).removeClass( 'is-active' );
+			return;
+		}
+
+		$.ajax({
+			type: "POST",
+			dataType: 'json',
+			url: my_ajax_object.ajax_url,
+			data : {
+				action: "ietc_export_users_posts",
+				input_type: input_type,
+				export_from: export_from,
+				export_to: export_to,
+			},
+			success: function(result){
+				console.log(result);
+				if(result.success == true){
+					console.log(result.success);
+					var data = result.data;
+					$('#export_msg').append('<div class="notice notice-success is-dismissible"><p>'+data.message+'</p></div> </br> <span id="timestamp" class="timestamp"><a href ="' + data.file_path + '" download> Download file manually </a> </span>');
+					$( '#export_users_spinner' ).removeClass( 'is-active' );
+					window.location.href = data.file_path;
+				} else {
+					$('#export_msg').prev().append('<div id="errormsg"><p class="error">Error in result. Please reload the page.</p></div>');
+					$( '#export_users_spinner' ).removeClass( 'is-active' );
+				}
+			},
+			error : function(r) {
+				$('#export_msg').prev().append('<div id="errormsg"><p class="error">There was an error. Please reload the page.</p></div>');
+				$('#export_users_spinner').removeClass('is-active');
+			}
+		});
+	});
+	$('#type').change(function(){
+		var type	= $(this).val();
+		if( type == 'post_list' ){
+			$("#post_list_div").show();
+			$("#post_list_date").show();
+			$("#station_list_div").hide();
+		} else {
+			$("#post_list_div").hide();
+			$("#post_list_date").hide();
+			$("#station_list_div").show();
+		}
 	});
 
   	$('.userfiltercls').change(function(){

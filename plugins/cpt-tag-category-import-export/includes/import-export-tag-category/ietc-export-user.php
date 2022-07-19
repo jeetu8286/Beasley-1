@@ -8,7 +8,8 @@
                   <div id="postbox-container-2" class="postbox-container">
                         <div id="normal-sortables" class="meta-box-sortables ui-sortable postbox">
                         <table class="form-table" >
-                           <tr>
+							<?php /* ?>
+							<tr>
                               <td>
                                  <label for="subscription_type"><?php _e( 'Network source', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN ); ?></label>
                               </td>
@@ -25,7 +26,7 @@
                                     ?>
                                  </select>
                               </td>
-                           </tr>
+                           </tr><?php */ ?>
                            <tr>
                               <td>
                                     <label for="type"><?php _e( 'Type', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN ); ?></label>
@@ -33,11 +34,20 @@
                               <td>
                                     <select name="type" id="type" class="general-settings-select2">
                                        <option value="" disabled selected>Select Type</option>
-                                       <option value="station_list">Station list</option>
-                                       <option value="post_list">Post list</option>
+                                       <option value="station_list">User Station list</option>
+                                       <option value="post_list">User Post list</option>
                                     </select>
                               </td>
                            </tr>
+							<tr id="post_list_date" style="display: none;">
+								<td>
+									<label for="subscription_type"><?php _e( 'Date', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN ); ?></label>
+								</td>
+								<td>
+									From: <input type="date" id="export_from" name="export_from" value="" >
+									To: <input type="date" id="export_to" name="export_to" value="" >
+								</td>
+							</tr>
                         </table>
                     </div>
                     </div>
@@ -70,7 +80,12 @@
 
                                           <div id="major-publishing-actions">
                                                   <div id="publishing-action">
-                                                      <input name="list_publish" type="button" class="button button-primary button-large" id="export_users_data" value="Export">
+													  <div id="station_list_div">
+														  <input name="list_publish" type="button" class="button button-primary button-large" id="export_users_station" value="Export User Station">
+													  </div>
+													  <div id="post_list_div" style="display: none;">
+														  <input name="list_publish" type="button" class="button button-primary button-large" id="export_users_post" value="Export User Posts" >
+													  </div>
                                                   </div>
                                                   <div class="clear"></div>
                                              </div>
