@@ -22,7 +22,7 @@ class Webhooks extends \Bbgi\Module {
 		add_action( 'shutdown', [ $this, 'do_shutdown' ] );
 
 
-		$this->debug = ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'WEBHOOKS_LOG_ENABLE' ) && WEBHOOKS_LOG_ENABLE );
+		$this->debug = true;//( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'WEBHOOKS_LOG_ENABLE' ) && WEBHOOKS_LOG_ENABLE );
 	}
 
 	/**
@@ -155,10 +155,11 @@ class Webhooks extends \Bbgi\Module {
 				'opts'      => $opts,
 			];
 
-			$this->log( 'pending webook set. ', $this->pending[ $site_id ] );
+			$this->log( 'pending webhook set. ', $this->pending[ $site_id ] );
 
 			return true;
 		} else {
+			$this->log('a pending webhook exists for site: ' . $site_id . ' or needs_webhook returned false' );
 			return false;
 		}
 	}
@@ -261,17 +262,20 @@ class Webhooks extends \Bbgi\Module {
 	public function needs_webhook( $post_id, $only_published = true ) {
 		/* autosaves don't need webhook */
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			$this->log('no webhook when auto saving post');
 			return false;
 		}
 
 		/** don't webhook bulk edit requests */
 		if ( isset( $_REQUEST['bulk_edit'] ) ) {
+			$this->log('no webhook called during bulk edit');
 			return false;
 		}
 
 		$post = get_post( $post_id );
 
 		if ( $only_published && $post->post_status !== 'publish' ) {
+			$this->log('not a published post. no webhook ran');
 			return false;
 		}
 
