@@ -365,7 +365,7 @@ class Webhooks extends \Bbgi\Module {
 		if ( is_wp_error( $response ) ) {
 			$this->log('Failed Response');
 		} else {
-			$this->log('Cloudflare Response', $response);
+			$this->log('Cloudflare Response', [ "response" => json_encode( $response )]);
 		}
 
 		return true;
