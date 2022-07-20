@@ -67,7 +67,7 @@ class Webhooks extends \Bbgi\Module {
 			$type = $post->post_type;
 			$categories = get_the_category( $post_id );
 		}
-		$this->do_lazy_webhook( $post_id, [ 'source' => 'save_post', 'post_type' => $type, 'category_list' => $categories ] );
+		//$this->do_lazy_webhook( $post_id, [ 'source' => 'save_post', 'post_type' => $type, 'category_list' => $categories ] );
 	}
 
 	/**
@@ -147,7 +147,7 @@ class Webhooks extends \Bbgi\Module {
 		$site_id = get_current_blog_id();
 		$only_published = isset( $opts['only_published' ] ) ? $opts['only_published' ] : true;
 
-		$this->log( 'do_lazy_webook called.', [ 'post_id' => $post_id, 'opts' => $opts ] );
+		//$this->log( 'do_lazy_webook called.', [ 'post_id' => $post_id, 'opts' => $opts ] );
 
 		if ( ! isset( $this->pending[ $site_id ] ) && $this->needs_webhook( $post_id, $only_published ) ) {
 			$publisher = get_option( 'ee_publisher', false );
@@ -158,11 +158,11 @@ class Webhooks extends \Bbgi\Module {
 				'opts'      => $opts,
 			];
 
-			$this->log( 'pending webhook set. ', $this->pending[ $site_id ] );
+			//$this->log( 'pending webhook set. ', $this->pending[ $site_id ] );
 
 			return true;
 		} else {
-			$this->log('a pending webhook exists for site: ' . $site_id . ' or needs_webhook returned false' );
+			//$this->log('a pending webhook exists for site: ' . $site_id . ' or needs_webhook returned false' );
 			return false;
 		}
 	}
@@ -193,7 +193,7 @@ class Webhooks extends \Bbgi\Module {
 
 		// Abort if notification URL isn't set
 		if ( ! $base_url || ! $publisher || ! $appkey ) {
-			$this->log( 'do_webhook notification url is not set.', $debug_params );
+			//$this->log( 'do_webhook notification url is not set.', $debug_params );
 			return;
 		}
 
@@ -207,7 +207,7 @@ class Webhooks extends \Bbgi\Module {
 		$categories = get_the_category( $post_id );
 		if (!$categories && isset($opts['category_list'])){
 			$categories = $opts['category_list'];
-			$this->write_to_log( 'Categories From Ops', [ 'categories' => $categories, 'post_id' => $post_id ] );
+			//$this->write_to_log( 'Categories From Ops', [ 'categories' => $categories, 'post_id' => $post_id ] );
 		}
 
 		$categoryCSV = '';
@@ -341,7 +341,7 @@ class Webhooks extends \Bbgi\Module {
 		// Clear specific page caches
 		if ( function_exists( 'batcache_clear_url' ) && class_exists( 'batcache' ) ) {
 			$url = get_permalink($postID);
-			$this->log( 'Batcache URL' , [ 'url' => $url ] );
+			//$this->log( 'Batcache URL' , [ 'url' => $url ] );
 			batcache_clear_url( $url );
 		}
 
@@ -360,10 +360,12 @@ class Webhooks extends \Bbgi\Module {
 					)
 				);
 
-		$this->log('Cloudflare Response', $response);
+
 
 		if ( is_wp_error( $response ) ) {
 			$this->log('Failed Response');
+		} else {
+			$this->log('Cloudflare Response', $response);
 		}
 
 		return true;
