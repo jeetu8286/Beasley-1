@@ -345,7 +345,7 @@ class Webhooks extends \Bbgi\Module {
 			batcache_clear_url( $url );
 		}
 
-		$this->log( 'Cloudflare Clearing Cache Tags', $cache_tags)
+		$this->log( 'Cloudflare Clearing Cache Tags', $cache_tags);
 
 
 		$data = [ "tags" => $cache_tags];
