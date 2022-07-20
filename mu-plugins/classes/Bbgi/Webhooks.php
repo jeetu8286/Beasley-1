@@ -67,7 +67,7 @@ class Webhooks extends \Bbgi\Module {
 			$type = $post->post_type;
 			$categories = get_the_category( $post_id );
 		}
-		//$this->do_lazy_webhook( $post_id, [ 'source' => 'save_post', 'post_type' => $type, 'category_list' => $categories ] );
+		$this->do_lazy_webhook( $post_id, [ 'source' => 'save_post', 'post_type' => $type, 'category_list' => $categories ] );
 	}
 
 	/**
