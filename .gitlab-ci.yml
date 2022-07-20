@@ -67,7 +67,7 @@ deploy_prod:
   when: manual
   allow_failure: false
 
-cloudflare_purge_content:
+cloudflare_purge_desktop:
   stage: post-deploy
   environment:
     name: Staging
