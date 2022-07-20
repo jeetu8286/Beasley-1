@@ -259,13 +259,19 @@
 		}
 
 		if(!export_from){
-			alert('Select from field');
+			alert('Select from date');
 			$( '#export_users_spinner' ).removeClass( 'is-active' );
 			return;
 		}
 
 		if(!export_to){
-			alert('Select to field');
+			alert('Select to date');
+			$( '#export_users_spinner' ).removeClass( 'is-active' );
+			return;
+		}
+
+		if (export_from >= export_to) {
+			alert('Date is not in Range');
 			$( '#export_users_spinner' ).removeClass( 'is-active' );
 			return;
 		}

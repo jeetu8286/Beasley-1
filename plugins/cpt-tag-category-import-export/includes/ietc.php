@@ -7,6 +7,7 @@ class ImportExportTagCategory {
 	 * Hook into the appropriate actions when the class is constructed.
 	 */
 	public static function init() {
+		add_action( 'init', array( __CLASS__, 'ietc_init' ), 0 );
 		add_action( 'admin_init', array( __CLASS__, 'ietc_imp_exp_init' ) );
 		add_action('network_admin_notices', array( __CLASS__, 'ietc_general_admin_notice' ) ) ;
 
@@ -24,10 +25,20 @@ class ImportExportTagCategory {
 
 		add_action( 'wp_ajax_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
 		add_action( 'wp_ajax_nopriv_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
+	}
+	public static function ietc_init() {
+		$roles = [ 'administrator' ];
 
+		foreach ( $roles as $role ) {
+			$role_obj = get_role( $role );
+
+			if ( is_a( $role_obj, \WP_Role::class ) ) {
+				$role_obj->add_cap( 'manage_export_user_data', false );
+			}
+		}
 	}
 
-   public static function ietc_admin_menu() {
+	public static function ietc_admin_menu() {
 		add_menu_page(
 			__('Import Export tag & category', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN),
 			__('Import Export tag & category', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN),
@@ -64,7 +75,7 @@ class ImportExportTagCategory {
 		   'ietc_logs',
 		   __('Export user posts', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN),
 		   __('Export user posts', TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_TEXT_DOMAIN),
-		   'manage_options',
+		   'manage_export_user_data',
 		   'ietc_export_users',
 		   array( __CLASS__, 'ietc_export_users_form' )
 	   );
