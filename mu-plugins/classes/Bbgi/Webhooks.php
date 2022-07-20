@@ -308,7 +308,7 @@ class Webhooks extends \Bbgi\Module {
 	}
 
 	public function clearCloudFlareCache($postID, $posttype, $categories){
-		error_log('clearCloudFlareCache reached');
+		$this->log("clearCloudFlareCache", ["postId" => $postID, 'postType' => $posttype, "categories" => $categories]);
 
         if(!$postID){
             return false;
@@ -318,7 +318,8 @@ class Webhooks extends \Bbgi\Module {
 		$zone_id = get_option('cloud_flare_zoneid');
 
 		if ( empty($cloudflaretoken) || empty($zone_id) ) {
-			error_log( 'Cloudflare not configured for this site' );
+			$this->log("Cloudflare not configured for this site" );
+
 			return false;
 		}
 
@@ -344,11 +345,7 @@ class Webhooks extends \Bbgi\Module {
 			batcache_clear_url( $url );
 		}
 
-
-
-		error_log('Cloudflare Clearing Cache Tags ' . join( ",", $cache_tags));
-
-
+		$this->log( 'Cloudflare Clearing Cache Tags', $cache_tags);
 
 
 		$data = [ "tags" => $cache_tags];
@@ -363,13 +360,13 @@ class Webhooks extends \Bbgi\Module {
 					)
 				);
 
-		$response_json = 'Cloudflare response: '. json_encode( $response );
-		error_log( $response_json );
+		$this->log('Cloudflare Response', $response);
 
 		if ( is_wp_error( $response ) ) {
-			error_log( 'Cloudflare error notice query var from is_wp_error function' );
+			$this->log('Failed Response');
 		}
 
+		return true;
     }
 
 }
