@@ -308,7 +308,7 @@ class Webhooks extends \Bbgi\Module {
 	}
 
 	public function clearCloudFlareCache($postID, $posttype, $categories){
-		$this->log("clearCloudFlareCache", ["postId" => $postID, 'postType' => $posttype, "categories" => $categories]);
+		$this->log("clearCloudFlareCache", ["postId" => $postID]);
 
         if(!$postID){
             return false;
