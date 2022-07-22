@@ -150,7 +150,7 @@ class Webhooks extends \Bbgi\Module {
 
 		$host = $_SERVER['HTTP_HOST'];
 
-		if (strpos($host, "coyote") > 0 || strpos($host, "kdwn") > 0 || strpos($host, "kklz") > 0 || strpos($host, "jammin") > 0 || strpos($host, "vgs") > 0) {
+		if (strpos($host, "coyote") !== false  || strpos($host, "kdwn") !== false || strpos($host, "kklz") !== false || strpos($host, "jammin") !== false || strpos($host, "vgs") !== false) {
 			$this->log('Not running vegas webhooks', ["site" => $host]);
 			return false;
 		}
