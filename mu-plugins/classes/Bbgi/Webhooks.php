@@ -148,13 +148,6 @@ class Webhooks extends \Bbgi\Module {
 	 */
 	public function do_lazy_webhook( $post_id, $opts = [] ) {
 
-		$host = $_SERVER['HTTP_HOST'];
-
-		if (strpos($host, "coyote") !== false  || strpos($host, "kdwn") !== false || strpos($host, "kklz") !== false || strpos($host, "jammin") !== false || strpos($host, "vgs") !== false) {
-			$this->log('Not running vegas webhooks', ["site" => $host]);
-			return false;
-		}
-
 		$site_id = get_current_blog_id();
 		$only_published = isset( $opts['only_published' ] ) ? $opts['only_published' ] : true;
 
