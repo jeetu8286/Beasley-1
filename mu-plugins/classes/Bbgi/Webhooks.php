@@ -173,7 +173,7 @@ class Webhooks extends \Bbgi\Module {
 
 			return true;
 		} else {
-			//$this->log('a pending webhook exists for site: ' . $site_id . ' or needs_webhook returned false' );
+			$this->log('a pending webhook exists for site needs_webhook returned false', [ "post_id" => $post_id] );
 			return false;
 		}
 	}
