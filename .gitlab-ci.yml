@@ -73,6 +73,18 @@ cloudflare_purge_desktop:
     name: Staging
     url: https://bbgistage.com/
   script:
+    - bash ./deploy-scripts/purge-cf-cache.sh desktop
+  only:
+    - stage3
+  when: manual
+  allow_failure: false
+
+cloudflare_purge_content:
+  stage: post-deploy
+  environment:
+    name: Staging
+    url: https://bbgistage.com/
+  script:
     - bash ./deploy-scripts/purge-cf-cache.sh content
   only:
     - stage3

@@ -3,6 +3,7 @@ echo
 echo
 echo "Clearing Site Content Cache"
 cf_tag=$1
+
 while read -r line; do
   SITE=($(echo "$line" | tr '|' '\n'))
   ENDPOINT="https://api.cloudflare.com/client/v4/zones/${SITE[1]}/purge_cache"
