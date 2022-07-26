@@ -147,7 +147,6 @@ class Webhooks extends \Bbgi\Module {
 	 */
 	public function do_lazy_webhook( $post_id, $opts = [] ) {
 
-
 		$site_id = get_current_blog_id();
 		$only_published = isset( $opts['only_published' ] ) ? $opts['only_published' ] : true;
 
