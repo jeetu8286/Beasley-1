@@ -132,7 +132,7 @@ class Webhooks extends \Bbgi\Module {
 
 			return true;
 		} else {
-			$this->log( 'shutdown called', ["pending" => "is empty"] );
+			//$this->log( 'shutdown called', ["pending" => "is empty"] );
 			return false;
 		}
 	}
