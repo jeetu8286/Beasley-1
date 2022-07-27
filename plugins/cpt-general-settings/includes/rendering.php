@@ -48,8 +48,8 @@ class GeneralSettingsFrontRendering {
 		}
 
 
-		header("Cache-Tag: " . implode("-feed,", $headerCacheTag) , true);
-		header("X-Cache-BBGI-Tag: " . implode("-feed,", $headerCacheTag) , true);
+		header("Cache-Tag: " . implode(",", $headerCacheTag) , true);
+		header("X-Cache-BBGI-Tag: " . implode(",", $headerCacheTag) , true);
 
 
 	}
