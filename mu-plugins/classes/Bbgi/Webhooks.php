@@ -51,9 +51,9 @@ class Webhooks extends \Bbgi\Module {
 			print_r( $params, true )
 		);
 
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		if ( defined( 'WP_CLI' ) && \WP_CLI ) {
 			try {
-				WP_CLI::log( $logMessage );
+				\WP_CLI::log( $logMessage );
 			} catch ( Exception $e ) {
 				//do nothing here
 			}
