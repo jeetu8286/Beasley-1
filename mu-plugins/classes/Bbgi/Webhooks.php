@@ -2,8 +2,6 @@
 
 namespace Bbgi;
 
-use Exception;
-
 class Webhooks extends \Bbgi\Module {
 
 	/**
@@ -54,7 +52,12 @@ class Webhooks extends \Bbgi\Module {
 		);
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::log( $logMessage );
+			try {
+				WP_CLI::log( $logMessage );
+			} catch ( Exception $e ) {
+				//do nothing here
+			}
+
 		} else if($this->is_wp_minions()){
 			try {
 				syslog( LOG_ERR, $logMessage );
