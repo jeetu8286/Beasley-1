@@ -53,7 +53,9 @@ class Webhooks extends \Bbgi\Module {
 			print_r( $params, true )
 		);
 
-		if($this->is_wp_minions()){
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::log( $logMessage );
+		} else if($this->is_wp_minions()){
 			try {
 				syslog( LOG_ERR, $logMessage );
 			} catch (Exception $e) {
