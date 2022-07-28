@@ -2,6 +2,8 @@
 
 namespace Bbgi;
 
+use Exception;
+
 class Webhooks extends \Bbgi\Module {
 
 	/**
@@ -52,7 +54,11 @@ class Webhooks extends \Bbgi\Module {
 		);
 
 		if($this->is_wp_minions()){
-			syslog( LOG_ERR, $logMessage );
+			try {
+				syslog( LOG_ERR, $logMessage );
+			} catch (Exception $e) {
+				error_log( "minions logging worked outside of syndications");
+			}
 		} else {
 			error_log( $logMessage );
 		}
