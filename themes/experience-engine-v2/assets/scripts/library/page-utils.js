@@ -1,3 +1,5 @@
+let nextPageScrollPos = 0;
+
 const getPageStatStack = () => {
 	let { PageStatsArray } = window;
 	if (!PageStatsArray) {
@@ -32,7 +34,10 @@ const removeTailAndProcessPrior = () => {
 	}
 
 	if (priorPageStat && priorPageStat.scrollPos) {
-		window.scrollTo(window.scrollX, priorPageStat.scrollPos);
+		// window.scrollTo(window.scrollX, priorPageStat.scrollPos);
+		nextPageScrollPos = priorPageStat.scrollPos;
+	} else {
+		nextPageScrollPos = 0;
 	}
 };
 
@@ -56,10 +61,11 @@ const processNewPageStatAndAddTail = pageUrl => {
 	}
 
 	window.lastContentTopMargin = 0; // Turn Off DFP Adjustment
-	window.scrollTo(window.scrollX, 0);
+	// window.scrollTo(window.scrollX, 0);
+	nextPageScrollPos = 0;
 };
 
-export default function doNewPageProcessing(leavingPageUrl, newPageUrl) {
+export function doUpdatePageStack(leavingPageUrl, newPageUrl) {
 	console.log(`leavingPageUrl: ${leavingPageUrl}`);
 	console.log(`newPageUrl: ${newPageUrl}`);
 	const priorPageStat = getPriorPageStat();
@@ -76,4 +82,8 @@ export default function doNewPageProcessing(leavingPageUrl, newPageUrl) {
 	} else {
 		processNewPageStatAndAddTail(leavingPageUrl);
 	}
+}
+
+export function doPageStackScroll(leavingPageUrl, newPageUrl) {
+	window.scrollTo(window.scrollX, nextPageScrollPos);
 }

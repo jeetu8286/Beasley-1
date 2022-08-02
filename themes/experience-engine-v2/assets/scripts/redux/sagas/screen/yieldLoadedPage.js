@@ -19,7 +19,7 @@ import {
 	getCanonicalUrl,
 } from '../../../library';
 // import resetScrollToTop from '../../utilities/player/resetScrollToTop';
-import doNewPageProcessing from '../../../library/page-utils';
+import { doPageStackScroll } from '../../../library/page-utils';
 
 /**
  * Updates window.history with new url and title
@@ -105,7 +105,7 @@ function* yieldLoadedPage(action) {
 	// make sure the user scroll bar is into view.
 	// yield call(scrollIntoView);
 	console.log('**** CALLING NEW PAGE PROCESSING ****');
-	yield call(doNewPageProcessing, leavingPageUrl, url);
+	yield call(doPageStackScroll, leavingPageUrl, url);
 
 	// make sure to hide splash screen.
 	yield put(hideSplashScreen());
