@@ -18,7 +18,7 @@ import {
 	updateCanonicalUrl,
 	getCanonicalUrl,
 } from '../../../library';
-import resetScrollToTop from '../../utilities/player/resetScrollToTop';
+// import resetScrollToTop from '../../utilities/player/resetScrollToTop';
 import doNewPageProcessing from '../../../library/page-utils';
 
 /**
@@ -48,6 +48,7 @@ function updateHistory(url, title) {
  * @param { Object } action Dispatched action
  */
 function* yieldLoadedPage(action) {
+	console.log('LOADED FULL PAGE');
 	const { url, response, options, parsedHtml } = action;
 	const { ad_reset_digital_enabled } = window.bbgiconfig;
 	const urlSlugified = slugify(url);
@@ -63,8 +64,7 @@ function* yieldLoadedPage(action) {
 	// Update BBGI Config
 	yield call(manageBbgiConfig, pageDocument);
 
-	const lastUrl = getCanonicalUrl();
-
+	const leavingPageUrl = getCanonicalUrl();
 	updateCanonicalUrl(url);
 
 	if (ad_reset_digital_enabled === 'on' && window.fireResetPixel) {
@@ -104,7 +104,8 @@ function* yieldLoadedPage(action) {
 	console.log('***Yield Loading Page Adjusting Scroll');
 	// make sure the user scroll bar is into view.
 	// yield call(scrollIntoView);
-	yield call(doNewPageProcessing, lastUrl, url);
+	console.log('**** CALLING NEW PAGE PROCESSING ****');
+	yield call(doNewPageProcessing, leavingPageUrl, url);
 
 	// make sure to hide splash screen.
 	yield put(hideSplashScreen());
@@ -128,8 +129,8 @@ function* yieldLoadedPage(action) {
 
 	yield call(handleInjectos);
 
-	console.log('***Yield Load Finished and scrolling to top');
-	yield call(resetScrollToTop);
+	console.log('***Yield Load Finished and NOT scrolling to top - UNSURE???');
+	// yield call(resetScrollToTop);
 }
 
 /**
