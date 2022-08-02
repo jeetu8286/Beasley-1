@@ -124,35 +124,34 @@ const adjustContentMarginForTopAd = newAdHeight => {
 		const adContainerStyle = window.getComputedStyle(adContainerElement);
 
 		const lastVerticalScroll = window.scrollY;
-		const lastContentTopMargin = parseInt(contentStyle.marginTop, 10);
+		// If First Time Shown, use holder variable set in page-utils
+		const lastContentTopMargin = window.topAdsShown
+			? parseInt(contentStyle.marginTop, 10)
+			: window.lastContentTopMargin;
+
 		const adContainerTopMargin = parseInt(adContainerStyle.marginTop, 10);
 		const newContentTopMargin =
 			24 + (newAdHeight || 0) + (adContainerTopMargin || 0);
+
+		contentElement.style.marginTop = `${newContentTopMargin}px`;
 
 		console.log(
 			`New Leaderboard => Old Scroll:${lastVerticalScroll} Old Top Margin:${lastContentTopMargin} New Top Margin:${newContentTopMargin}`,
 		);
 
-		contentElement.style.marginTop = `${newContentTopMargin}px`;
-
-		if (lastVerticalScroll <= lastContentTopMargin) {
-			console.log('SCROLLING BACK TO TOP');
+		// Adjust Scroll
+		const marginDelta = newContentTopMargin - lastContentTopMargin;
+		if (lastVerticalScroll <= newContentTopMargin) {
+			console.log('SCROLLING BACK TO TOP BECAUSE NEW AD WOULD BE CUT OFF');
 			window.scrollTo(window.scrollX, 0);
-		}
-		/*
-		else {
-			const marginDelta = newContentTopMargin - lastContentTopMargin;
-			// Adjust Margin Delta If Ad Had Not Been Loaded Before Now
-			// if (!window.topAdsShown) {
-			//	marginDelta -= lastContentTopMargin - 44;
-			// }
+		} else {
 			const newVerticalScroll = lastVerticalScroll + marginDelta;
 			window.scrollTo(window.scrollX, newVerticalScroll);
 			console.log(
 				`ADJUSTED PAGE SCROLL BY ${marginDelta} TO ${newVerticalScroll} BECAUSE OF TOP AD`,
 			);
 		}
-		*/
+
 		window.topAdsShown++;
 	}
 };
