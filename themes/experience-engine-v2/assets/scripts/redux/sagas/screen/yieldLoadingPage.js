@@ -5,7 +5,6 @@ import {
 	ACTION_LOADING_PAGE,
 	ACTION_LOADING_PARTIAL,
 } from '../../actions/screen';
-import { doUpdatePageStack } from '../../../library/page-utils';
 
 /**
  * Generator runs whenever [ ACTION_INIT_PAGE ]
@@ -15,9 +14,6 @@ import { doUpdatePageStack } from '../../../library/page-utils';
  * @param { Object } action.url url from action
  */
 function* yieldLoadingPage({ url }) {
-	console.log('**** CALLING NEW PAGE PROCESSING ****');
-	yield call(doUpdatePageStack, window.location.href, url);
-
 	if (window.location.href !== url) {
 		// Call updateCorrelator
 		yield call(updateCorrelator);

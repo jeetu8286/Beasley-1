@@ -101,7 +101,7 @@ function* yieldLoadedPage(action) {
 	// Update Scripts.
 	yield call(manageScripts, parsedHtml.scripts, screenStore.scripts);
 
-	console.log('***Yield Loading Page Adjusting Scroll');
+	// console.log('***Yield Loading Page Adjusting Scroll');
 	// make sure the user scroll bar is into view.
 	// yield call(scrollIntoView);
 	console.log('**** CALLING NEW PAGE PROCESSING ****');
