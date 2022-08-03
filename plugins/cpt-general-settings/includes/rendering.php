@@ -25,6 +25,7 @@ class GeneralSettingsFrontRendering {
 		} else if (is_archive()) {
 			global $wp;
 			$current_url = home_url( add_query_arg( array(), $wp->request ) );
+			error_log('IN the archive part part of render',$post);
 			$categories = get_the_category( $post );
 			$categoriesSlug = wp_list_pluck($categories, 'slug' );
 			array_walk($categoriesSlug, function ($value, $key) use ($current_url, &$headerCacheTag){
