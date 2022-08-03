@@ -46,6 +46,10 @@
 	}
 }
 
+& #inner-content {
+  margin-top: var(--inner-content-top-margin);
+}
+
 & #whiz-leaderboard-container {
 	  height: 50px;
   }
