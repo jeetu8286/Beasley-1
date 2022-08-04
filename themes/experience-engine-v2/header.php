@@ -2,7 +2,6 @@
 use Bbgi\Integration\Google;
 ?>
 <?php
-
 	$headerCacheTag = [];
 	global $post;
 	if (  is_front_page() ) {
