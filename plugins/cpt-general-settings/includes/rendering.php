@@ -42,7 +42,7 @@ class GeneralSettingsFrontRendering {
 		}  else {
 			$currentPostType	= "";
 			$currentPostSlug	= "";
-			error_log('IN the else part of render',$post);
+			error_log('IN the else part of render'.$post);
 			if ( get_post_type() ) :
 				$currentPostType = get_post_type();
 				$headerCacheTag[] = 'feed-'.$currentPostType;
