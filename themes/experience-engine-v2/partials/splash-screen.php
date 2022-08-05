@@ -37,7 +37,6 @@ $color = $colors['--brand-primary'];
 			width: 250px;
 		}
 
-
 		.splash-screen-progress {
 			bottom: 0;
 			border-radius: 2px;
