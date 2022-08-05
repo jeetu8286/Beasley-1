@@ -14,7 +14,6 @@ class GeneralSettingsFrontRendering {
 		add_action( 'template_redirect', array( __CLASS__,'feed_headers' ) );
 	}
 	function feed_headers(){
-		echo 'in';exit;
 		if ( !is_feed()) {
 			return;
 		}
