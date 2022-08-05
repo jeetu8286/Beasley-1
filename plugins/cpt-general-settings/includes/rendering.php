@@ -14,6 +14,7 @@ class GeneralSettingsFrontRendering {
 		add_action( 'template_redirect', array( __CLASS__,'feed_headers' ) );
 	}
 	function feed_headers(){
+		echo 'in';exit;
 		if ( !is_feed()) {
 			return;
 		}
@@ -33,7 +34,11 @@ class GeneralSettingsFrontRendering {
 					$headerCacheTag[] =   "feed" . "-" . $value;
 				}
 			});
+			$obj = get_queried_object();
 
+			if (isset($obj->slug)) {
+				$headerCacheTag[] = "archive" . "-" . $obj->slug;
+			}
 			if (isset($wp_query->query['post_type'])) {
 				$headerCacheTag[] = "feed-" . $wp_query->query['post_type'];
 			}
