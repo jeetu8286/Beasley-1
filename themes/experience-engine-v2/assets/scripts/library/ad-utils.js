@@ -1,13 +1,49 @@
 const playerSponsorDivID = 'div-gpt-ad-1487117572008-0';
-const interstitialDivID = 'div-gpt-ad-1484200509775-3';
+export const interstitialDivID = 'div-gpt-ad-1484200509775-3';
 export const topScrollingDivID = 'div-top-scrolling-slot';
 const bottomAdhesionDivID = 'div-bottom-adhesion-slot';
-const dropDownDivID = 'div-drop-down-slot';
+export const dropDownDivID = 'div-drop-down-slot';
 
 export const isNotSponsorOrInterstitial = placeholder => {
 	return (
 		placeholder !== playerSponsorDivID && placeholder !== interstitialDivID
 	);
+};
+
+const getTopAdStatCollectionObject = () => {
+	let { topAdStatsObject } = window;
+	if (!topAdStatsObject) {
+		window.topAdStatsObject = {};
+		topAdStatsObject = window.topAdStatsObject;
+	}
+	return topAdStatsObject;
+};
+
+export const getTopAdStat = pageUrl => {
+	if (!pageUrl) {
+		throw Error('NULL Url Param in getTopAdStat()');
+	}
+
+	const alphaOnlyPageUrl = pageUrl.replace(/[^a-zA-Z0-9]/g, '');
+
+	const topAdStatsObject = getTopAdStatCollectionObject();
+	if (typeof topAdStatsObject[alphaOnlyPageUrl] === 'undefined') {
+		topAdStatsObject[alphaOnlyPageUrl] = {};
+	}
+
+	return topAdStatsObject[alphaOnlyPageUrl];
+};
+
+export const setTopAdStatScrollPos = (pageUrl, scrollPos) => {
+	if (!pageUrl) {
+		throw Error('NULL Url Param in setTopAdStatScrollPos()');
+	}
+	if (!scrollPos) {
+		throw Error('NULL scrollPos Param in setTopAdStatScrollPos()');
+	}
+
+	const topAdStatsObject = getTopAdStat(pageUrl);
+	topAdStatsObject.scrollPos = scrollPos;
 };
 
 export const getSlotStatsCollectionObject = () => {
@@ -21,7 +57,7 @@ export const getSlotStatsCollectionObject = () => {
 
 export const getSlotStat = placeholder => {
 	if (!placeholder) {
-		throw Error('NULL Slot ID Param in getSlotStat()');
+		throw Error('NULL Placeholder Param in getSlotStat()');
 	}
 
 	const slotStatsObject = getSlotStatsCollectionObject();
@@ -34,6 +70,65 @@ export const getSlotStat = placeholder => {
 	}
 
 	return slotStatsObject[placeholder];
+};
+
+export const placeholdersOutsideContentArray = [
+	topScrollingDivID,
+	bottomAdhesionDivID,
+];
+
+export const registerSlotStatForRefresh = placeholder => {
+	if (!placeholder) {
+		throw Error('NULL Placeholder Param in registerSlotStatForRefresh()');
+	}
+
+	if (
+		!placeholdersOutsideContentArray.includes(placeholder) ||
+		!getSlotStatsCollectionObject()[placeholder]
+	) {
+		console.log(`Creating slotStat for ${placeholder}`);
+		const slotStat = getSlotStat(placeholder);
+		// Set refresh flag to true for all Ads except DropDown
+		slotStat.shouldRefresh = placeholder !== dropDownDivID;
+	}
+};
+
+const getSlotsFromGAM = (googletag, placeHolderArray) => {
+	const allSlots = googletag.pubads().getSlots();
+	console.log(`AD STACK CURRENTLY HOLDS ${allSlots.length} ADS`);
+	return allSlots.filter(
+		s => placeHolderArray.indexOf(s.getSlotElementId()) > -1,
+	);
+};
+
+export const doPubadsRefreshForAllRegisteredAds = googletag => {
+	const statsCollectionObject = getSlotStatsCollectionObject();
+	const statsObjectKeys = Object.keys(statsCollectionObject);
+	if (statsObjectKeys) {
+		const placeholdersToRefresh = statsObjectKeys.filter(
+			statsKey =>
+				statsCollectionObject[statsKey].shouldRefresh ||
+				placeholdersOutsideContentArray.includes(statsKey),
+		);
+		placeholdersToRefresh.push(interstitialDivID); // Add Interstitial To List Of Placeholders To Refresh
+
+		const slotList = getSlotsFromGAM(googletag, placeholdersToRefresh);
+
+		// Push JS processing to next cycle for better Lighthouse Score
+		if (slotList) {
+			setTimeout(() => {
+				// const slotsToRefreshArray = [...slotList.values()];
+				googletag.cmd.push(() => {
+					googletag.pubads().refresh(slotList);
+				});
+			}, 0);
+		}
+
+		// Mark All Slots as shown
+		statsObjectKeys.forEach(statsKey => {
+			statsCollectionObject[statsKey].shouldRefresh = false;
+		});
+	}
 };
 
 export const impressionViewableHandler = event => {
@@ -77,19 +172,23 @@ const adjustContentMarginForTopAd = newAdHeight => {
 		contentElement.style.marginTop = `${newContentTopMargin}px`;
 
 		if (lastVerticalScroll <= lastContentTopMargin) {
-			console.log('NOT ADJUSTING SCROLL');
-		} else {
-			let marginDelta = newContentTopMargin - lastContentTopMargin;
+			console.log('SCROLLING BACK TO TOP');
+			window.scrollTo(window.scrollX, 0);
+		}
+		/*
+		else {
+			const marginDelta = newContentTopMargin - lastContentTopMargin;
 			// Adjust Margin Delta If Ad Had Not Been Loaded Before Now
-			if (!window.topAdsShown) {
-				marginDelta -= lastContentTopMargin - 44;
-			}
+			// if (!window.topAdsShown) {
+			//	marginDelta -= lastContentTopMargin - 44;
+			// }
 			const newVerticalScroll = lastVerticalScroll + marginDelta;
 			window.scrollTo(window.scrollX, newVerticalScroll);
 			console.log(
 				`ADJUSTED PAGE SCROLL BY ${marginDelta} TO ${newVerticalScroll} BECAUSE OF TOP AD`,
 			);
 		}
+		*/
 		window.topAdsShown++;
 	}
 };
