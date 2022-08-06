@@ -528,6 +528,14 @@ if ( ! function_exists( 'ee_the_lazy_thumbnail' ) ) :
 	}
 endif;
 
+function link_tags () {
+	echo sprintf('<link rel="%s" href="%s">', 'preconnect', 'https://https://p1.parsely.com' );
+	echo sprintf('<link rel="%s" href="%s">', 'preconnect', 'https://tag.simpli.fi' );
+	echo sprintf('<link rel="%s" href="%s">', 'preconnect', 'https://www.googletagmanager.com' );
+	echo sprintf('<link rel="%s" href="%s">', 'preconnect', 'https://www.google-analytics.com' );
+}
+
+
 if ( ! function_exists( 'ee_fvideos_show_video' ) ) :
 	function ee_fvideos_show_video( $show, $post_id ) {
 		$queried = get_queried_object();
