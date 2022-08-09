@@ -24,8 +24,8 @@ class ImportExportTagCategory {
 		add_action( 'wp_ajax_ietc_export_users_station', array( __CLASS__, 'ietc_export_users_station' ) );
 		add_action( 'wp_ajax_nopriv_ietc_export_users_station', array( __CLASS__, 'ietc_export_users_station' ) );
 
-		add_action( 'wp_ajax_ietc_export_users_posts', array( __CLASS__, 'ietc_export_users_posts' ) );
-		add_action( 'wp_ajax_nopriv_ietc_export_users_posts', array( __CLASS__, 'ietc_export_users_posts' ) );
+		add_action( 'wp_ajax_ietc_export_users_posts', array( $this, 'ietc_export_users_posts' ) );
+		add_action( 'wp_ajax_nopriv_ietc_export_users_posts', array( $this, 'ietc_export_users_posts' ) );
 
 		add_action( 'wp_ajax_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
 		add_action( 'wp_ajax_nopriv_ietc_import_tag_category', array( __CLASS__, 'ietc_import_tag_category' ) );
@@ -278,6 +278,11 @@ class ImportExportTagCategory {
 		return $result;
 	}
 
+	public function get_user_posts_list($users) {
+		return "Return all posts from array";
+		exit;
+	}
+
 	public function get_user_list() {
 		global $wpdb;
 		$result	= $wpdb->get_results(sprintf('SELECT * FROM '. $wpdb->prefix .'users'));
@@ -293,7 +298,6 @@ class ImportExportTagCategory {
 		$input_type		= filter_input( INPUT_POST, 'input_type', FILTER_SANITIZE_STRIPPED);
 		$export_from	= filter_input( INPUT_POST, 'export_from', FILTER_SANITIZE_STRIPPED);
 		$export_to		= filter_input( INPUT_POST, 'export_to', FILTER_SANITIZE_STRIPPED);
-		// $users		= $wpdb->get_results(sprintf('SELECT * FROM '. $wpdb->prefix .'users'));
 		$users			= self::get_user_list();
 
 		// Create User Export file
@@ -306,11 +310,10 @@ class ImportExportTagCategory {
 		if ($input_type == 'post_list'){
 			fputcsv($fileDirPath, array('Station Name', 'User Login', 'Display Name', 'Email', 'Post title', 'Permalink', 'Post date'));
 			$record_count			= 0;
-			// echo "<pre>", print_r($users), "</pre>";
-			foreach($users as $user){
-				// $getBlogsdetials	= get_blogs_of_user( array( 'fields' => array( 'ID' ) ) );
+			// echo $this->get_user_posts_list( $users ); exit;
+
+			foreach($users as $user) {
 				$getBlogsdetials	= get_blogs_of_user( $user->ID );
-				// echo "<pre>", print_r($getBlogsdetials), "</pre>";
 				foreach( $getBlogsdetials as $id ) {
 		    		switch_to_blog( $id->userblog_id );
 					$station_name	= get_bloginfo();
@@ -327,15 +330,8 @@ class ImportExportTagCategory {
 							'before'	=> $to_date
 						)
 					);
-					/* $export_query_string = array(
-						'author' => $user->ID,
-						'post_type' => 'post',
-						'post_status' => 'publish'
-					); */
 
 					$query_posts		= new WP_Query( $export_query_string );
-					// echo $user->ID, " --- ", $query_posts->post_count, "<br>";
-					// echo "<pre>", print_r($query_posts->posts), "</pre>";
 
 					while ( $query_posts->have_posts() ) {
 						$query_posts->the_post();
@@ -352,7 +348,6 @@ class ImportExportTagCategory {
 					restore_current_blog();
 				}	//End blog Foreach
 			}	//End User Foreach
-			// echo 'Count - ', $record_count;
 			if (isset($record_count) && $record_count == 0) {
 				$file_row	= array( 'No records found during this period');
 				fputcsv($fileDirPath, $file_row);
