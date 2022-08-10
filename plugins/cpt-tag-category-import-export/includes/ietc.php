@@ -300,6 +300,12 @@ class ImportExportTagCategory {
 		$export_to		= filter_input( INPUT_POST, 'export_to', FILTER_SANITIZE_STRIPPED);
 		$users			= self::get_user_list();
 
+		if ( !empty($input_type) && $input_type != 'post_list' ) {
+			$result = array( 'error' => 'Sorry, there was an error. Please reload the page.' );
+			wp_send_json_error( $result );
+			exit;
+		}
+
 		// Create User Export file
 		$todayDate		= date('YmdHis');
 		$date			= date('Y-m-d H:i:s');
@@ -307,62 +313,63 @@ class ImportExportTagCategory {
 		$fileDirPath	= fopen(TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . "ietc_uploads/import-export-tag-category/export/".$file_name, "w");
 		$file_url		= TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL . "ietc_uploads/import-export-tag-category/export/".$file_name;
 
-		if ( !empty($input_type) && $input_type != 'post_list' ) {
-			$result = array( 'error' => 'Sorry, there was an error. Please reload the page.' );
-			wp_send_json_error( $result );
-			exit;
-		}
+		fputcsv($fileDirPath, array('Station Name', 'User Login', 'Display Name', 'Email', 'Post title', 'Permalink', 'Post date'));
+		// $record_count		= 0;
+		$user_records_array		= array();
+		// echo $this->get_user_posts_list( $users ); exit;
 
-		// if ($input_type == 'post_list'){
-			fputcsv($fileDirPath, array('Station Name', 'User Login', 'Display Name', 'Email', 'Post title', 'Permalink', 'Post date'));
-			$record_count			= 0;
-			// echo $this->get_user_posts_list( $users ); exit;
+		foreach($users as $user) {
+			$getBlogsdetials		= get_blogs_of_user( $user->ID );
+			foreach( $getBlogsdetials as $id ) {
+				switch_to_blog( $id->userblog_id );
+				$station_name		= get_bloginfo();
+				$from_date			= date('Y-m-d', strtotime('-1 day', strtotime($export_from)));
+				$to_date			= date('Y-m-d', strtotime('+1 day', strtotime($export_to)));
 
-			foreach($users as $user) {
-				$getBlogsdetials	= get_blogs_of_user( $user->ID );
-				foreach( $getBlogsdetials as $id ) {
-		    		switch_to_blog( $id->userblog_id );
-					$station_name	= get_bloginfo();
-					$from_date		= date('Y-m-d', strtotime('-1 day', strtotime($export_from)));
-					$to_date		= date('Y-m-d', strtotime('+1 day', strtotime($export_to)));
+				$export_query_string	= array(
+					'author'		=> $user->ID,
+					'post_type'		=> self::get_export_user_data_posttype_list(),
+					'post_status'	=> 'publish',
+					'date_query'	=> array(
+						'column'	=> 'post_date',
+						'after'		=> $from_date,
+						'before'	=> $to_date
+					)
+				);
+				$query_posts		= new WP_Query( $export_query_string );
 
-					$export_query_string	= array(
-						'author'		=> $user->ID,
-						'post_type'		=> self::get_export_user_data_posttype_list(),
-						'post_status'	=> 'publish',
-						'date_query'	=> array(
-							'column'	=> 'post_date',
-							'after'		=> $from_date,
-							'before'	=> $to_date
-						)
-					);
+				while ( $query_posts->have_posts() ) {
+					$query_posts->the_post();
 
-					$query_posts		= new WP_Query( $export_query_string );
+					$title			= get_the_title();
+					$permalink		= get_the_permalink();
+					$post_date		= get_the_date();
+					$user_records_array[$title] = array('station_name' => $station_name, 'user_login' => $user->user_login, 'display_name' => $user->display_name, 'email' => $user->user_email, 'post_title' => $title, 'permalink' => $permalink, 'post_date' => $post_date);
+					/* $file_row		= array( $station_name, $user->user_login, $user->display_name, $user->user_email, $title, $permalink, $post_date );
+					fputcsv($fileDirPath, $file_row); Rupesh */
+					// $record_count++;
+				}	// End While
+				wp_reset_postdata();
+				restore_current_blog();
+			}	//End blog Foreach
+		}	//End User Foreach
 
-					while ( $query_posts->have_posts() ) {
-						$query_posts->the_post();
-
-						$title		= get_the_title();
-						$permalink	= get_the_permalink();
-						$post_date	= get_the_date();
-						$file_row	= array( $station_name, $user->user_login, $user->display_name, $user->user_email, $title, $permalink, $post_date );
-						// echo "<pre>", print_r($file_row);
-						fputcsv($fileDirPath, $file_row);
-						$record_count++;
-					}	// End While
-					wp_reset_postdata();
-					restore_current_blog();
-				}	//End blog Foreach
-			}	//End User Foreach
-			if (isset($record_count) && $record_count == 0) {
-				$file_row	= array( 'No records found during this period');
+		if(! empty($user_records_array) && count($user_records_array) >= 0){
+			foreach ($user_records_array as $user_records) {
+				$file_row = array(html_entity_decode($user_records['station_name']), $user_records['user_login'], $user_records['display_name'], $user_records['email'], $user_records['post_title'], $user_records['permalink'], $user_records['post_date']);
 				fputcsv($fileDirPath, $file_row);
 			}
-			fclose($fileDirPath);
-		/* } else {
-			echo "In else condition from User Post list";
-			exit;
-		}*/
+		} else {
+			$file_row	= array( 'No records found during this period');
+			fputcsv($fileDirPath, $file_row);
+		}
+
+		/* if (isset($record_count) && $record_count == 0) {
+			$file_row	= array( 'No records found during this period');
+			fputcsv($fileDirPath, $file_row);
+		} */
+
+		fclose($fileDirPath);
 
 		$wpdb->insert(
 			$wpdb->base_prefix . 'ietc_log',
