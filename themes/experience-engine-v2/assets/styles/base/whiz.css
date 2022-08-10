@@ -40,17 +40,9 @@
 	  }
 
 	& .content-wrap {
-	   padding-left: 1rem;
-	   padding-right: 1rem;
-	   justify-content: center;
-
 		& .dfp-slot {
 			margin-bottom: 1.775rem;
 			padding-bottom: 1.775rem;
-		}
-
-		&.description {
-			padding-right: 0;
 		}
 	}
 
@@ -61,4 +53,18 @@
 	& #whiz-leaderboard-container {
 	  	height: 50px;
   	}
+
+	& .entry-content {
+	  	display: block;
+	  	padding-left: 1rem;
+	  	padding-right: 1rem;
+
+		&.description {
+		 	padding-right: 0;
+		}
+
+		& .dfp-slot {
+		  	display: block;
+	  	}
+ 	}
 }
