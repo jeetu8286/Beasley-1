@@ -307,7 +307,13 @@ class ImportExportTagCategory {
 		$fileDirPath	= fopen(TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . "ietc_uploads/import-export-tag-category/export/".$file_name, "w");
 		$file_url		= TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL . "ietc_uploads/import-export-tag-category/export/".$file_name;
 
-		if ($input_type == 'post_list'){
+		if ( !empty($input_type) && $input_type != 'post_list' ) {
+			$result = array( 'error' => 'Sorry, there was an error. Please reload the page.' );
+			wp_send_json_error( $result );
+			exit;
+		}
+
+		// if ($input_type == 'post_list'){
 			fputcsv($fileDirPath, array('Station Name', 'User Login', 'Display Name', 'Email', 'Post title', 'Permalink', 'Post date'));
 			$record_count			= 0;
 			// echo $this->get_user_posts_list( $users ); exit;
@@ -353,10 +359,10 @@ class ImportExportTagCategory {
 				fputcsv($fileDirPath, $file_row);
 			}
 			fclose($fileDirPath);
-		} else {
+		/* } else {
 			echo "In else condition from User Post list";
 			exit;
-		}
+		}*/
 
 		$wpdb->insert(
 			$wpdb->base_prefix . 'ietc_log',
@@ -371,7 +377,6 @@ class ImportExportTagCategory {
 			)
 		);
 		$lastid = $wpdb->insert_id;
-
 
 		$result = array( 'message' => ' Users file successfully Exported for Posts lists', 'file_path' => $file_url, 'network_name' => $network_name, 'log_id' => $lastid );
 		wp_send_json_success( $result );
@@ -389,6 +394,12 @@ class ImportExportTagCategory {
 	   // $users			= $wpdb->get_results(sprintf('SELECT * FROM '. $wpdb->prefix .'users'));
 	   $users			= ImportExportTagCategory::get_user_list();
 
+	   if ( !empty($input_type) && $input_type != 'station_list' ) {
+		   $result = array( 'error' => 'Sorry, there was an error. Please reload the page.' );
+		   wp_send_json_error( $result );
+		   exit;
+	   }
+
 	   // Create User Export file
 	   $todayDate		= date('YmdHis');
 	   $date			= date('Y-m-d H:i:s');
@@ -396,7 +407,7 @@ class ImportExportTagCategory {
 	   $fileDirPath		= fopen(TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH . "ietc_uploads/import-export-tag-category/export/".$file_name, "w");
 	   $file_url		= TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_URL . "ietc_uploads/import-export-tag-category/export/".$file_name;
 
-	   if($input_type == 'station_list'){
+	   // if($input_type == 'station_list'){
 		   fputcsv($fileDirPath, array('Username', 'Email', 'Name', 'Role', 'Last login', 'Active Status', 'Station Name'));
 		   foreach($users as $user){
 			   $userdata			= get_userdata( $user->ID );
@@ -420,9 +431,9 @@ class ImportExportTagCategory {
 			   fputcsv($fileDirPath, $file_row);
 		   }
 		   fclose($fileDirPath);
-	   } else {
+	   /* } else {
 		   echo "In else condition for User Station list"; exit;
-	   }
+	   } */
 
 	   $wpdb->insert(
 		   $wpdb->base_prefix . 'ietc_log',
@@ -529,8 +540,12 @@ class ImportExportTagCategory {
 				$fileName		=	$sqlData[0]->file;
 				$logsName		=	isset($sqlData[0]->import_export) && $sqlData[0]->import_export == 2 ? $sqlData[0]->logfile : '' ;
 				$logsPath		=	TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH. 'ietc_uploads/import-export-tag-category/logs/'.$logsName;
+				// echo "<br>";
 				$file_path		=	TAG_CATEGORY_IMPORT_EXPORT_BY_NETWORK_DIR_PATH. 'ietc_uploads/import-export-tag-category/' . $folderPath . '/'.$fileName;  // path of the file which need to be deleted.
 
+				// echo "<br> CSV file exist: ",file_exists($file_path);
+				// echo "<br> Log file exist: ",file_exists($logsPath);
+				// exit;
 				if(file_exists($file_path)) {
 					wp_delete_file($file_path);
 				}
@@ -556,25 +571,6 @@ class ImportExportTagCategory {
 			   }
 
 		if ( $pagenow == 'admin.php' ) {
-
-			/* $error_class = $_GET['msg'] == 'success' ? 'notice notice-success is-dismissible' : 'error' ;
-			 $error_message = $_GET['msg'] == 'success' ? 'New Record Insert successfully' : 'there is issue in add new' ;
-
-			 if(isset($_GET['page']) && $_GET['page'] == 'ietc_page'){
-				  if(isset($_GET['action']) && $_GET['action'] == 'edit'){
-					   $error_class = $_GET['msg'] == 'success' ? 'notice notice-success is-dismissible' : 'error' ;
-					   $error_message = $_GET['msg'] == 'success' ? 'List updated.' : 'there is issue in add new' ;
-				  }
-
-			 }
-			if(isset($_GET['page']) && $_GET['page'] == 'ietc_page'){
-				if(isset($_GET['msg']) && $_GET['msg'] == 'added'){
-					 $error_class = 'notice notice-success is-dismissible';
-					 $error_message = 'New Record Insert successfully.';
-				}
-		   } */
-
-
 			if(filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRIPPED)== 'ietc_logs'){
 				if(filter_input( INPUT_GET, 'msg', FILTER_SANITIZE_STRIPPED) == 'delete'){
 					$error_class = 'notice notice-success is-dismissible';
