@@ -23,9 +23,17 @@ function getFirstMatchingElementAttribute(
 	valueName,
 ) {
 	const allElements = parentElement.getElementsByTagName(elementType);
+	console.log(
+		`getFirstMatchingElementAttribute() - ${allElements.length} ${elementType} elements `,
+	);
 
 	for (let i = 0; i < allElements.length; i++) {
 		if (allElements[i].getAttribute(attributeName) === attributeValue) {
+			console.log(
+				`getFirstMatchingElementAttribute() - found attribute of ${attributeName}=${attributeValue} and value ${allElements[
+					i
+				].getAttribute(valueName)}`,
+			);
 			return allElements[i].getAttribute(valueName);
 		}
 	}
