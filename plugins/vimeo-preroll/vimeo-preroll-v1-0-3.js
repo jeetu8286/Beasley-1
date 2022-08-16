@@ -146,6 +146,7 @@
 				console.log('Paused and now Playing Preroll');
 				/* PREROLL CODE HERE */
 				renderHTML(iFrameElement);
+				createAdDisplayContainer();
 				await getUrlFromPrebid(vimeoplayer);
 			}
 		};
