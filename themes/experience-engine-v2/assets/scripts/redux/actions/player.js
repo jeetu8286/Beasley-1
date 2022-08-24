@@ -262,6 +262,7 @@ function loadTritonLibrary(dispatch, station, callbackToPlayStation) {
 			'https://sdk.listenlive.co/web/2.9/td-sdk.min.js',
 		);
 		tritonIncludeScript.onload = () => {
+			console.log('Triton Library Loaded');
 			dispatch(initTdPlayer(station, callbackToPlayStation));
 		};
 	}
