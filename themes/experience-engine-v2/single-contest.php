@@ -26,7 +26,7 @@ the_post();
 				<?php get_template_part( 'partials/featured-media' ); ?>
 			<?php endif; ?>
 
-			<?php echo do_shortcode( '[show-on-device devices="iPad,iPhone"]This contest is in no way affiliated with or endorsed by Apple.[/show-on-device]' ); ?>
+			<?php echo do_shortcode( '[show-on-device devices="iPad,iPhone"]<span class="apple-rules-whiz">This contest is in no way affiliated with or endorsed by Apple.</span>[/show-on-device]' ); ?>
 
 			<?php the_content(); ?>
 
