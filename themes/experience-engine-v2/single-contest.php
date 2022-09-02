@@ -42,7 +42,7 @@ $contest_rules_output = ob_get_clean(); ?>
 				<?php get_template_part( 'partials/featured-media' ); ?>
 			<?php endif; ?>
 
-			<?php echo do_shortcode( '[show-on-device devices="iPad,iPhone"]<span class="apple-rules-whiz">This contest is in no way affiliated with or endorsed by Apple.' . $contest_rules_output . '</span>[/show-on-device]' ); ?>
+			<?php echo do_shortcode( '[show-on-device devices="iPad,iPhone"]<span class="apple-rules-whiz">This contest is in no way affiliated with or endorsed by Apple.</span>' . $contest_rules_output . '[/show-on-device]' ); ?>
 
 
 			<?php the_content(); ?>
