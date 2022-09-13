@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 class SecondStreet extends PureComponent {
 	componentDidMount() {
+		console.log('SS COMPONENT DID MOUNT');
 		const { placeholder, script, embed, opguid, routing } = this.props;
 
 		const container = document.getElementById(placeholder);
@@ -10,7 +11,9 @@ class SecondStreet extends PureComponent {
 			return;
 		}
 
-		window.SecondStreetSDK = {
+		const iframeElement = document.createElement('iframe');
+		container.appendChild(iframeElement);
+		iframeElement.contentWindow.SecondStreetSDK = {
 			version: '1.0.0',
 			ready: function ready(secondstreet) {
 				[
@@ -64,15 +67,19 @@ class SecondStreet extends PureComponent {
 			},
 		};
 
-		const element = document.createElement('script');
+		console.log('Loading SS');
+		const scriptElement = document.createElement('script');
+		scriptElement.setAttribute('async', true);
+		scriptElement.setAttribute('src', script);
+		scriptElement.setAttribute('data-ss-embed', embed);
+		scriptElement.setAttribute('data-opguid', opguid);
+		scriptElement.setAttribute('data-routing', routing);
+		scriptElement.setAttribute('defer', '');
 
-		element.setAttribute('async', true);
-		element.setAttribute('src', script);
-		element.setAttribute('data-ss-embed', embed);
-		element.setAttribute('data-opguid', opguid);
-		element.setAttribute('data-routing', routing);
-
-		container.appendChild(element);
+		const doc = iframeElement.contentDocument
+			? iframeElement.contentDocument
+			: iframeElement.contentWindow.document;
+		doc.body.appendChild(scriptElement);
 	}
 
 	render() {
