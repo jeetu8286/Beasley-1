@@ -12,6 +12,7 @@ class SecondStreet extends PureComponent {
 		}
 
 		const iframeElement = document.createElement('iframe');
+		iframeElement.style.width = '100%';
 		container.appendChild(iframeElement);
 		iframeElement.contentWindow.SecondStreetSDK = {
 			version: '1.0.0',
