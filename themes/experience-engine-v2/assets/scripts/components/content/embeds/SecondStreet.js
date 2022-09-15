@@ -11,10 +11,11 @@ class SecondStreet extends PureComponent {
 			return;
 		}
 
-		const iframeElement = document.createElement('iframe');
-		iframeElement.style.width = '100%';
-		container.appendChild(iframeElement);
-		iframeElement.contentWindow.SecondStreetSDK = {
+		const beasleyIframeElement = document.createElement('iframe');
+		beasleyIframeElement.style.width = '100%';
+		beasleyIframeElement.style.border = 0;
+		container.appendChild(beasleyIframeElement);
+		beasleyIframeElement.contentWindow.SecondStreetSDK = {
 			version: '1.0.0',
 			ready: function ready(secondstreet) {
 				[
@@ -77,10 +78,37 @@ class SecondStreet extends PureComponent {
 		scriptElement.setAttribute('data-routing', routing);
 		scriptElement.setAttribute('defer', '');
 
-		const doc = iframeElement.contentDocument
-			? iframeElement.contentDocument
-			: iframeElement.contentWindow.document;
-		doc.body.appendChild(scriptElement);
+		const beasleyIFrameDoc = beasleyIframeElement.contentDocument
+			? beasleyIframeElement.contentDocument
+			: beasleyIframeElement.contentWindow.document;
+
+		console.log('Appending Script To IFrame');
+		beasleyIFrameDoc.body.style.margin = 0;
+		beasleyIFrameDoc.body.appendChild(scriptElement);
+
+		const beasleyIFrameObserver = new MutationObserver(
+			(mutations, observer) => {
+				console.log('beasleyIFrameObserver: ', mutations, observer);
+
+				const ssIFrameElement = mutations[0].addedNodes[0];
+				const ssIFrameObserver = new MutationObserver((mutations, observer) => {
+					console.log(`SSIFRAME HEIGHT: ${ssIFrameElement.clientHeight}`);
+					if (ssIFrameElement.clientHeight) {
+						beasleyIframeElement.height = ssIFrameElement.clientHeight;
+					}
+				});
+				ssIFrameObserver.observe(ssIFrameElement, {
+					attributes: true,
+				});
+
+				// Once Second Street Has Added Children, We No Longer Need To Observe Beasley IFrame
+				beasleyIFrameObserver.disconnect();
+			},
+		);
+
+		beasleyIFrameObserver.observe(beasleyIFrameDoc.body, {
+			childList: true,
+		});
 	}
 
 	render() {
