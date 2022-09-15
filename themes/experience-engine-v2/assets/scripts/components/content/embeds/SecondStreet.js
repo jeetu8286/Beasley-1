@@ -102,7 +102,9 @@ class SecondStreet extends PureComponent {
 				});
 
 				// Once Second Street Has Added Children, We No Longer Need To Observe Beasley IFrame
-				beasleyIFrameObserver.disconnect();
+				setTimeout(() => {
+					beasleyIFrameObserver.disconnect();
+				}, 0);
 			},
 		);
 
