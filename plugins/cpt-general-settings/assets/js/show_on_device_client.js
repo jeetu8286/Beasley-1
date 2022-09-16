@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	);
 	let userAgent = navigator.userAgent.toLowerCase();
 
-	let isAndroid = /Android/i.test(navigator.userAgent);
+	let isAndroid = /android/i.test(navigator.userAgent);
 
 	if (! isAndroid) {
 		userAgent += ' (ios)';
