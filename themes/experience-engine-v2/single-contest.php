@@ -44,7 +44,7 @@ $contest_rules_output = ob_get_clean(); ?>
 
 			<?php
 			if (ee_is_common_mobile()) {
-				echo do_shortcode( '[show-on-device devices="safari"]<span class="apple-rules-whiz">This contest is in no way affiliated with or endorsed by Apple.  <a href="#contenttermsdescription">See official contest rules</a>)<br/></span>[/show-on-device]' );
+				echo do_shortcode( '[show-on-device devices="safari"]<br/><span class="apple-rules-whiz">This contest is in no way affiliated with or endorsed by Apple.  <a href="#contenttermsdescription">See official contest rules</a><br/></span>[/show-on-device]' );
 			}
 			?>
 
@@ -65,7 +65,7 @@ $contest_rules_output = ob_get_clean(); ?>
 			<?php endif; ?>
 
 			<?php echo $contest_rules_output; ?>
-
+			<div style="font-size: small"><?php echo $_SERVER['HTTP_USER_AGENT'] ?></div>
 			<?php get_template_part( 'partials/footer/common', 'description' ); ?>
 			<?php get_template_part( 'partials/content/categories' ); ?>
 			<?php get_template_part( 'partials/content/tags' ); ?>
