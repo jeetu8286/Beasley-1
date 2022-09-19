@@ -100,6 +100,18 @@ class SecondStreet extends PureComponent {
 			(mutations, observer) => {
 				console.log('beasleyIFrameObserver: ', mutations, observer);
 
+				// Check That First Added Node Of First Mutation Is An IFrame
+				if (
+					!mutations ||
+					!mutations[0].addedNodes ||
+					mutations[0].addedNodes[0].nodeName !== 'IFRAME'
+				) {
+					console.log(
+						'Second Street Modified Beasley IFrame Without An Inner IFrame',
+					);
+					return;
+				}
+
 				const ssIFrameElement = mutations[0].addedNodes[0];
 
 				// SS Modifies History by adding same page twice and also causes the first Back() to do nothing.
