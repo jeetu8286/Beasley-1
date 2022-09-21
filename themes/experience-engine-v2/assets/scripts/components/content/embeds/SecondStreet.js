@@ -87,11 +87,11 @@ class SecondStreet extends PureComponent {
 		scriptElement.setAttribute('data-routing', routing);
 		scriptElement.setAttribute('defer', '');
 
-		const beasleyIFrameDoc = beasleyIframeElement.contentDocument
+		const beasleyIFrameContentDoc = beasleyIframeElement.contentDocument
 			? beasleyIframeElement.contentDocument
 			: beasleyIframeElement.contentWindow.document;
 
-		const beasleyIFrameDocBody = beasleyIFrameDoc.getElementsByTagName(
+		const beasleyIFrameDocBody = beasleyIFrameContentDoc.getElementsByTagName(
 			'body',
 		)[0];
 		beasleyIFrameDocBody.style.margin = 0;
