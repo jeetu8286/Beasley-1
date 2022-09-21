@@ -79,14 +79,6 @@ class SecondStreet extends PureComponent {
 			},
 		};
 
-		const scriptElement = document.createElement('script');
-		scriptElement.setAttribute('async', false);
-		scriptElement.setAttribute('src', script);
-		scriptElement.setAttribute('data-ss-embed', embed);
-		scriptElement.setAttribute('data-opguid', opguid);
-		scriptElement.setAttribute('data-routing', routing);
-		scriptElement.setAttribute('defer', '');
-
 		const beasleyIFrameContentDoc = beasleyIframeElement.contentDocument
 			? beasleyIframeElement.contentDocument
 			: beasleyIframeElement.contentWindow.document;
@@ -158,11 +150,20 @@ class SecondStreet extends PureComponent {
 			},
 		);
 
-		// First Append SS JS Script, then monitor for child additions
-		beasleyIFrameDocBody.appendChild(scriptElement);
 		beasleyIFrameObserver.observe(beasleyIFrameDocBody, {
 			childList: true,
 		});
+
+		// Now Add Second Street JS to Beasley IFrame Container
+		setTimeout(() => {
+			const scriptElement = beasleyIFrameContentDoc.createElement('script');
+			scriptElement.setAttribute('data-ss-embed', embed);
+			scriptElement.setAttribute('data-opguid', opguid);
+			scriptElement.setAttribute('data-routing', routing);
+			scriptElement.setAttribute('src', script);
+
+			beasleyIFrameDocBody.appendChild(scriptElement);
+		}, 0);
 	}
 
 	render() {
