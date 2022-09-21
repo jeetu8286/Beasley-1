@@ -24,7 +24,7 @@ export default function refreshAllAds() {
 	pbjs.que = pbjs.que || [];
 
 	pbjs.que.push(() => {
-		// With New Caching, Ads Seem Slow. No Longer Request Prebid For During First Ad Requests.
+		// With New Caching, Ads Seem Slow. No Longer Request Prebid Ads During First Ad Requests.
 		// const PREBID_TIMEOUT = 1500;
 		// pbjs.requestBids({
 		//	bidsBackHandler: initAdserver,
