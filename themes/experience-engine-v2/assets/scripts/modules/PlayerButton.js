@@ -99,7 +99,7 @@ class PlayerButton extends Component {
 		buttonsStyle.backgroundColor =
 			customColors['--brand-button-color'] ||
 			customColors['--global-theme-secondary'];
-		buttonsStyle.border = '0';
+		buttonsStyle.border = 'none';
 		svgStyle.fill =
 			customColors['--brand-text-color'] ||
 			customColors['--global-theme-secondary'];

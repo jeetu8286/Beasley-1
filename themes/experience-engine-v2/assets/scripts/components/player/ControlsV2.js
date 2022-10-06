@@ -84,7 +84,12 @@ function ControlsV2({
 				{customTitle}
 			</button>
 
-			<button type="button" className="loading-btn" aria-label="Loading">
+			<button
+				type="button"
+				className="loading-btn"
+				aria-label="Loading"
+				style={buttonStyle}
+			>
 				<div className="loading" />
 			</button>
 		</div>

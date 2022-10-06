@@ -118,15 +118,8 @@ function* yieldLoadedPage(action) {
 		document.body.classList.add('admin-bar');
 	}
 
-	try {
-		window.dispatchEvent(new Event('resize'));
-	} catch (e) {
-		// no-op
-	}
-
 	// last step is update history, return early if it's not needed.
 	if (options.suppressHistory) {
-		console.log('***Yield Load Not Updating History');
 		return;
 	}
 
@@ -135,6 +128,9 @@ function* yieldLoadedPage(action) {
 	yield call(renderSendToNews);
 
 	yield call(handleInjectos);
+
+	console.log('***Yield Load Finished and NOT scrolling to top - UNSURE???');
+	// yield call(resetScrollToTop);
 }
 
 /**
