@@ -2,14 +2,6 @@ import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 class SecondStreet extends PureComponent {
-	getLastSecondStreetHeight() {
-		return window.lastSecondStreetHeight;
-	}
-
-	setLastSecondStreetHeight(value) {
-		window.lastSecondStreetHeight = value;
-	}
-
 	componentDidMount() {
 		const { placeholder, script, embed, opguid, routing } = this.props;
 
@@ -18,14 +10,7 @@ class SecondStreet extends PureComponent {
 			return;
 		}
 
-		const beasleyIframeElement = document.createElement('iframe');
-		beasleyIframeElement.height = this.getLastSecondStreetHeight()
-			? `${this.getLastSecondStreetHeight()}px`
-			: '0';
-		beasleyIframeElement.style.width = '100%';
-		beasleyIframeElement.style.border = 0;
-		container.appendChild(beasleyIframeElement);
-		beasleyIframeElement.contentWindow.SecondStreetSDK = {
+		window.SecondStreetSDK = {
 			version: '1.0.0',
 			ready: function ready(secondstreet) {
 				[
@@ -79,98 +64,15 @@ class SecondStreet extends PureComponent {
 			},
 		};
 
-		const beasleyIFrameContentDoc = beasleyIframeElement.contentDocument
-			? beasleyIframeElement.contentDocument
-			: beasleyIframeElement.contentWindow.document;
+		const element = document.createElement('script');
 
-		const beasleyIFrameDocBody = beasleyIFrameContentDoc.getElementsByTagName(
-			'body',
-		)[0];
-		beasleyIFrameDocBody.style.margin = 0;
+		element.setAttribute('async', true);
+		element.setAttribute('src', script);
+		element.setAttribute('data-ss-embed', embed);
+		element.setAttribute('data-opguid', opguid);
+		element.setAttribute('data-routing', routing);
 
-		// Observe When SS Adds Children And Assume First Child Is SS IFrame.
-		const beasleyIFrameObserver = new MutationObserver(
-			(mutations, observer) => {
-				console.log('beasleyIFrameObserver: ', mutations, observer);
-
-				// Check That First Added Node Of First Mutation Is An IFrame
-				if (
-					!mutations ||
-					!mutations[0].addedNodes ||
-					mutations[0].addedNodes[0].nodeName !== 'IFRAME'
-				) {
-					console.log(
-						'Second Street Modified Beasley IFrame Without An Inner IFrame',
-					);
-					return;
-				}
-
-				const ssIFrameElement = mutations[0].addedNodes[0];
-
-				// SS Modifies History by adding same page twice and also causes the first Back() to do nothing.
-				// Our work-around is to fire this silent Back() after SS Renders which corrects our History.
-				// We observe SS IFrame Height Being Changed And After No Activity For A Second, Schedule Back() In One More Second.
-				// NOTE: These time limits are conservative because if we fire Back() too soon, it will not be Silent.
-				let ssResetHeightTimeout;
-				let ssSilentBackTimeout;
-				const ssIFrameObserver = new MutationObserver((mutations, observer) => {
-					if (ssIFrameElement.clientHeight) {
-						const newHeight = ssIFrameElement.clientHeight + 20; // Add 20 Extra To Account For SS Being Short
-						console.log(
-							`SSIFRAME HEIGHT: ${ssIFrameElement.clientHeight} - Setting Beasley Iframe Height: ${newHeight}`,
-						);
-
-						if (ssResetHeightTimeout) {
-							window.clearTimeout(ssResetHeightTimeout);
-						}
-						ssResetHeightTimeout = setTimeout(() => {
-							console.log(
-								'Firing SS Height Adjust Because Height Not Changed For A Half Second',
-							);
-							this.setLastSecondStreetHeight(newHeight); // Save For Next SS Render And Avoid Page Shift
-							beasleyIframeElement.height = newHeight;
-
-							// Fire Silent Back() 1.5 Seconds after Last SS Height Adjust.
-							// NOTE - MUST FIRE After Full SS Render, But If User Quickly Clicks Back It Might Be Funky
-							if (ssSilentBackTimeout) {
-								window.clearTimeout(ssSilentBackTimeout);
-							}
-							ssSilentBackTimeout = setTimeout(() => {
-								console.log(
-									'Firing Silent Back() And Updating SS IFrame Height',
-								);
-								window.history.back();
-								ssIFrameObserver.disconnect();
-								ssIFrameElement.style.height = `${newHeight}px`;
-							}, 1500);
-						}, 500);
-					}
-				});
-				ssIFrameObserver.observe(ssIFrameElement, {
-					attributes: true,
-				});
-
-				// Once Second Street Has Added Children, We No Longer Need To Observe Beasley IFrame
-				setTimeout(() => {
-					beasleyIFrameObserver.disconnect();
-				}, 0);
-			},
-		);
-
-		beasleyIFrameObserver.observe(beasleyIFrameDocBody, {
-			childList: true,
-		});
-
-		// Now Add Second Street JS to Beasley IFrame Container
-		setTimeout(() => {
-			const scriptElement = beasleyIFrameContentDoc.createElement('script');
-			scriptElement.setAttribute('data-ss-embed', embed);
-			scriptElement.setAttribute('data-opguid', opguid);
-			scriptElement.setAttribute('data-routing', routing);
-			scriptElement.setAttribute('src', script);
-
-			beasleyIFrameDocBody.appendChild(scriptElement);
-		}, 0);
+		container.appendChild(element);
 	}
 
 	render() {
