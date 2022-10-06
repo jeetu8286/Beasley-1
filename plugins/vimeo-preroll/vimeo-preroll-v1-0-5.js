@@ -2,6 +2,7 @@
 /*** Includes are held in vimeo-preroll.php ***/
 /* v1-0-0 - Institute Versioning to comply with permacache */
 /* v1-0-2 - Lazy Load Google IMA */
+/* v1-0-4 - Put in proxy button to convince IOS IMA that user action initiated Ad Play */
 
 	const VIMEOPREROLLWRAPPER = 'vimeoPrerollWrapper';
 	var vimeoPlayerList;
@@ -53,7 +54,7 @@
 		}
 
 		//  TODO - This likely only works on Chrome. When time permits, test and support all other browsers.
-		if (document.fullscreenElement) {
+		if (document.fullscreenElement && !isIOS()) {
 			renderFullScreenPreroll(iFrameElement);
 		} else {
 			renderVimeoPreroll(iFrameElement);
@@ -74,6 +75,20 @@
 		<div id="vimeoPrerollAdContainer" ${shouldAddFullScreenPlayerStyle ? 'class="gam-preroll-player"' : ''} />`;
 	}
 
+	const getVimeoInnerHTMLForIOS = (vimeoIFrameElement) => {
+		return `<div id="vimeoPrerollContent" style="height: 0">
+				<video id="vimeoVideoElement" width="${vimeoIFrameElement.clientWidth}" height="${vimeoIFrameElement.clientHeight}" playsInline>
+					<track
+						src="captions_en.vtt"
+						kind="captions"
+						srcLang="en"
+						label="english_captions"
+					/>
+				</video>
+			</div>
+			<div id="vimeoPrerollAdContainer" />`;
+	}
+
 	const renderVimeoPreroll = (iFrameElement) => {
 		const vimeoPTag = iFrameElement.parentElement;
 		vimeoPTag.style.position = 'relative';
@@ -84,7 +99,11 @@
 		wrapperDiv.style.backgroundColor = 'white';
 		wrapperDiv.style.height = iFrameElement.style.height;
 		wrapperDiv.style.zIndex = '9';
-		wrapperDiv.innerHTML = getVimeoInnerHTML(false);
+		if (isIOS()) {
+			wrapperDiv.innerHTML = getVimeoInnerHTMLForIOS(iFrameElement);
+		} else {
+			wrapperDiv.innerHTML = getVimeoInnerHTML(false);
+		}
 		vimeoPTag.appendChild(wrapperDiv);
 	}
 
@@ -112,11 +131,59 @@
 		});
 	}
 
+	// TODO - Determining OS should be single function in single place for entire App.
+	const isIOS = () => {
+		const ua = window.navigator.userAgent;
+		const ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
+		const ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
+		const iphone = !ipad && ua.match(/(iPhone\sOS|iOS)\s([\d_]+)/);
+
+		return ipad || iphone || ipod;
+	}
+
+	const getVimeoPlayerForIOS = (iFrameElement, vimeoplayer) => {
+		console.log('Creating Extra HTML for IOS');
+		// Add allow=autoplay to Vimeo IFrame so that play button can interact.
+		// Swap out with original - Chrome did not work when original was modified.
+		// Wrap copy in div which onmouseover inits IMA.
+		const newDivElement = document.createElement('div');
+		newDivElement.setAttribute(
+			'style',
+			'position: relative',
+		);
+		const newIFrameElement = iFrameElement.cloneNode(true);
+		newIFrameElement.setAttribute('allow', 'autoplay; fullscreen');
+		newDivElement.appendChild(newIFrameElement);
+		iFrameElement.parentNode.replaceChild(newDivElement, iFrameElement);
+
+		// On IOS, IMA does not consider Vimeo Events as User Interaction.
+		// Create a button to use as a proxy click event.
+		const trickIMAButton = document.createElement("div");
+		trickIMAButton.setAttribute(
+			'style',
+			'position: absolute; bottom: 0; left: 0; width: 25%; height: 50%;',
+		);
+
+		newDivElement.appendChild(trickIMAButton);
+		const retval = new Vimeo.Player(newIFrameElement);
+
+		trickIMAButton.onclick = () => {
+			console.log('DEBUG BUTTON CLICK');
+			renderHTML(newIFrameElement);
+			createIMADisplayContainer();
+			retval.play();
+			trickIMAButton.remove(); // Delete trick button since we already played IMA Ad
+		}
+
+		return retval;
+	}
+
 	const loadVimeoPlayer = (iFrameElement) => {
 		// Add Class to parent for Full Screen
 	    iFrameElement.parentElement.classList.add('beasley-vimeo');
 
-		const vimeoplayer = new Vimeo.Player(iFrameElement);
+		const vimeoplayer = isIOS() ? getVimeoPlayerForIOS(iFrameElement) : new Vimeo.Player(iFrameElement);
+
 		vimeoplayer.isPlayingPreroll = false;
 		vimeoplayer.finishedPlayingPreroll = false;
 
@@ -124,7 +191,10 @@
 			if (vimeoplayer.isPlayingPreroll) {
 				console.log('Preroll Call Back');
 				const wrapperDiv = document.getElementById(VIMEOPREROLLWRAPPER);
-				wrapperDiv.classList.remove('-active');
+				if (wrapperDiv) {
+					wrapperDiv.remove();
+				}
+
 				console.log('Vimeo Resumed Play in Callback after Preroll');
 				await vimeoplayer.play();
 				console.log('Preroll Callback is done!');
@@ -134,7 +204,7 @@
 		};
 
 		vimeoplayer.thisVimeoPlayHandler = async () => {
-			console.log('Vimeoplayer OnPlay Event');
+			console.log('Vimeoplayer OnPlay Handler');
 
 			// Play preroll if we are currently not playing preroll and have not already finished playing preroll.
 			if (!vimeoplayer.isPlayingPreroll && !vimeoplayer.finishedPlayingPreroll) {
@@ -145,13 +215,17 @@
 				vimeoplayer.isPlayingPreroll = true; // Reset since it was unset during pause all players
 				console.log('Paused and now Playing Preroll');
 				/* PREROLL CODE HERE */
-				await sendGAPlayEvent(vimeoplayer);
-				renderHTML(iFrameElement);
+				if (! document.getElementById(VIMEOPREROLLWRAPPER)) {
+					renderHTML(iFrameElement);
+					createIMADisplayContainer();
+				}
 				await getUrlFromPrebid(vimeoplayer);
 			}
 		};
 
-		vimeoplayer.on('play', vimeoplayer.thisVimeoPlayHandler);
+		vimeoplayer.on('play', () => {
+			vimeoplayer.thisVimeoPlayHandler();
+		});
 
 		vimeoplayer.on('pause', async function () {
 			console.log('Paused the video');
@@ -162,28 +236,6 @@
 		});
 
 		return vimeoplayer;
-	}
-
-	const sendGAPlayEvent = async (vimeoControl) => {
-		const {global} = window.bbgiconfig.dfp;
-		// global holds a 2 dimensional array like "global":[["cdomain","wmmr.com"],["cpage","home"],["ctest",""],["genre","rock"],["market","philadelphia, pa"]]
-		try {
-			const videoID = await vimeoControl.getVideoId();
-			const globalObj = global.reduce((acc, item) => {
-				const key = `${item[0]}`;
-				acc[key] = `${item[1]}`;
-				return acc;
-			}, {});
-
-			window.ga('send', {
-				hitType: 'event',
-				eventCategory: 'VimeoPlay',
-				eventAction: `${globalObj.cpage}`,
-				eventLabel: `${videoID}`,
-			});
-		} catch (ex) {
-			console.log(`ERROR Sending Vimeo Play Event to Google Analytics: `, ex);
-		}
 	}
 
 	const pauseAllVimeoPlayers = async () => {
@@ -305,6 +357,7 @@
 		const mappedGlobalParamString = mappedGlobalParamArray ? mappedGlobalParamArray.join('') : '';
 		const fullCustParamsString = partialCustParamsString.concat(mappedGlobalParamString);
 		const videoUrl = `https://pubads.g.doubleclick.net/gampad/live/ads?iu=${incontentpreroll.unitId}&description_url=[placeholder]&tfcd=0&npa=0&sz=640x360${fullCustParamsString}&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=`;
+		// const videoUrl = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
 
 		try {
 			playVimeoIMAAds(videoUrl, vimeoControl);
