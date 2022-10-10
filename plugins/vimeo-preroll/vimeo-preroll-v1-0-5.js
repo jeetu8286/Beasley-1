@@ -138,6 +138,7 @@
 		const ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
 		const iphone = !ipad && ua.match(/(iPhone\sOS|iOS)\s([\d_]+)/);
 
+		console.log(`Vimeo Device - IsIpad: ${ipad}  IsIpod: ${ipod}  IsIphone: ${iphone}`);
 		return ipad || iphone || ipod;
 	}
 
