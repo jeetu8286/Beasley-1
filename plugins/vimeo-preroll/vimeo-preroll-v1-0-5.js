@@ -154,6 +154,12 @@
 		);
 		const newIFrameElement = iFrameElement.cloneNode(true);
 		newIFrameElement.setAttribute('allow', 'autoplay; fullscreen');
+
+		// .responsive class was causing 0 height style - override style with iframe height attribute
+		const heightVal = newIFrameElement.getAttribute('height');
+		console.log(`Setting Vimeo IFrame Style Height: ${heightVal}`);
+		newIFrameElement.setAttribute('style', `height: ${heightVal}`);
+
 		newDivElement.appendChild(newIFrameElement);
 		iFrameElement.parentNode.replaceChild(newDivElement, iFrameElement);
 
