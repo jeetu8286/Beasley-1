@@ -142,7 +142,7 @@
 		return ipad || iphone || ipod;
 	}
 
-	const getVimeoPlayerForIOS = (iFrameElement, vimeoplayer) => {
+	const getVimeoPlayerForIOS = (iFrameElement) => {
 		console.log('Creating Extra HTML for IOS');
 		// Add allow=autoplay to Vimeo IFrame so that play button can interact.
 		// Swap out with original - Chrome did not work when original was modified.
@@ -158,7 +158,7 @@
 		// .responsive class was causing 0 height style - override style with iframe height attribute
 		const heightVal = newIFrameElement.getAttribute('height');
 		console.log(`Setting Vimeo IFrame Style Height: ${heightVal}`);
-		newIFrameElement.setAttribute('style', `height: ${heightVal}`);
+		newIFrameElement.setAttribute('style', `height: ${heightVal ? heightVal : 0}px`);
 
 		newDivElement.appendChild(newIFrameElement);
 		iFrameElement.parentNode.replaceChild(newDivElement, iFrameElement);
