@@ -196,7 +196,7 @@ class ContentDispatcher extends Component {
 		this.loadPage(link);
 	}
 
-	onPageHistoryPop(e) {
+	onPageHistoryPop() {
 		/* 2022-08-17 - THIS CODE BLOCK WAS BUILT ON FALSE PREMISE THAT SECOND STREET ONLY MODIFIED HISTORY LIKE:
 		 *   window.history.pushState(null,'','#//');
 		 * Unfortunately This Code Did Not Work Well With Actual Second Street behavior.
@@ -219,6 +219,7 @@ class ContentDispatcher extends Component {
 		*/
 
 		if (window.location.href.indexOf('#') === -1) {
+			console.log(`History Pop - loading - ${window.location.href}`);
 			this.loadPage(window.location.href, { suppressHistory: true });
 		}
 	}
