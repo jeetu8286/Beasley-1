@@ -47,8 +47,8 @@ deploy_stage:
 deploy_preprod:
   stage: deploy
   environment:
-    name: Staging
-    url: https://bbgistage.com/
+    name: Preprod
+    url: https://preprod.bbgistage.com/
   script:
     - bash ./deploy-scripts/build.sh
     - bash ./deploy-scripts/deploy-preprod.sh
