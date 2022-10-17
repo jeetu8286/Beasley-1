@@ -51,7 +51,7 @@ deploy_preprod:
     url: https://bbgistage.com/
   script:
     - bash ./deploy-scripts/build.sh
-    - bash ./deploy-scripts/deploy-stage.sh
+    - bash ./deploy-scripts/deploy-preprod.sh
     - ssh beanstalk@52.87.184.224 'sudo /usr/bin/systemctl restart supervisord.service'
     - ssh beanstalk@52.87.184.224 'sudo /usr/bin/systemctl restart memcached.service'
     - ssh beanstalk@52.87.184.224 'echo $(date +%s) > /var/www/html/wordpress/wp-content/themes/.version.php'
