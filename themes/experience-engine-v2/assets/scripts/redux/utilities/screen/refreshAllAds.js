@@ -5,6 +5,7 @@ import {
 } from '../../../library/ad-utils';
 
 export default function refreshAllAds() {
+	console.log('NOT POLLING PREBID ON PAGE LOAD');
 	window.topAdsShown = 0; // Reset Header Ad Counter
 	hidePlaceholder(topScrollingDivID);
 

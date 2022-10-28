@@ -116,7 +116,6 @@
 		});
 	}
 
-<<<<<<<< HEAD:plugins/vimeo-preroll/vimeo-preroll-v1-0-6.js
 	// TODO - Determining OS should be single function in single place for entire App.
 	const isIOS = () => {
 		const ua = window.navigator.userAgent;
@@ -171,21 +170,14 @@
 		return retval;
 	}
 
-========
->>>>>>>> origin/master:plugins/vimeo-preroll/vimeo-preroll-v1-0-2.js
 	const loadVimeoPlayer = (iFrameElement) => {
 		// Add Class to parent for Full Screen
 	    iFrameElement.parentElement.classList.add('beasley-vimeo');
 
-<<<<<<<< HEAD:plugins/vimeo-preroll/vimeo-preroll-v1-0-6.js
 		// Add Class to parent to avoid padding added by .responsive classed on some pages
 		iFrameElement.parentElement.classList.add('beasley');
 
 		const vimeoplayer = isIOS() ? getVimeoPlayerForIOS(iFrameElement) : new Vimeo.Player(iFrameElement);
-
-========
-		const vimeoplayer = new Vimeo.Player(iFrameElement);
->>>>>>>> origin/master:plugins/vimeo-preroll/vimeo-preroll-v1-0-2.js
 		vimeoplayer.isPlayingPreroll = false;
 		vimeoplayer.finishedPlayingPreroll = false;
 
