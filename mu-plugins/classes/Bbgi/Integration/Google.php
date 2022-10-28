@@ -14,6 +14,7 @@ class Google extends \Bbgi\Module {
 
 	const OPTION_GTM       = 'beasley_google_tag_manager';
 	const OPTION_UA        = 'gmr_google_analytics';
+	const OPTION_UA_V4     = 'gmr_google_analytics_v4';
 	const OPTION_UA_UID    = 'gmr_google_uid_dimension';
 	const OPTION_UA_AUTHOR = 'gmr_google_author_dimension';
 
@@ -91,7 +92,21 @@ class Google extends \Bbgi\Module {
 		add_settings_section( $section_id, 'Google', '__return_false', $page );
 
 		add_settings_field( self::OPTION_GTM, 'Tag Manager Code', 'bbgi_input_field', $page, $section_id, 'name=beasley_google_tag_manager&desc=GTM-xxxxxx' );
-		add_settings_field( self::OPTION_UA, 'Analytics Code', 'bbgi_input_field', $page, $section_id, 'name=gmr_google_analytics&desc=UA-xxxxxx-xx' );
+
+
+		$ga_v3_enabled_args = [
+			'name' => 'ga_v3_enabled',
+		];
+
+		$ga_v4_enabled_args = [
+			'name' => 'ga_v4_enabled',
+		];
+
+		add_settings_field( 'ga_v3_enabled', 'V3 Analytics Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=ga_v3_enabled');
+		add_settings_field( self::OPTION_UA, 'V3 Analytics Code', 'bbgi_input_field', $page, $section_id, 'name=gmr_google_analytics&desc=UA-xxxxxx-xx' );
+		add_settings_field( 'ga_v4_enabled', 'V4 Analytics Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=ga_v4_enabled');
+		add_settings_field( self::OPTION_UA_V4, 'V4 Analytics Code', 'bbgi_input_field', $page, $section_id, 'name=gmr_google_analytics_v4&desc=xxxxxx-xx' );
+
 		add_settings_field( self::OPTION_UA_UID, 'User ID Dimension #', 'bbgi_input_field', $page, $section_id, $uid_dimension_args );
 		add_settings_field( self::OPTION_UA_AUTHOR, 'Author Dimension #', 'bbgi_input_field', $page, $section_id, $author_dimension_args );
 
@@ -135,7 +150,7 @@ class Google extends \Bbgi\Module {
 
 			$data['shows'] = implode( ', ', wp_get_post_terms( $post->ID, '_shows', $args ) );
 			$data['category'] = implode( ', ', wp_get_post_terms( $post->ID, 'category', $args ) );
-			
+
 			$primary_author = get_field( 'primary_author_cpt', $post );
 			$primary_author = $primary_author ? $primary_author : $post->post_author;
 			$data['author'] = get_the_author_meta( 'login', $primary_author );
