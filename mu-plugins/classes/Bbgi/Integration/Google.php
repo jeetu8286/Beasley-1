@@ -13,7 +13,9 @@ namespace Bbgi\Integration;
 class Google extends \Bbgi\Module {
 
 	const OPTION_GTM       = 'beasley_google_tag_manager';
+	const OPTION_GA_V3_ENABLED = 'ga_v3_enabled';
 	const OPTION_UA        = 'gmr_google_analytics';
+	const OPTION_GA_V4_ENABLED = 'ga_v4_enabled';
 	const OPTION_UA_V4     = 'gmr_google_analytics_v4';
 	const OPTION_UA_UID    = 'gmr_google_uid_dimension';
 	const OPTION_UA_AUTHOR = 'gmr_google_author_dimension';
@@ -93,27 +95,23 @@ class Google extends \Bbgi\Module {
 
 		add_settings_field( self::OPTION_GTM, 'Tag Manager Code', 'bbgi_input_field', $page, $section_id, 'name=beasley_google_tag_manager&desc=GTM-xxxxxx' );
 
-
-		$ga_v3_enabled_args = [
-			'name' => 'ga_v3_enabled',
-		];
-
-		$ga_v4_enabled_args = [
-			'name' => 'ga_v4_enabled',
-		];
-
-		add_settings_field( 'ga_v3_enabled', 'V3 Analytics Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=ga_v3_enabled');
+		add_settings_field( self::OPTION_GA_V3_ENABLED, 'V3 Analytics Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=ga_v3_enabled');
 		add_settings_field( self::OPTION_UA, 'V3 Analytics Code', 'bbgi_input_field', $page, $section_id, 'name=gmr_google_analytics&desc=UA-xxxxxx-xx' );
-		add_settings_field( 'ga_v4_enabled', 'V4 Analytics Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=ga_v4_enabled');
+		add_settings_field( self::OPTION_GA_V4_ENABLED, 'V4 Analytics Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=ga_v4_enabled');
 		add_settings_field( self::OPTION_UA_V4, 'V4 Analytics Code', 'bbgi_input_field', $page, $section_id, 'name=gmr_google_analytics_v4&desc=xxxxxx-xx' );
 
 		add_settings_field( self::OPTION_UA_UID, 'User ID Dimension #', 'bbgi_input_field', $page, $section_id, $uid_dimension_args );
 		add_settings_field( self::OPTION_UA_AUTHOR, 'Author Dimension #', 'bbgi_input_field', $page, $section_id, $author_dimension_args );
 
 		register_setting( $group, self::OPTION_GTM, 'sanitize_text_field' );
-		register_setting( $group, self::OPTION_UA, 'sanitize_text_field' );
 		register_setting( $group, self::OPTION_UA_UID, 'sanitize_text_field' );
 		register_setting( $group, self::OPTION_UA_AUTHOR, 'sanitize_text_field' );
+
+
+		register_setting( $group, self::OPTION_GA_V3_ENABLED, 'sanitize_text_field' );
+		register_setting( $group, self::OPTION_UA, 'sanitize_text_field' );
+		register_setting( $group, self::OPTION_GA_V4_ENABLED, 'sanitize_text_field' );
+		register_setting( $group, self::OPTION_UA_V4, 'sanitize_text_field' );
 	}
 
 	/**
@@ -122,21 +120,30 @@ class Google extends \Bbgi\Module {
 	 * @return array
 	 */
 	public function get_analytics_data() {
-		$google_analytics = trim( get_option( self::OPTION_UA ) );
+		$google_analytics_v3_enabled = trim( get_option( self::OPTION_GA_V3_ENABLED ) );
+		$google_analytics_ua = trim( get_option( self::OPTION_UA ) );
+		$google_analytics_v4_enabled = trim( get_option( self::OPTION_GA_V4_ENABLED ) );
+		$google_analytics_ua_v4 = trim( get_option( self::OPTION_UA_V4 ) );
 
-		if ( empty( $google_analytics ) ) {
+		if (
+			( empty($google_analytics_v3_enabled) || empty($google_analytics_ua) )
+			&& ( empty($google_analytics_v4_enabled) || empty($google_analytics_ua_v4) )
+		) {
 			return [];
 		}
 
 		$data = [
-			'google_analytics'        => trim( get_option( self  ::OPTION_UA ) ),
-			'google_uid_dimension'    => absint( get_option( self::OPTION_UA_UID ) ),
-			'google_author_dimension' => absint( get_option( self::OPTION_UA_AUTHOR ) ),
-			'title'                   => wp_title( '&raquo;', false ),
-			'url'					  => esc_url( home_url( $_SERVER['REQUEST_URI'] ) ),
-			'shows'                   => '',
-			'category'                => '',
-			'author'                  => 'non-author',
+			'google_analytics_v3_enabled' => $google_analytics_v3_enabled,
+			'google_analytics'        	  => $google_analytics_ua,
+			'google_analytics_v4_enabled' => $google_analytics_v4_enabled,
+			'google_analytics_v4'	  	  => $google_analytics_ua_v4,
+			'google_uid_dimension'    	  => absint( get_option( self::OPTION_UA_UID ) ),
+			'google_author_dimension' 	  => absint( get_option( self::OPTION_UA_AUTHOR ) ),
+			'title'                   	  => wp_title( '&raquo;', false ),
+			'url'					  	  => esc_url( home_url( $_SERVER['REQUEST_URI'] ) ),
+			'shows'                   	  => '',
+			'category'                	  => '',
+			'author'                  	  => 'non-author',
 		];
 
 		if ( is_singular() ) {
