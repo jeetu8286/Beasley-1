@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { isIOS, isSafari, isAudioAdOnly } from '../library';
+import { isIOS, isAudioAdOnly } from '../library';
 
 import { ControlsV2, Offline, GamPreroll } from '../components/player';
 
@@ -47,18 +47,6 @@ class PlayerButton extends Component {
 	handlePlay() {
 		const { station, playStation } = this.props;
 		playStation(station);
-	}
-
-	getPlayerAdThreshold() {
-		const windowWidth = window.innerWidth;
-		const playerAdThreshold = windowWidth > 1350 || isSafari() ? 1350 : 1250;
-		// Save To Window For Use In DFP Events
-		window.playerAdThreshold = playerAdThreshold;
-		return playerAdThreshold;
-	}
-
-	getShouldMapSizes(playerAdThreshold) {
-		return playerAdThreshold === 1250;
 	}
 
 	render() {
