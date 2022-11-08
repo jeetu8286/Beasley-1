@@ -10,6 +10,7 @@ import { ControlsV2, Offline, GamPreroll } from '../components/player';
 import ErrorBoundary from '../components/ErrorBoundary';
 
 import * as actions from '../redux/actions/player';
+import { STATUSES } from '../redux/actions/player';
 
 class PlayerButton extends Component {
 	constructor(props) {
@@ -70,6 +71,19 @@ class PlayerButton extends Component {
 			customTitle,
 		} = this.props;
 
+		const renderStatus =
+			adPlayback ||
+			gamAdPlayback ||
+			status === STATUSES.GETTING_STATION_INFORMATION
+				? STATUSES.LIVE_BUFFERING
+				: status;
+
+		if (status !== renderStatus) {
+			console.log(
+				`Mocking Play Button With Spin Style. Actual Status Is: ${status}`,
+			);
+		}
+
 		let notification = false;
 		if (!online) {
 			notification = <Offline />;
@@ -111,7 +125,7 @@ class PlayerButton extends Component {
 			<div className="controls" style={controlsStyle}>
 				<div className={`button-holder ${progressClass}`}>
 					<ControlsV2
-						status={status}
+						status={renderStatus}
 						play={
 							adPlayback && isAudioAdOnly({ player, playerType })
 								? null
