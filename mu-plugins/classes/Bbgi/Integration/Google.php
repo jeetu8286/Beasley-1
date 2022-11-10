@@ -31,9 +31,20 @@ class Google extends \Bbgi\Module {
 		add_action( 'wp_head', $this( 'render_gtm_head' ) );
 		add_action( 'beasley_after_body', $this( 'render_gtm_body' ) );
 		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
-		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'jacapps_enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'ga_enqueue_scripts' ) );
+		// add_action( 'wp_enqueue_scripts', array( __CLASS__, 'jacapps_enqueue_scripts' ) );
 
 		add_filter( 'fbia_analytics_makrup', $this( 'get_fbia_analytics_markup' ) );
+	}
+
+	/**
+	 * Include Google Analytics for all including desktop, mobile, and whiz.
+	 */
+	public function ga_enqueue_scripts() {
+		wp_enqueue_script(
+			'ga_enqueue_scripts',
+			plugins_url( 'assets/js/beasley-analytics.js', __FILE__ )
+		);
 	}
 
 	/**
