@@ -3,6 +3,7 @@
 /* v1-0-0 - Institute Versioning to comply with permacache */
 /* v1-0-2 - Lazy Load Google IMA */
 /* v1-0-4 - Put in proxy button to convince IOS IMA that user action initiated Ad Play */
+/* v1-0-7 - Add support for newer iPads running newer IOS versions */
 
 	const VIMEOPREROLLWRAPPER = 'vimeoPrerollWrapper';
 	var vimeoPlayerList;
@@ -136,15 +137,24 @@
 	}
 
 	// TODO - Determining OS should be single function in single place for entire App.
-	const isIOS = () => {
-		const ua = window.navigator.userAgent;
-		const ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
-		const ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/);
-		const iphone = !ipad && ua.match(/(iPhone\sOS|iOS)\s([\d_]+)/);
+	const isIPhone = () => {
+		const { userAgent } = window.navigator;
+		return !!userAgent.match(/iPhone/i);
+	};
 
-		console.log(`Vimeo Device - IsIpad: ${ipad}  IsIpod: ${ipod}  IsIphone: ${iphone}`);
-		return ipad || iphone || ipod;
-	}
+	const isIPad = () => {
+		const { userAgent } = window.navigator;
+
+		return (
+			!!userAgent.match(/iPad/i) ||
+			(!!userAgent.match(/Mac/i) &&
+				'ontouchend' in document) /* iPad OS 13+ in default desktop mode */
+		);
+	};
+
+	const isIOS = () => {
+		return isIPhone() || isIPad();
+	};
 
 	const getVimeoPlayerForIOS = (iFrameElement) => {
 		console.log('Creating Extra HTML for IOS');
