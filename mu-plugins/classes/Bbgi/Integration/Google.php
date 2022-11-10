@@ -32,7 +32,7 @@ class Google extends \Bbgi\Module {
 		add_action( 'beasley_after_body', $this( 'render_gtm_body' ) );
 		add_action( 'bbgi_register_settings', $this( 'register_settings' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'ga_enqueue_scripts' ) );
-		// add_action( 'wp_enqueue_scripts', array( __CLASS__, 'jacapps_enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'jacapps_enqueue_scripts' ) );
 
 		add_filter( 'fbia_analytics_makrup', $this( 'get_fbia_analytics_markup' ) );
 	}
@@ -52,7 +52,6 @@ class Google extends \Bbgi\Module {
 	 */
 	public function jacapps_enqueue_scripts() {
 		$current_post_type	= get_post_type( get_queried_object_id() );
-		$postfix			= ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 		if ( function_exists( 'ee_is_common_mobile' ) && ee_is_common_mobile() && in_array( $current_post_type, Google::allow_posttype_list_for_common_mobile() ) ) {
 			$data = Google::get_analytics_data();
 
