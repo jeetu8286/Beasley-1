@@ -62,7 +62,7 @@ class Google extends \Bbgi\Module {
 			if( isset($data['google_analytics']) && $data['google_analytics'] != "" ) {
 				wp_enqueue_script(
 					'enqueue-scripts-for-common-mobile',
-					plugins_url( 'assets/js/google-jacapps'.$postfix.'.js', __FILE__ ),
+					plugins_url( 'assets/js/google-jacapps.js', __FILE__ ),
 					array('jquery'),
 					'1.0.0',
 					true
