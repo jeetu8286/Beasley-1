@@ -51,13 +51,15 @@ class beasleyAnalyticsBaseProvider {
 	constructor(typeString, idString) {
 		this.analyticType = typeString;
 		this.idString = idString;
+
+		this.debugLog(`Constructor - id: ${this.idString}`);
 	}
 
 	isDebugMode = true;
 
 	debugLog(message) {
-		if (isDebugMode) {
-			console.log(`${this.analyticType} - ${message}`);
+		if (this.isDebugMode) {
+			console.log(`Beasley Analytics ${this.analyticType} - ${message}`);
 		}
 	}
 
@@ -121,5 +123,6 @@ class beasleyAnalyticsGaV4Provider extends beasleyAnalyticsBaseProvider {
 }
 
 
-window.beasleyanalytics = new beasleyAnalytics()
+window.beasleyanalytics = new beasleyAnalytics();
+window.beasleyanalytics.loadBeasleyConfigData(bbgiAnalyticsConfig);
 

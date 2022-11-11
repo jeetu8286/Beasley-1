@@ -41,6 +41,13 @@ class Google extends \Bbgi\Module {
 	 * Include Google Analytics for all including desktop, mobile, and whiz.
 	 */
 	public function ga_enqueue_scripts() {
+		$data = Google::get_analytics_data();
+		$jsonData = json_encode($data);
+
+		echo sprintf(
+			'<script>var bbgiAnalyticsConfig=JSON.parse(\'%s\');</script>', $jsonData
+		);
+
 		wp_enqueue_script(
 			'ga_enqueue_scripts',
 			plugins_url( 'assets/js/beasley-analytics.js', __FILE__ )
