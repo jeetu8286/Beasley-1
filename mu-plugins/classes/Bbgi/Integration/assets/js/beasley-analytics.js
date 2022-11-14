@@ -17,6 +17,11 @@
 
 class beasleyAnalytics {
 	analyticsProviderArray = [];
+	config;
+
+	constructor() {
+		this.loadBeasleyConfigData(window.bbgiAnalyticsConfig);
+	}
 
 	loadBeasleyConfigData = (beasleyAnalyticsConfigData) => {
 		// guard to prevent multiple initial loads
@@ -24,11 +29,13 @@ class beasleyAnalytics {
 			return;
 		}
 
+		this.config = beasleyAnalyticsConfigData;
+
 		if (beasleyAnalyticsConfigData.google_analytics_v3_enabled && beasleyAnalyticsConfigData.google_analytics) {
-			this.analyticsProviderArray.push(new beasleyAnalyticsGaV3Provider(beasleyAnalyticsConfigData.google_analytics));
+			this.analyticsProviderArray.push(new beasleyAnalyticsGaV3Provider(this.config.google_analytics));
 		}
 		if (beasleyAnalyticsConfigData.google_analytics_v4_enabled && beasleyAnalyticsConfigData.google_analytics_v4) {
-			this.analyticsProviderArray.push(new beasleyAnalyticsGaV4Provider(beasleyAnalyticsConfigData.google_analytics_v4));
+			this.analyticsProviderArray.push(new beasleyAnalyticsGaV4Provider(this.config.google_analytics_v4));
 		}
 	}
 
@@ -43,8 +50,6 @@ class beasleyAnalytics {
 	sendEvent() {
 		this.analyticsProviderArray.map(provider => provider.sendEvent());
 	}
-
-
 }
 
 class beasleyAnalyticsBaseProvider {
@@ -79,8 +84,13 @@ class beasleyAnalyticsBaseProvider {
 class beasleyAnalyticsGaV3Provider extends beasleyAnalyticsBaseProvider {
 	static typeString = 'GA_V3';
 
-	constructor(idString) {
-		super(beasleyAnalyticsGaV3Provider.typeString, idString);
+	constructor(bbgiAnalyticsConfig) {
+		super(beasleyAnalyticsGaV3Provider.typeString, bbgiAnalyticsConfig.google_analytics);
+
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		var googleUidDimension = bbgiAnalyticsConfig.google_uid_dimension;
+		ga('create', this.idString, 'auto');
+		ga('require', 'displayfeatures');
 	}
 
 	createAnalytics() {
@@ -122,7 +132,5 @@ class beasleyAnalyticsGaV4Provider extends beasleyAnalyticsBaseProvider {
 	}
 }
 
-
-window.beasleyanalytics = new beasleyAnalytics();
-window.beasleyanalytics.loadBeasleyConfigData(bbgiAnalyticsConfig);
+console.log('ga_enqueue_scripts loaded');
 
