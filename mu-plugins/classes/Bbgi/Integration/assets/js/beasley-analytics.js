@@ -64,10 +64,8 @@ class beasleyAnalyticsBaseProvider {
 		this.debugLog(`Constructor - id: ${this.idString}`);
 	}
 
-	isDebugMode = true;
-
 	debugLog(message) {
-		if (this.isDebugMode) {
+		if (location.search.indexOf('gadebug=1') !== -1) {
 			console.log(`Beasley Analytics ${this.analyticType} - ${message}`);
 		}
 	}
