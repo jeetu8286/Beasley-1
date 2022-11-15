@@ -32,23 +32,27 @@ class beasleyAnalytics {
 		this.config = beasleyAnalyticsConfigData;
 
 		if (beasleyAnalyticsConfigData.google_analytics_v3_enabled && beasleyAnalyticsConfigData.google_analytics) {
-			this.analyticsProviderArray.push(new beasleyAnalyticsGaV3Provider(this.config.google_analytics));
+			this.analyticsProviderArray.push(new beasleyAnalyticsGaV3Provider(this.config));
 		}
 		if (beasleyAnalyticsConfigData.google_analytics_v4_enabled && beasleyAnalyticsConfigData.google_analytics_v4) {
-			this.analyticsProviderArray.push(new beasleyAnalyticsGaV4Provider(this.config.google_analytics_v4));
+			this.analyticsProviderArray.push(new beasleyAnalyticsGaV4Provider(this.config));
 		}
 	}
 
 	createAnalytics() {
-		this.analyticsProviderArray.map(provider => provider.createAnalytics());
+		this.analyticsProviderArray.map(provider => provider.createAnalytics.apply(provider, arguments));
+	}
+
+	requireAnalytics() {
+		this.analyticsProviderArray.map(provider => provider.requireAnalytics.apply(provider, arguments));
 	}
 
 	setAnalytics() {
-		this.analyticsProviderArray.map(provider => provider.setAnalytics());
+		this.analyticsProviderArray.map(provider => provider.setAnalytics.apply(provider, arguments));
 	}
 
 	sendEvent() {
-		this.analyticsProviderArray.map(provider => provider.sendEvent());
+		this.analyticsProviderArray.map(provider => provider.sendEvent.apply(provider, arguments));
 	}
 }
 
@@ -69,15 +73,19 @@ class beasleyAnalyticsBaseProvider {
 	}
 
 	createAnalytics() {
-		this.debugLog(`createAnalytics()`);
+		this.debugLog(`createAnalytics() - ${JSON.stringify(arguments)}`);
+	}
+
+	requireAnalytics() {
+		this.debugLog(`requireAnalytics() - ${JSON.stringify(arguments)}`);
 	}
 
 	setAnalytics() {
-		this.debugLog(`createAnalytics()`);
+		this.debugLog(`setAnalytics() - ${JSON.stringify(arguments)}`);
 	}
 
 	sendEvent() {
-		this.debugLog(`createAnalytics()`);
+		this.debugLog(`sendEvent() - ${JSON.stringify(arguments)}`);
 	}
 }
 
@@ -86,31 +94,41 @@ class beasleyAnalyticsGaV3Provider extends beasleyAnalyticsBaseProvider {
 
 	constructor(bbgiAnalyticsConfig) {
 		super(beasleyAnalyticsGaV3Provider.typeString, bbgiAnalyticsConfig.google_analytics);
-
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		var googleUidDimension = bbgiAnalyticsConfig.google_uid_dimension;
-		ga('create', this.idString, 'auto');
-		ga('require', 'displayfeatures');
 	}
 
 	createAnalytics() {
-		super.createAnalytics();
+		super.createAnalytics.apply(this, arguments);
+		this.doGaCall('create', arguments);
+	}
+
+	requireAnalytics() {
+		super.requireAnalytics.apply(this, arguments);
+		this.doGaCall('require', arguments);
 	}
 
 	setAnalytics() {
-		super.setAnalytics();
+		super.setAnalytics.apply(this, arguments);
+		this.doGaCall('set', arguments);
 	}
 
 	sendEvent() {
-		super.sendEvent();
+		super.sendEvent.apply(this, arguments);
+		this.doGaCall('send', arguments);
+	}
+
+	doGaCall(gaFunctionName, argumentArray) {
+		const extendedArgs = [...argumentArray];
+		extendedArgs.unshift(gaFunctionName);
+		ga.apply(this, extendedArgs);
 	}
 }
 
 class beasleyAnalyticsGaV4Provider extends beasleyAnalyticsBaseProvider {
 	static typeString = 'GA_V4';
 
-	constructor(idString) {
-		super(beasleyAnalyticsGaV4Provider.typeString, idString);
+	constructor(bbgiAnalyticsConfig) {
+		super(beasleyAnalyticsGaV4Provider.typeString, bbgiAnalyticsConfig.google_analytics_v4);
 	}
 
 	// Category, Action, Label, Value not in GA4 - there are prdefine and you can add custom
@@ -120,15 +138,19 @@ class beasleyAnalyticsGaV4Provider extends beasleyAnalyticsBaseProvider {
 	// If you manually send page_view events, make sure Enhanced measurement is configured correctly to avoid double counting pageviews on history state changes. Typically, this means disabling Page changes based on browser history events under the advanced settings of the Page views section.
 
 	createAnalytics() {
-		super.createAnalytics();
+		super.createAnalytics.apply(this, arguments);
+	}
+
+	requireAnalytics() {
+		super.requireAnalytics.apply(this, arguments);
 	}
 
 	setAnalytics() {
-		super.setAnalytics();
+		super.setAnalytics.apply(this, arguments);
 	}
 
 	sendEvent() {
-		super.sendEvent();
+		super.sendEvent.apply(this, arguments);
 	}
 }
 
