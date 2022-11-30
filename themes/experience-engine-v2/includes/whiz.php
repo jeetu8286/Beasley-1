@@ -162,7 +162,7 @@ endif;
 if ( ! function_exists( 'ee_update_whiz_audience_embed_html' ) ) :
 	function ee_update_whiz_audience_embed_html( $embed, $atts ) {
 
-		$audiencescript = '<script async src="https://campaign.aptivada.com/sdk.js"></script>';
+		$audiencescript = '<script src="https://campaign.aptivada.com/sdk.js"></script>';
 		$aptivadadiv = '<div class="aptivada-campaign"></div>';
 		$implementation = sprintf('<script>
 					window.AptivadaAsyncInit = function(){
@@ -173,7 +173,7 @@ if ( ! function_exists( 'ee_update_whiz_audience_embed_html' ) ) :
 				}
 			</script>', $atts['widget-id'], $atts['widget-type']);
 
-		return $implementation . $audiencescript . $aptivadadiv;
+		return $audiencescript . $aptivadadiv . $implementation;
 	}
 endif;
 
