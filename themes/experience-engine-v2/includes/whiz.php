@@ -34,7 +34,7 @@ if ( ! function_exists( 'ee_setup_whiz' ) ) :
 		add_filter( 'body_class', 'ee_whiz_body_class' );
 		add_filter( 'omny_embed_key', 'ee_update_whiz_omny_key' );
 		add_filter( 'secondstreet_embed_html', 'ee_update_whiz_secondstreet_html', 10, 2 );
-		add_filter( 'audience_embed_html', 'ee_update_whiz_audience_embed_html', 10, 2 )
+		add_filter( 'audience_embed_html', 'ee_update_whiz_audience_embed_html', 10, 2 );
 		add_filter( 'secondstreetpref_html', 'ee_update_whiz_secondstreetpref_html', 10, 2 );
 		add_filter( 'secondstreetsignup_html', 'ee_update_whiz_secondstreetsignup_html', 10, 2 );
 		add_filter( 'mapbox_html', 'ee_update_whiz_mapbox_html', 10, 2 );
