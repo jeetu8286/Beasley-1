@@ -51,6 +51,7 @@ deploy_stage:
     - ssh beanstalk@54.87.4.54 'echo $(date +%s) > /var/www/html/wordpress/wp-content/themes/.version.php'
   only:
     - stage3
+    - feature/ci-parallel
 
 deploy_preprod:
   stage: deploy
