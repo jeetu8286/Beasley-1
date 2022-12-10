@@ -30,13 +30,21 @@ test_virusscan:
   dependencies: []
   cache: {}
 
+test_build:
+  stage: test
+  script:
+    - bash ./deploy-scripts/build.sh
+  dependencies: []
+  cache: {}
+
+
 deploy_stage:
   stage: deploy
   environment:
     name: Staging
     url: https://bbgistage.com/
   script:
-    - bash ./deploy-scripts/build.sh
+    #- bash ./deploy-scripts/build.sh
     - bash ./deploy-scripts/deploy-stage.sh
     - ssh beanstalk@54.87.4.54 'sudo /usr/bin/systemctl restart supervisord.service'
     - ssh beanstalk@54.87.4.54 'sudo /usr/bin/systemctl restart memcached.service'
