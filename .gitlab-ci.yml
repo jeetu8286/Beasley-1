@@ -37,7 +37,7 @@ build_plugins_and_themes:
   artifacts:
     paths:
       - payload
-  expire_in: 1 day
+    expire_in: 1 day
   dependencies: []
   cache: {}
 
