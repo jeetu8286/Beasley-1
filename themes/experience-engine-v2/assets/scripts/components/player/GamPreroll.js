@@ -306,6 +306,7 @@ class GamPreroll extends PureComponent {
 			(async () => {
 				try {
 					await vidElement.play();
+					await vidElement.pause();
 					// eslint-disable-next-line no-empty
 				} catch (err) {}
 			})();
@@ -376,10 +377,36 @@ class GamPreroll extends PureComponent {
 	}
 
 	render() {
+		if (isIOS()) {
+			const width = window.document.body.clientWidth;
+			const height = (width / 640) * 480;
+			const topMargin = (window.document.body.clientHeight - height) / 2;
+			return (
+				<div id="gamPrerollWrapper" className="gampreroll-wrapper -active">
+					<div id="gamPrerollContent" style={{ marginTop: topMargin }}>
+						<video
+							id="gamPrerollContentElement"
+							width={width}
+							height={height}
+							playsInline
+						>
+							<track
+								src="captions_en.vtt"
+								kind="captions"
+								srcLang="en"
+								label="english_captions"
+							/>
+						</video>
+					</div>
+					<div id="gamPrerollAdContainer" className="gam-preroll-player" />
+				</div>
+			);
+		}
+
 		return (
 			<div id="gamPrerollWrapper" className="gampreroll-wrapper -active">
 				<div id="gamPrerollContent">
-					<video id="gamPrerollContentElement" playsInline>
+					<video id="gamPrerollContentElement">
 						<track
 							src="captions_en.vtt"
 							kind="captions"
