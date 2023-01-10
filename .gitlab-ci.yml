@@ -1,4 +1,4 @@
-image: docker.10up.com/10up-build/deploy-container:latest
+image: docker.10up.com/10up-build/deploy-container:php-7.4
 
 stages:
   - test-and-build
@@ -26,7 +26,7 @@ test_syntax:
 test_virusscan:
   stage: test-and-build
   script:
-    - /10up-scripts/virus-scan
+    - virus-scan
   dependencies: []
   cache: {}
 
