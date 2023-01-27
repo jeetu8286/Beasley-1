@@ -130,8 +130,7 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 		window.mParticle = {
 			config: {
 				isDevelopmentMode: true,
-				logLevel: verbose;
-
+				logLevel: verbose,
 			},
 		};
 		(
