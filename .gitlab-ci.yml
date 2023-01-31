@@ -68,6 +68,19 @@ deploy_preprod:
   only:
     - preprod
 
+reset_preprod_branch:
+  stage: deploy
+  environment:
+    name: Preprod
+    url: https://preprod.bbgistage.com/
+  script:
+    - git checkout feature/add-preprod-reset-job
+    - git reset --hard origin/master
+    - git push -f
+  only:
+    - feature/add-preprod-reset-job
+  when: manual
+
 notify_slack:
   stage: test-and-build
   script:
