@@ -76,7 +76,7 @@ reset_preprod_branch:
   script:
     - git checkout feature/add-preprod-reset-job
     - git reset --hard origin/master
-    - git push -f
+    - git push origin feature/add-preprod-reset-job -f
   only:
     - feature/add-preprod-reset-job
   when: manual
