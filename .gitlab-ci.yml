@@ -85,11 +85,11 @@ reset_preprod_branch:
      git config --global user.email "megatron+beasley@10up.com"
      git clone -b ${CI_COMMIT_BRANCH} git@gitlab.10up.com:${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git /tmp/gitlab-repo
      cd /tmp/gitlab-repo
-     git checkout feature/add-preprod-reset-job
+     git checkout ${CI_COMMIT_BRANCH}
      git reset --hard origin/master
-     git push origin feature/add-preprod-reset-job -f
+     git push origin ${CI_COMMIT_BRANCH} -f
   only:
-    - feature/add-preprod-reset-job
+    - preprod
   when: manual
 
 notify_slack:
