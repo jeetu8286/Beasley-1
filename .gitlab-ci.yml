@@ -79,10 +79,12 @@ reset_preprod_branch:
    - |
      # Create SSH key
      # The same key is used to access Gitlab and Github
+     set -x
      echo "${10UP_BEASLEY_PRIVATE_KEY}" > /tmp/.git-sshkey
      chmod 400 /tmp/.git-sshkey
      git config --global user.name "beasley10up"
      git config --global user.email "megatron+beasley@10up.com"
+     set +x
      git clone -b ${CI_COMMIT_BRANCH} git@gitlab.10up.com:${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git /tmp/gitlab-repo
      cd /tmp/gitlab-repo
      git checkout feature/add-preprod-reset-job
