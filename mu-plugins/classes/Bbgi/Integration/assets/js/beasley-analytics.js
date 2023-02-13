@@ -129,6 +129,8 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 		// and logLevel.
 		window.mParticle = {
 			config: {
+				appName: 'Beasley Web',
+				appVersion: 'V2',
 				isDevelopmentMode: true,
 				logLevel: 'verbose',
 			},
