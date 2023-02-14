@@ -48,6 +48,13 @@ class beasleyAnalytics {
 		this.analyticsProviderArray.map(provider => provider.setAnalytics.apply(provider, arguments));
 	}
 
+	setAnalyticsForMParticle() {
+		const provider = this.analyticsProviderArray.filter(provider => provider.analyticType === beasleyAnalyticsMParticleProvider.typeString);
+		if (provider) {
+			provider.setAnalytics.apply(provider, arguments);
+		}
+	}
+
 	sendEvent() {
 		this.analyticsProviderArray.map(provider => provider.sendEvent.apply(provider, arguments));
 	}
@@ -122,6 +129,62 @@ class beasleyAnalyticsGaV3Provider extends beasleyAnalyticsBaseProvider {
 class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 	static typeString = 'MPARTICLE';
 
+	static GAtoMParticleFieldNameMap = {
+		contentGroup1: 'show_name',
+		contentGroup2: 'primary_category',
+		dimension2: 'primary_author',
+	}
+	static cleanKeyValuePairs = {
+		title: '',
+		domain: '',
+		call_sign: '',
+		call_sign_id: '',
+		beasley_event_id: '',
+		primary_category: '',
+		primary_category_id: '',
+		show_name: '',
+		show_id: '',
+		tags: '',
+		content_type: '',
+		view_type: '',
+		embedded_content_title: '',
+		embedded_content_type: '',
+		embedded_content_path: '',
+		embedded_content_post_id: '',
+		embedded_content_wp_author: '',
+		embedded_content_primary_author: '',
+		embedded_content_secondary_author: '',
+		daypart: '',
+		post_id: '',
+		wp_author: '',
+		primary_author: '',
+		secondary_author: '',
+		ad_block_enabled: '',
+		ad_tags_enabled: '',
+		consent_cookie: '',
+		event_day_of_the_week: '',
+		event_hour_of_the_day: '',
+		prebid_enabled: '',
+		platform: '',
+		publish_date: '',
+		publish_day_of_the_week: '',
+		publish_hour_of_the_day: '',
+		publish_month: '',
+		publish_time_of_day: '',
+		publish_timestamp_local: '',
+		publish_timestamp_UTC: '',
+		publish_year: '',
+		section_name: '',
+		video_count: '',
+		word_count: '',
+		categories_stringified: '',
+		tags_stringified: '',
+		referrer: '',
+		UTM: '',
+	};
+
+	keyValuePairs;
+
 	constructor(bbgiAnalyticsConfig) {
 		super(beasleyAnalyticsMParticleProvider.typeString, bbgiAnalyticsConfig.mparticle_key);
 
@@ -142,9 +205,14 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 			(bbgiAnalyticsConfig.mparticle_key);
 	}
 
+	clearKVPairs() {
+		this.keyValuePairs = {...beasleyAnalyticsMParticleProvider.cleanKeyValuePairs};
+	}
+
 	createAnalytics() {
 		// Call Super to log, but really we ignore the arguments since they were specific for GA V3
 		super.createAnalytics.apply(this, arguments);
+		this.clearKVPairs();
 	}
 
 	requireAnalytics() {
@@ -153,6 +221,20 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 
 	setAnalytics() {
 		super.setAnalytics.apply(this, arguments);
+
+		if (arguments && arguments.length == 2) {
+			if (Object.keys(this.keyValuePairs).includes(arguments[0])) {
+				this.keyValuePairs[arguments[0]] = arguments[1];
+			} else if (beasleyAnalyticsMParticleProvider.GAtoMParticleFieldNameMap[arguments[0]]) {
+				const mparticleFieldName = beasleyAnalyticsMParticleProvider.GAtoMParticleFieldNameMap[arguments[0]];
+				console.log(`Mapped GA Field Name '${arguments[0]} To MParticle Field Name Of '${mparticleFieldName}'` );
+				this.keyValuePairs[mparticleFieldName] = arguments[1];
+			} else {
+				console.log(`MParticle Params Ignoring ${arguments[0]} of ${arguments[1]}`);
+			}
+		} else {
+			console.log('Attempt to set MParticle Key Value Pair With Arguments NOT Of Length 2');
+		}
 	}
 
 	sendEvent() {
@@ -162,11 +244,13 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 			window.mParticle.logPageView(
 				'Page View',
 				{page: window.location.toString()},
-				{"title": arguments[0].title} // if you're using Google Analytics to track page views
+				this.keyValuePairs
 			);
 		} else {
 			console.log('NOT A PAGEVIEW');
 		}
+
+		this.clearKVPairs();
 	}
 }
 
