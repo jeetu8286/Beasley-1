@@ -129,8 +129,8 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 		// and logLevel.
 		window.mParticle = {
 			config: {
-				appName: 'Beasley Web',
-				appVersion: 'V2',
+				appName: 'beasley_web',
+				appVersion: '1',
 				isDevelopmentMode: true,
 				logLevel: 'verbose',
 			},
@@ -157,6 +157,16 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 
 	sendEvent() {
 		super.sendEvent.apply(this, arguments);
+
+		if (arguments && arguments[0] && arguments[0].hitType === 'pageview') {
+			window.mParticle.logPageView(
+				'Page View',
+				{page: window.location.toString()},
+				{"title": arguments[0].title} // if you're using Google Analytics to track page views
+			);
+		} else {
+			console.log('NOT A PAGEVIEW');
+		}
 	}
 }
 
