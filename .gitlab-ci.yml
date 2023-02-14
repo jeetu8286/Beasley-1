@@ -72,9 +72,6 @@ reset_preprod_branch:
   stage: deploy
   variables:
     GIT_SSH_COMMAND: "ssh -i /tmp/.git-sshkey -F /dev/null -o StrictHostKeyChecking=no"
-  environment:
-    name: Preprod
-    url: https://preprod.bbgistage.com/
   script:
    - |
      set +x
