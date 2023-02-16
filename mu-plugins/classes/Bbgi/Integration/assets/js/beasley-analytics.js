@@ -58,6 +58,14 @@ class beasleyAnalytics {
 	sendEvent() {
 		this.analyticsProviderArray.map(provider => provider.sendEvent.apply(provider, arguments));
 	}
+
+	sendMParticleEvent(eventName) {
+	const provider = this.analyticsProviderArray.filter(provider => provider.analyticType === beasleyAnalyticsMParticleProvider.typeString);
+	if (provider) {
+		provider.sendEventByName(eventName);
+	}
+}
+
 }
 
 class beasleyAnalyticsBaseProvider {
@@ -164,19 +172,49 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 		}
 
 		console.log(`ERROR - Could not create Key Value Pairs for MParticle Event - '${eventName}'`);
+		return null;
 	};
 
-	getAllEventFieldsObject() {
+	getAllEventFieldsObjects() {
 		let retval = {};
-		Object.keys(beasleyAnalyticsMParticleProvider.mparticleEventNames).forEach(eventName => {
-			const newEventFieldsObject = this.getCleanEventObject(beasleyAnalyticsMParticleProvider.mparticleEventNames[eventName]);
+		Object.keys(beasleyAnalyticsMParticleProvider.mparticleEventNames).forEach(eventNameKey => {
+			const newEventFieldsObject = this.getCleanEventObject(beasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey]);
 			retval = {...retval, ...newEventFieldsObject};
 		});
 
 		return retval;
 	}
 
+	getCustomEventTypeValueForEventName(eventName) {
+		const dataPoints = window.mParticleSchema?.version_document?.data_points;
+		if (dataPoints) {
+			const dataPoint = dataPoints.find( dp =>
+				(dp?.match?.type === 'custom_event' && dp?.match?.criteria?.event_name === eventName));
+			if (dataPoint) {
+				const dataPointType = dataPoint.match?.criteria?.custom_event_type;
+				if (dataPointType) {
+					const mParticleEventType = Object.entries(mParticle.EventType).find( kvpair => kvpair[0].toLowerCase() === dataPointType.toLowerCase());
+					if (mParticleEventType) {
+						return mParticleEventType[1];
+					} else {
+						console.log(`ERROR - could not find an MParticle Custom Event Type matching text - '${dataPointType}'`);
+						return mParticle.EventType.Unknown;
+					}
+				}
+			}
+		}
+
+		console.log(`Could not find Custom Event Type For MParticle Event - '${eventName}'`);
+		return null;
+	}
+	getAllCustomEventTypeValueArray() {
+		return Object.keys(beasleyAnalyticsMParticleProvider.mparticleEventNames).map(eventNameKey => {
+			 return {[beasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey]]: this.getCustomEventTypeValueForEventName(beasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey])}
+		});
+	}
+
 	keyValuePairs;
+	eventTypeLookupArray;
 
 	constructor(bbgiAnalyticsConfig) {
 		super(beasleyAnalyticsMParticleProvider.typeString, bbgiAnalyticsConfig.mparticle_key);
@@ -198,16 +236,14 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 		)
 			// Insert your API key below
 			(bbgiAnalyticsConfig.mparticle_key);
-	}
 
-	clearKVPairs() {
-		this.keyValuePairs = this.getAllEventFieldsObject();
+		this.keyValuePairs = this.getAllEventFieldsObjects();
+		this.eventTypeLookupArray = this.getAllCustomEventTypeValueArray();
 	}
 
 	createAnalytics() {
 		// Call Super to log, but really we ignore the arguments since they were specific for GA V3
 		super.createAnalytics.apply(this, arguments);
-		this.clearKVPairs();
 	}
 
 	requireAnalytics() {
@@ -217,7 +253,7 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 	setAnalytics() {
 		super.setAnalytics.apply(this, arguments);
 
-		if (arguments && arguments.length == 2) {
+		if (arguments && arguments.length === 2) {
 			if (Object.keys(this.keyValuePairs).includes(arguments[0])) {
 				this.keyValuePairs[arguments[0]] = arguments[1];
 			} else if (beasleyAnalyticsMParticleProvider.GAtoMParticleFieldNameMap[arguments[0]]) {
@@ -236,6 +272,17 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 		super.sendEvent.apply(this, arguments);
 
 		if (arguments && arguments[0] && arguments[0].hitType === 'pageview') {
+			this.sendEventByName(beasleyAnalyticsMParticleProvider.mparticleEventNames.pageView);
+		} else {
+			console.log(`ATTEMPTED TO SEND A COMMON EVENT TO MPARTICLE WHICH IS NOT A PAGEVIEW - '${arguments[0]?.hitType}'`);
+		}
+	}
+
+	sendEventByName(eventName) {
+		super.sendEvent.apply(this, arguments);
+
+		// If The Event Is A Page View
+		if (eventName === beasleyAnalyticsMParticleProvider.mparticleEventNames.pageView) {
 			const emptyPageViewObject = this.getCleanEventObject(beasleyAnalyticsMParticleProvider.mparticleEventNames.pageView);
 			const objectToSend = Object.keys(emptyPageViewObject)
 				.reduce((a, key) => ({ ...a, [key]: this.keyValuePairs[key]}), {});
@@ -245,12 +292,17 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 				{},
 				objectToSend,
 			);
-		} else {
-			console.log('NOT A PAGEVIEW');
+		} else { // Event is a Custom Event
+			const emptyEventObject = this.getCleanEventObject(eventName);
+			const objectToSend = Object.keys(emptyEventObject)
+				.reduce((a, key) => ({ ...a, [key]: this.keyValuePairs[key]}), {});
+
+			window.mParticle.logEvent(
+				eventName,
+				{},
+				objectToSend,
+			);
 		}
-
-
-		this.clearKVPairs();
 	}
 }
 
