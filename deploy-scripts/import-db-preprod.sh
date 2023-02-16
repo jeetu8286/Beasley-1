@@ -16,9 +16,6 @@ SEARCH_REPLACE=(
   "wp cache flush --network"
 )
 
-# Unzip the .sql.gz files on preprod
-#ssh beanstalk@34.230.103.178 "cd /home/beanstalk/preprod_backups/ && gunzip *.sql.gz"
-
 # Import .sql files into preprod
 SITES=$(ssh beanstalk@34.230.103.178 'ls preprod_backups')
 for SITE in ${SITES};
