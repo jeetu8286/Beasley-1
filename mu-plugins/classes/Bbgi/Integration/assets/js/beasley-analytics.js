@@ -49,7 +49,7 @@ class beasleyAnalytics {
 	}
 
 	setAnalyticsForMParticle() {
-		const provider = this.analyticsProviderArray.filter(provider => provider.analyticType === beasleyAnalyticsMParticleProvider.typeString);
+		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === beasleyAnalyticsMParticleProvider.typeString);
 		if (provider) {
 			provider.setAnalytics.apply(provider, arguments);
 		}
@@ -60,9 +60,9 @@ class beasleyAnalytics {
 	}
 
 	sendMParticleEvent(eventName) {
-	const provider = this.analyticsProviderArray.filter(provider => provider.analyticType === beasleyAnalyticsMParticleProvider.typeString);
+	const provider = this.analyticsProviderArray.find(provider => provider.analyticType === beasleyAnalyticsMParticleProvider.typeString);
 	if (provider) {
-		provider.sendEventByName(eventName);
+		provider.sendEventByName.apply(provider, arguments);
 	}
 }
 
@@ -165,7 +165,7 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 			if (dataPoint) {
 				const dataPointProperties = dataPoint.validator?.definition?.properties?.data?.properties?.custom_attributes?.properties;
 				if (dataPointProperties) {
-					const kvArray = Object.keys(dataPointProperties).map(key => ({[key]: ''}));
+					const kvArray = Object.keys(dataPointProperties).map(key => ({[key]: null}));
 					return Object.assign(...kvArray); // Return an object with each field assigned to ''
 				}
 			}
@@ -207,14 +207,15 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 		console.log(`Could not find Custom Event Type For MParticle Event - '${eventName}'`);
 		return null;
 	}
-	getAllCustomEventTypeValueArray() {
-		return Object.keys(beasleyAnalyticsMParticleProvider.mparticleEventNames).map(eventNameKey => {
-			 return {[beasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey]]: this.getCustomEventTypeValueForEventName(beasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey])}
+	getAllCustomEventTypeLookupObject() {
+		const entryArray = Object.keys(beasleyAnalyticsMParticleProvider.mparticleEventNames).map(eventNameKey => {
+			 return [beasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey], this.getCustomEventTypeValueForEventName(beasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey])];
 		});
+		return Object.fromEntries(entryArray);
 	}
 
 	keyValuePairs;
-	eventTypeLookupArray;
+	customEventTypeLookupByName;
 
 	constructor(bbgiAnalyticsConfig) {
 		super(beasleyAnalyticsMParticleProvider.typeString, bbgiAnalyticsConfig.mparticle_key);
@@ -237,8 +238,9 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 			// Insert your API key below
 			(bbgiAnalyticsConfig.mparticle_key);
 
+		window.mparticleEventNames = beasleyAnalyticsMParticleProvider.mparticleEventNames;
 		this.keyValuePairs = this.getAllEventFieldsObjects();
-		this.eventTypeLookupArray = this.getAllCustomEventTypeValueArray();
+		this.customEventTypeLookupByName = this.getAllCustomEventTypeLookupObject();
 	}
 
 	createAnalytics() {
@@ -296,13 +298,17 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 			const emptyEventObject = this.getCleanEventObject(eventName);
 			const objectToSend = Object.keys(emptyEventObject)
 				.reduce((a, key) => ({ ...a, [key]: this.keyValuePairs[key]}), {});
+			const customEventType = this.customEventTypeLookupByName[eventName];
 
 			window.mParticle.logEvent(
 				eventName,
-				{},
+				customEventType,
 				objectToSend,
 			);
 		}
+
+		// Re-initialize ALL MParticle Field Holders
+		this.keyValuePairs = this.getAllEventFieldsObjects();
 	}
 }
 
