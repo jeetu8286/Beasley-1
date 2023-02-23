@@ -310,7 +310,6 @@ class beasleyAnalyticsMParticleProvider extends beasleyAnalyticsBaseProvider {
 
 			window.mParticle.logPageView(
 				'Page View',
-				{},
 				objectToSend,
 			);
 		} else { // Event is a Custom Event
