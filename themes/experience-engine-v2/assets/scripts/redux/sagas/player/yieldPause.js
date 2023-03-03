@@ -33,17 +33,8 @@ function* yieldPause() {
 		yield call(lyticsTrack, 'pause', cuePoint);
 	}
 
-	const contentEndOptions = {
-		customAttributes: {},
-		currentPlayheadPosition: 30000,
-	};
-	window.mediaSession.logMediaContentEnd(contentEndOptions);
-
-	const mediaSessionEnddOptions = {
-		customAttributes: {},
-		currentPlayheadPosition: 30000,
-	};
-	window.mediaSession.logMediaSessionEnd(mediaSessionEnddOptions);
+	window.mediaSession.logMediaContentEnd();
+	window.mediaSession.logMediaSessionEnd();
 }
 
 /**

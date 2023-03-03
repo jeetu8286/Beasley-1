@@ -68,7 +68,9 @@ class BeasleyAnalytics {
 	}
 
 	sendEvent() {
-		this.analyticsProviderArray.map(provider => provider.sendEvent.apply(provider, arguments));
+		// NO LONGER FORWARD EVENT TO MPARTICLE - MParticle Events Are Now Called Independently
+		this.analyticsProviderArray.filter(provider => provider.analyticType !== BeasleyAnalyticsMParticleProvider.typeString)
+			.map(provider => provider.sendEvent.apply(provider, arguments));
 	}
 
 	sendMParticleEvent(eventName, eventUUID) {
@@ -333,6 +335,8 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 
 		console.log('Beasley Analytics mParticle Variables Were Initialized');
 		this.isInitialized = true;
+
+		this.setSessionKeys();
 	}
 
 	createKeyValuePairs() {
@@ -342,6 +346,15 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 
 	clearKeyValuePairs() {
 		this.keyValuePairs = {...this.keyValuePairsTemplate};
+	}
+
+	setSessionKeys() {
+		// Set Global Fields
+		this.setAnalytics('page_url', window.location.href);
+		this.setAnalytics('domain', window.location.hostname);
+		this.setAnalytics('title', window.document.title);
+		this.setAnalytics('call_sign', window.bbgiconfig.publisher.title);
+		this.setAnalytics('call_sign_id', window.bbgiconfig.publisher.id);
 	}
 
 	createAnalytics() {
@@ -423,8 +436,8 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 			);
 		}
 
-		// Re-initialize ALL MParticle Field Holders
-		this.clearKeyValuePairs();
+		// DO NOT Re-initialize ALL MParticle Field Holders - Preserve Values Throughout Session
+		// this.clearKeyValuePairs();
 	}
 }
 

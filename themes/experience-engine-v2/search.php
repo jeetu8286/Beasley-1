@@ -19,26 +19,7 @@ if ( ee_is_first_page() ) :
                     console.log(\'Firing MParticle Search Event - \', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_term\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_num_results\', %d);
-					window.beasleyanalytics.setAnalyticsForMParticle(
-						\'page_url\',
-						window.location.href
-					);
-					window.beasleyanalytics.setAnalyticsForMParticle(
-						\'call_sign\',
-						window.bbgiconfig.publisher.title
-					);
-					window.beasleyanalytics.setAnalyticsForMParticle(
-						\'call_sign_id\',
-						window.bbgiconfig.publisher.id
-					);
-					window.beasleyanalytics.setAnalyticsForMParticle(
-						\'title\',
-						window.document.title
-					);
-					window.beasleyanalytics.setAnalyticsForMParticle(
-						\'domain\',
-						window.location.hostname
-					);
+
 					window.beasleyanalytics.sendMParticleEvent(
 						window.mparticleEventNames.searchedFor,
 						\'%s\',

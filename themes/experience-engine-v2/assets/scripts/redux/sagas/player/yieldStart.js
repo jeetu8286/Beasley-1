@@ -1,6 +1,6 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
-// import mParticle from '@mparticle/web-sdk';
-// import MediaSession from '@mparticle/web-media-sdk';
+import mParticle from '@mparticle/web-sdk';
+import MediaSession from '@mparticle/web-media-sdk';
 import { sendInlineAudioPlaying } from '../../../library/google-analytics';
 import { ACTION_PLAYER_START } from '../../actions/player';
 
@@ -36,7 +36,7 @@ function* yieldStart() {
 			);
 		}
 	}
-	/*
+
 	window.mediaSession = new MediaSession(
 		mParticle, // mParticle SDK Instance
 		'1234567', // Custom media ID, added as content_id for media events
@@ -44,20 +44,12 @@ function* yieldStart() {
 		120000, // Duration in milliseconds, added as content_duration for media events
 		'Audio', // Content Type (Video or Audio), added as content_type for media events
 		'LiveStream', // Stream Type (OnDemand or LiveStream), added as stream_type for media events
+		true, // Log Page Event Toggle (true/false)
+		true, // Log Media Event Toggle (true/false)
 	);
 
-	const startOptions = {
-		customAttributes: {},
-		currentPlayheadPosition: 0,
-	};
-	window.mediaSession.logMediaSessionStart(startOptions);
-
-	const playOptions = {
-		customAttributes: {},
-		currentPlayheadPosition: 0,
-	};
-	window.mediaSession.logPlay(playOptions);
-	*/
+	window.mediaSession.logMediaSessionStart();
+	window.mediaSession.logPlay();
 }
 
 /**

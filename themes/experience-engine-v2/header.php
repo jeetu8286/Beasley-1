@@ -88,3 +88,84 @@ use Bbgi\Integration\Google;
 					}
 				?>
 				<div id="inner-content">
+				<?php
+					$mparticle_implementation = sprintf(
+							'<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="0" height="0" alt="" onload = "{
+						window.beasleyanalytics.setAnalyticsForMParticle(\'beasley_event_id\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_category\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_category_id\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'show_name\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'show_id\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'tags\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'content_type\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'view_type\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'daypart\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'post_id\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'wp_author\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_author\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'secondary_author\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'ad_block_enabled\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'ad_tags_enabled\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'consent_cookie\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'event_day_of_the_week\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'event_hour_of_the_day\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'prebid_enabled\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'platform\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_date\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_day_of_the_week\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_hour_of_the_day\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_month\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_time_of_day\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_local\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_UTC\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_year\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'section_name\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'video_count\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'word_count\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'categories_stringified\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'tags_stringified\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
+
+						window.beasleyanalytics.sendMParticleEvent(
+							window.mparticleEventNames.pageView,
+						);
+					}"/>',
+							'beasley_event_id?',
+							'primary_category?',
+							'primary_category_id?',
+							'show_name?',
+							'show_id?',
+							'tags?',
+							'article', 					// content_type
+							'primary',  					// view_type
+							'daypart?',
+							'post_id?',
+							'wp_author?',
+							'primary_author?',
+							'secondary_author?',
+							'ad_block_enabled?',
+							'ad_tags_enabled?',
+							'consent_cookie?',
+							'event_day_of_the_week?',
+							'event_hour_of_the_day?',
+							'prebid_enabled?',
+							'platform?',
+							null, 							// publish_date
+							null, 							// publish_day_of_the_week
+							null, 							// publish_hour_of_the_day
+							null, 							// publish_month
+							null, 							// publish_time_of_day
+							null, 							// publish_timestamp_local
+							null, 							// publish_timestamp_UTC
+							null, 							// publish_year
+							'section_name?',
+							null, 							// video_count
+							null, 							// word_count
+							'categories_stringified?',
+							'tags_stringified?',
+							'referrer?',
+							'UTM?'
+					);
+					echo $mparticle_implementation;
+				?>

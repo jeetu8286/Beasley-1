@@ -122,7 +122,8 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 
 				$mparticle_implementation = sprintf(
 					'<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="0" height="0" alt="" onload = "{
-					window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_title\', \'%s\');
+					window.beasleyanalytics.setAnalyticsForMParticle(\'view_type\' , \'%s\');
+    				window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_title\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_type\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_path\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_post_id\', \'%s\');
@@ -133,6 +134,7 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
                         window.mparticleEventNames.pageView,
 					);
 				}"/>',
+					'embedded_content', //view_type
 					$cpt_item_name_data,
 					'embedded_type?',
 					$urls[ $cpt_post_object->ID ],
