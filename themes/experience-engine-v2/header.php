@@ -11,7 +11,6 @@ use Bbgi\Integration\Google;
 	} else if (is_archive()) {
 		$obj = get_queried_object();
 
-
 		if (isset($obj->slug)) {
 			$headerCacheTag[] = "archive" . "-" . $obj->slug;
 		}
@@ -36,7 +35,6 @@ use Bbgi\Integration\Google;
 			} else {
 				$mParticleContentType = $currentPostType;
 			}
-
 
 		endif;
 		if (  isset( $post->post_name ) && $post->post_name != "" ) :
@@ -105,7 +103,6 @@ use Bbgi\Integration\Google;
 					} else {
 						$mParticleContentType = 'article';
 					}
-
 
 					$mparticle_implementation = sprintf(
 							'<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="0" height="0" alt="" onload = "{
