@@ -251,7 +251,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				isDevelopmentMode: true,
 				logLevel: 'verbose',
 				dataPlan: {
-					planId: 'beasley_web',
+					planId: 'beasley_web_alpha_2',
 					planVersion: 1,
 				}
 			},
