@@ -54,7 +54,7 @@ class Google extends \Bbgi\Module {
 		wp_enqueue_script(
 			'mparticle_enqueue_scripts',
 			plugins_url( 'assets/js/mparticle-schema.js', __FILE__ ),
-			[],
+			null,
 			'2.0.0'
 		);
 

@@ -91,6 +91,10 @@ use Bbgi\Integration\Google;
 				<?php
 					$mparticle_implementation = sprintf(
 							'<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="0" height="0" alt="" onload = "{
+    					window.beasleyanalytics.setAnalyticsForMParticle(\'page_url\', window.location.href);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'title\', window.document.title);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'call_sign\', window.bbgiconfig?.publisher?.title);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'call_sign_id\', window.bbgiconfig?.publisher?.id);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'beasley_event_id\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_category\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_category_id\', \'%s\');
@@ -153,7 +157,7 @@ use Bbgi\Integration\Google;
 							'platform?',
 							'1970-01-01', 							// publish_date
 							'', 							// publish_day_of_the_week
-							'', 							// publish_hour_of_the_day
+							'0', 							// publish_hour_of_the_day
 							'', 							// publish_month
 							'20:15:39-05:00', 							// publish_time_of_day
 							'1970-01-01T20:15:39-05:00', 							// publish_timestamp_local

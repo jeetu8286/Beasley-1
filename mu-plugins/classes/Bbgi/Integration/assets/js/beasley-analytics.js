@@ -344,11 +344,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 
 	setSessionKeys() {
 		// Set Global Fields
-		this.setAnalytics('page_url', window.location.href);
 		this.setAnalytics('domain', window.location.hostname);
-		this.setAnalytics('title', window.document.title);
-		this.setAnalytics('call_sign', window.bbgiconfig.publisher.title);
-		this.setAnalytics('call_sign_id', window.bbgiconfig.publisher.id);
 	}
 
 	createAnalytics() {
