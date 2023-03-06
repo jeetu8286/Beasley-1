@@ -84,7 +84,7 @@ class DashboardActivity {
 				)
 			);
 			// Set the cache to expire the data after 1800 seconds = 30 min
-			wp_cache_set( $dpa_key, $dashboard_pending_activity_result, 'bbgi', '1800' );
+			wp_cache_set( $dpa_key, $dashboard_pending_activity_result, 'bbgi', '60' );
 		}
 		echo  $dashboard_pending_activity_result;
 		echo '</div>';
