@@ -4,6 +4,7 @@ use Bbgi\Integration\Google;
 <?php
 
 	$headerCacheTag = [];
+	$mParticleContentType = '';
 
 	if (  is_front_page() ) {
 		$headerCacheTag[] = $_SERVER['HTTP_HOST'].'-'.'home';
@@ -18,6 +19,7 @@ use Bbgi\Integration\Google;
 		if (isset($wp_query->query['post_type'])) {
 			$headerCacheTag[] = "archive-" . $wp_query->query['post_type'];
 			$headerCacheTag[] = $wp_query->query['post_type'];
+			$mParticleContentType = $wp_query->query['post_type'];;
 		}
 
 	}  else {
@@ -30,6 +32,9 @@ use Bbgi\Integration\Google;
 
 			if ($currentPostType == "episode") {
 				$headerCacheTag[] = "podcast";
+				$mParticleContentType = "podcast";
+			} else {
+				$mParticleContentType = $currentPostType;
 			}
 
 
@@ -89,6 +94,19 @@ use Bbgi\Integration\Google;
 				?>
 				<div id="inner-content">
 				<?php
+
+					if (empty($mParticleContentType)) {
+						$mParticleContentType = 'null';
+					}
+					else if (strpos($mParticleContentType, 'listicle') !== false) {
+						$mParticleContentType = 'listicle';
+					} else if (strpos($mParticleContentType, 'gallery') !== false) {
+						$mParticleContentType = 'gallery';
+					} else {
+						$mParticleContentType = 'article';
+					}
+
+
 					$mparticle_implementation = sprintf(
 							'<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="0" height="0" alt="" onload = "{
     					window.beasleyanalytics.setAnalyticsForMParticle(\'page_url\', window.location.href);
@@ -132,7 +150,7 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
 
 						window.beasleyanalytics.sendMParticleEvent(
-							window.mparticleEventNames.pageView,
+							BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
 						);
 					}"/>',
 							'beasley_event_id?',
@@ -141,7 +159,7 @@ use Bbgi\Integration\Google;
 							'show_name?',
 							'show_id?',
 							'tags?',
-							'article', 					// content_type
+							$mParticleContentType, 					// content_type
 							'primary',  					// view_type
 							'daypart?',
 							'post_id?',

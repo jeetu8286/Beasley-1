@@ -131,7 +131,7 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 					window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_primary_author\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_secondary_author\', \'%s\');
 					window.beasleyanalytics.sendMParticleEvent(
-                        window.mparticleEventNames.pageView,
+                        BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
 					);
 				}"/>',
 					'embedded_content', //view_type

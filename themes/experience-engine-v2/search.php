@@ -21,7 +21,7 @@ if ( ee_is_first_page() ) :
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_num_results\', %d);
 
 					window.beasleyanalytics.sendMParticleEvent(
-						window.mparticleEventNames.searchedFor,
+						BeasleyAnalyticsMParticleProvider.mparticleEventNames.searchedFor,
 						\'%s\',
 					);
 				}"/>',
