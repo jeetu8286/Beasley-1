@@ -111,17 +111,17 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'event_hour_of_the_day\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'prebid_enabled\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'platform\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_date\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_day_of_the_week\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_hour_of_the_day\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_month\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_time_of_day\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_local\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_UTC\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_year\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_date\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_day_of_the_week\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_hour_of_the_day\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_month\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_time_of_day\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_local\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_UTC\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_year\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'section_name\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'video_count\', %s);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'word_count\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'video_count\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'word_count\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'categories_stringified\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'tags_stringified\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', \'%s\');
@@ -151,17 +151,17 @@ use Bbgi\Integration\Google;
 							'event_hour_of_the_day?',
 							'prebid_enabled?',
 							'platform?',
-							null, 							// publish_date
-							null, 							// publish_day_of_the_week
-							null, 							// publish_hour_of_the_day
-							null, 							// publish_month
-							null, 							// publish_time_of_day
-							null, 							// publish_timestamp_local
-							null, 							// publish_timestamp_UTC
-							null, 							// publish_year
+							'1970-01-01', 							// publish_date
+							'', 							// publish_day_of_the_week
+							'', 							// publish_hour_of_the_day
+							'', 							// publish_month
+							'20:15:39-05:00', 							// publish_time_of_day
+							'1970-01-01T20:15:39-05:00', 							// publish_timestamp_local
+							'1970-01-01T20:20:39+00:00', 							// publish_timestamp_UTC
+							'1970', 							// publish_year
 							'section_name?',
-							null, 							// video_count
-							null, 							// word_count
+							'0', 							// video_count
+							'0', 							// word_count
 							'categories_stringified?',
 							'tags_stringified?',
 							'referrer?',

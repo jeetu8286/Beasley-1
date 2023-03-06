@@ -163,11 +163,12 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		searchedResultClicked: 'Searched Result Clicked',
 		formSubmitted: 'Form Submitted',
 		mediaSessionCreate: 'MediaSessionCreate',
-		mediaSessionStart: 'MediaSessionStart',
+		mediaSessionStart: 'Media Session Start',
 		play: 'Play',
 		pause: 'Pause',
-		mediaContentEnd: 'MediaContentEnd',
-		mediaSessionEnd: 'MediaSessionEnd',
+		mediaContentEnd: 'Media Content End',
+		mediaSessionEnd: 'Media Session End',
+		mediaSessionSummary: 'Media Session Summary',
 	};
 
 	eventUUIDsSent;
@@ -247,14 +248,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		// Configures the SDK. Note the settings below for isDevelopmentMode
 		// and logLevel.
 		window.mParticle = {
-			config: {
-				isDevelopmentMode: true,
-				logLevel: 'verbose',
-				dataPlan: {
-					planId: 'beasley_web_alpha_2',
-					planVersion: 1,
-				}
-			},
+			config: window.bbgiAnalyticsConfig.mParticleConfig,
 		};
 		(
 			function (t) {
@@ -384,7 +378,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				console.log(`MParticle Params Ignoring ${arguments[0]} of ${arguments[1]}`);
 			}
 		} else {
-			console.log('Attempt to set MParticle Key Value Pair With Arguments NOT Of Length 2');
+			console.log(`Attempt to set MParticle Key Value Pair With Arguments NOT Of Length 2 - '${arguments}'`, arguments);
 		}
 	}
 
