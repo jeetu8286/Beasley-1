@@ -183,3 +183,4 @@ function bbgi_settings_section_info( $message ) {
 		echo '<p>' . esc_html( $message ) . '</p>';
 	};
 }
+
