@@ -150,6 +150,8 @@ class BeasleyAnalyticsGaV3Provider extends BeasleyAnalyticsBaseProvider {
 
 class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	static typeString = 'MPARTICLE';
+	static settingsFuncName = 'SETTINGS_FUNC';
+	static eventFuncName = 'EVENT_FUNC';
 
 	static GAtoMParticleFieldNameMap = {
 		contentGroup1: 'show_name',
@@ -230,6 +232,8 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		});
 		return Object.fromEntries(entryArray);
 	}
+
+	queuedArgs = [];
 
 	isInitialized = false;
 
@@ -331,6 +335,18 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		this.isInitialized = true;
 
 		this.setSessionKeys();
+
+		// Empty Any Queued Event Args
+		if (this.queuedArgs.length > 0) {
+			this.queuedArgs.forEach(eventArg => {
+				if (eventArg.funcName === BeasleyAnalyticsMParticleProvider.settingsFuncName) {
+					this.setAnalytics.apply(this, eventArg.args);
+				} else if (eventArg.funcName === BeasleyAnalyticsMParticleProvider.eventFuncName) {
+					this.sendEventByName.apply(this, eventArg.args);
+				}
+			});
+			this.queuedArgs = [];
+		}
 	}
 
 	createKeyValuePairs() {
@@ -359,7 +375,8 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	setAnalytics() {
 		super.setAnalytics.apply(this, arguments);
 
-		if (! this.isInitialized) {
+		if (!this.isInitialized) {
+			this.queuedArgs.push( {funcName: BeasleyAnalyticsMParticleProvider.settingsFuncName, args: arguments} );
 			return;
 		}
 
@@ -391,10 +408,15 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	sendEventByName(eventName, eventUUID) {
 		super.sendEvent.apply(this, arguments);
 
-		if (! this.isInitialized) {
+		if (!this.isInitialized) {
+			this.queuedArgs.push( {funcName: BeasleyAnalyticsMParticleProvider.eventFuncName, args: arguments} );
 			return;
 		}
 
+		this.doSendEventByName(eventName, eventUUID);
+	}
+
+	doSendEventByName(eventName, eventUUID) {
 		// Protect Against Duplicate Events During Current MParticle Application State
 		if (eventUUID && this.eventUUIDsSent.includes(eventUUID)) {
 			return;
@@ -419,6 +441,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				.reduce((a, key) => ({ ...a, [key]: this.keyValuePairs[key]}), {});
 			const customEventType = this.customEventTypeLookupByName[eventName];
 
+			console.log(`Beasley Analytics is queueing '${customEventType}' Event`);
 			window.mParticle.logEvent(
 				eventName,
 				customEventType,

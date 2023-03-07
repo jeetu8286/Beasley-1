@@ -15,7 +15,7 @@ if ( ee_is_first_page() ) :
 	}
 
 	$mparticle_implementation = sprintf(
-		'<img id="MParticleSearchEvent" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="0" height="0" alt="" onload = "{
+		'<script>
                     console.log(\'Firing MParticle Search Event - \', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_term\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_num_results\', %d);
@@ -24,7 +24,7 @@ if ( ee_is_first_page() ) :
 						BeasleyAnalyticsMParticleProvider.mparticleEventNames.searchedFor,
 						\'%s\',
 					);
-				}"/>',
+				</script>',
 		$random,
 		$search_query,
 		$result_count,

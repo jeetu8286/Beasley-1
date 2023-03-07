@@ -105,7 +105,8 @@ use Bbgi\Integration\Google;
 					}
 
 					$mparticle_implementation = sprintf(
-							'<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="0" height="0" alt="" onload = "{
+							'<script>
+    					console.log(\'Firing Page View\');
     					window.beasleyanalytics.setAnalyticsForMParticle(\'page_url\', window.location.href);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'title\', window.document.title);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'call_sign\', window.bbgiconfig?.publisher?.title);
@@ -158,7 +159,7 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.sendMParticleEvent(
 							BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
 						);
-					}"/>',
+					</script>',
 							'beasley_event_id?',
 							'primary_category?',
 							'primary_category_id?',
