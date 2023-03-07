@@ -158,11 +158,6 @@ class Settings extends \Bbgi\Module {
 				'selected' => get_option( 'ad_rotation_enabled', 'on' ),
 		);
 
-		$ad_second_stream_enabled_args = array(
-				'name'     => 'ad_second_stream_enabled',
-				'selected' => get_option( 'ad_second_stream_enabled', 'off' ),
-		);
-
 		add_settings_section( 'ee_site_settings', 'Station Settings', '__return_false', $this->_settings_page_hook );
 		add_settings_section( 'ee_site_colors', 'Brand Colors', '__return_false', $this->_settings_page_hook );
 		add_settings_section( 'ee_site_header_colors', 'Header Colors', '__return_false', $this->_settings_page_hook );
@@ -258,11 +253,6 @@ class Settings extends \Bbgi\Module {
 		add_settings_section( 'pushly_section', 'Pushly Settings', '__return_false', $this->_settings_page_hook );
 		add_settings_field('pushly_domain_key', 'Domain Key', 'bbgi_input_field', $this->_settings_page_hook, 'pushly_section', 'name=pushly_domain_key');
 
-		add_settings_section( 'second_stream_section', 'Second Stream Settings', '__return_false', $this->_settings_page_hook );
-		add_settings_field('ad_second_stream_enabled', 'Enable Second Stream', array($this, 'render_ad_second_stream_enabled'), $this->_settings_page_hook, 'second_stream_section', $ad_second_stream_enabled_args);
-		add_settings_field( 'ss_enabled_days', '', array($this, 'render_ss_days_enabled'), $this->_settings_page_hook, 'second_stream_section', ['name'=>'ss_enabled_days']);
-
-
 		register_setting( self::option_group, 'gmr_site_logo', 'intval' );
 		register_setting( self::option_group, 'ee_subheader_mobile_logo', 'intval' );
 		register_setting( self::option_group, 'ee_subheader_desktop_logo', 'intval' );
@@ -331,7 +321,6 @@ class Settings extends \Bbgi\Module {
 
 		register_setting(self::option_group, 'cloud_flare_zoneid', 'sanitize_text_field');
 		register_setting(self::option_group, 'pushly_domain_key', 'sanitize_text_field');
-		register_setting(self::option_group, 'ad_second_stream_enabled', 'sanitize_text_field');
 
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
@@ -553,196 +542,5 @@ class Settings extends \Bbgi\Module {
 				<?php selected( $args['selected'], 'stn' ); ?>
 		>STN</option>
 		</select><?php
-	}
-
-	public function render_ad_second_stream_enabled( $args ) {
-		?><select name="<?php echo esc_attr( $args['name'] ); ?>">
-		<option value="on"
-				<?php selected( $args['selected'], 'on' ); ?>
-		>On</option>
-		<option value="off"
-				<?php selected( $args['selected'], 'off' ); ?>
-		>Off</option>
-
-		</select><?php
-	}
-
-
-	function render_ss_days_enabled( $args = array() ) {
-		$args = wp_parse_args( $args, array(
-				'type'    => 'hidden',
-				'name'    => '',
-				'default' => '',
-				'class'   => 'regular-text',
-				'desc'    => '',
-		) );
-
-		$value = get_option( $args['name'], $args['default'] );
-
-		printf(
-				'<input type="%s" name="%s" class="%s" value="%s">',
-				esc_attr( $args['type'] ),
-				esc_attr( $args['name'] ),
-				esc_attr( $args['class'] ),
-				esc_attr( $value )
-		);
-
-		if ( ! empty( $args['desc'] ) ) {
-			printf( '<p class="description">%s</p>', esc_html( $args['desc'] ) );
-		}
-		$days = ['monday'=> ['name'=>'monday','desc'=>'Monday','start_time'=>'','end_time'=>''],
-				'tuesday'=> ['name'=>'tuesday','desc'=>'Tuesday','start_time'=>'','end_time'=>'']];
-		echo '<table  cellspacing="0" align="center" class="ss_days_class">';
-		echo '<tr><td>Days</td><td>Start Time</td><td>End Time</td></tr>';
-		foreach ($days as $daysargs){
-			$daysargs = wp_parse_args( $daysargs, array(
-					'type'    => 'checkbox',
-					'name'    => '',
-					'default' => false,
-					'class'   => 'regular-text',
-					'desc'    => '',
-			) );
-
-			$value   = get_option( $daysargs['name'], $daysargs['default'] );
-			$value   = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
-			$checked = $value ? 'checked' : '';
-			echo '<tr class="ss_tr_'.$daysargs['name'].'">';
-			echo '<td>';
-			if ( ! empty( $daysargs['desc'] ) ) {
-				printf( '<span class="description">%s</span>', esc_html( $daysargs['desc'] ) );
-			}
-			printf(
-					'<input type="%s" name="%s" onclick="checkFluency()" class="%s" %s></td>',
-					esc_attr( $daysargs['type'] ),
-					esc_attr( $daysargs['name'] ),
-					esc_attr( $daysargs['class'] ),
-					esc_attr( $checked )
-			);
-
-			echo '<td><input type="text" name="starttime"  onchange="checkFluency()" ></td><td><input type="text" name="endtime" onchange="checkFluency()" ></td></td>';
-			echo '</tr>';
-		}
-		echo '</table>';?> <script>
-			function checkFluency() {
-				/*	alert('in');
-					var timefrom = new Date();
-					temp = $('#timefrom').val().split(":");
-					timefrom.setHours((parseInt(temp[0]) - 1 + 24) % 24);
-					timefrom.setMinutes(parseInt(temp[1]));
-
-					var timeto = new Date();
-					temp = $('#timeto').val().split(":");
-					timeto.setHours((parseInt(temp[0]) - 1 + 24) % 24);
-					timeto.setMinutes(parseInt(temp[1]));
-
-					if (timeto < timefrom){
-						alert('start time should be smaller than end time!');
-					} */
-				jsonObj = {};
-				var days = ["monday", "tuesday", "wednesday", "thusday", "friday", "saturday"]
-
-				for(var k = 0; k < days.length; k++){
-					if($( ".ss_tr_"+days[k]+" input[name="+days[k]+"]").length){
-						let startTime = $( ".ss_tr_"+days[k]+" input[name=starttime]");
-						let endTime = $( ".ss_tr_"+days[k]+" input[name=endtime]");
-						if($.trim(startTime.val()) !== '') {
-							if(!validateHhMm(startTime.val())){
-								startTime.val('');
-								alert('Enter Valid start Time');
-							}
-						}
-						if($.trim(endTime.val()) !== '') {
-							if(!validateHhMm(endTime.val())){
-								endTime.val('');
-								alert('Enter Valid end Time');
-							}
-						}
-						var timefrom = new Date();
-						if($.trim(startTime.val()) !== '' && $.trim(endTime.val()) !== ''){
-							temp = startTime.val().split(":");
-							timefrom.setHours((parseInt(temp[0]) - 1 + 24) % 24);
-							timefrom.setMinutes(parseInt(temp[1]));
-
-							var timeto = new Date();
-							temp = startTime.val().split(":");
-							timeto.setHours((parseInt(temp[0]) - 1 + 24) % 24);
-							timeto.setMinutes(parseInt(temp[1]));
-
-							if (timeto < timefrom){
-								endTime.val('');
-								startTime.val('');
-								alert('start time should be smaller than end time!');
-							}
-						}else{
-							endTime.val('');
-							startTime.val('');
-						}
-
-						if($( ".ss_tr_"+days[k]+" input[name="+days[k]+"]").is(':checked')){
-							item =  {};
-							item['day'] = days[k];
-							item['startTime'] = startTime.val();
-							item['endTime'] =endTime.val()
-							jsonObj[days[k]] = item;
-						}
-					}
-
-				}
-				// 	console.log( index + ": " + $( this ).text() );
-				console.log(jsonObj);
-
-				// 	jsonObj.push(item);
-			}
-			function validateHhMm(inputField) {
-				var isValid = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(inputField);
-				if (isValid) {
-					return true;
-				} else {
-					return false;
-				}
-
-			}
-	(function ($) {
-
-		$(document).ready(function () {
-			function checkFluency() {
-				alert('in');
-				var timefrom = new Date();
-				temp = $('#timefrom').val().split(":");
-				timefrom.setHours((parseInt(temp[0]) - 1 + 24) % 24);
-				timefrom.setMinutes(parseInt(temp[1]));
-
-				var timeto = new Date();
-				temp = $('#timeto').val().split(":");
-				timeto.setHours((parseInt(temp[0]) - 1 + 24) % 24);
-				timeto.setMinutes(parseInt(temp[1]));
-
-				if (timeto < timefrom){
-					alert('start time should be smaller than end time!');
-				}
-				jsonObj = [];
-				var days = ["sunday", "monday", "tuesday", "wednesday", "thusday", "friday", "saturday"]
-
-					for(var k = 0; k < days.length; k++){
-						if($( ".ss_tr_ "+days[k]+' checkbox' ).checked){
-
-						}
-					}
-					console.log( index + ": " + $( this ).text() );
-					item =  [];
-					item.push
-					item ["title"] = id;
-					item ["email"] = email;
-
-					jsonObj.push(item);
-			}
-		});
-
-	})(jQuery);</script>
-		<?php
-
-	}
-
-	function createHoursDropBox($name){
 	}
 }
