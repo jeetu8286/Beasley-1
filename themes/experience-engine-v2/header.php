@@ -146,6 +146,15 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
 
+						// Clear Embedded Fields
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_title\', \'\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_type\', \'\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_path\', \'\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_post_id\', \'\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_wp_author\', \'\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_primary_author\', \'\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_secondary_author\', \'\');
+
 						window.beasleyanalytics.sendMParticleEvent(
 							BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
 						);
