@@ -166,7 +166,7 @@ use Bbgi\Integration\Google;
 							'show_name?',
 							'show_id?',
 							'tags?',
-							$mParticleContentType, 					// content_type
+							$mParticleContentType, 			// content_type
 							'primary',  					// view_type
 							'daypart?',
 							'post_id?',
@@ -180,14 +180,14 @@ use Bbgi\Integration\Google;
 							'event_hour_of_the_day?',
 							'prebid_enabled?',
 							'platform?',
-							'1970-01-01', 							// publish_date
+							'1970-01-01', 					// publish_date
 							'', 							// publish_day_of_the_week
 							'0', 							// publish_hour_of_the_day
 							'', 							// publish_month
-							'20:15:39-05:00', 							// publish_time_of_day
-							'1970-01-01T20:15:39-05:00', 							// publish_timestamp_local
-							'1970-01-01T20:20:39+00:00', 							// publish_timestamp_UTC
-							'1970', 							// publish_year
+							'20:15:39-05:00', 				// publish_time_of_day
+							'1970-01-01T20:15:39-05:00', 	// publish_timestamp_local
+							'1970-01-01T20:20:39+00:00', 	// publish_timestamp_UTC
+							'1970', 						// publish_year
 							'section_name?',
 							'0', 							// video_count
 							'0', 							// word_count
