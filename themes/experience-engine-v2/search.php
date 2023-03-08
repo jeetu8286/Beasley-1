@@ -15,7 +15,7 @@ if ( ee_is_first_page() ) :
 	}
 
 	$mparticle_implementation = sprintf(
-		'<script>
+		'<script class="mparticle_implementation">
                     console.log(\'Firing MParticle Search Event - \', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_term\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_num_results\', %d);

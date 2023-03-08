@@ -121,7 +121,7 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 					endif;
 
 				$mparticle_implementation = sprintf(
-					'<script>
+					'<script class="mparticle_implementation">
 					window.beasleyanalytics.setAnalyticsForMParticle(\'view_type\' , \'%s\');
     				window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_title\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_type\', \'%s\');
