@@ -164,6 +164,8 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		searchedFor: 'Searched For',
 		searchedResultClicked: 'Searched Result Clicked',
 		formSubmitted: 'Form Submitted',
+		shared: 'Shared',
+		downloadedPodcast: 'Downloaded Podcast',
 		mediaSessionCreate: 'MediaSessionCreate',
 		mediaSessionStart: 'Media Session Start',
 		play: 'Play',

@@ -87,6 +87,7 @@ window.mParticleSchema = {
 										"tags_stringified": {"description": "", "type": ["string", "null"]},
 										"referrer": {"description": "", "type": ["string", "null"]},
 										"UTM": {"description": "", "type": ["string", "null"]},
+										"page_url": {"description": "", "type": ["string", "null"]},
 										"title": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
 										"call_sign": {"description": "", "type": ["string", "null"]},
@@ -238,6 +239,78 @@ window.mParticleSchema = {
 										"form_name": {"description": "", "type": ["string", "null"]},
 										"form_position": {"description": "", "type": ["string", "null"]},
 										"form_destination": {"description": "", "type": ["string", "null"]}
+									},
+									"required": [],
+									"type": "object"
+								}
+							},
+							"required": [],
+							"type": "object"
+						}
+					}
+				}
+			}
+		}, {
+			"description": "",
+			"match": {"type": "custom_event", "criteria": {"event_name": "Shared", "custom_event_type": "other"}},
+			"validator": {
+				"type": "json_schema",
+				"definition": {
+					"properties": {
+						"data": {
+							"additionalProperties": true,
+							"properties": {
+								"custom_attributes": {
+									"additionalProperties": false,
+									"description": "",
+									"properties": {
+										"page_url": {
+											"description": "",
+											"type": ["string", "null"],
+											"format": "uri"
+										},
+										"from_page_url": {"description": "", "type": ["string", "null"]},
+										"content_name": {"description": "", "type": ["string", "null"]},
+										"shared_to_service": {"description": "", "type": ["string", "null"]},
+										"domain": {"description": "", "type": ["string", "null"]},
+										"call_sign": {"description": "", "type": ["string", "null"]}
+									},
+									"required": [],
+									"type": "object"
+								}
+							},
+							"required": [],
+							"type": "object"
+						}
+					}
+				}
+			}
+		}, {
+			"description": "",
+			"match": {
+				"type": "custom_event",
+				"criteria": {"event_name": "Downloaded Podcast", "custom_event_type": "other"}
+			},
+			"validator": {
+				"type": "json_schema",
+				"definition": {
+					"properties": {
+						"data": {
+							"additionalProperties": true,
+							"properties": {
+								"custom_attributes": {
+									"additionalProperties": false,
+									"description": "",
+									"properties": {
+										"page_url": {
+											"description": "",
+											"type": ["string", "null"],
+											"format": "uri"
+										},
+										"domain": {"description": "", "type": ["string", "null"]},
+										"call_sign": {"description": "", "type": ["string", "null"]},
+										"podcast_name": {"description": "", "type": ["string", "null"]},
+										"episode_title": {"description": "", "type": ["string", "null"]}
 									},
 									"required": [],
 									"type": "object"

@@ -144,7 +144,7 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'word_count\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'categories_stringified\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'tags_stringified\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', window.document.referrer);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
 
 						// Clear Embedded Fields
@@ -193,7 +193,6 @@ use Bbgi\Integration\Google;
 							'0', 							// word_count
 							'categories_stringified?',
 							'tags_stringified?',
-							'referrer?',
 							'UTM?'
 					);
 					echo $mparticle_implementation;
