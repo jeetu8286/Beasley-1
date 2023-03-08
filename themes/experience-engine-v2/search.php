@@ -8,7 +8,6 @@ $search_query = get_search_query();
 if ( ee_is_first_page() ) :
 	get_template_part( 'partials/search/header' );
 
-	$random = substr(md5(mt_rand()), 0, 10);
 	$result_count = $wp_query->found_posts;
 	if (! $result_count) {
 		$result_count = 0;
@@ -16,19 +15,15 @@ if ( ee_is_first_page() ) :
 
 	$mparticle_implementation = sprintf(
 		'<script class="mparticle_implementation">
-                    console.log(\'Firing MParticle Search Event - \', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_term\', \'%s\');
 					window.beasleyanalytics.setAnalyticsForMParticle(\'search_num_results\', %d);
 
 					window.beasleyanalytics.sendMParticleEvent(
 						BeasleyAnalyticsMParticleProvider.mparticleEventNames.searchedFor,
-						\'%s\',
 					);
 				</script>',
-		$random,
 		$search_query,
 		$result_count,
-		$random,
 	);
 	echo $mparticle_implementation;
 

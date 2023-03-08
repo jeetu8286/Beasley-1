@@ -73,7 +73,7 @@ class BeasleyAnalytics {
 			.map(provider => provider.sendEvent.apply(provider, arguments));
 	}
 
-	sendMParticleEvent(eventName, eventUUID) {
+	sendMParticleEvent(eventName) {
 	const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
 	if (provider) {
 		provider.sendEventByName.apply(provider, arguments);
@@ -172,8 +172,6 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		mediaSessionEnd: 'Media Session End',
 		mediaSessionSummary: 'Media Session Summary',
 	};
-
-	eventUUIDsSent;
 
 	getCleanEventObject(eventName) {
 		const dataPoints = window.mParticleSchema?.version_document?.data_points;
@@ -329,7 +327,6 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		window.mparticleEventNames = BeasleyAnalyticsMParticleProvider.mparticleEventNames;
 		this.createKeyValuePairs();
 		this.customEventTypeLookupByName = this.getAllCustomEventTypeLookupObject();
-		this.eventUUIDsSent = [];
 
 		console.log('Beasley Analytics mParticle Variables Were Initialized');
 		this.isInitialized = true;
@@ -405,7 +402,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		}
 	}
 
-	sendEventByName(eventName, eventUUID) {
+	sendEventByName(eventName) {
 		super.sendEvent.apply(this, arguments);
 
 		if (!this.isInitialized) {
@@ -413,18 +410,10 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 			return;
 		}
 
-		this.doSendEventByName(eventName, eventUUID);
+		this.doSendEventByName(eventName);
 	}
 
-	doSendEventByName(eventName, eventUUID) {
-		// Protect Against Duplicate Events During Current MParticle Application State
-		if (eventUUID && this.eventUUIDsSent.includes(eventUUID)) {
-			return;
-		}
-		if (eventUUID) {
-			this.eventUUIDsSent.push(eventUUID);
-		}
-
+	doSendEventByName(eventName) {
 		// If The Event Is A Page View
 		if (eventName === BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView) {
 			const emptyPageViewObject = this.getCleanEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView);
@@ -448,9 +437,6 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				objectToSend,
 			);
 		}
-
-		// DO NOT Re-initialize ALL MParticle Field Holders - Preserve Values Throughout Session
-		// this.clearKeyValuePairs();
 	}
 }
 
