@@ -264,6 +264,7 @@ export function getStateFromContent(
 
 	const state = {
 		scripts: {},
+		inlineScripts: [],
 		embeds: [],
 		content: '',
 	};
@@ -486,7 +487,7 @@ export function getStateFromContent(
 				element.classList.contains('mparticle_implementation')
 			) {
 				// eslint-disable-next-line no-eval
-				eval(element.innerHTML);
+				state.inlineScripts.push(element.innerHTML);
 			}
 		}
 
