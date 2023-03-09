@@ -1,16 +1,20 @@
-import { call, takeLatest, select } from 'redux-saga/effects';
-import mParticle from '@mparticle/web-sdk';
-import MediaSession from '@mparticle/web-media-sdk';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { sendInlineAudioPlaying } from '../../../library/google-analytics';
 import { ACTION_PLAYER_START } from '../../actions/player';
+import { showSignInModal } from '../../actions/modal';
 
 /**
  * @function yieldStart
  * Generator runs whenever ACTION_AUDIO_START is dispatched
  */
 function* yieldStart() {
-	console.log('yieldStart()');
 	const playerStore = yield select(({ player }) => player);
+	const authStore = yield select(({ auth }) => auth);
+	const modalStore = yield select(({ modal }) => modal);
+
+	if (!authStore.user && !modalStore.signInWasShown) {
+		yield put(showSignInModal());
+	}
 
 	// Get interval from global
 	const interval = window.bbgiconfig.intervals.live_streaming;
@@ -36,20 +40,6 @@ function* yieldStart() {
 			);
 		}
 	}
-
-	window.mediaSession = new MediaSession(
-		mParticle, // mParticle SDK Instance
-		'1234567', // Custom media ID, added as content_id for media events
-		'Funny Internet cat video', // Custom media Title, added as content_title for media events
-		120000, // Duration in milliseconds, added as content_duration for media events
-		'Audio', // Content Type (Video or Audio), added as content_type for media events
-		'LiveStream', // Stream Type (OnDemand or LiveStream), added as stream_type for media events
-		true, // Log Page Event Toggle (true/false)
-		true, // Log Media Event Toggle (true/false)
-	);
-
-	window.mediaSession.logMediaSessionStart();
-	window.mediaSession.logPlay();
 }
 
 /**
