@@ -387,10 +387,10 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				console.log(`Mapped GA Field Name '${arguments[0]} To MParticle Field Name Of '${mparticleFieldName}'` );
 				this.keyValuePairs[mparticleFieldName] = arguments[1];
 			} else {
-				console.log(`MParticle Params Ignoring ${arguments[0]} of ${arguments[1]}`);
+				console.error(`MParticle Params Ignoring ${arguments[0]} of ${arguments[1]}`);
 			}
 		} else {
-			console.log(`Attempt to set MParticle Key Value Pair With Arguments NOT Of Length 2 - '${arguments}'`, arguments);
+			console.error(`Attempt to set MParticle Key Value Pair With Arguments NOT Of Length 2 - '${arguments}'`, arguments);
 		}
 	}
 
