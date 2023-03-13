@@ -34,7 +34,7 @@ class BbgiStationSettings {
 		}
 	}
 	public function add_bbgi_settings_page() {
-		$this->_bbgi_settings_page_hook = add_options_page( 'BBGI Station Settings', 'BBGI Station Settings', 'manage_bbgi_station_settings', 'bbgi-station-settings', array( $this, 'render_bbgi_settings_page') );
+		$this->_bbgi_settings_page_hook = add_options_page( 'Second Stream Settings', 'Second Stream', 'manage_bbgi_station_settings', 'second-stream-settings', array( $this, 'render_bbgi_settings_page') );
 	}
 
 	public function render_bbgi_settings_page() {
@@ -50,9 +50,7 @@ class BbgiStationSettings {
 			'selected' => get_option( 'ad_second_stream_enabled', 'off' ),
 		);
 
-		add_settings_section( 'ee_bbgi_site_settings', 'BBGI Station Settings', '__return_false', $this->_bbgi_settings_page_hook );
-//		add_settings_field( 'ee_theme_header_background_color', 'Remove this field before use Header Background Color', 'bbgi_input_field', $this->_bbgi_settings_page_hook, 'ee_bbgi_site_settings', 'name=ee_theme_header_background_color&default=#202020' );
-//		add_settings_field( 'ss_days_json', '', 'bbgi_hidden_field', $this->_bbgi_settings_page_hook, 'ee_bbgi_site_settings', 'name=ss_days_json' );
+		add_settings_section( 'ee_bbgi_site_settings', 'Second Stream Settings', '__return_false', $this->_bbgi_settings_page_hook );
 		add_settings_field('ad_second_stream_enabled', 'Enable Second Stream', array($this, 'render_ad_second_stream_enabled'), $this->_bbgi_settings_page_hook, 'ee_bbgi_site_settings', $ad_second_stream_enabled_args);
 		add_settings_field( 'ss_enabled_days', '', array($this, 'render_ss_days_enabled'), $this->_bbgi_settings_page_hook, 'ee_bbgi_site_settings', ['name'=>'ss_enabled_days']);
 
@@ -65,7 +63,7 @@ class BbgiStationSettings {
 	}
 
 	public function render_ad_second_stream_enabled( $args ) {
-		?><select name="<?php echo esc_attr( $args['name'] ); ?>">
+		?><select onchange="changeStream(jQuery)" name="<?php echo esc_attr( $args['name'] ); ?>">
 		<option value="on"
 			<?php selected( $args['selected'], 'on' ); ?>
 		>On</option>
@@ -84,10 +82,13 @@ class BbgiStationSettings {
 			'class'   => 'regular-text',
 			'desc'    => '',
 		) );
-
+		$style = '';
 		$value = get_option( $args['name'], $args['default'] );
+		$OnOption = get_option('ad_second_stream_enabled');
 		$daysData = (array)json_decode($value);
-
+		if($OnOption == 'off'){
+			$style = 'display: none;';
+		}
 		printf(
 			'<input type="%s" name="%s" class="%s" value="%s">',
 			esc_attr( $args['type'] ),
@@ -99,6 +100,7 @@ class BbgiStationSettings {
 		if ( ! empty( $args['desc'] ) ) {
 			printf( '<p class="description">%s</p>', esc_html( $args['desc'] ) );
 		}
+
 		$days = ['monday'=> ['name'=>'monday','desc'=>'Monday','start_time'=>'','end_time'=>''],
 			'tuesday'=> ['name'=>'tuesday','desc'=>'Tuesday','start_time'=>'','end_time'=>''],
 				'wednesday'=> ['name'=>'wednesday','desc'=>'Wednesday','start_time'=>'','end_time'=>''],
@@ -106,7 +108,8 @@ class BbgiStationSettings {
 				'friday'=> ['name'=>'friday','desc'=>'Friday','start_time'=>'','end_time'=>''],
 				'saturday'=> ['name'=>'saturday','desc'=>'Saturday','start_time'=>'','end_time'=>''],
 				'sunday'=> ['name'=>'sunday','desc'=>'Sunday','start_time'=>'','end_time'=>''],];
-		echo '<table  cellspacing="0" align="center" class="ss_days_class">';
+
+		echo '<table  cellspacing="0" align="center" class="ss_days_class" style="'. $style. '">';
 		echo '<tr><td>Days</td><td>Start Time</td><td>End Time</td></tr>';
 		foreach ($days as $daysargs){
 			$daysargs = wp_parse_args( $daysargs, array(

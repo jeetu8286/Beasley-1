@@ -1,4 +1,12 @@
 var daysData = '';
+function changeStream($) {
+	if($('select[name="ad_second_stream_enabled"]').val() == 'off'){
+		$('.ss_days_class').hide();
+	}else{
+		$('.ss_days_class').show();
+	}
+}
+
 function checkFluency($) {
 	jsonObj = {};
 	var days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday","sunday"]
@@ -32,7 +40,7 @@ function checkFluency($) {
 			}
 
 			if($.trim(startTime.val()) !== '' && $.trim(endTime.val()) !== ''){
-				if (timeto < timefrom){
+				if (timeTo < timeFrom){
 					endTime.val('');
 					startTime.val('');
 					alert('start time should be smaller than end time!');
@@ -52,8 +60,7 @@ function checkFluency($) {
 
 	if(jsonObj){
 		daysData = JSON.stringify(jsonObj);
-		console.log(daysData);
-
+		$("input[name=ss_enabled_days]").val(daysData);
 	}
 }
 function validateHhMm(inputField) {
@@ -69,7 +76,13 @@ function validateHhMm(inputField) {
 	var $document = $(document);
 	$document.ready(function () {
 		$document.on('submit', '#station-setting-form', function (e) {
-			$("input[name=ss_enabled_days]").val(daysData);
+			checkFluency($);
+		});
+
+		$document.on('change', ' input[name="ad_second_stream_enabled"]', function (e) {
+			alert('in');
+
+
 		});
 	});
 })(jQuery);
