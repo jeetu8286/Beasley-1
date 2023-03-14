@@ -174,7 +174,6 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		formSubmitted: 'Form Submitted',
 		shared: 'Shared',
 		downloadedPodcast: 'Downloaded Podcast',
-		mediaSessionCreate: 'MediaSessionCreate',
 		mediaSessionStart: 'Media Session Start',
 		play: 'Play',
 		pause: 'Pause',
