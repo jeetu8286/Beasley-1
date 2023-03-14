@@ -246,63 +246,6 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		});
 		return Object.fromEntries(entryArray);
 	}
-	getCleanEventObject(eventName) {
-		const dataPoints = window.mParticleSchema?.version_document?.data_points;
-		if (dataPoints) {
-			const dataPoint = dataPoints.find( dp =>
-				(dp?.match?.type === 'screen_view' && dp?.match?.criteria?.screen_name === eventName) ||
-				(dp?.match?.criteria?.event_name === eventName) );
-			if (dataPoint) {
-				const dataPointProperties = dataPoint.validator?.definition?.properties?.data?.properties?.custom_attributes?.properties;
-				if (dataPointProperties) {
-					const kvArray = Object.keys(dataPointProperties).map(key => ({[key]: null}));
-					return Object.assign(...kvArray); // Return an object with each field assigned to ''
-				}
-			}
-		}
-
-		console.log(`ERROR - Could not create Key Value Pairs for MParticle Event - '${eventName}'`);
-		return null;
-	};
-
-	getAllEventFieldsObjects() {
-		let retval = {};
-		Object.keys(BeasleyAnalyticsMParticleProvider.mparticleEventNames).forEach(eventNameKey => {
-			const newEventFieldsObject = this.getCleanEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey]);
-			retval = {...retval, ...newEventFieldsObject};
-		});
-
-		return retval;
-	}
-
-	getCustomEventTypeValueForEventName(eventName) {
-		const dataPoints = window.mParticleSchema?.version_document?.data_points;
-		if (dataPoints) {
-			const dataPoint = dataPoints.find( dp =>
-				(dp?.match?.type === 'custom_event' && dp?.match?.criteria?.event_name === eventName));
-			if (dataPoint) {
-				const dataPointType = dataPoint.match?.criteria?.custom_event_type;
-				if (dataPointType) {
-					const mParticleEventType = Object.entries(window.mParticle.EventType).find( kvpair => kvpair[0].toLowerCase() === dataPointType.toLowerCase());
-					if (mParticleEventType) {
-						return mParticleEventType[1];
-					} else {
-						console.log(`ERROR - could not find an MParticle Custom Event Type matching text - '${dataPointType}'`);
-						return window.mParticle.EventType.Unknown;
-					}
-				}
-			}
-		}
-
-		console.log(`Could not find Custom Event Type For MParticle Event - '${eventName}'`);
-		return null;
-	}
-	getAllCustomEventTypeLookupObject() {
-		const entryArray = Object.keys(BeasleyAnalyticsMParticleProvider.mparticleEventNames).map(eventNameKey => {
-			return [BeasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey], this.getCustomEventTypeValueForEventName(BeasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey])];
-		});
-		return Object.fromEntries(entryArray);
-	}
 
 	// When Running React We Use Use MParticle "Self Hosting" Within Bundle. For Mobile App Pages, we need to include via JS Snippet
 	includeMParticleSnippetIfMobileApp() {
