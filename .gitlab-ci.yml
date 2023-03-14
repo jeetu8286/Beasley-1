@@ -32,7 +32,7 @@ test_virusscan:
 
 build_plugins_and_themes:
   variables:
-    COMPOSER_SCAN_NO_FAIL=1
+    COMPOSER_SCAN_NO_FAIL:1
   stage: test-and-build
   script:
     - bash ./deploy-scripts/build.sh
