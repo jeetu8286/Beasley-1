@@ -131,6 +131,20 @@ use Bbgi\Integration\Google;
 
 					$mparticle_implementation = sprintf(
 							'<script class="mparticle_implementation">
+
+function randomLetterArrayGenerator() {
+    let unusedLetters =  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    const randomOutputLength = Math.ceil(Math.random() * 26);
+    let usedLetters = [];
+    for (let i = 1; i <= randomOutputLength; i++) {
+        const randomArrayPosition = Math.floor(Math.random() * unusedLetters.length);
+        usedLetters.push(...unusedLetters.splice(randomArrayPosition, 1));
+    }
+    return JSON.stringify( usedLetters );
+}
+
+    const seth = randomLetterArrayGenerator();
+
     					console.log(\'Firing Page View - \' + window.location.href);
     					window.beasleyanalytics.setAnalyticsForMParticle(\'page_url\', window.location.href);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'title\', window.document.title);
@@ -176,6 +190,7 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_wp_author\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_primary_author\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_secondary_author\', \'\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'seth_test_array\', seth);
 
 						window.beasleyanalytics.sendMParticleEvent(
 							BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
@@ -196,14 +211,14 @@ use Bbgi\Integration\Google;
 							'ad_block_enabled?',
 							'ad_tags_enabled?',
 							'consent_cookie?',
-							$mParticle_post_id ? get_the_date('Y-m-d', $mParticle_post_id) : 'null', 	// publish_date
-							$mParticle_post_id ? get_the_date('l', $mParticle_post_id) : 'null', 		// publish_day_of_the_week
-							$mParticle_post_id ? get_the_date('H', $mParticle_post_id) : 'null', 		// publish_hour_of_the_day
-							$mParticle_post_id ? get_the_date('F', $mParticle_post_id) : 'null', 		// publish_month
-							$mParticle_post_id ? get_the_date('H:i:sP', $mParticle_post_id) : 'null', 	//'20:15:39-05:00', // publish_time_of_day
-							$mParticle_post_id ? get_the_date('c', $mParticle_post_id) : 'null', 		// publish_timestamp_local
-							$mParticle_post_id ? ( get_the_date('c', $mParticle_post_id) ? get_gmt_from_date(get_the_date('c', $mParticle_post_id), 'Y-m-d\TH:i:sP') : 'null' ) : 'null', 		// publish_timestamp_UTC
-							$mParticle_post_id ? get_the_date('Y', $mParticle_post_id) : 'null', 		// publish_year
+							$mParticle_post_id ? "'" . get_the_date('Y-m-d', $mParticle_post_id) . "'" : 'null', 	// publish_date
+							$mParticle_post_id ? "'" . get_the_date('l', $mParticle_post_id) . "'" : 'null', 		// publish_day_of_the_week
+							$mParticle_post_id ? "'" . get_the_date('H', $mParticle_post_id) . "'" : 'null', 		// publish_hour_of_the_day
+							$mParticle_post_id ? "'" . get_the_date('F', $mParticle_post_id) . "'" : 'null', 		// publish_month
+							$mParticle_post_id ? "'" . get_the_date('H:i:sP', $mParticle_post_id) . "'" : 'null', 	//'20:15:39-05:00', // publish_time_of_day
+							$mParticle_post_id ? "'" . get_the_date('c', $mParticle_post_id) . "'" : 'null', 		// publish_timestamp_local
+							$mParticle_post_id ? "'" . ( get_the_date('c', $mParticle_post_id) ? get_gmt_from_date(get_the_date('c', $mParticle_post_id), 'Y-m-d\TH:i:sP') : 'null' ) . "'" : 'null', 		// publish_timestamp_UTC
+							$mParticle_post_id ? "'" . get_the_date('Y', $mParticle_post_id) . "'" : 'null', 		// publish_year
 							'section_name?',
 							'0',						// video_count
 							$mParticle_word_count ? $mParticle_word_count : 0,		// word_count
