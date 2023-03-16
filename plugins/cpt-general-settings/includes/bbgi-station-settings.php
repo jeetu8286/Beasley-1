@@ -56,9 +56,6 @@ class BbgiStationSettings {
 
 		register_setting(self::bbgi_option_group, 'ad_second_stream_enabled', 'sanitize_text_field');
 		register_setting(self::bbgi_option_group, 'ss_enabled_days', 'sanitize_text_field');
-		/**
-		 * Allows us to register extra settings that are not necessarily always present on all child sites.
-		 */
 
 	}
 
