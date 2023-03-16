@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { playStation } from '../../redux/actions/player';
 
 const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone.js');
+const timezone = require('dayjs/plugin/timezone');
 
 const config = window.bbgiconfig;
 
