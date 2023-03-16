@@ -49,20 +49,16 @@ use Bbgi\Integration\Google;
 			$post_categories = ee_get_primary_terms($post->ID, 'category', true);
 			$mParticle_category = $post_categories['primary'];
 			$mParticle_categories = !empty($post_categories['all']) ? wp_json_encode($post_categories['all']) : '';
-			
 			$post_shows = ee_get_primary_terms($post->ID, '_shows', true);
 			$mParticle_show = $post_shows['primary'];
-
 			$post_tags = ee_get_primary_terms($post->ID, 'post_tag', true);
 			$mParticle_tags = !empty($post_tags['all']) ? wp_json_encode($post_tags['all']) : '';
-			
 			$mParticle_post_id = $post->ID ? $post->ID : '';
 			$mParticle_author = $post->post_author ? get_the_author_meta( 'login', $post->post_author ) : '';
 			$mParticle_primary_author = get_field( 'primary_author_cpt', $post );
 			$mParticle_primary_author = $mParticle_primary_author ? get_the_author_meta( 'login', $mParticle_primary_author ) : '';
 			$mParticle_secondary_author = get_field( 'secondary_author_cpt', $post );
 			$mParticle_secondary_author = $mParticle_secondary_author ? get_the_author_meta( 'login', $mParticle_secondary_author ) : '';
-			
 			$mParticle_word_count = $post->post_content ? str_word_count( strip_tags( $post->post_content ) ) : null;
 
 		endif;
@@ -156,15 +152,14 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'ad_tags_enabled\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'consent_cookie\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'prebid_enabled\', window.bbgiconfig?.prebid_enabled);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'platform\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_date\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_day_of_the_week\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_hour_of_the_day\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_month\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_time_of_day\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_local\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_UTC\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_year\', \'%s\');
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_date\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_day_of_the_week\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_hour_of_the_day\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_month\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_time_of_day\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_local\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_UTC\', %s);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_year\', %s);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'section_name\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'video_count\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'word_count\', \'%s\');
@@ -201,7 +196,6 @@ use Bbgi\Integration\Google;
 							'ad_block_enabled?',
 							'ad_tags_enabled?',
 							'consent_cookie?',
-							'platform?',
 							$mParticle_post_id ? get_the_date('Y-m-d', $mParticle_post_id) : 'null', 	// publish_date
 							$mParticle_post_id ? get_the_date('l', $mParticle_post_id) : 'null', 		// publish_day_of_the_week
 							$mParticle_post_id ? get_the_date('H', $mParticle_post_id) : 'null', 		// publish_hour_of_the_day
@@ -212,7 +206,7 @@ use Bbgi\Integration\Google;
 							$mParticle_post_id ? get_the_date('Y', $mParticle_post_id) : 'null', 		// publish_year
 							'section_name?',
 							'0',						// video_count
-							$mParticle_word_count,		// word_count
+							$mParticle_word_count ? $mParticle_word_count : 0,		// word_count
 							$mParticle_categories ? $mParticle_categories : 'null',
 							$mParticle_tags ? $mParticle_tags : 'null',
 							'UTM?'
