@@ -149,7 +149,7 @@ function randomLetterArrayGenerator() {
     					window.beasleyanalytics.setAnalyticsForMParticle(\'page_url\', window.location.href);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'title\', window.document.title);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'call_sign\', window.bbgiconfig?.publisher?.title);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'call_sign_id\', window.bbgiconfig?.publisher?.id);
+						window.beasleyanalytics.setAnalyticsForMParticle(\'call_sign_id\', window.bbgiconfig?.AppId);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_category\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_category_id\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'show_name\', \'%s\');
@@ -197,7 +197,7 @@ function randomLetterArrayGenerator() {
 						);
 					</script>',
 							$mParticle_category ? $mParticle_category->name : 'null',
-							$mParticle_category ? $mParticle_category->term_id : 'null',
+							$mParticle_category ? $mParticle_category->slug : 'null',
 							$mParticle_show ? $mParticle_show->name : 'null',
 							$mParticle_show ? $mParticle_show->term_id : 'null',
 							$mParticle_tags ? $mParticle_tags : 'null',
