@@ -199,7 +199,7 @@ function randomLetterArrayGenerator() {
 							$mParticle_category ? $mParticle_category->name : 'null',
 							$mParticle_category ? $mParticle_category->slug : 'null',
 							$mParticle_show ? $mParticle_show->name : 'null',
-							$mParticle_show ? $mParticle_show->term_id : 'null',
+							$mParticle_show ? $mParticle_show->slug : 'null',
 							$mParticle_tags ? $mParticle_tags : 'null',
 							$mParticleContentType, 			// content_type
 							'primary',  					// view_type
