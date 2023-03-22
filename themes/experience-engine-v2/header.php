@@ -132,19 +132,6 @@ use Bbgi\Integration\Google;
 					$mparticle_implementation = sprintf(
 							'<script class="mparticle_implementation">
 
-function randomLetterArrayGenerator() {
-    let unusedLetters =  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    const randomOutputLength = Math.ceil(Math.random() * 26);
-    let usedLetters = [];
-    for (let i = 1; i <= randomOutputLength; i++) {
-        const randomArrayPosition = Math.floor(Math.random() * unusedLetters.length);
-        usedLetters.push(...unusedLetters.splice(randomArrayPosition, 1));
-    }
-    return JSON.stringify( usedLetters );
-}
-
-    const seth = randomLetterArrayGenerator();
-
     					console.log(\'Firing Page View - \' + window.location.href);
     					window.beasleyanalytics.setAnalyticsForMParticle(\'page_url\', window.location.href);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'title\', window.document.title);
@@ -190,7 +177,6 @@ function randomLetterArrayGenerator() {
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_wp_author\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_primary_author\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_secondary_author\', \'\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'seth_test_array\', seth);
 
 						window.beasleyanalytics.sendMParticleEvent(
 							BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
