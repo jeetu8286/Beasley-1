@@ -166,8 +166,6 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', window.document.referrer);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
 
-						window.beasleyanalytics.setAnalyticsForMParticle(\'seth_test_array\', seth);
-
 						window.beasleyanalytics.sendMParticleEvent(
 							BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
 						);

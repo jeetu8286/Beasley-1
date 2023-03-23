@@ -460,31 +460,7 @@ if ( ! function_exists( 'ee_mparticle_prepare_pageview_data' ) ) :
 		}
 
 		$mParticleContentType = get_post_type( $post );
-		if (empty($mParticleContentType)) {
-			$mParticleContentType = 'null';
-		} else {
-			if (strpos($mParticleContentType, 'listicle') !== false) {
-				$mParticleContentType = 'listicle';
-			} else if (strpos($mParticleContentType, 'gallery') !== false) {
-				$mParticleContentType = 'gallery';
-			} else if (strpos($mParticleContentType, 'affiliate_marketing') !== false) {
-				$mParticleContentType = 'must_have';
-			} else if (strpos($mParticleContentType, 'homepage') !== false) {
-				$mParticleContentType = 'home';
-			} else if (strpos($mParticleContentType, 'event') !== false) {
-				$mParticleContentType = 'event';
-			} else if (strpos($mParticleContentType, 'episode') !== false) {
-				$mParticleContentType = 'episode';
-			} else if (strpos($mParticleContentType, 'contest') !== false) {
-				$mParticleContentType = 'contest';
-			} else if (strpos($mParticleContentType, 'podcast') !== false) {
-				$mParticleContentType = 'podcast';
-			} else if (strpos($mParticleContentType, 'show') !== false) {
-				$mParticleContentType = 'show';
-			} else {
-				$mParticleContentType = 'article';
-			}
-		}
+		$mParticleContentType = get_content_type_text($mParticleContentType);
 
 		return [
 			'mParticleContentType'						=> $mParticleContentType,
