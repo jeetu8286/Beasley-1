@@ -171,9 +171,9 @@ use Bbgi\Integration\Google;
 						);
 					</script>',
 							$mparticle_pageview_event_data['mParticle_category'] ? $mparticle_pageview_event_data['mParticle_category']->name : 'null',
-							$mparticle_pageview_event_data['mParticle_category'] ? $mparticle_pageview_event_data['mParticle_category']->term_id : 'null',
+							$mparticle_pageview_event_data['mParticle_category'] ? $mparticle_pageview_event_data['mParticle_category']->slug : 'null',
 							$mparticle_pageview_event_data['mParticle_show'] ? $mparticle_pageview_event_data['mParticle_show']->name : 'null',
-							$mparticle_pageview_event_data['mParticle_show'] ? $mparticle_pageview_event_data['mParticle_show']->term_id : 'null',
+							$mparticle_pageview_event_data['mParticle_show'] ? $mparticle_pageview_event_data['mParticle_show']->slug : 'null',
 							$mparticle_pageview_event_data['mParticle_tags'] ?: 'null',
 							$mparticle_pageview_event_data['mParticleContentType'] ?: 'null',
 							'primary',
