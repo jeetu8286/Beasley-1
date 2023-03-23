@@ -166,14 +166,6 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', window.document.referrer);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
 
-						// Clear Embedded Fields
-						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_title\', \'\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_type\', \'\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_path\', \'\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_post_id\', \'\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_wp_author\', \'\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_primary_author\', \'\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_secondary_author\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'seth_test_array\', seth);
 
 						window.beasleyanalytics.sendMParticleEvent(
