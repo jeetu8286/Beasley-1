@@ -136,7 +136,7 @@ if ( ! function_exists( 'ee_get_listiclecpt_html' ) ) :
 						/>',
 						'embedded_content', //view_type
 						esc_attr($cpt_item_name_data),
-						'embedded_type?',
+						get_content_type_text($cpt_post_object),
 						$urls[ $cpt_post_object->ID ],
 						$cpt_post_object->ID,
 						$mParticle_author,

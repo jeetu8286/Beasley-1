@@ -118,16 +118,7 @@ use Bbgi\Integration\Google;
 				<div id="inner-content">
 				<?php
 
-					if (empty($mParticleContentType)) {
-						$mParticleContentType = 'null';
-					}
-					else if (strpos($mParticleContentType, 'listicle') !== false) {
-						$mParticleContentType = 'listicle';
-					} else if (strpos($mParticleContentType, 'gallery') !== false) {
-						$mParticleContentType = 'gallery';
-					} else {
-						$mParticleContentType = 'article';
-					}
+					$mParticleContentType = is_front_page() ? 'Home' : get_content_type_text($mParticleContentType);
 
 					$mparticle_implementation = sprintf(
 							'<script class="mparticle_implementation">
@@ -170,6 +161,7 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
 
 						// Clear Embedded Fields
+						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_container_id\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_title\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_type\', \'\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'embedded_content_path\', \'\');

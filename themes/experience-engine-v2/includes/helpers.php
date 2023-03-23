@@ -308,26 +308,26 @@ endif;
 if ( ! function_exists( 'ee_get_primary_terms' ) ) :
 	function ee_get_primary_terms($post_id, $term='category', $return_all_categories=false){
 		$return = array();
-	
+
 		if (class_exists('WPSEO_Primary_Term')){
 			// Show Primary category by Yoast if it is enabled & set
 			$wpseo_primary_term = new WPSEO_Primary_Term( $term, $post_id );
 			$primary_term = get_term($wpseo_primary_term->get_primary_term());
-	
+
 			if (!is_wp_error($primary_term)){
 				$return['primary'] = $primary_term;
 			}
 		}
-	
+
 		if (empty($return['primary']) || $return_all_categories){
 			$categories_list = get_the_terms($post_id, $term);
-	
+
 			if (empty($return['primary']) && !empty($categories_list)){
 				$return['primary'] = $categories_list[0];  //get the first category
 			}
 			if ($return_all_categories){
 				$return['all'] = array();
-	
+
 				if (!empty($categories_list)){
 					foreach($categories_list as &$category){
 						$return['all'][] = $category->name;
@@ -336,5 +336,74 @@ if ( ! function_exists( 'ee_get_primary_terms' ) ) :
 			}
 		}
 		return $return;
-	}	
+	}
 endif;
+
+
+/**
+ * Get the user-friendly name for the given content type.
+ *
+ * @param string|WP_Post $content_type The content type name or a WP_Post object.
+ *
+ * @return string The user-friendly name for the given content type. If the content type is not found in the table, return "Unknown".
+ */
+if (!function_exists('get_content_type_text')) :
+	function get_content_type_text($content_type): string
+	{
+		$content_types = array(
+			"post" => "Post",
+			"page" => "Page",
+			"attachment" => "Attachment",
+			"revision" => "Revision",
+			"nav_menu_item" => "Navigation Menu Item",
+			"custom_css" => "Custom CSS",
+			"customize_changeset" => "Customize Changeset",
+			"oembed_cache" => "oEmbed Cache",
+			"user_request" => "User Request",
+			"wp_block" => "WordPress Block",
+			"wp_template" => "WordPress Template",
+			"wp_template_part" => "WordPress Template Part",
+			"wp_global_styles" => "WordPress Global Styles",
+			"wp_navigation" => "WordPress Navigation",
+			"gmr_gallery" => "Gallery",
+			"gmr_album" => "Album",
+			"listicle_cpt" => "Listicle",
+			"episode" => "Episode",
+			"tribe_venue" => "Venue",
+			"tribe_organizer" => "Organizer",
+			"tribe_events" => "Event",
+			"acf-field-group" => "ACF Field Group",
+			"acf-field" => "ACF Field",
+			"cmm-redirect" => "CMM Redirect",
+			"advertiser" => "Advertiser",
+			"subscription" => "Subscription",
+			"content-kit" => "Content Kit",
+			"contest" => "Contest",
+			"live-stream" => "Live Stream",
+			"songs" => "Songs",
+			"show" => "Show",
+			"fp_feed" => "FP Feed",
+			"gmr_closure" => "Closure",
+			"redirect_rule" => "Redirect Rule",
+			"tribe-ea-record" => "Tribe EA Record",
+			"deleted_event" => "Deleted Event",
+			"gmr_homepage" => "Homepage",
+			"gmr_mobile_homepage" => "Mobile Homepage",
+			"ep-synonym" => "Synonym",
+			"ep-pointer" => "Pointer",
+			"podcast" => "Podcast",
+			"simplifi_pixel" => "Simplifi Pixel",
+			"gmr-live-link" => "Live Link",
+			"affiliate_marketing" => "Must Have"
+		);
+		if (is_object($content_type)) {
+			$content_type = get_post_type($content_type);
+		}
+		if (isset($content_types[$content_type])) {
+			return $content_types[$content_type];
+		} else {
+			return "Unknown";
+		}
+	}
+endif;
+
