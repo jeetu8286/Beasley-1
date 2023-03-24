@@ -169,13 +169,13 @@ if ( ! function_exists( 'ee_get_affiliatemarketing_html' ) ) :
 					$mparticle_meta_tag = sprintf(
 						'<mparticle-meta
 						data-view_type = \'%s\'
-						data-embedded_content_title = \'%s\'
-						data-embedded_content_type = \'%s\'
-						data-embedded_content_path = \'%s\'
-						data-embedded_content_post_id = \'%s\'
-						data-embedded_content_wp_author = \'%s\'
-						data-embedded_content_primary_author = \'%s\'
-						data-embedded_content_secondary_author = \'%s\'
+						data-embedded_content_item_title = \'%s\'
+						data-embedded_content_item_type = \'%s\'
+						data-embedded_content_item_path = \'%s\'
+						data-embedded_content_item_post_id = \'%s\'
+						data-embedded_content_item_wp_author = \'%s\'
+						data-embedded_content_item_primary_author = \'%s\'
+						data-embedded_content_item_secondary_author = \'%s\'
 						/>',
 						'embedded_content', //view_type
 						esc_attr($am_item_name_data),
