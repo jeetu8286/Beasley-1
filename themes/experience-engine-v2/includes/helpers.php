@@ -438,7 +438,7 @@ if ( ! function_exists( 'ee_mparticle_prepare_pageview_data' ) ) :
 		$mParticle_tags = !empty($post_tags['all']) ? wp_json_encode($post_tags['all']) : '';
 
 		$mParticle_post_id = $post->ID ? $post->ID : '';
-		$mParticle_post_slug = $post->slug ?: '';
+		$mParticle_post_slug = $post->post_name ?: '';
 
 		$author_details = ee_mparticle_get_author_data( $post );
 		$mParticle_author = $author_details->author ? $author_details->author : '';
@@ -450,7 +450,7 @@ if ( ! function_exists( 'ee_mparticle_prepare_pageview_data' ) ) :
 		$mParticle_select_embed_post_id = ee_mparticle_get_select_embed_id( $post );
 		if( !empty($mParticle_select_embed_post_id) ) {
 			$mParticle_select_embed_post = get_post($mParticle_select_embed_post_id);
-			$mParticle_select_embed_parent_id = $mParticle_select_embed_post->slug;
+			$mParticle_select_embed_slug = $mParticle_select_embed_post->post_name;
 			$mParticle_select_embed_title = $mParticle_select_embed_post->post_title;
 			$mParticle_select_embed_type = $mParticle_select_embed_post->post_type;
 			$mParticle_select_embed_path = trailingslashit( get_permalink( $mParticle_select_embed_post_id ) );
@@ -470,11 +470,11 @@ if ( ! function_exists( 'ee_mparticle_prepare_pageview_data' ) ) :
 			'mParticle_categories'						=> $mParticle_categories ?: '',
 			'mParticle_show'							=> $mParticle_show ?: '',
 			'mParticle_tags'							=> $mParticle_tags ?: '',
-			'mParticle_select_embed_parent_id'			=> $mParticle_select_embed_parent_id ?: '',
+			'mParticle_select_embed_parent_id'			=> $mParticle_post_slug ?: '',
 			'mParticle_select_embed_title'				=> $mParticle_select_embed_title ?: '',
 			'mParticle_select_embed_type'				=> $mParticle_select_embed_type ?: '',
 			'mParticle_select_embed_path' 				=> $mParticle_select_embed_path ?: '',
-			'mParticle_select_embed_post_id' 			=> $mParticle_select_embed_post_id ?: '',
+			'mParticle_select_embed_post_id' 			=> $mParticle_select_embed_slug ?: '',
 			'mParticle_select_embed_author' 			=> $mParticle_select_embed_author ?: '',
 			'mParticle_select_embed_primary_author' 	=> $mParticle_select_embed_primary_author ?: '',
 			'mParticle_select_embed_secondary_author' 	=> $mParticle_select_embed_secondary_author ?: '',
