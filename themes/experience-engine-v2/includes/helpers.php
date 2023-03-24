@@ -446,7 +446,7 @@ if ( ! function_exists( 'ee_mparticle_prepare_pageview_data' ) ) :
 
 		$mParticle_word_count = $post->post_content ? str_word_count( strip_tags( $post->post_content ) ) : null;
 
-		$mParticle_select_embed_post_id = get_post_meta( $post->ID, 'select_embed_post_id', true );
+		$mParticle_select_embed_post_id = ee_mparticle_get_select_embed_id( $post );
 		if( !empty($mParticle_select_embed_post_id) ) {
 			$mParticle_select_embed_post = get_post($mParticle_select_embed_post_id);
 			$mParticle_select_embed_title = $mParticle_select_embed_post->post_title;
@@ -481,5 +481,94 @@ if ( ! function_exists( 'ee_mparticle_prepare_pageview_data' ) ) :
 			'mParticle_secondary_author' 				=> $mParticle_secondary_author ?: '',
 			'mParticle_word_count' 						=> $mParticle_word_count ?:  null
 		];
+	}
+endif;
+
+if ( ! function_exists( 'ee_verify_mparticle_select_embed' ) ) :
+	function ee_verify_mparticle_select_embed($attributes) {
+		if( empty($attributes['post_id']) || empty($attributes['post_type']) ) {
+			return '';
+		}
+
+		$post_id = '';
+
+		if ($attributes['syndication_name']) {
+			$meta_query_args = [
+				'meta_key'    => 'syndication_old_name',
+				'meta_value'  => $attributes['syndication_name'],
+				'post_status' => 'any',
+				'post_type'   => $attributes['post_type']
+			];
+
+			$existing = get_posts($meta_query_args);
+
+			if ($existing) {
+				$existing_post = current($existing);
+				$post_id = intval($existing_post->ID);
+			}
+		}
+
+		$post_id = $post_id ? $post_id : $attributes['post_id'];
+		$post = get_post($post_id);
+		if ($post->post_type !== $attributes['post_type'] || $post->post_name !== $attributes['syndication_name']) {
+			return '';
+		}
+
+		return $post_id;
+	}
+endif;
+
+if ( ! function_exists( 'ee_mparticle_get_select_embed_id' ) ) :
+	function ee_mparticle_get_select_embed_id( $post ) {
+		
+		$pattern = get_shortcode_regex();
+		$select_embed_post_id = '';
+		$select_embed_post_types = array( 'post', 'listicle_cpt', 'affiliate_marketing', 'gmr_gallery'  );
+
+		if ( $post->post_type && in_array( $post->post_type, $select_embed_post_types ) ) {
+			if ( preg_match_all( '/'. $pattern .'/s', $post->post_content.$post->common_footer_description, $matches )
+				&& array_key_exists( 2, $matches )
+				&& (in_array( 'select-listicle', $matches[2] ) || in_array( 'select-gallery', $matches[2] ) || in_array( 'select-am', $matches[2] ))
+			) {
+				$select_embed_type = (count($matches[2]) > 0) ? $matches[2][0] : '';
+				$attributes =  (count($matches[0]) > 0) ? ee_parse_shortcode_atts(str_replace('\"', '"', $matches[0][0])) : '';
+
+				if ($select_embed_type == 'select-gallery') {
+					$attributes['post_id'] = $attributes['gallery_id'];
+					$attributes['post_type'] = 'gmr_gallery';
+				} else if ($select_embed_type == 'select-listicle') {
+					$attributes['post_id'] = $attributes['listicle_id'];
+					$attributes['post_type'] = 'listicle_cpt';
+				} else if ($select_embed_type == 'select-am') {
+					$attributes['post_id'] = $attributes['am_id'];
+					$attributes['post_type'] = 'affiliate_marketing';
+				}
+
+				$select_embed_post_id = ee_verify_mparticle_select_embed($attributes);
+			}
+
+			return !empty($select_embed_post_id) ? $select_embed_post_id : '';
+		}
+	}
+endif;
+
+if ( ! function_exists( 'ee_parse_shortcode_atts' ) ) :
+	function ee_parse_shortcode_atts( $shortcode ) {
+		// Store the shortcode attributes in an array here
+		$attributes = [];
+
+		// Get all attributes
+		if (preg_match_all('/\w+\=\".*?\"/', $shortcode, $key_value_pairs)) {
+
+			// Now split up the key value pairs
+			foreach($key_value_pairs[0] as $kvp) {
+				$kvp = str_replace('"', '', $kvp);
+				$pair = explode('=', $kvp);
+				$attributes[$pair[0]] = $pair[1];
+			}
+		}
+
+		// Return the array
+		return $attributes;
 	}
 endif;
