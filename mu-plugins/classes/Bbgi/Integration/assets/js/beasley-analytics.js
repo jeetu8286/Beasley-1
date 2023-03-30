@@ -547,37 +547,43 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		}
 	}
 
-	sendClickEvent(ev) {
-		const clickSrcElement = ev.target;
+	sendClickEvent(targetElement) {
+		// Find the A tag for only Lazy Images or A tags themselves
+		if (targetElement?.tagName !== 'A' && targetElement?.className !== 'lazy-image') {
+			return;
+		}
+ 		while (targetElement && targetElement.tagName !== 'A') {
+			targetElement = targetElement.parentElement;
+		}
+		if (!targetElement) {
+			return;
+		}
 
 		this.setAnalytics('container_id', 'container_id?');
-		this.setAnalytics('link_name', clickSrcElement.ariaLabel);
-		this.setAnalytics('link_text', clickSrcElement.innerText);
-		this.setAnalytics('link_url', clickSrcElement.href);
+		this.setAnalytics('link_name', targetElement.ariaLabel);
+		this.setAnalytics('link_text', targetElement.innerText);
+		this.setAnalytics('link_url', targetElement.href);
 
 		// Fire Link Clicked If Not A Search Result And Not A Podcast Download
-		if (!this.searchResultClick(clickSrcElement) && !this.downloadPodcastClick(clickSrcElement)) {
+		if (!this.searchResultClick(targetElement) && !this.downloadPodcastClick(targetElement)) {
 			this.sendEventByName(
 				BeasleyAnalyticsMParticleProvider.mparticleEventNames.linkClicked,
 			);
 		}
 	}
 
-	// Return non-Zero Index If clickSrcElement is a Search Result
-	searchResultClick(clickSrcElement) {
+	// Return non-Zero Index If targetElement is a Search Result
+	searchResultClick(targetElement) {
 		let searchElementIndex = 0;
 
-		let postElement;
-		const grandParentElement = clickSrcElement?.parentElement?.parentElement;
-		if ( grandParentElement?.parentElement?.classList?.contains('search-results') ) {
-			postElement = grandParentElement;
-		} else if ( grandParentElement?.parentElement?.parentElement?.parentElement?.classList?.contains('search-results') ) {
-			postElement = grandParentElement.parentElement.parentElement;
+		while (targetElement && !targetElement.classList.contains('search-result')) {
+			targetElement = targetElement.parentElement;
 		}
 
-		if (postElement) {
-			searchElementIndex = Array.from( postElement.parentElement.children ).indexOf(postElement) + 1;
+		if (targetElement) {
+			searchElementIndex = Array.from( document.querySelectorAll('.search-result') ).indexOf(targetElement) + 1;
 			this.setAnalytics('search_term_position', searchElementIndex);
+			this.setAnalytics('search_term_selected', targetElement.attributes['data-search-result-slug']?.value);
 			this.sendEventByName(
 				BeasleyAnalyticsMParticleProvider.mparticleEventNames.searchedResultClicked,
 			);
@@ -586,14 +592,14 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		return searchElementIndex;
 	}
 
-	// Return whether clickSrcElement is a Podcast Download link
-	downloadPodcastClick(clickSrcElement) {
+	// Return whether targetElement is a Podcast Download link
+	downloadPodcastClick(targetElement) {
 		let retval = false;
 
-		if (clickSrcElement.classList.contains('is-podcast-download-link')) {
+		if (targetElement.classList.contains('is-podcast-download-link')) {
 			retval = true;
-			this.setAnalytics('podcast_name', clickSrcElement.attributes['data-podcast-name']?.value);
-			this.setAnalytics('episode_title', clickSrcElement.attributes['data-episode-title']?.value);
+			this.setAnalytics('podcast_name', targetElement.attributes['data-podcast-name']?.value);
+			this.setAnalytics('episode_title', targetElement.attributes['data-episode-title']?.value);
 			this.sendEventByName(
 				BeasleyAnalyticsMParticleProvider.mparticleEventNames.downloadedPodcast,
 			);
