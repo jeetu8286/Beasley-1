@@ -24,6 +24,7 @@ if ( ee_is_first_page() ) :
 					);
 				</script>',
 		$search_query,
+		$search_query,
 		$result_count,
 	);
 	echo $mparticle_implementation;
