@@ -11,7 +11,7 @@ class ListicleCPTMetaboxes {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_box' ) );
 		add_action( 'save_post',array( __CLASS__, 'listicle_cpt_save') );
-		add_action( 'save_post',array( __CLASS__, 'listicle_cpt_footer_description_save') 10, 3);
+		add_action( 'save_post',array( __CLASS__, 'listicle_cpt_footer_description_save') );
 	}
 
 	/**
@@ -130,6 +130,7 @@ class ListicleCPTMetaboxes {
 	}
 	public static function listicle_cpt_footer_description_save( $post_id ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+		// echo "Break before nonce"; exit;
 		if ( ! isset( $_POST['_listicle_cpt_footer_description_nonce'] ) || ! wp_verify_nonce( $_POST['_listicle_cpt_footer_description_nonce'], '_listicle_cpt_footer_description_nonce' ) ) return;
 		// if ( ! current_user_can( 'edit_post' ) ) return;
 
