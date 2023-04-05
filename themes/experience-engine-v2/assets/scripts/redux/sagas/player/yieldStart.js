@@ -1,6 +1,4 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
-import mParticle from '@mparticle/web-sdk';
-import MediaSession from '@mparticle/web-media-sdk';
 import { sendInlineAudioPlaying } from '../../../library/google-analytics';
 import { ACTION_PLAYER_START } from '../../actions/player';
 import { showSignInModal } from '../../actions/modal';
@@ -43,8 +41,6 @@ function* yieldStart() {
 			);
 		}
 	}
-
-
 }
 
 /**
