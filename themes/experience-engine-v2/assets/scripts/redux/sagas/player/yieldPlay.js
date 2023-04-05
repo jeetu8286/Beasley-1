@@ -1,12 +1,10 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
+import MediaSession from '@mparticle/web-media-sdk';
+import mParticle from '@mparticle/web-sdk';
 import { livePlayerLocalStorage } from '../../utilities';
 import { ACTION_PLAY } from '../../actions/player';
-import MediaSession from "@mparticle/web-media-sdk";
-import mParticle from "@mparticle/web-sdk";
-
 
 function sendMParticleMediaEvents(playerType, stream) {
-
 	const streamParams = {
 		mediaID: window.createUUID(),
 		contentType: 'Audio',
@@ -23,7 +21,8 @@ function sendMParticleMediaEvents(playerType, stream) {
 		streamParams.content_network = stream?.stream_cmod_domain || '';
 		streamParams.call_sign = stream?.stream_call_letters || '';
 		streamParams.call_sign_id = stream?.stream_mount_key || '';
-		streamParams.primary_category = 'LiveStreamCategory?';
+		streamParams.primary_category =
+			window.bbgiconfig?.publisher?.genre?.toString() || '';
 		streamParams.primary_category_id = 'LiveStreamCategoryID?';
 		streamParams.show_name = 'LiveStreamShowName?';
 		streamParams.show_id = 'LiveStreamShowID?';
