@@ -1,6 +1,7 @@
 import { call, takeLatest, select } from 'redux-saga/effects';
 import { lyticsTrack } from '../../utilities';
 import { ACTION_PAUSE } from '../../actions/player';
+import endMParticleMediaSession from '../../utilities/player/endMParticleMediaSession';
 
 /**
  * @function yieldPause
@@ -32,19 +33,8 @@ function* yieldPause() {
 	) {
 		yield call(lyticsTrack, 'pause', cuePoint);
 	}
-	const contentEndOptions = {};
-	contentEndOptions.customAttributes = window.beasleyanalytics.getMParticleMediaEventObject(
-		window.beasleyanalytics.BeasleyAnalyticsMParticleProvider
-			.mparticleEventNames.mediaContentEnd,
-	);
-	window.mediaSession.logMediaContentEnd(contentEndOptions);
 
-	const sessionEndOptions = {};
-	sessionEndOptions.customAttributes = window.beasleyanalytics.getMParticleMediaEventObject(
-		window.beasleyanalytics.BeasleyAnalyticsMParticleProvider
-			.mparticleEventNames.mediaSessionEnd,
-	);
-	window.mediaSession.logMediaSessionEnd(sessionEndOptions);
+	endMParticleMediaSession();
 }
 
 /**

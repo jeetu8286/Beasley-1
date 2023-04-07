@@ -1,5 +1,6 @@
 import { select, takeLatest } from 'redux-saga/effects';
 import { ACTION_PLAYER_STOP } from '../../actions/player';
+import endMParticleMediaSession from '../../utilities/player/endMParticleMediaSession';
 
 function* yieldStop() {
 	console.log('Player Stop');
@@ -39,6 +40,7 @@ function* yieldStop() {
 		// Call one more stop() for good measure.
 		player.stop();
 	}
+	endMParticleMediaSession();
 }
 
 export default function* watchStop() {
