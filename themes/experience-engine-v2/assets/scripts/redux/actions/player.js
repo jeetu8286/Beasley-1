@@ -418,7 +418,6 @@ function setUpAudioPlayer(dispatch, src) {
 	window.audioplayer.addEventListener('ended', () => {
 		dispatch(statusUpdate(STATUSES.LIVE_STOP));
 	});
-	// window.audioplayer.addEventListener('play', () => dispatch(start()));
 	window.audioplayer.addEventListener('pause', () => dispatch(end()));
 	window.audioplayer.addEventListener('abort', () => dispatch(end()));
 	window.audioplayer.addEventListener('loadedmetadata', () =>
