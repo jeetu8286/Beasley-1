@@ -68,6 +68,37 @@ deploy_preprod:
   only:
     - preprod
 
+sync_db_to_preprod:
+  stage: deploy
+  environment:
+    name: preprod
+    url: https://preprod.bbgistage.com/
+  script:
+    - bash ./deploy-scripts/import-db-preprod.sh
+  only:
+    - preprod
+  when: manual
+  allow_failure: false
+
+reset_preprod_branch:
+  stage: deploy
+  variables:
+    GIT_SSH_COMMAND: "ssh -i /tmp/.git-sshkey -F /dev/null -o StrictHostKeyChecking=no"
+  script:
+   - |
+     set +x
+     echo "${TENUP_BEASLEY_PRIVATE_KEY}" > /tmp/.git-sshkey
+     chmod 400 /tmp/.git-sshkey
+     git config --global user.name "beasley10up"
+     git config --global user.email "megatron+beasley@10up.com"
+     git clone -b ${CI_COMMIT_BRANCH} git@gitlab.10up.com:${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git /tmp/gitlab-repo
+     cd /tmp/gitlab-repo
+     git reset --hard origin/master
+     git push origin ${CI_COMMIT_BRANCH} -f
+  only:
+    - preprod
+  when: manual
+
 notify_slack:
   stage: test-and-build
   script:
