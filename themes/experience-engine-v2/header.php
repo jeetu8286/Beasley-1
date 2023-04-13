@@ -192,8 +192,8 @@ use Bbgi\Integration\Google;
 							$mparticle_pageview_event_data['mParticle_author'] ?: 'null',
 							$mparticle_pageview_event_data['mParticle_primary_author'] ?: 'null',
 							$mparticle_pageview_event_data['mParticle_secondary_author'] ?: 'null',
-							'ad_tags_enabled?',
-							'consent_cookie?',
+							'?ad_tags_enabled?',
+							'?consent_cookie?',
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . get_the_date('Y-m-d', $mparticle_pageview_event_data['mParticle_post_id']) . "'" : 'null',
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . get_the_date('l', $mparticle_pageview_event_data['mParticle_post_id']) . "'" : 'null',
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . get_the_date('H', $mparticle_pageview_event_data['mParticle_post_id']) . "'" : 'null',
@@ -202,12 +202,12 @@ use Bbgi\Integration\Google;
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . get_the_date('c', $mparticle_pageview_event_data['mParticle_post_id']) . "'" : 'null',
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . ( get_the_date('c', $mparticle_pageview_event_data['mParticle_post_id']) ? get_gmt_from_date(get_the_date('c', $mparticle_pageview_event_data['mParticle_post_id']), 'Y-m-d\TH:i:sP') : 'null' ) . "'" : 'null',
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . get_the_date('Y', $mparticle_pageview_event_data['mParticle_post_id']) . "'" : 'null',
-							'section_name?',
+							'?section_name?',
 							'0', // video_count
 							$mparticle_pageview_event_data['mParticle_word_count'] ?: 0,
 							$mparticle_pageview_event_data['mParticle_categories'] ?: 'null',
 							$mparticle_pageview_event_data['mParticle_tags'] ?: 'null',
-							'UTM?'
+							'?UTM?'
 					);
 					echo $mparticle_implementation;
 				?>

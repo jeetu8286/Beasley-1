@@ -561,13 +561,13 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	// We eventually need to compute fields for both Click Events and Form Submitted Events
 	// Currently this function is called only for Click Events with a parameter of an A Tag
 	populateMParticleModuleFields(domElement) {
-		this.setAnalytics('container_id', 'container_id?');
-		this.setAnalytics('module_type', 'module_type?');
-		this.setAnalytics('module_name', 'module_name?');
-		this.setAnalytics('module_position', 'module_position?');
-		this.setAnalytics('module_element_num', 'module_element_num?');
-		this.setAnalytics('screen_position', 'screen_position?'); // For Link Click Only
-		this.setAnalytics('module_screen_position', 'module_screen_position?'); // For Form Submitted Only
+		this.setAnalytics('container_id', '?container_id?');
+		this.setAnalytics('module_type', '?module_type?');
+		this.setAnalytics('module_name', '?module_name?');
+		this.setAnalytics('module_position', '?module_position?');
+		this.setAnalytics('module_element_num', '?module_element_num?');
+		this.setAnalytics('screen_position', '?screen_position?'); // For Link Click Only
+		this.setAnalytics('module_screen_position', '?module_screen_position?'); // For Form Submitted Only
 	}
 
 	sendClickEvent(targetElement) {
