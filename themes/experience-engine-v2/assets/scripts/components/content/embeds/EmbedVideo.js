@@ -48,8 +48,8 @@ class EmbedVideo extends PureComponent {
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (this.state.show === true && prevState.show !== this.state.show) {
-			const { loadVimeoControl } = this.props;
-			loadVimeoControl();
+			const { appendVimeoControlList } = this.props;
+			appendVimeoControlList();
 		}
 	}
 
@@ -140,13 +140,13 @@ EmbedVideo.propTypes = {
 	html: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	thumbnail: PropTypes.string.isRequired,
-	loadVimeoControl: PropTypes.func.isRequired,
+	appendVimeoControlList: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(
 		{
-			loadVimeoControl: loadVimeo,
+			appendVimeoControlList: () => loadVimeo(true),
 		},
 		dispatch,
 	);
