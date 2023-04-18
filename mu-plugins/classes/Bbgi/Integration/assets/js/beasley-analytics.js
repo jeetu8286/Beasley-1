@@ -508,15 +508,37 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 
 	getEventObject(eventName, isIgnoringBuiltInMparticleFields = false, isIncludingOnlyMediaSpecificFields = false) {
 		const emptyEventObject = this.getCleanEventObject(eventName, isIgnoringBuiltInMparticleFields, isIncludingOnlyMediaSpecificFields);
-		return Object.keys(emptyEventObject)
+		const populatedObj = Object.keys(emptyEventObject)
 			.reduce((a, key) => ({ ...a, [key]: this.keyValuePairs[key]}), {});
+		return this.stripPlaceholdersFromObject(populatedObj);
 	}
 
 	getMediaEventObject(eventName) {
 		const eventPopulatedWithCommonFields = this.getEventObject(eventName, true, false);
 		const mediaSpecificKeysArray = Object.keys(this.mediaSpecificKeyValuePairs);
-		return Object.keys(eventPopulatedWithCommonFields)
+		const populatedObj = Object.keys(eventPopulatedWithCommonFields)
 			.reduce((a, key) => ({ ...a, [key]: mediaSpecificKeysArray.includes(key) ? this.mediaSpecificKeyValuePairs[key] : eventPopulatedWithCommonFields[key]}), {});
+		return this.stripPlaceholdersFromObject(populatedObj);
+	}
+
+	stripPlaceholdersFromObject(objToStrip) {
+		return Object.keys(objToStrip)
+			.reduce((a, key) => {
+					const keyVal = objToStrip[key];
+					const keyValString = keyVal ? keyVal.toString() : '';
+					if ( keyVal === false ||
+						( keyVal &&
+						  keyValString.trim().toLowerCase() !== 'null' &&
+						  !(keyValString.startsWith('?') && keyValString.endsWith('?'))
+						)
+					){
+						return ({ ...a, [key]: keyVal})
+					} else {
+						return a;
+					}
+				},
+				{}
+			);
 	}
 
 	getAllMediaFields() {
