@@ -273,23 +273,23 @@ class ImportExportTagCategory {
 		exit;
    }
 
-	public function get_export_user_data_posttype_list() {
+	public static function get_export_user_data_posttype_list() {
 		$result	= (array) apply_filters( 'export-user-data-post-types', array( 'post', 'gmr_gallery', 'listicle_cpt', 'affiliate_marketing' )  );
 		return $result;
 	}
 
-	public function get_user_posts_list($users) {
+	public static function get_user_posts_list($users) {
 		return "Return all posts from array";
 		exit;
 	}
 
-	public function get_user_list() {
+	public static function get_user_list() {
 		global $wpdb;
 		$result	= $wpdb->get_results(sprintf('SELECT * FROM '. $wpdb->prefix .'users'));
 		return $result;
 	}
 
-	public function ietc_export_users_posts() {
+	public static function ietc_export_users_posts() {
 		global $wpdb;
 		$blog_id		= 0;
 		$network_name	= 'All';
@@ -340,11 +340,20 @@ class ImportExportTagCategory {
 				while ( $query_posts->have_posts() ) {
 					$query_posts->the_post();
 
-					$title			= get_the_title();
-					$permalink		= get_the_permalink();
-					$post_date		= get_the_date();
+					$id 					= get_the_ID();
+					$title					= get_the_title();
+					$permalink				= get_the_permalink();
+					$post_date				= get_the_date();
+					$primary_author			= get_field( 'primary_author_cpt', $id );
+					if(isset($primary_author) && $primary_author != "") {
+						$author_login		= get_the_author_meta('login', $primary_author);
+						$author_display_name= get_the_author_meta('display_name', $primary_author);
+					} else {
+						$author_login		= $user->user_login;
+						$author_display_name= $user->display_name;
+					}
 
-					$user_records_array[$title.'-'.$user->ID] = array('station_name' => $station_name, 'user_login' => $user->user_login, 'display_name' => $user->display_name, 'email' => $user->user_email, 'post_title' => $title, 'permalink' => $permalink, 'post_date' => $post_date);
+					$user_records_array[$title.'-'.$user->ID] = array('station_name' => $station_name, 'user_login' => $author_login, 'display_name' => $author_display_name, 'email' => $user->user_email, 'post_title' => $title, 'permalink' => $permalink, 'post_date' => $post_date);
 				}	// End While
 				wp_reset_postdata();
 				restore_current_blog();
@@ -383,7 +392,7 @@ class ImportExportTagCategory {
 	}
 
 
-   public function ietc_export_users_station() {
+	public static function ietc_export_users_station() {
 	   global $wpdb;
 	   $blog_id			= 0;
 	   $network_name	= 'All';

@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import { isIOS, isSafari, isAudioAdOnly } from '../library';
-
-import { ControlsV2, Offline, GamPreroll } from '../components/player';
-
+import { isIOS, isAudioAdOnly } from '../library';
+import { ControlsV2, GamPreroll, Offline } from '../components/player';
 import ErrorBoundary from '../components/ErrorBoundary';
-
 import * as actions from '../redux/actions/player';
+import { STATUSES } from '../redux/actions/player';
 
 class PlayerButton extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { online: window.navigator.onLine };
+		this.gamPrerollRef = React.createRef();
+
+		this.state = { online: window.navigator.onLine, forceSpinner: false };
 		this.container = document.getElementById('player-button-div');
 		this.onOnline = this.handleOnline.bind(this);
 		this.onOffline = this.handleOffline.bind(this);
 		this.handlePlay = this.handlePlay.bind(this);
+		this.turnOffForcedSpinner = this.turnOffForcedSpinner.bind(this);
 	}
 
 	componentDidMount() {
@@ -47,18 +47,32 @@ class PlayerButton extends Component {
 	handlePlay() {
 		const { station, playStation } = this.props;
 		playStation(station);
+		this.setState({ forceSpinner: true });
 	}
 
-	getPlayerAdThreshold() {
-		const windowWidth = window.innerWidth;
-		const playerAdThreshold = windowWidth > 1350 || isSafari() ? 1350 : 1250;
-		// Save To Window For Use In DFP Events
-		window.playerAdThreshold = playerAdThreshold;
-		return playerAdThreshold;
+	turnOffForcedSpinner() {
+		this.setState({ forceSpinner: false });
 	}
 
-	getShouldMapSizes(playerAdThreshold) {
-		return playerAdThreshold === 1250;
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		const { gamAdPlayback, gamAdPlaybackStop, status } = this.props;
+		console.log(
+			`Player Button Updated: Current gamAdPlayback: ${
+				gamAdPlayback ? 'true' : 'false'
+			}, Previous gamAdPlayback: ${
+				prevProps.gamAdPlayback ? 'true' : 'false'
+			}, gamAdPlaybackStop: ${
+				gamAdPlaybackStop ? 'true' : 'false'
+			},  ${status}`,
+		);
+		if (this.state.forceSpinner && status === STATUSES.LIVE_CONNECTING) {
+			this.turnOffForcedSpinner();
+		} else if (gamAdPlayback && this.gamPrerollRef.current) {
+			this.gamPrerollRef.current.doPreroll();
+		} else if (gamAdPlaybackStop && this.state.forceSpinner) {
+			console.log('Player Button Triggering GamPreroll Finalize');
+			this.turnOffForcedSpinner();
+		}
 	}
 
 	render() {
@@ -66,12 +80,11 @@ class PlayerButton extends Component {
 			return null;
 		}
 
-		const { online } = this.state;
+		const { online, forceSpinner } = this.state;
 
 		const {
 			status,
 			adPlayback,
-			gamAdPlayback,
 			adSynced,
 			pause,
 			resume,
@@ -80,12 +93,12 @@ class PlayerButton extends Component {
 			playerType,
 			inDropDown,
 			customTitle,
+			adPlaybackStop,
 		} = this.props;
 
-		let notification = false;
-		if (!online) {
-			notification = <Offline />;
-		}
+		const renderStatus = forceSpinner ? STATUSES.LIVE_CONNECTING : status;
+
+		const notification = online ? <></> : <Offline />;
 
 		const progressClass = !duration ? '-live' : '-podcast';
 		let { customColors } = this.container.dataset;
@@ -99,7 +112,7 @@ class PlayerButton extends Component {
 		buttonsStyle.backgroundColor =
 			customColors['--brand-button-color'] ||
 			customColors['--global-theme-secondary'];
-		buttonsStyle.border = 'none';
+		buttonsStyle.border = '0';
 		svgStyle.fill =
 			customColors['--brand-text-color'] ||
 			customColors['--global-theme-secondary'];
@@ -113,17 +126,18 @@ class PlayerButton extends Component {
 			customColors['--global-theme-secondary'];
 
 		const isIos = isIOS();
-		const gamPreroll = gamAdPlayback ? <GamPreroll /> : null;
-
-		if (gamAdPlayback) {
-			console.log('Live Player configured to render GAM preroll.');
+		let gamPreroll = <></>;
+		if (forceSpinner) {
+			gamPreroll = (
+				<GamPreroll ref={this.gamPrerollRef} adPlaybackStop={adPlaybackStop} />
+			);
 		}
 
 		const buttonDiv = (
 			<div className="controls" style={controlsStyle}>
 				<div className={`button-holder ${progressClass}`}>
 					<ControlsV2
-						status={status}
+						status={renderStatus}
 						play={
 							adPlayback && isAudioAdOnly({ player, playerType })
 								? null
@@ -169,7 +183,12 @@ class PlayerButton extends Component {
 		);
 
 		if (inDropDown) {
-			return <ErrorBoundary>{buttonDiv}</ErrorBoundary>;
+			return (
+				<ErrorBoundary>
+					{gamPreroll}
+					{buttonDiv}
+				</ErrorBoundary>
+			);
 		}
 		return ReactDOM.createPortal(children, this.container);
 	}
@@ -189,6 +208,7 @@ PlayerButton.propTypes = {
 	status: PropTypes.string.isRequired,
 	adPlayback: PropTypes.bool.isRequired,
 	gamAdPlayback: PropTypes.bool.isRequired,
+	gamAdPlaybackStop: PropTypes.bool.isRequired,
 	adSynced: PropTypes.bool.isRequired,
 	playStation: PropTypes.func.isRequired,
 	pause: PropTypes.func.isRequired,
@@ -196,16 +216,18 @@ PlayerButton.propTypes = {
 	duration: PropTypes.number.isRequired,
 	player: PropTypes.shape({}),
 	playerType: PropTypes.string.isRequired,
+	adPlaybackStop: PropTypes.func.isRequired,
 };
 
 export default connect(
-	({ player }) => ({
+	({ player, screen }) => ({
 		player: player.player,
 		playerType: player.playerType,
 		station: player.station,
 		status: player.status,
 		adPlayback: player.adPlayback,
 		gamAdPlayback: player.gamAdPlayback,
+		gamAdPlaybackStop: player.gamAdPlaybackStop,
 		adSynced: player.adSynced,
 		duration: player.duration,
 	}),
@@ -213,5 +235,6 @@ export default connect(
 		playStation: actions.playStation,
 		pause: actions.pause,
 		resume: actions.resume,
+		adPlaybackStop: actions.adPlaybackStop,
 	},
 )(PlayerButton);

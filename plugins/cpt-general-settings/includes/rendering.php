@@ -11,9 +11,37 @@ class GeneralSettingsFrontRendering {
 		add_action('pre_get_posts', array( __CLASS__, 'author_pre_get_posts') );
 
 		add_action( 'template_redirect', array( __CLASS__,'show_404_for_disabled_feeds' ) );
+		add_action('wp_head',  array( __CLASS__,'pushly_notification_script' ) );
+		add_filter( 'after_set_parsely_page', array( __CLASS__,'filter_parsely_metadata' ), 10, 3 );
 	}
 
-	function show_404_for_disabled_feeds() {
+	public static function filter_parsely_metadata( $parsely_metadata, $post, $parsely_options ) {
+		// override primary author for parsely
+		$primary_author = get_field( 'primary_author_cpt', $post );
+		$primary_author = $primary_author ? $primary_author : $post->post_author;
+		$show_author = get_the_author_meta( 'display_name', $primary_author );
+		if( !empty( $show_author ) ) {
+			$parsely_metadata['creator'] = [
+				$show_author
+			];
+			$parsely_metadata['author'] = array(
+				(object) [
+					"@type" => "Person",
+					"name" => $show_author
+				]
+			);
+		}
+
+		// Make Shopping as primary section for Must haves
+		$has_post_category = has_category( "shopping", $post->ID );
+		if( $has_post_category && $post->post_type == 'affiliate_marketing' ) {
+			$parsely_metadata['articleSection'] = "Shopping";
+		}
+
+		return $parsely_metadata;
+	}
+
+	public static function  show_404_for_disabled_feeds() {
 		if ( is_feed() && is_singular() && in_array( get_post_type(), GeneralSettingsFrontRendering::restrict_feeds_posttype_list() ) ) {
 			global $wp_query;
 
@@ -25,10 +53,10 @@ class GeneralSettingsFrontRendering {
 		}
 	}
 
-	function restrict_feeds_posttype_list() {
+	public static function  restrict_feeds_posttype_list() {
 		return (array) apply_filters( 'restrict-feeds-for-posttypes', array( 'post', 'affiliate_marketing', 'gmr_gallery', 'contest', 'tribe_events', 'listicle_cpt' ) );
 	}
-	function author_pre_get_posts($query) {
+	public static function author_pre_get_posts($query) {
 		if ( !is_admin() && $query->is_main_query() ) {
 			if ($query->is_author()) {
 				$query->set( 'posts_per_page', 16 );
@@ -46,7 +74,14 @@ class GeneralSettingsFrontRendering {
 	 */
 	public static function register_scripts() {
 		$min = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'additional-front-script', GENERAL_SETTINGS_CPT_URL . "/assets/js/front_script{$min}.js", array( 'jquery' ), GENERAL_SETTINGS_CPT_VERSION, true );
+		$domainKey    = get_option( 'pushly_domain_key');
+		if ( !is_admin() && !empty($domainKey)) {
+			wp_enqueue_script( 'pushly-notification-script', "https://cdn.p-n.io/pushly-sdk.min.js?domain_key=".$domainKey, [], GENERAL_SETTINGS_CPT_VERSION );
+		}
+		wp_enqueue_script( 'additional-front-script', GENERAL_SETTINGS_CPT_URL . "assets/js/front_script{$min}.js", array( 'jquery' ), GENERAL_SETTINGS_CPT_VERSION, true );
+
+
+
 	}
 
 	/**
@@ -54,13 +89,31 @@ class GeneralSettingsFrontRendering {
 	 * @param $post
 	 * @return Array
 	 */
-	function get_post_metadata_from_post( $value, $post ) {
+	public static function get_post_metadata_from_post( $value, $post ) {
 		$field = get_post_meta( $post->ID, $value, true );
 
 		if ( ! empty( $field ) ) {
 			return is_array( $field ) ? stripslashes_deep( $field ) : stripslashes( wp_kses_decode_entities( $field ) );
 		} else {
 			return false;
+		}
+	}
+	/**
+	 * Gets an array of meta data for the Affiliate Marketing
+	 * @param $post
+	 * @return Array
+	 */
+	public static function pushly_notification_script() {
+		$domainKey    = get_option( 'pushly_domain_key');
+		if ( !is_admin() && !empty($domainKey)) {
+			echo "<script>
+			window.PushlySDK = window.PushlySDK || [];
+			function pushly() { window.PushlySDK.push(arguments) }
+			pushly('load', {
+			domainKey: '".$domainKey."',
+			sw: '".GENERAL_SETTINGS_CPT_URL."assets/js/pushly-sdk-worker.js',
+		  });
+		</script>";
 		}
 	}
 
