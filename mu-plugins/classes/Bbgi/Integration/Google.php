@@ -131,7 +131,7 @@ class Google extends \Bbgi\Module {
 
 		add_settings_field( self::OPTION_GTM, 'Tag Manager Code', 'bbgi_input_field', $page, $section_id, 'name=beasley_google_tag_manager&desc=GTM-xxxxxx' );
 
-		add_settings_field( self::OPTION_GA_V3_ENABLED, 'V3 Analytics Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=ga_v3_enabled');
+		add_settings_field( self::OPTION_GA_V3_ENABLED, 'V3 Analytics Enabled', 'true_defaulted_bbgi_checkbox_field', $page, $section_id, 'name=ga_v3_enabled');
 		add_settings_field( self::OPTION_UA, 'V3 Analytics Code', 'bbgi_input_field', $page, $section_id, 'name=gmr_google_analytics&desc=UA-xxxxxx-xx' );
 		add_settings_field( self::OPTION_MPARTICLE_ENABLED, 'MParticle Enabled', 'bbgi_checkbox_field', $page, $section_id, 'name=mparticle_enabled');
 		add_settings_field( self::OPTION_MPARTICLE_KEY, 'MParticle Key', 'bbgi_input_field', $page, $section_id, 'name=mparticle_key' );
@@ -156,7 +156,7 @@ class Google extends \Bbgi\Module {
 	 * @return array
 	 */
 	public static function get_analytics_data() {
-		$google_analytics_v3_enabled = trim( get_option( self::OPTION_GA_V3_ENABLED ) );
+		$google_analytics_v3_enabled = trim( get_option( self::OPTION_GA_V3_ENABLED, true) );
 		$google_analytics_ua = trim( get_option( self::OPTION_UA ) );
 		$mparticle_enabled = trim( get_option( self::OPTION_MPARTICLE_ENABLED ) );
 		$mparticle_key = trim( get_option( self::OPTION_MPARTICLE_KEY ) );

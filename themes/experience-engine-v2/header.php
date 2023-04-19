@@ -31,7 +31,7 @@ use Bbgi\Integration\Google;
 
 	if (  is_front_page() ) {
 		$headerCacheTag[] = $_SERVER['HTTP_HOST'].'-'.'home';
-		$mparticle_pageview_event_data['mParticleContentType'] = "Home";
+		$mparticle_pageview_event_data['mParticleContentType'] = "homepage";
 	} else if (is_archive()) {
 		$obj = get_queried_object();
 

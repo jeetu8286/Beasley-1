@@ -1,4 +1,4 @@
-export default function createMParticleMediaSession(
+export default function createMParticleMediaFields(
 	playerType,
 	stream,
 	payload, // Podcast will have: src, cueTitle, artistName, trackType
@@ -6,8 +6,6 @@ export default function createMParticleMediaSession(
 	const streamParams = {
 		mediaID: window.createUUID(),
 		contentType: 'Audio',
-		pageEventToggle: '',
-		mediaEventToggle: '',
 	};
 
 	const isLiveStream = playerType === 'tdplayer';
