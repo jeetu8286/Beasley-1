@@ -236,7 +236,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				if (dataPointProperties) {
 					const filteredKeys = Object.keys(dataPointProperties).filter(key =>
 						((!isIgnoringBuiltInMparticleFields) || dataPointProperties[key].description !== 'MPARTICLE-FIELD-DO-NOT-POPULATE') &&
-						((!isIncludingOnlyMediaSpecificFields) || dataPointProperties[key].description === 'MEDIA-SPECIFIC'));
+						((!isIncludingOnlyMediaSpecificFields) || dataPointProperties[key].description === 'MEDIA-SPECIFIC' || dataPointProperties[key].description === 'MPARTICLE-FIELD-DO-NOT-POPULATE'));
 					if ( filteredKeys && filteredKeys.length > 0) {
 						const kvArray = filteredKeys.map(filteredKey => ({[filteredKey]: null}));
 						return Object.assign(...kvArray); // Return an object with each field assigned to ''
@@ -252,7 +252,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	getAllEventFieldsObjects(isMediaSpecific) {
 		let retval = {};
 		Object.keys(BeasleyAnalyticsMParticleProvider.mparticleEventNames).forEach(eventNameKey => {
-			const newEventFieldsObject = this.getCleanEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey], isMediaSpecific, isMediaSpecific);
+			const newEventFieldsObject = this.getCleanEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey], false, isMediaSpecific);
 			retval = {...retval, ...newEventFieldsObject};
 		});
 

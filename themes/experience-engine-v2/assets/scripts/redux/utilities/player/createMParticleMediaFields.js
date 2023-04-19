@@ -4,15 +4,15 @@ export default function createMParticleMediaFields(
 	payload, // Podcast will have: src, cueTitle, artistName, trackType
 ) {
 	const streamParams = {
-		mediaID: window.createUUID(),
-		contentType: 'Audio',
+		content_id: window.createUUID(),
+		content_type: 'Audio',
 	};
 
 	const isLiveStream = playerType === 'tdplayer';
 	if (isLiveStream) {
-		streamParams.streamType = 'Live'; // OnDemand, Live, Linear, Podcast, Audiobook
-		streamParams.duration = 1000 * 60 * 60 * 24; // Default to 1 day
-		streamParams.mediaTitle = stream?.title || '';
+		streamParams.stream_type = 'LiveStream'; // OnDemand, Live, Linear, Podcast, Audiobook
+		streamParams.content_duration = 1000 * 60 * 60 * 24; // Default to 1 day
+		streamParams.content_title = stream?.title || '';
 		streamParams.content_asset_id = stream?.stream_tap_id || '';
 		streamParams.content_network = stream?.stream_cmod_domain || '';
 		streamParams.call_sign = stream?.stream_call_letters || '';
@@ -24,9 +24,9 @@ export default function createMParticleMediaFields(
 		streamParams.show_id = '?LiveStreamShowID?';
 		streamParams.content_daypart = '?LiveStreamContentDayPart?';
 	} else {
-		streamParams.streamType = 'Podcast';
-		streamParams.duration = 1000 * 60 * 60 * 24; // Default to 1 day
-		streamParams.mediaTitle = payload?.cueTitle || '';
+		streamParams.stream_type = 'OnDemand';
+		streamParams.content_duration = 1000 * 60 * 60 * 24; // Default to 1 day
+		streamParams.content_title = payload?.cueTitle || '';
 		streamParams.content_asset_id = payload?.src || '';
 		streamParams.content_network = '?PodcastNetwork?';
 		streamParams.call_sign = '?PodcastCallSign?';
