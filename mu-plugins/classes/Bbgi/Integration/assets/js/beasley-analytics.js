@@ -410,6 +410,9 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				this.setAnalytics('ad_block_enabled', isBlockingAds);
 				this.setAnalytics('domain', window.location.hostname);
 				this.setAnalytics('platform', 'Web');
+				this.setAnalytics('is_app', window.isWhiz());
+				this.setAnalytics('station_formats', window.bbgiconfig?.publisher?.genre?.join(', '));
+				this.setAnalytics('station_location', window.bbgiconfig?.publisher?.location);
 
 				this.processAnyQueuedCalls();
 				removeEventListener("DOMContentLoaded", handleAdBlockFunc);
@@ -562,6 +565,9 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		// If The Event Is A Page View
 		if (eventName === BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView) {
 			const objectToSend = this.getEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView);
+			if ( objectToSend.view_type === 'embedded_content' ) {
+				objectToSend.embedded_content_is_nested = ( objectToSend.embedded_content_id === objectToSend.post_id );
+			}
 
 			window.mParticle.logPageView(
 				'Page View',
