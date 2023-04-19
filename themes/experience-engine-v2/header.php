@@ -162,12 +162,10 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_timestamp_UTC\', %s);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_year\', %s);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'section_name\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'video_count\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'word_count\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'categories_stringified\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'tags_stringified\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'referrer\', window.document.referrer);
-						window.beasleyanalytics.setAnalyticsForMParticle(\'UTM\', \'%s\');
 
 						window.beasleyanalytics.sendMParticleEvent(
 							BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView,
@@ -203,11 +201,9 @@ use Bbgi\Integration\Google;
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . ( get_the_date('c', $mparticle_pageview_event_data['mParticle_post_id']) ? get_gmt_from_date(get_the_date('c', $mparticle_pageview_event_data['mParticle_post_id']), 'Y-m-d\TH:i:sP') : 'null' ) . "'" : 'null',
 							$mparticle_pageview_event_data['mParticle_post_id'] ? "'" . get_the_date('Y', $mparticle_pageview_event_data['mParticle_post_id']) . "'" : 'null',
 							'?section_name?',
-							'0', // video_count
-							$mparticle_pageview_event_data['mParticle_word_count'] ?: 0,
+							$mparticle_pageview_event_data['mParticle_word_count'] ?: 'null',
 							$mparticle_pageview_event_data['mParticle_categories'] ?: 'null',
 							$mparticle_pageview_event_data['mParticle_tags'] ?: 'null',
-							'?UTM?'
 					);
 					echo $mparticle_implementation;
 				?>
