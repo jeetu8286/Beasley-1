@@ -1,6 +1,6 @@
 <?php
 
-add_filter( 'bbgi_gallery_cotnent', 'ee_update_incontent_gallery', 10, 3 );
+add_filter( 'bbgi_gallery_content', 'ee_update_incontent_gallery', 10, 3 );
 
 if ( ! function_exists( 'ee_setup_gallery_view_metadata' ) ) :
 	function ee_setup_gallery_view_metadata() {
@@ -149,6 +149,10 @@ if ( ! function_exists( 'ee_get_gallery_html' ) ) :
 		$id_pretext = $from_embed ? "embed-gallery" : "gallery";
 		if ( ! empty( $sponsored_image ) ) {
 			array_unshift( $ids, $sponsored_image );
+		}
+
+		if ( empty( $ids ) ) {
+			return false;
 		}
 
 		$images = array_values( array_filter( array_map( 'get_post', array_values( $ids ) ) ) );
