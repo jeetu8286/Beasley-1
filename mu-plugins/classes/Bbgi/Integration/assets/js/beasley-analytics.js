@@ -521,15 +521,19 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		}
 	}
 
-	getEventObject(eventName, isIgnoringBuiltInMparticleFields = false, isIncludingOnlyMediaSpecificFields = false) {
+	getUnstrippedEventObject(eventName, isIgnoringBuiltInMparticleFields, isIncludingOnlyMediaSpecificFields) {
 		const emptyEventObject = this.getCleanEventObject(eventName, isIgnoringBuiltInMparticleFields, isIncludingOnlyMediaSpecificFields);
-		const populatedObj = Object.keys(emptyEventObject)
+		return Object.keys(emptyEventObject)
 			.reduce((a, key) => ({ ...a, [key]: this.keyValuePairs[key]}), {});
+	}
+
+	getEventObject(eventName, isIgnoringBuiltInMparticleFields = false, isIncludingOnlyMediaSpecificFields = false) {
+		const populatedObj = this.getUnstrippedEventObject(eventName, isIgnoringBuiltInMparticleFields, isIncludingOnlyMediaSpecificFields);
 		return this.stripPlaceholdersFromObject(populatedObj);
 	}
 
 	getMediaEventObject(eventName) {
-		const eventPopulatedWithCommonFields = this.getEventObject(eventName, true, false);
+		const eventPopulatedWithCommonFields = this.getUnstrippedEventObject(eventName, true, false);
 		const mediaSpecificKeysArray = Object.keys(this.mediaSpecificKeyValuePairs);
 		const populatedObj = Object.keys(eventPopulatedWithCommonFields)
 			.reduce((a, key) => ({ ...a, [key]: mediaSpecificKeysArray.includes(key) ? this.mediaSpecificKeyValuePairs[key] : eventPopulatedWithCommonFields[key]}), {});
