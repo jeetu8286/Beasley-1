@@ -880,4 +880,5 @@ window.mParticleSchema = {
 				}
 			}
 		}]
-	};
+	},
+};
