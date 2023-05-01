@@ -149,7 +149,6 @@ use Bbgi\Integration\Google;
 						window.beasleyanalytics.setAnalyticsForMParticle(\'primary_author\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'secondary_author\', \'%s\');
 						window.beasleyanalytics.setAnalyticsForMParticle(\'consent_cookie\', \'%s\');
-						window.beasleyanalytics.setAnalyticsForMParticle(\'prebid_enabled\', window.bbgiconfig?.prebid_enabled);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_date\', %s);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_day_of_the_week\', %s);
 						window.beasleyanalytics.setAnalyticsForMParticle(\'publish_hour_of_the_day\', %s);
