@@ -42,7 +42,7 @@ use Bbgi\Integration\Google;
 		if (isset($wp_query->query['post_type'])) {
 			$headerCacheTag[] = "archive-" . $wp_query->query['post_type'];
 			$headerCacheTag[] = $wp_query->query['post_type'];
-			$mparticle_pageview_event_data['mParticleContentType'] = $wp_query->query['post_type'];;
+			$mparticle_pageview_event_data['mParticleContentType'] = $wp_query->query['post_type'];
 		}
 
 	}  else {
@@ -71,6 +71,7 @@ use Bbgi\Integration\Google;
 	if ( is_search() && isset($_GET['s'] ) ) {
 		if( !empty($mparticle_pageview_event_data_search_page) ) {
 			$mparticle_pageview_event_data = $mparticle_pageview_event_data_search_page;
+			$mparticle_pageview_event_data['mParticleContentType'] = "search results";
 		}
 	}
 
