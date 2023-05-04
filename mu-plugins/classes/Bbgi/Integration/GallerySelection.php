@@ -85,11 +85,13 @@ class GallerySelection extends \Bbgi\Module {
 		$ids = $this->get_attachment_ids_for_post( $gallery_id, $attributes['syndication_name'] );
 
 		$gallery_object = get_post( $gallery_id );
-		$content = apply_filters( 'bbgi_gallery_cotnent', false, $post, $ids );
+		$content = apply_filters( 'bbgi_gallery_content', false, $gallery_object, $ids, $post );
 		if ( ! empty( $content ) ) {
 			$content_updated = "<h2 class=\"section-head\"><span>".$gallery_object->post_title."</span></h2>";
 			if( !empty( $attributes['description'] ) &&  ($attributes['description'] == 'yes') ) {
+				remove_filter( 'the_content', 'ee_add_ads_to_content', 100 );
 				$the_content = apply_filters('the_content', $gallery_object->post_content);
+				add_filter( 'the_content', 'ee_add_ads_to_content', 100 );
 				if ( !empty($the_content) ) {
 					$content_updated .= "<div class=\"gallery-embed-description\">".$the_content."</div>";
 				}
