@@ -82,7 +82,7 @@ class NewsletterSignupForm {
 				$html .= '<div class="nsf-form-container">';
 					$html .= '<h1 class="nsf-header">'.$nsf_label.'</h1>';
 					$html .= '<h2 class="nsf-subheader">'.$nsf_description.'</h2>';
-					$html .= '<p style="color:red; font-size:14px;">We used dummy API CURL for now</p>';
+					$html .= '<p class="response-error-container" style="font-size:14px;"></p>';
 					$html .= '<form id="nsf-form" class="nsf-form" name="nsf_form" action="#" method="POST">';
 						$html .= $hidden_fields;
 						$html .= '<div class="nsf-input-container">';
@@ -153,35 +153,34 @@ class NewsletterSignupForm {
 		if ( ! wp_verify_nonce( sanitize_text_field($_POST['nonce']), 'nsf-ajax-nonce' ) ) {
 			wp_send_json_error( 'Invalid Nonce.' );
 		}
-		
-		$name 							= sanitize_text_field($_POST['name']);
-		$email 							= sanitize_email($_POST['email']);
-		$nsf_last_name 					= sanitize_text_field($_POST['nsf_last_name']);
-		$nsf_subscription_attributes 	= sanitize_text_field($_POST['nsf_subscription_attributes']);
-		$nsf_subscription_ID 			= sanitize_text_field($_POST['nsf_subscription_ID']);
-		$nsf_mailing_list_name	 		= sanitize_text_field($_POST['nsf_mailing_list_name']);
-		$nsf_mailing_list_description 	= sanitize_text_field($_POST['nsf_mailing_list_description']);
-		$nsf_template_token 			= sanitize_text_field($_POST['nsf_template_token']);
+
+		$data_array = array(
+			'nsf_name' 						=> sanitize_text_field($_POST['name']),
+			'nsf_email' 					=> sanitize_email($_POST['email']),
+			'nsf_last_name' 				=>sanitize_text_field($_POST['nsf_last_name']),
+			'nsf_subscription_attributes' 	=> sanitize_text_field($_POST['nsf_subscription_attributes']),
+			'nsf_subscription_ID' 			=> sanitize_text_field($_POST['nsf_subscription_ID']),
+			'nsf_mailing_list_name' 		=> sanitize_text_field($_POST['nsf_mailing_list_name']),
+			'nsf_mailing_list_description' 	=> sanitize_text_field($_POST['nsf_mailing_list_description']),
+			'nsf_template_token' 			=> sanitize_text_field($_POST['nsf_template_token']),
+		);
 
 		// Make an HTTP POST request using wp_remote_post()
-		$response = wp_remote_post( 'https://rest.iad-05.braze.com/preference_center/v1/', array(
-			'body' => array(
-				'name' => $name,
-				'email' => $email,
-				'nsf_last_name' => $nsf_last_name,
-				'nsf_subscription_attributes' => $nsf_subscription_attributes,
-				'nsf_subscription_ID' => $nsf_subscription_ID,
-				'nsf_mailing_list_name' => $nsf_mailing_list_name,
-				'nsf_mailing_list_description' => $nsf_mailing_list_description,
-				'nsf_template_token' => $nsf_template_token,
+		$args = array(
+			'headers' => array(
+				'Content-Type' => 'application/json'
 			),
-		) );
+			'body' => json_encode($data_array)
+		);
 		
+		$response = wp_remote_post( 'https://experience.bbgi.com/v1/email/signup', $args );
+
 		if ( ! is_wp_error( $response ) ) {
 			wp_send_json($response);
 		} else {
 			wp_send_json_error( $response->get_error_message() );
 		}
+
 	}
 
 }

@@ -56,13 +56,22 @@
                     $('.nsf-container #nsf-form .nsf-form-submit').prop('disabled', true).css('opacity', 0.5).css('cursor', 'not-allowed');
                 },
 				success : function( response ) {
-					console.log(response.body);
+					var res = jQuery.parseJSON(response.body);
+                    if(res.code == '200'){
+                        $('.response-error-container').html(res.message).css('color','var(--brand-text-color)');
+                    }else{
+                        $('.response-error-container').html('Error Code '+res.code+' : '+res.message).css('color','red');
+                    }
 				},
 				error : function( error ) {
 					console.log(error);
+					$('.response-error-container').html('Something went wrong with API endpoint.').css('color','red');
 				},
                 complete: function() {
                     $('.nsf-container #nsf-form .nsf-form-submit').prop('disabled', false).css('opacity', 1).css('cursor', 'pointer');
+                    $(".nsf-first-name").val('');
+                    $(".nsf-email").val('');
+                    $("#nsf-last-name").val('');
                 }
 			});
 

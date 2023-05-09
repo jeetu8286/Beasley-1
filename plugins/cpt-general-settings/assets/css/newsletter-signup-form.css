@@ -121,6 +121,11 @@
     color: red;
 }
 
+.nsf-container .response-error-container{
+    font-size:14px;
+    color: var(--brand-text-color);
+}
+
 @media (max-width:767px) {
     .nsf-container {
         flex-wrap: wrap;
