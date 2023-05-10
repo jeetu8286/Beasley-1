@@ -20,6 +20,11 @@
                 return false;
             }
 
+            if (nsf_last_name == "") {
+                $("#nsf-last-name").focus();
+                return false;
+            }
+
             if (email != "") {
                 var pattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
                 if (!pattern.test(email)) {
@@ -54,6 +59,8 @@
 				},
                 beforeSend: function() {
                     $('.nsf-container #nsf-form .nsf-form-submit').prop('disabled', true).css('opacity', 0.5).css('cursor', 'not-allowed');
+                    $('.nsf-spinner').css('display','block');
+                    $('.response-error-container').html('');
                 },
 				success : function( response ) {
 					var res = jQuery.parseJSON(response.body);
@@ -72,6 +79,7 @@
                     $(".nsf-first-name").val('');
                     $(".nsf-email").val('');
                     $("#nsf-last-name").val('');
+                    $('.nsf-spinner').css('display','none');
                 }
 			});
 

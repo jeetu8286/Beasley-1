@@ -82,7 +82,6 @@ class NewsletterSignupForm {
 				$html .= '<div class="nsf-form-container">';
 					$html .= '<h1 class="nsf-header">'.$nsf_label.'</h1>';
 					$html .= '<h2 class="nsf-subheader">'.$nsf_description.'</h2>';
-					$html .= '<p class="response-error-container" style="font-size:14px;"></p>';
 					$html .= '<form id="nsf-form" class="nsf-form" name="nsf_form" action="#" method="POST">';
 						$html .= $hidden_fields;
 						$html .= '<div class="nsf-input-container">';
@@ -90,7 +89,7 @@ class NewsletterSignupForm {
 							$html .= '<div class="input-field"><input type="text" name="nsf_first_name" class="nsf-first-name" /></div>';
 						$html .= '</div>';
 						$html .= '<div class="nsf-input-container">';
-							$html .= '<div class="input-label"><label>Last Name</label></div>';
+							$html .= '<div class="input-label"><label>Last Name</label><span> *</span></div>';
 							$html .= '<div class="input-field"><input type="text" name="nsf_last_name" id="nsf-last-name" class="nsf-last-name" /></div>';
 						$html .= '</div>';
 						$html .= '<div class="nsf-input-container">';
@@ -101,6 +100,7 @@ class NewsletterSignupForm {
 							$html .= '<button class="nsf-form-submit" type="submit">Subscribe</button>';
 						$html .= '</div>';
 					$html .= '</form>';
+					$html .= '<div class="nsf-spinner"><div class="spinner"></div></div><p class="response-error-container" style="font-size:14px;"></p>';
 				$html .= '</div>';
 			$html .= '</div>';
 			$nsf_output_hide = true;
