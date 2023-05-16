@@ -8,9 +8,9 @@
 
 <?php
 $author_id = get_query_var( 'author_id' );
-$user_data = get_userdata($author_id);
+$blogs = get_blogs_of_user($author_id);
 
-if($author_id == '' || !$user_data){
+if($author_id == '' || empty($blogs)){
 
 	global $wp_query;
     $wp_query->set_404();
