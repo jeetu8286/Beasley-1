@@ -1,6 +1,6 @@
 
 window.isWhiz = () => {
-	const searchParams = new URLSearchParams(window.location?search?.toLowerCase());
+	const searchParams = new URLSearchParams(window.location?.search?.toLowerCase());
 	return searchParams && searchParams.has('whiz');
 };
 
