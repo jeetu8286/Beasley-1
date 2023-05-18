@@ -14,7 +14,6 @@ window.mParticleSchema = {
 										"primary_category_id": {"description": "", "type": ["string", "null"]},
 										"show_name": {"description": "", "type": ["string", "null"]},
 										"show_id": {"description": "", "type": ["string", "null"]},
-										"tags": {"description": "", "type": ["string", "null"]},
 										"content_type": {"description": "", "type": ["string", "null"]},
 										"view_type": {
 											"description": "",
@@ -42,7 +41,6 @@ window.mParticleSchema = {
 											"description": "",
 											"type": ["string", "null"]
 										},
-										"daypart": {"description": "", "type": ["string", "null"]},
 										"post_id": {"description": "", "type": ["string", "null"]},
 										"wp_author": {"description": "", "type": ["string", "null"]},
 										"primary_author": {"description": "", "type": ["string", "null"]},
@@ -54,7 +52,6 @@ window.mParticleSchema = {
 										"event_hour_of_the_day": {"description": "", "type": ["string", "null"]},
 										"prebid_enabled": {"description": "", "type": ["string", "null"]},
 										"platform": {"description": "", "type": ["string", "null"]},
-										"is_app": {"description": "", "type": ["boolean", "null"]},
 										"publish_date": {
 											"description": "",
 											"type": ["string", "null"],
@@ -84,13 +81,15 @@ window.mParticleSchema = {
 										"categories_stringified": {"description": "", "type": ["string", "null"]},
 										"tags_stringified": {"description": "", "type": ["string", "null"]},
 										"referrer": {"description": "", "type": ["string", "null"]},
-										"station_formats": {"description": "", "type": ["string", "null"]},
-										"station_location": {"description": "", "type": ["string", "null"]},
 										"title": {"description": "", "type": ["string", "null"]},
 										"page_url": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									}, "required": [], "type": "object"
 								}
@@ -108,9 +107,7 @@ window.mParticleSchema = {
 						"data": {
 							"additionalProperties": true, "properties": {
 								"custom_attributes": {
-									"additionalProperties": false,
-									"description": "",
-									"properties": {
+									"additionalProperties": false, "description": "", "properties": {
 										"container_id": {"description": "", "type": ["string", "null"]},
 										"link_name": {"description": "", "type": ["string", "null"]},
 										"link_text": {"description": "", "type": ["string", "null"]},
@@ -124,12 +121,14 @@ window.mParticleSchema = {
 										"title": {"description": "", "type": ["string", "null"]},
 										"page_url": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
-									},
-									"required": [],
-									"type": "object"
+									}, "required": [], "type": "object"
 								}
 							}, "required": [], "type": "object"
 						}
@@ -155,8 +154,12 @@ window.mParticleSchema = {
 										"title": {"description": "", "type": ["string", "null"]},
 										"page_url": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									},
 									"required": [],
@@ -192,8 +195,12 @@ window.mParticleSchema = {
 										"title": {"description": "", "type": ["string", "null"]},
 										"page_url": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									},
 									"required": [],
@@ -218,9 +225,7 @@ window.mParticleSchema = {
 						"data": {
 							"additionalProperties": true, "properties": {
 								"custom_attributes": {
-									"additionalProperties": false,
-									"description": "",
-									"properties": {
+									"additionalProperties": false, "description": "", "properties": {
 										"container_id": {"description": "", "type": ["string", "null"]},
 										"module_type": {"description": "", "type": ["string", "null"]},
 										"module_name": {"description": "", "type": ["string", "null"]},
@@ -237,12 +242,14 @@ window.mParticleSchema = {
 										"title": {"description": "", "type": ["string", "null"]},
 										"page_url": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
-									},
-									"required": [],
-									"type": "object"
+									}, "required": [], "type": "object"
 								}
 							}, "required": [], "type": "object"
 						}
@@ -269,8 +276,12 @@ window.mParticleSchema = {
 										"title": {"description": "", "type": ["string", "null"]},
 										"page_url": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									},
 									"required": [],
@@ -305,8 +316,12 @@ window.mParticleSchema = {
 										"title": {"description": "", "type": ["string", "null"]},
 										"page_url": {"description": "", "type": ["string", "null"]},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									},
 									"required": [],
@@ -387,8 +402,12 @@ window.mParticleSchema = {
 											"type": ["boolean", "null"]
 										},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									}, "required": [], "type": "object"
 								}
@@ -465,8 +484,12 @@ window.mParticleSchema = {
 											"type": ["boolean", "null"]
 										},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									}, "required": [], "type": "object"
 								}
@@ -541,8 +564,12 @@ window.mParticleSchema = {
 											"type": ["boolean", "null"]
 										},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									}, "required": [], "type": "object"
 								}
@@ -620,8 +647,12 @@ window.mParticleSchema = {
 											"type": ["boolean", "null"]
 										},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									}, "required": [], "type": "object"
 								}
@@ -699,8 +730,12 @@ window.mParticleSchema = {
 											"type": ["boolean", "null"]
 										},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									}, "required": [], "type": "object"
 								}
@@ -813,8 +848,12 @@ window.mParticleSchema = {
 											"type": ["boolean", "null"]
 										},
 										"domain": {"description": "", "type": ["string", "null"], "format": "hostname"},
+										"is_app": {"description": "", "type": ["boolean", "null"]},
+										"station_formats": {"description": "", "type": ["string", "null"]},
+										"station_location": {"description": "", "type": ["string", "null"]},
 										"station_id": {"description": "", "type": ["string", "null"]},
 										"call_letters": {"description": "", "type": ["string", "null"]},
+										"daypart": {"description": "", "type": ["string", "null"]},
 										"beasley_event_id": {"description": "", "type": ["string", "null"]}
 									}, "required": [], "type": "object"
 								}
