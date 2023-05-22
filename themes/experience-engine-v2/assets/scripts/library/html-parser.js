@@ -475,6 +475,12 @@ export function getStateFromContent(
 				'.audience-embed',
 				getAudienceEmbedParams,
 			),
+			...processEmbeds(
+				container,
+				'preferencecenter',
+				'.preference-section',
+				getDatasetParams(),
+			),
 		];
 
 		// extract <script> tags

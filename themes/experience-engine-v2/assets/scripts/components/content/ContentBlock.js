@@ -37,6 +37,8 @@ import Dimers from './embeds/Dimers';
 import DraftkingEmbed from './embeds/DraftkingEmbed';
 import AudienceEmbed from './embeds/Audience';
 
+import PreferenceCenter from './embeds/PreferenceCenter';
+
 const mapping = {
 	audio: AudioEmbed,
 	countdown: Countdown,
@@ -69,6 +71,7 @@ const mapping = {
 	dmlbranded: BrandedContent,
 	dimers: Dimers,
 	audience: AudienceEmbed,
+	preferencecenter: PreferenceCenter,
 };
 
 /**
