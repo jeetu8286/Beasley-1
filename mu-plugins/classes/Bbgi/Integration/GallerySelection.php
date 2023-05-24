@@ -104,7 +104,6 @@ class GallerySelection extends \Bbgi\Module {
 				}
 			}
 			$content_updated .= $this->stringify_selected_gallery($content);
-			// echo "<pre>", "Gallery updating embed flag", "</pre>";
 			$cpt_embed_flag[$post_id] = true;
 			return $content_updated;
 		}
@@ -144,7 +143,6 @@ class GallerySelection extends \Bbgi\Module {
 			}
 		}
 		$content_updated .= $this->stringify_selected_gallery($content);
-		// echo "<pre>", "Gallery updating embed flag", "</pre>";
 		$cpt_embed_flag[$post_id] = true;
 		return $content_updated;
 	}

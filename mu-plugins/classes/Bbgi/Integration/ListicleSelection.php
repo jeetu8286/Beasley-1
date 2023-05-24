@@ -123,7 +123,6 @@ class ListicleSelection extends \Bbgi\Module {
 			}
 
 			$content_updated .= $this->stringify_selected_listicle($content);
-			// echo "<pre>", "Listicle updating embed flag", "</pre>";
 			$cpt_embed_flag[$post_id] = true;
 			return $content_updated;
 		}

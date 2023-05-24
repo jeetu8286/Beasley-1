@@ -157,7 +157,6 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 			}
 			$content_updated .= $this->stringify_selected_musthave($content);
 			$content_updated .= "<p>&nbsp;</p><h6><em>Please note that items are in stock and prices are accurate at the time we published this list. Have an idea for a fun theme for a gift idea list you’d like us to create?&nbsp; Drop us a line at <a href=\"mailto:shopping@bbgi.com\" data-uri=\"98cfaf73989c872d3384892acc280543\">shopping@bbgi.com</a>.&nbsp;</em></h6>";
-			// echo "<pre>", "Affiliate Marketing updating embed flag", "</pre>";
 			$cpt_embed_flag[$post_id] = true;
 			return $content_updated;
 		}
