@@ -96,6 +96,12 @@ async function tvj_checkImg(url) {
 function renderVideoThumbnailMobile($el, data, vti = 0) {
     let { src, html, title, thumbnail, isFallback } = data;
 
+	// If A Vimeo Video, Show Vimeo Player and exit
+	if (src.toLowerCase().indexOf('vimeo') > -1) {
+		$el.html(html);
+		return;
+	}
+
     let webp = false;
     if(thumbnail) {
         if (thumbnail.indexOf('i.ytimg.com') !== false) {

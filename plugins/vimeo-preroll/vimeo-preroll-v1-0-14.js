@@ -172,9 +172,14 @@
 		// Add allow=autoplay to Vimeo IFrame so that play button can interact.
 		// Swap out with original - Chrome did not work when original was modified.
 		// Wrap copy in div which onmouseover inits IMA.
+		const iframeHeightVal = iFrameElement.getAttribute('height');
 		const iFrameParentElement = iFrameElement.parentElement;
 		const newIFrameElement = iFrameElement.cloneNode(true);
 		newIFrameElement.setAttribute('allow', 'autoplay; fullscreen');
+
+		// .responsive class was causing 0 height style - override style with iframe height attribute
+		console.log(`Setting Vimeo IFrame Style Height: ${iframeHeightVal}`);
+		newIFrameElement.setAttribute('style', `height: ${iframeHeightVal ? iframeHeightVal : 0}px`);
 
 		// On IOS, IMA does not consider Vimeo Events as User Interaction.
 		// Create a button to use as a proxy click event.
@@ -205,6 +210,9 @@
 			console.log('DEBUG BUTTON CLICK');
 			renderHTML(newIFrameElement);
 			createIMADisplayContainer();
+			retval.on('play', () => {
+				retval.thisVimeoPlayHandler();
+			});
 			retval.play();
 			trickIMAButton.remove(); // Delete trick button since we already played IMA Ad
 		}
@@ -264,7 +272,11 @@
 		};
 
 		vimeoplayer.on('play', () => {
-			vimeoplayer.thisVimeoPlayHandler();
+			if (window.isWhiz() && isIOS()) {
+				// Do nothing when IOS and Whiz - Note trickIMAButton.onclick() created on IOS will replace this onPlay code
+			} else {
+				vimeoplayer.thisVimeoPlayHandler();
+			}
 		});
 
 		vimeoplayer.on('pause', () => {
