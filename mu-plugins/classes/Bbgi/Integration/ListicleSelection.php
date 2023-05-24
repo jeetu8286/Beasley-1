@@ -50,9 +50,7 @@ class ListicleSelection extends \Bbgi\Module {
 		global $cpt_embed_flag;
 		$post_id = get_the_ID();
 
-		// echo "<pre>", "FROM Listicle: Post ID: ".$post_id, "</pre>";
 		if( !empty($cpt_embed_flag) && $cpt_embed_flag[$post_id] ) {  // Check for the source post already have embed
-			// echo "<pre>", "This post is already have one embed", "</pre>";
 			return '';
 		}
 
