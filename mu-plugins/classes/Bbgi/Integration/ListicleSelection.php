@@ -47,6 +47,13 @@ class ListicleSelection extends \Bbgi\Module {
 	 * @return string Shortcode markup.
 	 */
 	public function render_shortcode( $atts ) {
+		global $cpt_embed_flag;
+		$post_id = get_the_ID();
+
+		if( !empty($cpt_embed_flag) && $cpt_embed_flag[$post_id] ) {  // Check for the source post already have embed
+			return '';
+		}
+
 		$attributes = shortcode_atts( array(
 			'listicle_id' => '',
 			'syndication_name' => '',
@@ -116,6 +123,7 @@ class ListicleSelection extends \Bbgi\Module {
 			}
 
 			$content_updated .= $this->stringify_selected_listicle($content);
+			$cpt_embed_flag[$post_id] = true;
 			return $content_updated;
 		}
 
