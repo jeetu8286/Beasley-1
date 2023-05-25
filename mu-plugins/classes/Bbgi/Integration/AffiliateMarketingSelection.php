@@ -78,23 +78,4 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 
 		return $content;
 	}
-
-	/**
-	 * Verify post is valid or not
-	 * @param $post
-	 * @return Array
-	 */
-	public function verify_post( $post, $syndication_name ) {
-		$ids = array();
-
-		$post = get_post( $post );
-		if( $post->post_type !== 'affiliate_marketing' || $post->post_name !== $syndication_name ) {
-			return null;
-		}
-
-		if ( !empty( $post ) ) {
-			return $post;
-		}
-		return null;
-	}
 }
