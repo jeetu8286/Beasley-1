@@ -28,6 +28,13 @@ class ListicleSelection extends \Bbgi\Module {
 	 * @return string Shortcode markup.
 	 */
 	public function render_shortcode( $atts ) {
+		global $cpt_embed_flag;
+		$post_id = get_the_ID();
+
+		if( !empty($cpt_embed_flag) && $cpt_embed_flag[$post_id] ) {  // Check for the source post already have embed
+			return '';
+		}
+
 		$attributes = shortcode_atts( array(
 			'listicle_id' => '',
 			'syndication_name' => '',
@@ -35,7 +42,7 @@ class ListicleSelection extends \Bbgi\Module {
 		), $atts, 'select-listicle' );
 
 		$post_object = get_queried_object();
-		
+
 		$listicle_id = $this->getObjectId( $post_object->post_type, "listicle_cpt", $attributes['listicle_id'], $attributes['syndication_name'] );
 		if(empty($listicle_id)) {
 			return;
@@ -49,7 +56,7 @@ class ListicleSelection extends \Bbgi\Module {
 		$cpt_item_name = (array) $this->get_post_metadata_from_post( 'cpt_item_name', $cpt_post_object );
 		$cpt_item_description = (array) $this->get_post_metadata_from_post( 'cpt_item_description', $cpt_post_object );
 		$cpt_item_order = (array) $this->get_post_metadata_from_post( 'cpt_item_order', $cpt_post_object );
-		$cpt_item_type 	= (array) $this->get_post_metadata_from_post( 'cpt_item_type', $cpt_post_object );		
+		$cpt_item_type 	= (array) $this->get_post_metadata_from_post( 'cpt_item_type', $cpt_post_object );
 
 		remove_filter( 'the_content', 'ee_add_ads_to_content', 100 );
 		$content = apply_filters( 'bbgi_listicle_content', $cpt_post_object, $cpt_item_name, $cpt_item_description, $cpt_item_order, $cpt_item_type, $post_object );
@@ -66,6 +73,7 @@ class ListicleSelection extends \Bbgi\Module {
 			}
 
 			$content_updated .= $this->stringify_selected_cpt( $content, "LISTICLE" );
+			$cpt_embed_flag[$post_id] = true;
 			return $content_updated;
 		}
 

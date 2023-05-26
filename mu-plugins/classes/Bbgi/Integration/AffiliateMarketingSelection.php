@@ -28,6 +28,13 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 	 * @return string Shortcode markup.
 	 */
 	public function render_shortcode( $atts ) {
+		global $cpt_embed_flag;
+		$post_id = get_the_ID();
+
+		if( !empty($cpt_embed_flag) && $cpt_embed_flag[$post_id] ) {  // Check for the source post already have embed
+			return '';
+		}
+
 		$attributes = shortcode_atts( array(
 			'am_id' => '',
 			'syndication_name' => ''
@@ -73,6 +80,7 @@ class AffiliateMarketingSelection extends \Bbgi\Module {
 			}
 			$content_updated .= $this->stringify_selected_cpt($content, "MUSTHAVE");
 			$content_updated .= "<p>&nbsp;</p><h6><em>Please note that items are in stock and prices are accurate at the time we published this list. Have an idea for a fun theme for a gift idea list you’d like us to create?&nbsp; Drop us a line at <a href=\"mailto:shopping@bbgi.com\" data-uri=\"98cfaf73989c872d3384892acc280543\">shopping@bbgi.com</a>.&nbsp;</em></h6>";
+			$cpt_embed_flag[$post_id] = true;
 			return $content_updated;
 		}
 
