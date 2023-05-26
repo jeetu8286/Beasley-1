@@ -84,35 +84,51 @@ trait Util {
 	}
 
 	/**
-	 * Returns object ID to identifier relationship.
-	 * 
-	 * @param string $post_type Type of the post to check.
-	 * @param string $embed_post_type Type of the post to embed.
-	 * @param int $attr_object_id The object ID to check against.
-	 * @param string $syndication_name Name of the post for reference.
+	 * Get the object ID, depending on post type, embed post type, attribute object ID, and syndication name.
 	 *
-	 * @return int $objectId The ID of the post related to the given parameters. 
+	 * @param $post_type string  The post type.
+	 * @param $embed_post_type  string  The embed post type. 
+	 * @param $attr_object_id  int     The attribute object ID.
+	 * @param $syndication_name string The syndication name. 
+	 *
+	 * @return int Returns the object ID.
 	 */
 	protected function getObjectId($post_type, $embed_post_type = "listicle_cpt", $attr_object_id, $syndication_name)
 	{
+		$post_types = array( 'listicle_cpt', 'affiliate_marketing', 'gmr_gallery' );
+		if( !in_array($embed_post_type, $post_types) ) {
+			return 0;
+		}
+
 		$objectId = 0;
 		if ( $this->is_future_date($post_type) ) {
 			return 0;
 		}
 
 		if( !empty( $syndication_name ) ) {
-			$meta_query_args = array(
+			$meta_query_args_syn = array(
 				'meta_key'    => 'syndication_old_name',
-				'meta_value'  => $syndication_name,
+				'meta_value'  => trim( $syndication_name ),
 				'post_status' => 'publish',
 				'post_type'   => $embed_post_type
 			);
+			$existing_syn = get_posts( $meta_query_args_syn );
 
-			$existing = get_posts( $meta_query_args );
+			if ( !empty( $existing_syn ) ) {
+				$existing_post_syn = current( $existing_syn );
+				return intval( $existing_post_syn->ID ) ?: 0;
+			} else {
+				$meta_query_args_org = array(
+					'name'  => trim( $syndication_name ),
+					'post_status' => 'any',
+					'post_type'   => $embed_post_type
+				);
+				$existing_org = get_posts( $meta_query_args_org );
 
-			if ( !empty( $existing ) ) {
-				$existing_post = current( $existing );
-				$objectId = intval( $existing_post->ID );
+				if ( !empty( $existing_org ) ) {
+					$existing_post_org = current( $existing_org );
+					return intval( $existing_post_org->ID ) ?: 0;
+				}
 			}
 		}
 
