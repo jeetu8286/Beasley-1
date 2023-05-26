@@ -208,8 +208,8 @@
 			console.log('DEBUG BUTTON CLICK');
 			renderPrerollHTML(newIFrameElement);
 			createIMADisplayContainer();
-			await retval.play();
 			trickIMAButton.remove(); // Delete trick button since we already played IMA Ad
+			await retval.play();
 		}
 
 		return retval;
