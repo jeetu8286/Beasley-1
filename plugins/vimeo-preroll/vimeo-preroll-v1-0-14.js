@@ -58,7 +58,7 @@
 		}
 	}
 
-	const renderHTML = (iFrameElement) => {
+	const renderPrerollHTML = (iFrameElement) => {
 		const oldVimeoPrerollWrapper = document.getElementById(VIMEOPREROLLWRAPPER);
 		if (oldVimeoPrerollWrapper) {
 			oldVimeoPrerollWrapper.remove();
@@ -103,16 +103,14 @@
 	const renderVimeoPreroll = (iFrameElement) => {
 		const vimeoPTag = iFrameElement.parentElement;
 
-		// Do not make parent relative when Vimeo is in featured position
-		if (! vimeoPTag.classList.contains('lazy-video')) {
-			vimeoPTag.style.position = 'relative';
-		}
+		//vimeoPTag.style.position = 'relative';
 
 		const wrapperDiv = document.createElement('div');
 		wrapperDiv.id = VIMEOPREROLLWRAPPER;
 		wrapperDiv.classList.add('preroll-wrapper');
 		wrapperDiv.style.position = 'absolute';
 		wrapperDiv.style.backgroundColor = 'white';
+		wrapperDiv.style.top = 0;
 		wrapperDiv.style.height = iFrameElement.style.height;
 		wrapperDiv.style.zIndex = '9';
 		if (isIOS()) {
@@ -206,18 +204,36 @@
 
 		const retval = new Vimeo.Player(newIFrameElement);
 
-		trickIMAButton.onclick = () => {
+		trickIMAButton.onclick = async () => {
 			console.log('DEBUG BUTTON CLICK');
-			renderHTML(newIFrameElement);
+			renderPrerollHTML(newIFrameElement);
 			createIMADisplayContainer();
-			retval.on('play', () => {
-				retval.thisVimeoPlayHandler();
-			});
-			retval.play();
+			await retval.play();
 			trickIMAButton.remove(); // Delete trick button since we already played IMA Ad
 		}
 
 		return retval;
+	}
+
+	const retryVimeoPlayAfterPreroll = (vimeoplayer, attemptNum) => {
+		if (!attemptNum || attemptNum > 3) {
+			console.log(`UNABLE TO REPLAY AND QUITTING ON ATTEMPT ${attemptNum}`);
+			return;
+		}
+		console.log(`Replay Attempt ${attemptNum}`);
+
+		const playPromise = vimeoplayer.play();
+		if (playPromise){
+			playPromise.then(() => {
+				console.log('Replay Initiated - Setting Preroll Flags');
+				vimeoplayer.isPlayingPreroll = false;
+				vimeoplayer.finishedPlayingPreroll = true;
+			}).catch(async () => {
+				setTimeout(() => {
+					retryVimeoPlayAfterPreroll(vimeoplayer, attemptNum + 1);
+				}, 250);
+			});
+		}
 	}
 
 	const loadVimeoPlayer = (iFrameElement) => {
@@ -225,6 +241,7 @@
 			return;
 		}
 		const vimeoplayer = isIOS() ? getVimeoPlayerForIOS(iFrameElement) : new Vimeo.Player(iFrameElement);
+		vimeoplayer.autopause = false;
 
 		// Mark parent element as processed
 		vimeoplayer.element.parentElement.classList.add('beasley-vimeo');
@@ -238,16 +255,17 @@
 		vimeoplayer.prerollCallback = async () => {
 			if (vimeoplayer.isPlayingPreroll) {
 				console.log('Preroll Call Back');
+				vimeoplayer.on('play', () => {}); // Make Sure Not To Fire Play Handler
+
+				console.log('Vimeo Attempting to Resume Play in Callback after Preroll - Removing Preroll');
 				const wrapperDiv = document.getElementById(VIMEOPREROLLWRAPPER);
 				if (wrapperDiv) {
 					wrapperDiv.remove();
 				}
 
-				console.log('Vimeo Resumed Play in Callback after Preroll');
-				await vimeoplayer.play();
+				retryVimeoPlayAfterPreroll(vimeoplayer, 1);
+
 				console.log('Preroll Callback is done!');
-				vimeoplayer.isPlayingPreroll = false;
-				vimeoplayer.finishedPlayingPreroll = true;
 			}
 		};
 
@@ -264,18 +282,20 @@
 				console.log('Paused and now Playing Preroll');
 				/* PREROLL CODE HERE */
 				if (! document.getElementById(VIMEOPREROLLWRAPPER)) {
-					renderHTML(vimeoplayer.element);
+					renderPrerollHTML(vimeoplayer.element);
 					createIMADisplayContainer();
 				}
 				await getUrlFromPrebid(vimeoplayer);
 			}
 		};
 
-		vimeoplayer.on('play', () => {
+		vimeoplayer.on('play', async () => {
 			if (window.isWhiz() && isIOS()) {
-				// Do nothing when IOS and Whiz - Note trickIMAButton.onclick() created on IOS will replace this onPlay code
+				// Don't do the play routine when IOS and Whiz - Note trickIMAButton.onclick() created on IOS will replace this onPlay code
 			} else {
-				vimeoplayer.thisVimeoPlayHandler();
+				if (!vimeoplayer.isPlayingPreroll && !vimeoplayer.finishedPlayingPreroll) {
+					setTimeout(vimeoplayer.thisVimeoPlayHandler, 150);
+				}
 			}
 		});
 

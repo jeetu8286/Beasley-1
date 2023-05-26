@@ -91,7 +91,9 @@ class EmbedVideo extends PureComponent {
 			return (
 				<div
 					className="lazy-video"
-					dangerouslySetInnerHTML={{ __html: html }}
+					dangerouslySetInnerHTML={{
+						__html: html.replace('&autoplay=1', '').replace('autoplay;', ''),
+					}}
 				/>
 			);
 		}
