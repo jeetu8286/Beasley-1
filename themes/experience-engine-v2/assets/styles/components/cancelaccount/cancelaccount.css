@@ -30,6 +30,11 @@
 	font-size: 14px;
 }
 
+.prompt-container h3{
+	color: #eee;
+	text-align: center;
+}
+
 .prompt-container button {
 	background-color: var(--brand-primary);
 	color: var(--brand-text-color);

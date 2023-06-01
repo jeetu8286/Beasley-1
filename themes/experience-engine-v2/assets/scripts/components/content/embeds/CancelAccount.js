@@ -66,6 +66,7 @@ class CancelAccount extends Component {
 				) : null}
 				{this.state.showPrompt ? (
 					<div className="prompt-container">
+						<h3>Alert Message</h3>
 						<div className="confirmation-text">
 							Are you sure you want to cancel your account?
 						</div>
