@@ -1,25 +1,3 @@
-// ### This is plugin that calls this code
-<?php
-/*
-Plugin Name: CPT - Newsletter Signup Plugin
-Description: Allows for embedding newsletter signhup forms on the site
-Version: 0.0.1
-Author: Rupesh Jorkar (RJ)
-Author URI: https://bbgi.com/
-*/
-
-if ( ! defined( 'ABSPATH' ) ) {
-	die( "Please don't try to access this file directly." );
-}
-define( 'GENERAL_SETTINGS_CPT_VERSION', '0.0.1' );
-define( 'GENERAL_SETTINGS_CPT_URL', plugin_dir_url( __FILE__ ) );
-define( 'GENERAL_SETTINGS_CPT_PATH', dirname( __FILE__ ) );
-define( 'GENERAL_SETTINGS_CPT_TEXT_DOMAIN', 'general_settings_textdomain' );
-
-include __DIR__ . '/includes/newsletter-signup-form.php';
-
-
-// ### This is the "/includes/newsletter-signup-form.php"
 <?php
 
 if ( ! defined( 'ABSPATH' ) ) {
