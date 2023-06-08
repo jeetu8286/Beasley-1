@@ -50,6 +50,7 @@ class NewsletterSignupForm {
                 'mailing_list_name' => '',
                 'mailing_list_description' => '',
                 'template_token' => '',
+                'checkbox_content' => '',
             ), $attr );
 
         if ( !$nsf_output_hide ) {
@@ -65,7 +66,7 @@ class NewsletterSignupForm {
             $nsf_mailing_list_name          = get_option('nsf_mailing_list_name');
             $nsf_mailing_list_description    = get_option('nsf_mailing_list_description');
             $nsf_template_token                = get_option('nsf_template_token');
-            $nsf_checkbox_content            = get_option('nsf_checkbox_content') ? get_option('nsf_checkbox_content') : 'By clicking "Subscribe" I agree to the website\'s terms of Service and Privacy Policy. I understand I can unsubscribe at any time.';
+            $nsf_checkbox_content			= $attr['checkbox_content'] != '' ? sanitize_text_field($attr['checkbox_content']) : (get_option('nsf_checkbox_content') != '' ? get_option('nsf_checkbox_content') : 'By clicking "Subscribe" I agree to the website\'s terms of Service and Privacy Policy. I understand I can unsubscribe at any time.');
             $siteid                         = (get_option( 'ee_publisher') != '') ? get_option( 'ee_publisher') : '';
             $domain                         = get_site_url();
             $page_path                      = get_permalink();
