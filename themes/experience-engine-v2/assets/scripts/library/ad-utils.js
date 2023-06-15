@@ -114,7 +114,7 @@ const bidsBackHandler = (unitIdList, slotList) => {
 	googletag.pubads().refresh(slotList, { changeCorrelator: false });
 };
 
-export const pushRefreshBidsIntoGoogleTag = (unitIdList, slotList) => {
+export const pushPrebidRefreshBidsIntoGoogleTag = (unitIdList, slotList) => {
 	window.pbjs.que = window.pbjs.que || [];
 	window.pbjs.que.push(() => {
 		const PREBID_TIMEOUT = 2000;
@@ -127,6 +127,7 @@ export const pushRefreshBidsIntoGoogleTag = (unitIdList, slotList) => {
 };
 
 export const doPubadsRefreshForAllRegisteredAds = googletag => {
+	const { prebid_enabled } = window.bbgiconfig;
 	const statsCollectionObject = getSlotStatsCollectionObject();
 	const statsObjectKeys = Object.keys(statsCollectionObject);
 	if (statsObjectKeys) {
@@ -144,7 +145,11 @@ export const doPubadsRefreshForAllRegisteredAds = googletag => {
 			setTimeout(() => {
 				// const slotsToRefreshArray = [...slotList.values()];
 				googletag.cmd.push(() => {
-					googletag.pubads().refresh(slotList);
+					if (prebid_enabled) {
+						pushPrebidRefreshBidsIntoGoogleTag(placeholdersToRefresh, slotList);
+					} else {
+						googletag.pubads().refresh(slotList);
+					}
 				});
 			}, 0);
 		}

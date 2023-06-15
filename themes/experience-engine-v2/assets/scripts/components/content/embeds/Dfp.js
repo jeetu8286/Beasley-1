@@ -12,7 +12,7 @@ import {
 	hidePlaceholder,
 	showSlotElement,
 	getSlotStatsCollectionObject,
-	pushRefreshBidsIntoGoogleTag,
+	pushPrebidRefreshBidsIntoGoogleTag,
 } from '../../../library/ad-utils';
 
 class Dfp extends PureComponent {
@@ -896,7 +896,7 @@ class Dfp extends PureComponent {
 			googletag.cmd.push(() => {
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
 				if (prebidEnabled) {
-					pushRefreshBidsIntoGoogleTag([adjustedUnitId], [slot]);
+					pushPrebidRefreshBidsIntoGoogleTag([adjustedUnitId], [slot]);
 				} else {
 					googletag.pubads().refresh([slot]);
 				}
