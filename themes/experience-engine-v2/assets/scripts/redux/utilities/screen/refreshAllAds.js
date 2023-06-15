@@ -14,7 +14,6 @@ export default function refreshAllAds() {
 	if (!prebid_enabled) {
 		const { googletag } = window;
 		googletag.cmd.push(() => {
-			// googletag.pubads().refresh();
 			doPubadsRefreshForAllRegisteredAds(googletag);
 		});
 		return; // EXIT FUNCTION
@@ -38,7 +37,6 @@ export default function refreshAllAds() {
 			pbjs.que.push(() => {
 				pbjs.setTargetingForGPTAsync();
 				logPrebidTargeting();
-				// googletag.pubads().refresh();
 				doPubadsRefreshForAllRegisteredAds(googletag);
 			});
 		});
