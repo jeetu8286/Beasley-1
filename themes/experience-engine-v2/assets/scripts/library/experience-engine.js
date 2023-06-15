@@ -197,13 +197,21 @@ export function searchKeywords(keyword) {
 	).then(response => response.json());
 }
 
+export function validateFutureDate(dateString) {
+	const today = new Date();
+	const parsedDate = new Date(dateString);
+
+	if (parsedDate >= today) {
+		return false;
+	}
+}
+
 export function validateDate(dateString) {
 	// @note: Leaving this is without disabling it.
 	// First check for the pattern
 	if (!/^\d{1,2}\/|-\d{1,2}\/|-\d{4}$/.test(dateString)) {
 		return false;
 	}
-
 	// Parse the date parts to integers
 	let parts;
 
@@ -357,6 +365,31 @@ export function fixMegaSubMenuWidth() {
 		}
 	}
 }
+export function deleteUser() {
+	const params = {
+		method: 'delete',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: null,
+	};
+	return getToken().then(token => {
+		fetch(__api`user?authorization=${token}`, params).then(response => {
+			// Log user out
+			firebaseAuth.signOut();
+			response.json();
+		});
+	});
+}
+
+export function getPreferenceLink(preferenceID) {
+	return getToken().then(token =>
+		fetch(
+			__api`user/getPreferenceURL/?authorization=${token}&preferenceID=${preferenceID}`,
+		),
+	);
+}
 
 export default {
 	saveUser,
@@ -367,8 +400,10 @@ export default {
 	deleteFeed,
 	searchKeywords,
 	validateDate,
+	validateFutureDate,
 	validateUrl,
 	fetchPublisherInformation,
 	getOffsetEl,
 	fixMegaSubMenuWidth,
+	deleteUser,
 };
