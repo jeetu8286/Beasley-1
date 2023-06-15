@@ -890,14 +890,6 @@ class Dfp extends PureComponent {
 	}
 
 	pushRefreshBidIntoGoogleTag(unitId, slot) {
-		const { prebidEnabled } = this.state;
-
-		if (!prebidEnabled) {
-			const { googletag } = window;
-			googletag.pubads().refresh([slot]);
-			return; // EXIT FUNCTION
-		}
-
 		window.pbjs.que = window.pbjs.que || [];
 		window.pbjs.que.push(() => {
 			const PREBID_TIMEOUT = 2000;
