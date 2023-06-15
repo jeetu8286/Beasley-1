@@ -1,7 +1,6 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { IntersectionObserverContext } from '../../../context';
-import { logPrebidTargeting } from '../../../redux/utilities/screen/refreshAllAds';
 import {
 	impressionViewableHandler,
 	slotVisibilityChangedHandler,
@@ -10,10 +9,10 @@ import {
 	getSlotStat,
 	registerSlotStatForRefresh,
 	topScrollingDivID,
-	// dropDownDivID,
 	hidePlaceholder,
 	showSlotElement,
 	getSlotStatsCollectionObject,
+	pushRefreshBidsIntoGoogleTag,
 } from '../../../library/ad-utils';
 
 class Dfp extends PureComponent {
@@ -39,13 +38,8 @@ class Dfp extends PureComponent {
 		this.destroySlot = this.destroySlot.bind(this);
 		this.tryDisplaySlot = this.tryDisplaySlot.bind(this);
 
-		this.pushRefreshBidIntoGoogleTag = this.pushRefreshBidIntoGoogleTag.bind(
-			this,
-		);
-
 		// Prebid Functions
 		this.loadPrebid = this.loadPrebid.bind(this);
-		this.bidsBackHandler = this.bidsBackHandler.bind(this);
 		this.getPrebidBidders = this.getPrebidBidders.bind(this);
 		this.getBidderRubicon = this.getBidderRubicon.bind(this);
 		this.getBidderAppnexus = this.getBidderAppnexus.bind(this);
@@ -880,27 +874,6 @@ class Dfp extends PureComponent {
 		}
 	}
 
-	bidsBackHandler() {
-		const { googletag } = window;
-		const { slot, adjustedUnitId } = this.state;
-		// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
-		window.pbjs.setTargetingForGPTAsync([adjustedUnitId]);
-		logPrebidTargeting(adjustedUnitId);
-		googletag.pubads().refresh([slot], { changeCorrelator: false });
-	}
-
-	pushRefreshBidIntoGoogleTag(unitId, slot) {
-		window.pbjs.que = window.pbjs.que || [];
-		window.pbjs.que.push(() => {
-			const PREBID_TIMEOUT = 2000;
-			window.pbjs.requestBids({
-				timeout: PREBID_TIMEOUT,
-				adUnitCodes: [unitId],
-				bidsBackHandler: this.bidsBackHandler,
-			});
-		});
-	}
-
 	hideSlot() {
 		const { placeholder } = this.props;
 		hidePlaceholder(placeholder);
@@ -923,7 +896,7 @@ class Dfp extends PureComponent {
 			googletag.cmd.push(() => {
 				googletag.pubads().collapseEmptyDivs(); // Stop Collapsing Empty Slots
 				if (prebidEnabled) {
-					this.pushRefreshBidIntoGoogleTag(adjustedUnitId, slot);
+					pushRefreshBidsIntoGoogleTag([adjustedUnitId], [slot]);
 				} else {
 					googletag.pubads().refresh([slot]);
 				}
