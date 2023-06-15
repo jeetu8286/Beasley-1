@@ -275,8 +275,9 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			'ad_ix_siteid_setting' => get_option( 'ad_ix_siteid_setting', '' ),
 			'ad_reset_digital_enabled' => get_option( 'ad_reset_digital_enabled', 'off' ),
 			'prebid_enabled' => function_exists( 'enqueue_prebid_scripts' ),
+			'ee_login' => get_option( 'ee_login', '' ),
 			'site_braze_preference_id' =>  get_option( 'braze_preference_id', '' ),
-			
+
 			/** Live Streaming Intervals */
 			'intervals'  => [
 				'live_streaming' => absint( get_option( 'gmr_live_streaming_interval', 1 ) ),
