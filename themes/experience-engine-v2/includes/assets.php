@@ -279,7 +279,6 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 
 			'ee_login' => get_option( 'ee_login', '' ),
 			'site_braze_preference_id' =>  get_option( 'braze_preference_id', '' ),
-			'amazon_uam_pubid' => get_option( 'amazon_uam_pubid', '' ),
 
 			/** Live Streaming Intervals */
 			'intervals'  => [
