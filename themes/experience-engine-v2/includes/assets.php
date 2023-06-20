@@ -276,6 +276,8 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			'ad_reset_digital_enabled' => get_option( 'ad_reset_digital_enabled', 'off' ),
 			'prebid_enabled' => function_exists( 'enqueue_prebid_scripts' ),
 			'timezone_string' => get_option( 'timezone_string', 'off' ),
+			'ee_login' => get_option( 'ee_login', '' ),
+			'site_braze_preference_id' =>  get_option( 'braze_preference_id', '' ),
 
 			/** Live Streaming Intervals */
 			'intervals'  => [
@@ -320,6 +322,16 @@ if ( ! function_exists( 'ee_the_bbgiconfig' ) ) :
 			json_encode( apply_filters( 'bbgiconfig', $config ) ),
 			$override_css_var
 		);
+
+		$implementation = sprintf('<script>
+			window.bbgiconfig = {};
+			try {
+				window.bbgiconfig = JSON.parse( document.getElementById( \'bbgiconfig\' ).innerHTML );
+			} catch( err ) {
+				// do nothing
+			}
+		</script>');
+		echo $implementation;
 	}
 endif;
 

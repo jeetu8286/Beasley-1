@@ -44,6 +44,7 @@ class PrimaryNav extends PureComponent {
 		this.handleScrollNavigation = this.handleScrollNavigation.bind(this);
 		this.closeMenus = this.closeMenus.bind(this);
 		this.handleSubMenuSize = this.handleSubMenuSize.bind(this);
+		this.setTwoColAdTopMargin = this.setTwoColAdTopMargin.bind(this);
 
 		removeChildren(navRoot);
 	}
@@ -185,7 +186,8 @@ class PrimaryNav extends PureComponent {
 
 	handleSubMenuSize() {
 		this.handlepaginationFix();
-		if (window.matchMedia('(min-width: 1301px)').matches) {
+		this.setTwoColAdTopMargin();
+		if (window.matchMedia('(min-width: 1376px)').matches) {
 			const adEle = document.getElementById('main-custom-logo');
 			let adEleStyleHeight = '';
 			if (adEle) {
@@ -269,6 +271,15 @@ class PrimaryNav extends PureComponent {
 					</form>`;
 				menuUL.insertBefore(newFormEl, menuUL.firstChild);
 			}
+			const newLoginEl = document.createElement('li');
+			newLoginEl.classList.add('mega-menu-item');
+			const ifUserNavExist = document.getElementsByClassName('user-nav-mobile');
+			if (config.ee_login === 'enabled') {
+				if (ifUserNavExist.length === 0) {
+					newLoginEl.innerHTML = `<div id="user-nav-mobile" class="user-nav-mobile"></div>`;
+					menuUL.appendChild(newLoginEl);
+				}
+			}
 		}
 	}
 
@@ -293,6 +304,28 @@ class PrimaryNav extends PureComponent {
 						rightRailAdContainer.style.top = `${topAdTop}px`;
 					}
 				}
+			}
+		}
+	}
+
+	setTwoColAdTopMargin() {
+		const headerContainer = document.getElementsByClassName(
+			'header-and-news-container',
+		);
+		let headerStyleHeight = 0;
+		if (headerContainer[0]) {
+			const headerStyle = window.getComputedStyle(headerContainer[0]);
+			headerStyleHeight = headerStyle.height
+				? Math.ceil(parseFloat(headerStyle.height))
+				: 0;
+		}
+
+		if (headerStyleHeight) {
+			const twoColumnAd = document.getElementsByClassName(
+				'two-column-sticky-ad',
+			);
+			for (let i = 0; i < twoColumnAd.length; i++) {
+				twoColumnAd[i].style.top = `${headerStyleHeight}px`;
 			}
 		}
 	}
@@ -382,6 +415,7 @@ class PrimaryNav extends PureComponent {
 		}
 		this.setState({ y: yOffset });
 		this.setRightRailTopMargin();
+		this.setTwoColAdTopMargin();
 	}
 
 	isPlayerButtonEvent(event) {
