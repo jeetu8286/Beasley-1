@@ -33,3 +33,6 @@ include __DIR__ . '/includes/whiz-changes.php' ;
 include __DIR__ . '/includes/shutdown-elasticsearch-log.php';
 
 include __DIR__ . '/includes/newsletter-signup-form.php';
+
+/** this include allows for the management of which days and times the second stream is active */
+include __DIR__ . '/includes/bbgi-station-second-stream-settings.php';
