@@ -1,3 +1,4 @@
+<?php
 /**
  * BbgiStationSettings Class
  *
@@ -8,9 +9,6 @@
  * @package BbgiStationSettings
  * @author  WordPress PHP Developer
  */
-
-<?php
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die( "Please don't try to access this file directly." );
 }
