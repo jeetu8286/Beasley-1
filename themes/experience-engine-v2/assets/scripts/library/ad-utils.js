@@ -65,7 +65,116 @@ const getSlotsFromGAM = (googletag, placeHolderArray) => {
 	);
 };
 
+export const logPrebidTargeting = unitId => {
+	const pbjs = window.pbjs || {};
+	const targeting = pbjs.getAdserverTargeting();
+	let retval;
+
+	if (targeting) {
+		Object.keys(targeting).map(tkey => {
+			if (targeting[tkey].hb_bidder && (!unitId || unitId === tkey)) {
+				console.log(
+					`High Prebid Ad ID: ${tkey} Bidder: ${targeting[tkey].hb_bidder} Price: ${targeting[tkey].hb_pb}`,
+				);
+
+				/* Disable GA Stats due to high usage
+				try {
+					window.ga('send', {
+						hitType: 'event',
+						eventCategory: 'PrebidTarget',
+						eventAction: `${targeting[tkey].hb_bidder}`,
+						eventLabel: `${tkey}`,
+						eventValue: `${parseInt(
+							parseFloat(targeting[tkey].hb_pb) * 100,
+							10,
+						)}`,
+					});
+				} catch (ex) {
+					console.log(`ERROR Sending to Google Analytics: `, ex);
+				}
+			    */
+
+				// Set retval when UnitID was specified and we have a high bidder
+				if (unitId && unitId === tkey) {
+					retval = targeting[tkey];
+				}
+			}
+			return tkey;
+		});
+	}
+
+	return retval;
+};
+
+const HEADER_BID_TIMEOUT = 2000;
+const headerBidFlags = {
+	amazonUAMAccountedFor: false,
+	prebidAccountedFor: false,
+	gamRequestWasSent: false,
+};
+
+const sendGAMRequest = slotList => {
+	if (!headerBidFlags.gamRequestWasSent) {
+		headerBidFlags.gamRequestWasSent = true;
+
+		const { googletag } = window;
+		const unitIdList = slotList.map(s => s.getAdUnitPath());
+		// MFP 11/10/2021 - SLOT Param Not Working - pbjs.setTargetingForGPTAsync([slot]);
+		window.pbjs.setTargetingForGPTAsync(unitIdList);
+		unitIdList.map(uid => logPrebidTargeting(uid));
+		googletag.pubads().refresh(slotList, { changeCorrelator: false });
+	}
+};
+
+const bidsBackHandler = slotList => {
+	if (
+		headerBidFlags.amazonUAMAccountedFor &&
+		headerBidFlags.prebidAccountedFor
+	) {
+		sendGAMRequest(slotList);
+	}
+};
+
+export const requestHeaderBids = slotList => {
+	headerBidFlags.gamRequestWasSent = false;
+
+	// Request Amazon UAM bids if enabled
+	if (window.initializeAPS) {
+		headerBidFlags.amazonUAMAccountedFor = false;
+		window.initializeAPS();
+		window.apstag.fetchBids(
+			{
+				slots: window.getAmazonUAMSlots(slotList),
+				timeout: HEADER_BID_TIMEOUT,
+			},
+			function(bids) {
+				window.apstag.setDisplayBids();
+				headerBidFlags.amazonUAMAccountedFor = true;
+				bidsBackHandler(slotList);
+			},
+		);
+	} else {
+		headerBidFlags.amazonUAMAccountedFor = true;
+	}
+
+	headerBidFlags.prebidAccountedFor = false;
+	window.pbjs.que = window.pbjs.que || [];
+	window.pbjs.que.push(() => {
+		window.pbjs.requestBids({
+			timeout: HEADER_BID_TIMEOUT,
+			adUnitCodes: slotList.map(s => s.getAdUnitPath()),
+			bidsBackHandler: bidsBackHandler(slotList),
+		});
+	});
+
+	// Attempt to Refresh GAM 100ms after timeout just in case prebid calls failed
+	window.setTimeout(() => {
+		sendGAMRequest(slotList);
+	}, HEADER_BID_TIMEOUT + 100);
+};
+
 export const doPubadsRefreshForAllRegisteredAds = googletag => {
+	const { prebid_enabled } = window.bbgiconfig;
 	const statsCollectionObject = getSlotStatsCollectionObject();
 	const statsObjectKeys = Object.keys(statsCollectionObject);
 	if (statsObjectKeys) {
@@ -83,7 +192,11 @@ export const doPubadsRefreshForAllRegisteredAds = googletag => {
 			setTimeout(() => {
 				// const slotsToRefreshArray = [...slotList.values()];
 				googletag.cmd.push(() => {
-					googletag.pubads().refresh(slotList);
+					if (prebid_enabled) {
+						requestHeaderBids(slotList);
+					} else {
+						googletag.pubads().refresh(slotList);
+					}
 				});
 			}, 0);
 		}

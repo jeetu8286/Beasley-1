@@ -22,14 +22,14 @@ if ( 'disabled' === get_option( 'ee_login', '' ) ) {
 			<h1><?php the_title(); ?></h1>
 		</header>
 
-		<div class="entry-content content-wrap">
-			<div class="description"><?php the_content(); ?>
-				<div class="info_account"></div>
-				<div class="preference-section"></div>
-				<div class="cancel_account">
-					<?php echo do_shortcode('[cancel_account]'); ?>
-				</div>
+	<div class="entry-content content-wrap">
+		<div class="description"><?php the_content(); ?>
+            <div class="info_account"></div>
+			<div class="preference-section"></div>
+			<div class="cancel_account">
+				<?php echo do_shortcode('[cancel_account]'); ?>
 			</div>
+		</div>
 
 			<?php get_template_part( 'partials/footer/common', 'description' ); ?>
 			<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
