@@ -89,6 +89,8 @@ class BeasleyAnalytics {
 
 	constructor() {
 		console.log('Constructing BeasleyAnalytics');
+
+		window.bbgiAnalyticsConfig.mParticleConfig = BeasleyAnalytics.getMParticleConfig();
 		this.loadBeasleyConfigData(window.bbgiAnalyticsConfig);
 	}
 
@@ -395,7 +397,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		// Configures the SDK. Note the settings below for isDevelopmentMode
 		// and logLevel.
 		window.mParticle = {
-			config: BeasleyAnalytics.getMParticleConfig(),
+			config: window.bbgiAnalyticsConfig.mParticleConfig,
 		};
 		(
 			function (t) {
