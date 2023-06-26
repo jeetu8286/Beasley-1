@@ -154,7 +154,7 @@ class BeasleyAnalytics {
 		}
 	}
 
-	sendMParticleErrorEvent(errorClass, errorNumber, errorName, message) {
+	sendMParticleErrorEvent(errorClass, errorNumber, errorName, source, message) {
 		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
 		if (provider) {
 			provider.sendErrorEvent.apply(provider, arguments);
@@ -652,10 +652,11 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		return this.mediaSpecificKeyValuePairs;
 	}
 
-	sendErrorEvent(errorClass, errorNumber, errorName, message) {
+	sendErrorEvent(errorClass, errorNumber, errorName, source, message) {
 		this.setAnalytics('error_class', errorClass);
 		this.setAnalytics('error_code_number', errorNumber);
 		this.setAnalytics('error_code_name', errorName);
+		this.setAnalytics('error_source', source);
 		this.setAnalytics('error_message', message);
 		this.sendEventByName(BeasleyAnalyticsMParticleProvider.mparticleEventNames.error);
 	}
@@ -698,6 +699,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 						BeasleyAnalyticsMParticleProvider.mparticleErrorClasses.mParticle,
 						BeasleyAnalyticsMParticleProvider.mparticleErrorCodes.ImproperJSONStringifiedArray.number,
 						BeasleyAnalyticsMParticleProvider.mparticleErrorCodes.ImproperJSONStringifiedArray.name,
+						window.location.href,
 						message
 					);
 				}
