@@ -68,7 +68,7 @@ class BeasleyAnalytics {
 			window.location.hostname.toLowerCase().indexOf('.beasley.test') > -1 ||
 			window.location.hostname.toLowerCase().indexOf('.bbgistage.com') > -1;
 
-		console.log(`Loading mParticle ${isDevEnvironment ? 'Dev' : 'Prod'} Environment`);
+		console.log(`Returning mParticle config for ${isDevEnvironment ? 'Dev' : 'Prod'} Environment`);
 
 		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig() : BeasleyAnalytics.getMParticleProdConfig();
 
