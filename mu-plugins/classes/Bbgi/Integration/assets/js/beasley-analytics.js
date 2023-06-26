@@ -24,8 +24,73 @@ class BeasleyAnalytics {
 		console.log('Beasley Analytics Loaded');
 	}
 
+	static getMParticleDevConfig() {
+		// WITHOUT CNAMES $jsonMParticleConfig = '{"isDevelopmentMode": true, "logLevel": "verbose", "dataPlan": {"planId": "beasley_web_beta_3", "planVersion": 1}}'
+		return {
+			isDevelopmentMode: true,
+			logLevel: "verbose",
+			dataPlan: {planId: "beasley_web", "planVersion": 1},
+			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
+			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
+			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
+			configUrl: "mparticle.bbgi.com/tags/JS/v2/",
+			identityUrl: "mparticle.bbgi.com/identity/v1/",
+			aliasUrl: "mparticle.bbgi.com/webevents/v1/identity/",
+			identityCallback: (result) => {
+				// Do something once an identity call has been made.
+				// For more information, see https://docs.mparticle.com/developers/sdk/web/idsync/#sdk-initialization-and-identify
+				console.log('MPARTICLE IDENTITY CALLBACK: ', result);
+			},
+		};
+	}
+
+	static getMParticleProdConfig() {
+		return {
+			isDevelopmentMode: false,
+			logLevel: "verbose",
+			dataPlan: {planId: "beasley_web", "planVersion": 1},
+			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
+			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
+			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
+			configUrl: "mparticle.bbgi.com/tags/JS/v2/",
+			identityUrl: "mparticle.bbgi.com/identity/v1/",
+			aliasUrl: "mparticle.bbgi.com/webevents/v1/identity/",
+			identityCallback: (result) => {
+				// Do something once an identity call has been made.
+				// For more information, see https://docs.mparticle.com/developers/sdk/web/idsync/#sdk-initialization-and-identify
+				console.log('MPARTICLE IDENTITY CALLBACK: ', result);
+			},
+		};
+	}
+
+	static getMParticleConfig() {
+		const isDevEnvironment =
+			window.location.hostname.toLowerCase().indexOf('.beasley.test') > -1 ||
+			window.location.hostname.toLowerCase().indexOf('.bbgistage.com') > -1;
+
+		console.log(`Returning mParticle config for ${isDevEnvironment ? 'Dev' : 'Prod'} Environment`);
+
+		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig() : BeasleyAnalytics.getMParticleProdConfig();
+
+		// 2023-06-23 Disable mParticle Identify For Initial Prod Release
+		// If Firebase User Exists, Add mParticle identifyRequest
+		// if (firebase?.auth().currentUser) {
+		// 	console.log(`Augmenting mParticle Configuration with Firebase User: ${firebase.auth().currentUser.email}`);
+		// 	retval.identifyRequest = {
+		// 		userIdentities: {
+		// 			email: firebase.auth().currentUser.email,
+		// 			customerid: firebase.auth().currentUser.email,
+		// 		}
+		// 	};
+		// }
+
+		return retval;
+	}
+
 	constructor() {
 		console.log('Constructing BeasleyAnalytics');
+
+		window.bbgiAnalyticsConfig.mParticleConfig = BeasleyAnalytics.getMParticleConfig();
 		this.loadBeasleyConfigData(window.bbgiAnalyticsConfig);
 	}
 
@@ -91,7 +156,7 @@ class BeasleyAnalytics {
 		}
 	}
 
-	sendMParticleErrorEvent(errorClass, errorNumber, errorName, message) {
+	sendMParticleErrorEvent(errorClass, errorNumber, errorName, source, message) {
 		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
 		if (provider) {
 			provider.sendErrorEvent.apply(provider, arguments);
@@ -589,10 +654,11 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		return this.mediaSpecificKeyValuePairs;
 	}
 
-	sendErrorEvent(errorClass, errorNumber, errorName, message) {
+	sendErrorEvent(errorClass, errorNumber, errorName, source, message) {
 		this.setAnalytics('error_class', errorClass);
 		this.setAnalytics('error_code_number', errorNumber);
 		this.setAnalytics('error_code_name', errorName);
+		this.setAnalytics('error_source', source);
 		this.setAnalytics('error_message', message);
 		this.sendEventByName(BeasleyAnalyticsMParticleProvider.mparticleEventNames.error);
 	}
@@ -635,6 +701,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 						BeasleyAnalyticsMParticleProvider.mparticleErrorClasses.mParticle,
 						BeasleyAnalyticsMParticleProvider.mparticleErrorCodes.ImproperJSONStringifiedArray.number,
 						BeasleyAnalyticsMParticleProvider.mparticleErrorCodes.ImproperJSONStringifiedArray.name,
+						window.location.href,
 						message
 					);
 				}
