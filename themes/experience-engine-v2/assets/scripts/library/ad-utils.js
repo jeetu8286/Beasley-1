@@ -441,7 +441,7 @@ export const slotRenderEndedHandler = event => {
 				// console.log(`Prebid Ad Not Shown - Using Size: ${adSize}`);
 			} else if (
 				slot.getTargeting('hb_size') &&
-				slot.getHtml().indexOf('prebid')
+				slot.getHtml().indexOf('prebid') > -1
 			) {
 				// We ASSUME when an incomplete size was sent through, but we are dealing with Prebid.
 				// Compute Size From hb_size.
@@ -464,6 +464,7 @@ export const slotRenderEndedHandler = event => {
 				}
 			} else if (window.lastReturnedAmazonUAMBids) {
 				// Assume Amazon UAM
+				console.log(`Amazon Ad HTML: ${slot.getHtml()}`);
 				const bidForSlot = window.lastReturnedAmazonUAMBids.find(
 					bid => bid.slotID === slot.getSlotElementId(),
 				);
