@@ -462,9 +462,11 @@ export const slotRenderEndedHandler = event => {
 						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
 					);
 				}
-			} else if (window.lastReturnedAmazonUAMBids) {
+			} else if (
+				window.lastReturnedAmazonUAMBids &&
+				slot.getHtml().indexOf('apstag') > -1
+			) {
 				// Assume Amazon UAM
-				console.log(`Amazon Ad HTML: ${slot.getHtml()}`);
 				const bidForSlot = window.lastReturnedAmazonUAMBids.find(
 					bid => bid.slotID === slot.getSlotElementId(),
 				);
