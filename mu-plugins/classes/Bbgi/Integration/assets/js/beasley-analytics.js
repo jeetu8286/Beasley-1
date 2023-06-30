@@ -72,13 +72,13 @@ class BeasleyAnalytics {
 
 		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig() : BeasleyAnalytics.getMParticleProdConfig();
 
-		// If Firebase User Exists, Add mParticle identifyRequest
-		if (firebase?.auth().currentUser) {
-			console.log(`Augmenting mParticle Configuration with Firebase User: ${firebase.auth().currentUser.email}`);
+		// If window.firebase User Exists, Add mParticle identifyRequest
+		if (window.firebase?.auth().currentUser) {
+			console.log(`Augmenting mParticle Configuration with window.firebase User: ${window.firebase.auth().currentUser.email}`);
 			retval.identifyRequest = {
 				userIdentities: {
-					email: firebase.auth().currentUser.email,
-					customerid: firebase.auth().currentUser.email,
+					email: window.firebase.auth().currentUser.email,
+					customerid: window.firebase.auth().currentUser.email,
 				}
 			};
 		}
