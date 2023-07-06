@@ -24,8 +24,72 @@ class BeasleyAnalytics {
 		console.log('Beasley Analytics Loaded');
 	}
 
+	static getMParticleDevConfig() {
+		// WITHOUT CNAMES $jsonMParticleConfig = '{"isDevelopmentMode": true, "logLevel": "verbose", "dataPlan": {"planId": "beasley_web_beta_3", "planVersion": 1}}'
+		return {
+			isDevelopmentMode: true,
+			logLevel: "verbose",
+			dataPlan: {planId: "beasley_web", "planVersion": 2},
+			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
+			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
+			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
+			configUrl: "mparticle.bbgi.com/tags/JS/v2/",
+			identityUrl: "mparticle.bbgi.com/identity/v1/",
+			aliasUrl: "mparticle.bbgi.com/webevents/v1/identity/",
+			identityCallback: (result) => {
+				// Do something once an identity call has been made.
+				// For more information, see https://docs.mparticle.com/developers/sdk/web/idsync/#sdk-initialization-and-identify
+				console.log('MPARTICLE IDENTITY CALLBACK: ', result);
+			},
+		};
+	}
+
+	static getMParticleProdConfig() {
+		return {
+			isDevelopmentMode: false,
+			logLevel: "verbose",
+			dataPlan: {planId: "beasley_web", "planVersion": 2},
+			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
+			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
+			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
+			configUrl: "mparticle.bbgi.com/tags/JS/v2/",
+			identityUrl: "mparticle.bbgi.com/identity/v1/",
+			aliasUrl: "mparticle.bbgi.com/webevents/v1/identity/",
+			identityCallback: (result) => {
+				// Do something once an identity call has been made.
+				// For more information, see https://docs.mparticle.com/developers/sdk/web/idsync/#sdk-initialization-and-identify
+				console.log('MPARTICLE IDENTITY CALLBACK: ', result);
+			},
+		};
+	}
+
+	static getMParticleConfig() {
+		const isDevEnvironment =
+			window.location.hostname.toLowerCase().indexOf('.beasley.test') > -1 ||
+			window.location.hostname.toLowerCase().indexOf('.bbgistage.com') > -1;
+
+		console.log(`Returning mParticle config for ${isDevEnvironment ? 'Dev' : 'Prod'} Environment`);
+
+		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig() : BeasleyAnalytics.getMParticleProdConfig();
+
+		// If window.firebase User Exists, Add mParticle identifyRequest
+		if (window.firebase?.auth().currentUser) {
+			console.log(`Augmenting mParticle Configuration with window.firebase User: ${window.firebase.auth().currentUser.email}`);
+			retval.identifyRequest = {
+				userIdentities: {
+					email: window.firebase.auth().currentUser.email,
+					customerid: window.firebase.auth().currentUser.email,
+				}
+			};
+		}
+
+		return retval;
+	}
+
 	constructor() {
 		console.log('Constructing BeasleyAnalytics');
+
+		window.bbgiAnalyticsConfig.mParticleConfig = BeasleyAnalytics.getMParticleConfig();
 		this.loadBeasleyConfigData(window.bbgiAnalyticsConfig);
 	}
 
@@ -88,6 +152,13 @@ class BeasleyAnalytics {
 		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
 		if (provider) {
 			provider.sendEventByName.apply(provider, arguments);
+		}
+	}
+
+	sendMParticleErrorEvent(errorClass, errorNumber, errorName, source, message) {
+		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
+		if (provider) {
+			provider.sendErrorEvent.apply(provider, arguments);
 		}
 	}
 
@@ -221,6 +292,16 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		mediaContentEnd: 'Media Content End',
 		mediaSessionEnd: 'Media Session End',
 		mediaSessionSummary: 'Media Session Summary',
+		error: 'Error',
+	};
+
+	static mparticleErrorClasses = {
+		General: 'General',
+		mParticle: 'mParticle',
+	}
+	static mparticleErrorCodes = {
+		ImproperJSONStringifiedArray: { number: 101, name:'Improper JSON Stringified Array' },
+		UnableToSendPageViewEvent: { number: 102, name:'Unable To Send Page View Event' },
 	};
 
 	queuedArgs = [];
@@ -572,6 +653,15 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		return this.mediaSpecificKeyValuePairs;
 	}
 
+	sendErrorEvent(errorClass, errorNumber, errorName, source, message) {
+		this.setAnalytics('error_class', errorClass);
+		this.setAnalytics('error_code_number', errorNumber);
+		this.setAnalytics('error_code_name', errorName);
+		this.setAnalytics('error_source', source);
+		this.setAnalytics('error_message', message);
+		this.sendEventByName(BeasleyAnalyticsMParticleProvider.mparticleEventNames.error);
+	}
+
 	sendEventByName(eventName) {
 		super.sendEvent.apply(this, arguments);
 
@@ -581,6 +671,45 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		}
 
 		this.doSendEventByName(eventName);
+	}
+
+	isValidStringifiedJSONArray(str) {
+		try {
+			const stringifiedJSONArrayRegex =  /^\s*\[\s*"(?:[^"\\]|\\.)*"(?:\s*,\s*"(?:[^"\\]|\\.)*")*\s*\]\s*$/; // Regex pattern for stringified JSON array
+			const trimmedStr = str.trim(); // Remove leading/trailing whitespace
+
+			if (!stringifiedJSONArrayRegex.test(trimmedStr)) {
+				return false; // String does not match the pattern
+			}
+
+			JSON.parse(trimmedStr); // Try parsing the stringified JSON array
+
+			return true; // Parsing successful, valid stringified JSON array
+		} catch (error) {
+			return false; // Parsing failed, not a valid stringified JSON array
+		}
+	}
+
+	validateStringFieldsWithSquareBracesAsValidStringifiedJSONArray(objectToValidate) {
+		for(const key in objectToValidate){
+			const val = objectToValidate[key];
+			if ((typeof val === 'string' || val instanceof String) &&
+				val.length > 1 &&
+				val.indexOf('[') === 0 &&
+				val.indexOf(']') === val.length - 1
+			) {
+				if ( ! this.isValidStringifiedJSONArray(val) ) {
+					const message = `Invalid JSON on Beasley Event '${objectToValidate.beasley_event_id}' field name: '${key}' field value: '${val}'`;
+					this.sendErrorEvent(
+						BeasleyAnalyticsMParticleProvider.mparticleErrorClasses.mParticle,
+						BeasleyAnalyticsMParticleProvider.mparticleErrorCodes.ImproperJSONStringifiedArray.number,
+						BeasleyAnalyticsMParticleProvider.mparticleErrorCodes.ImproperJSONStringifiedArray.name,
+						window.location.href,
+						message
+					);
+				}
+			}
+		}
 	}
 
 	// doSendPageEvent interrogates the DOM and must be called only after entire page is loaded
@@ -594,11 +723,14 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 
 		const objectToSend = this.getEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames.pageView);
 
+		this.validateStringFieldsWithSquareBracesAsValidStringifiedJSONArray(objectToSend);
+
 		// Set embedded_content_is_nested
 		if ( objectToSend.view_type === 'embedded_content' ) {
 			objectToSend.embedded_content_is_nested = ( objectToSend.embedded_content_id === objectToSend.post_id );
 		}
 
+		console.log(`CATEGORIES STRINGIFIED -> ${objectToSend.categories_stringified}`);
 		window.mParticle.logPageView(
 			'Page View',
 			objectToSend,

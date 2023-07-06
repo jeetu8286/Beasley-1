@@ -112,8 +112,9 @@ class Settings extends \Bbgi\Module {
 
 		$ee_login_disabled_args = array(
 			'name'     => 'ee_login',
-			'selected' => 'disabled' === get_option( 'ee_login', '' ),
-		);
+			'selected' => get_option( 'ee_login'),
+			'default' => 'disabled',
+		);	
 
 		$feature_video_provider_disabled_args = array(
 				'name'     => 'feature_video_provider',
@@ -233,6 +234,7 @@ class Settings extends \Bbgi\Module {
 		add_settings_field('ad_confiant_enabled', 'Confiant Enabled', array($this, 'render_ad_confiant_enabled'), $this->_settings_page_hook, 'ad_settings_section', $ad_confiant_enabled_args);
 
 		add_settings_section( 'prebid_settings_section', 'Prebid Settings', '__return_false', $this->_settings_page_hook );
+		add_settings_field('amazon_uam_pubid', 'Amazon UAM PubID', 'bbgi_input_field', $this->_settings_page_hook, 'prebid_settings_section', 'name=amazon_uam_pubid');
 		add_settings_field('ad_rubicon_zoneid_setting', 'Rubicon Zone ID', 'bbgi_input_field', $this->_settings_page_hook, 'prebid_settings_section', 'name=ad_rubicon_zoneid_setting');
 		add_settings_field('ad_appnexus_placementid_setting', 'AppNexus Placement ID', 'bbgi_input_field', $this->_settings_page_hook, 'prebid_settings_section', 'name=ad_appnexus_placementid_setting');
 		add_settings_field('ad_ix_siteid_setting', 'Index Exchange Site ID', 'bbgi_input_field', $this->_settings_page_hook, 'prebid_settings_section', 'name=ad_ix_siteid_setting');
@@ -262,6 +264,9 @@ class Settings extends \Bbgi\Module {
 
 		add_settings_section( 'pushly_section', 'Pushly Settings', '__return_false', $this->_settings_page_hook );
 		add_settings_field('pushly_domain_key', 'Domain Key', 'bbgi_input_field', $this->_settings_page_hook, 'pushly_section', 'name=pushly_domain_key');
+
+		add_settings_section( 'braze_preference_section', 'Braze Preference Settings', '__return_false', $this->_settings_page_hook );
+		add_settings_field('braze_preference_id', 'Braze Preference ID', 'bbgi_input_field', $this->_settings_page_hook, 'braze_preference_section', 'name=braze_preference_id');
 
 		register_setting( self::option_group, 'gmr_site_logo', 'intval' );
 		register_setting( self::option_group, 'ee_subheader_mobile_logo', 'intval' );
@@ -319,6 +324,7 @@ class Settings extends \Bbgi\Module {
 		register_setting(self::option_group, 'ad_rotation_refresh_sec_setting', 'sanitize_text_field');
 		register_setting(self::option_group, 'ad_vid_rotation_refresh_sec_setting', 'sanitize_text_field');
 		register_setting(self::option_group, 'vid_ad_html_tag_csv_setting', 'sanitize_text_field');
+		register_setting(self::option_group, 'amazon_uam_pubid', 'sanitize_text_field');
 		register_setting(self::option_group, 'ad_rubicon_zoneid_setting', 'sanitize_text_field');
 		register_setting(self::option_group, 'ad_appnexus_placementid_setting', 'sanitize_text_field');
 		register_setting(self::option_group, 'ad_ix_siteid_setting', 'sanitize_text_field');
@@ -335,7 +341,7 @@ class Settings extends \Bbgi\Module {
 
 		register_setting(self::option_group, 'cloud_flare_zoneid', 'sanitize_text_field');
 		register_setting(self::option_group, 'pushly_domain_key', 'sanitize_text_field');
-
+		register_setting(self::option_group, 'braze_preference_id', 'sanitize_text_field');
 		/**
 		 * Allows us to register extra settings that are not necessarily always present on all child sites.
 		 */
@@ -465,10 +471,11 @@ class Settings extends \Bbgi\Module {
 	public function render_ee_login( $args ) {
 
 		?><select name="<?php echo esc_attr( $args['name'] ); ?>">
-			<option value="">Login Enabled</option>
+			<option value="enabled" <?php selected( $args['selected'], 'enabled' ); ?>>Login Enabled</option>
 			<option
 					value="disabled"
-					<?php selected( $args['selected'], true ); ?>>
+					<?php selected( $args['selected'], 'disabled' ); ?>
+					<?php selected( $args['selected'], '' ); ?>>
 					Login Disabled
 			</option>
 		</select><?php

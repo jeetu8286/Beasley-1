@@ -9,6 +9,7 @@
 		<?php get_template_part( 'partials/page/description' ); ?>
 		<?php get_template_part( 'partials/footer/common', 'description' ); ?>
 		<?php get_template_part( 'partials/ads/sidebar-sticky' ); ?>
+		<?php get_template_part( 'partials/footer/newsletterSignupForm', 'nsf' ); ?>
 	</div>
 </div>
 
