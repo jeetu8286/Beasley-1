@@ -29,7 +29,7 @@ class BeasleyAnalytics {
 		return {
 			isDevelopmentMode: true,
 			logLevel: "verbose",
-			dataPlan: {planId: "beasley_web", "planVersion": 1},
+			dataPlan: {planId: "beasley_web", "planVersion": 2},
 			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
 			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
 			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
@@ -48,7 +48,7 @@ class BeasleyAnalytics {
 		return {
 			isDevelopmentMode: false,
 			logLevel: "verbose",
-			dataPlan: {planId: "beasley_web", "planVersion": 1},
+			dataPlan: {planId: "beasley_web", "planVersion": 2},
 			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
 			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
 			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
@@ -72,17 +72,16 @@ class BeasleyAnalytics {
 
 		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig() : BeasleyAnalytics.getMParticleProdConfig();
 
-		// 2023-06-23 Disable mParticle Identify For Initial Prod Release
-		// If Firebase User Exists, Add mParticle identifyRequest
-		// if (firebase?.auth().currentUser) {
-		// 	console.log(`Augmenting mParticle Configuration with Firebase User: ${firebase.auth().currentUser.email}`);
-		// 	retval.identifyRequest = {
-		// 		userIdentities: {
-		// 			email: firebase.auth().currentUser.email,
-		// 			customerid: firebase.auth().currentUser.email,
-		// 		}
-		// 	};
-		// }
+		// If window.firebase User Exists, Add mParticle identifyRequest
+		if (window.firebase?.auth().currentUser) {
+			console.log(`Augmenting mParticle Configuration with window.firebase User: ${window.firebase.auth().currentUser.email}`);
+			retval.identifyRequest = {
+				userIdentities: {
+					email: window.firebase.auth().currentUser.email,
+					customerid: window.firebase.auth().currentUser.email,
+				}
+			};
+		}
 
 		return retval;
 	}
@@ -694,7 +693,11 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	validateStringFieldsWithSquareBracesAsValidStringifiedJSONArray(objectToValidate) {
 		for(const key in objectToValidate){
 			const val = objectToValidate[key];
-			if ((typeof val === 'string' || val instanceof String) && (val.indexOf('[') > -1 || val.indexOf(']') > -1)) {
+			if ((typeof val === 'string' || val instanceof String) &&
+				val.length > 1 &&
+				val.indexOf('[') === 0 &&
+				val.indexOf(']') === val.length - 1
+			) {
 				if ( ! this.isValidStringifiedJSONArray(val) ) {
 					const message = `Invalid JSON on Beasley Event '${objectToValidate.beasley_event_id}' field name: '${key}' field value: '${val}'`;
 					this.sendErrorEvent(

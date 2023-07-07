@@ -106,7 +106,7 @@ export const logPrebidTargeting = unitId => {
 	return retval;
 };
 
-const HEADER_BID_TIMEOUT = 2000;
+const HEADER_BID_TIMEOUT = 1500;
 const headerBidFlags = {
 	amazonUAMAccountedFor: false,
 	prebidAccountedFor: false,
@@ -138,16 +138,18 @@ const bidsBackHandler = slotList => {
 export const requestHeaderBids = slotList => {
 	headerBidFlags.gamRequestWasSent = false;
 
-	// Request Amazon UAM bids if enabled
+	// Request Amazon UAM bids if a window.initializeAPS function exists, which indicates UAM enabled
 	if (window.initializeAPS) {
 		headerBidFlags.amazonUAMAccountedFor = false;
 		window.initializeAPS();
+		window.lastReturnedAmazonUAMBids = null;
 		window.apstag.fetchBids(
 			{
 				slots: window.getAmazonUAMSlots(slotList),
 				timeout: HEADER_BID_TIMEOUT,
 			},
 			function(bids) {
+				window.lastReturnedAmazonUAMBids = bids;
 				window.apstag.setDisplayBids();
 				headerBidFlags.amazonUAMAccountedFor = true;
 				bidsBackHandler(slotList);
@@ -356,6 +358,20 @@ const removeExtraIntegratorLinksFromHead = () => {
 	removeAllHtmlElementsExceptForLast(scriptElements);
 };
 
+const getSizeArrayFromString = sizeString => {
+	// console.log(`Prebid Sizestring: ${sizeString}`);
+	const idxOfX = sizeString.toLowerCase().indexOf('x');
+	if (idxOfX > -1) {
+		const widthString = sizeString.substr(0, idxOfX);
+		const heightString = sizeString.substr(idxOfX + 1);
+		const retval = [];
+		retval[0] = parseInt(widthString, 10);
+		retval[1] = parseInt(heightString, 10);
+		return retval;
+	}
+	return null;
+};
+
 export const slotRenderEndedHandler = event => {
 	removeExtraIntegratorLinksFromHead();
 
@@ -423,19 +439,14 @@ export const slotRenderEndedHandler = event => {
 			if (size && size.length === 2 && (size[0] !== 1 || size[1] !== 1)) {
 				adSize = size;
 				// console.log(`Prebid Ad Not Shown - Using Size: ${adSize}`);
-			} else if (slot.getTargeting('hb_size')) {
-				// We ASSUME when an incomplete size is sent through event, we are dealing with Prebid.
+			} else if (
+				slot.getTargeting('hb_size') &&
+				slot.getHtml().indexOf('prebid') > -1
+			) {
+				// We ASSUME when an incomplete size was sent through, but we are dealing with Prebid.
 				// Compute Size From hb_size.
 				const hbSizeString = slot.getTargeting('hb_size').toString();
-				// console.log(`Prebid Sizestring: ${hbSizeString}`);
-				const idxOfX = hbSizeString.toLowerCase().indexOf('x');
-				if (idxOfX > -1) {
-					const widthString = hbSizeString.substr(0, idxOfX);
-					const heightString = hbSizeString.substr(idxOfX + 1);
-					adSize = [];
-					adSize[0] = parseInt(widthString, 10);
-					adSize[1] = parseInt(heightString, 10);
-				}
+				adSize = getSizeArrayFromString(hbSizeString);
 
 				if (
 					slot &&
@@ -451,6 +462,24 @@ export const slotRenderEndedHandler = event => {
 						)} - ${slot.getAdUnitPath()} - ${slot.getTargeting('hb_pb')}`,
 					);
 				}
+			} else if (
+				window.lastReturnedAmazonUAMBids &&
+				slot.getHtml().indexOf('apstag') > -1
+			) {
+				// Assume Amazon UAM
+				const bidForSlot = window.lastReturnedAmazonUAMBids.find(
+					bid => bid.slotID === slot.getSlotElementId(),
+				);
+				if (bidForSlot) {
+					adSize = getSizeArrayFromString(bidForSlot.amznsz);
+				}
+				console.log(
+					`Rendering Amazon Bid Size: ${
+						adSize ? JSON.stringify(adSize) : 'NONE'
+					}`,
+				);
+			} else {
+				console.log('UNKNOWN AD TYPE RETURNED');
 			}
 
 			// Adjust Container Div Height
