@@ -3,6 +3,12 @@
  * Class CommonSettings
  */
 class CommonSettings {
+
+	function __construct()
+	{
+		$this->init();
+	}
+
 	/**
 	 * Hook into the appropriate actions when the class is constructed.
 	 */
@@ -134,6 +140,7 @@ class CommonSettings {
 	}
 
 	public static function settings_cpt_init() {
+
 		// Register custom capability for Draft Kings On/Off Setting and Max mega menu
 		$roles = [ 'administrator' ];
 
@@ -145,8 +152,40 @@ class CommonSettings {
 				$role_obj->add_cap('manage_max_mega_menu', false);
 			}
 		}
-
+		add_filter('query_vars', array( __CLASS__, 'add_query_vars'));
 		add_filter( 'megamenu_options_capability', array( __CLASS__, 'megamenu_options_capability_callback' ) );
+		
+		/**
+		 * Code for create a author page
+		 */
+		$author_page			= get_page_by_path( 'authors', OBJECT );
+		if (!isset($author_page)) {
+			$author_title		= 'Authors';				// Post title
+			$author_content		= '';							// Post Description
+			$author_template	= 'templates/postslist.php';	// Add template Name Here
+			$author_page_exist	= get_page_by_title($author_title);	// Author Exist
+			$author_array		= array(
+					'post_type'		=> 'page',
+					'post_title'	=> $author_title,
+					'post_content'	=> $author_content,
+					'post_status'	=> 'publish',
+					'post_author'	=> 1,
+					);
+			if (!isset($author_page_exist->ID)) {
+				$author_id	= wp_insert_post($author_array);
+				if (!empty($author_template)) {
+					update_post_meta($author_id, '_wp_page_template', $author_template);
+				}
+			}
+		}
+
+		add_rewrite_rule('^authors/([0-9]+)/?', 'index.php?pagename=authors&author_id=$matches[1]', 'top');
+
+	}
+
+	public static function add_query_vars( $author_query_vars ) {
+		$author_query_vars[] = 'author_id';
+		return $author_query_vars;
 	}
 
 	public static function megamenu_options_capability_callback() {
@@ -215,4 +254,5 @@ class CommonSettings {
 	}
 }
 
-CommonSettings::init();
+// CommonSettings::init();
+new CommonSettings();
