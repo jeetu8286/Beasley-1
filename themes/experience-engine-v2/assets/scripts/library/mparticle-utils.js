@@ -1,6 +1,6 @@
 import mParticle from '@mparticle/web-sdk';
 import amplitudeKit from '@mparticle/web-amplitude-kit';
-import braze from '@mparticle/web-braze-kit';
+// import braze from '@mparticle/web-braze-kit';
 
 export const setMParticleUserAtributes = (
 	firstname,
@@ -44,7 +44,7 @@ export const createMparticleSession = () => {
 		console.log('Configuring mparticle in bundle');
 
 		amplitudeKit.register(window.bbgiAnalyticsConfig.mParticleConfig);
-		braze.register(window.bbgiAnalyticsConfig.mParticleConfig);
+		// braze.register(window.bbgiAnalyticsConfig.mParticleConfig);
 
 		// Configures the SDK. Note the settings below for isDevelopmentMode
 		// and logLevel.
