@@ -15,4 +15,5 @@ define( 'GFF_URL', plugin_dir_url( __FILE__ ) );
 define( 'GFF_PATH', dirname( __FILE__ ) );
 define( 'GFF_TEXT_DOMAIN', 'gff_textdomain' );
 
-include __DIR__ . '/includes/editor-toolbar-widgets.php';
+/* Clone Listicle post type similarly to Posts */
+include __DIR__ . '/includes/duplicate-listicle.php';
