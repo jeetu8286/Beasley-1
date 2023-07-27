@@ -24,12 +24,12 @@ class BeasleyAnalytics {
 		console.log('Beasley Analytics Loaded');
 	}
 
-	static getMParticleDevConfig() {
+	static getMParticleDevConfig(versionNo) {
 		// WITHOUT CNAMES $jsonMParticleConfig = '{"isDevelopmentMode": true, "logLevel": "verbose", "dataPlan": {"planId": "beasley_web_beta_3", "planVersion": 1}}'
 		return {
 			isDevelopmentMode: true,
 			logLevel: "verbose",
-			dataPlan: {planId: "beasley_web", "planVersion": 3},
+			dataPlan: {planId: "beasley_web", "planVersion": versionNo},
 			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
 			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
 			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
@@ -44,11 +44,11 @@ class BeasleyAnalytics {
 		};
 	}
 
-	static getMParticleProdConfig() {
+	static getMParticleProdConfig(versionNo) {
 		return {
 			isDevelopmentMode: false,
 			logLevel: "verbose",
-			dataPlan: {planId: "beasley_web", "planVersion": 3},
+			dataPlan: {planId: "beasley_web", "planVersion": versionNo},
 			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
 			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
 			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
@@ -70,7 +70,9 @@ class BeasleyAnalytics {
 
 		console.log(`Returning mParticle config for ${isDevEnvironment ? 'Dev' : 'Prod'} Environment`);
 
-		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig() : BeasleyAnalytics.getMParticleProdConfig();
+		const versionNo = mParticlePlan?.version;
+		console.log(`Using plan version ${versionNo} based on cached plan`);
+		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig(versionNo) : BeasleyAnalytics.getMParticleProdConfig(versionNo);
 
 		// If window.firebase User Exists, Add mParticle identifyRequest
 		if (window.firebase?.auth().currentUser) {
