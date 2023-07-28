@@ -20,7 +20,7 @@ class NewsletterSignupForm {
         $nsf_ajax_nonce = wp_create_nonce( 'nsf-ajax-nonce' );
         $postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
-        wp_register_style('nsf-style',GENERAL_SETTINGS_CPT_URL . "assets/css/newsletter-signup-form". $postfix .".css", array(), '1.0.1', 'all');
+        wp_register_style('nsf-style',GENERAL_SETTINGS_CPT_URL . "assets/css/newsletter-signup-form". $postfix .".css", array(), '1.0.3', 'all');
         wp_enqueue_style('nsf-style');
 
         wp_register_script('nsf-script', GENERAL_SETTINGS_CPT_URL . 'assets/js/newsletter-signup-form'. $postfix .'.js', array('jquery'), '1.0.3');
@@ -40,7 +40,7 @@ class NewsletterSignupForm {
     public function nsf_function($attr) {
 
         global $nsf_output_hide;
-
+        
         $attr = shortcode_atts(
             array(
                 'label' => '',
@@ -98,7 +98,12 @@ class NewsletterSignupForm {
                 $html .= '</div>';
             $html .= '</div>';
             $nsf_output_hide = true;
-            return $html;
+            $nfsenabled = get_option('nsf_enable_disable');     
+            if($nfsenabled != 'off' ){
+                return $html;
+            }else{
+                return "";
+            }           
         }
 
     }
@@ -123,7 +128,17 @@ class NewsletterSignupForm {
 
     public function nsf_register_settings( $group, $page ) {
         $section_id = 'beasley_newsletter_signup_form';
+        $nsf_enable_disable_arg = array(
+            'name'     => 'nsf_enable_disable',
+            'default' => 'on',	
+            'class'		=> '',
+			'options' => array(
+				'on' => 'On',
+				'off'  => 'Off',
+			),
+        );  
 
+        add_settings_field('nsf_enable_disable','Enabled','bbgi_select_field',$page, $section_id, $nsf_enable_disable_arg);
         add_settings_field( 'ee_newsletter_logo', 'Logo', 'bbgi_image_field', $page, $section_id, 'name=ee_newsletter_logo' );
         add_settings_section( $section_id, 'Newsletter signup forms', '__return_false', $page );
         add_settings_field('nsf_label', 'Label', 'bbgi_input_field', $page, $section_id, 'name=nsf_label&default=Join the Family');
@@ -146,6 +161,7 @@ class NewsletterSignupForm {
         register_setting( $group, 'nsf_mailing_list_description', 'sanitize_text_field' );
         register_setting( $group, 'nsf_template_token', 'sanitize_text_field' );
         register_setting( $group, 'nsf_checkbox_content', 'sanitize_text_field' );
+        register_setting( $group, 'nsf_enable_disable', 'sanitize_text_field' );
 
     }
 
