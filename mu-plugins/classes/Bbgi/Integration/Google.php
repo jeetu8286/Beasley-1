@@ -53,7 +53,7 @@ class Google extends \Bbgi\Module {
 		$fileNameAddition = str_contains($homeUrl, '.beasley.test') || str_contains($homeUrl, '.bbgistage.com') ? '-staging' : '';
 		wp_enqueue_script(
 			'mparticle_enqueue_scripts',
-			'https://bbgi-mparticle-plan.s3.amazonaws.com/mparticle-plan' . $fileNameAddition . '.js'
+			'https://bbgi-mparticle-plan.s3.amazonaws.com/mparticle-events' . $fileNameAddition . '.js'
 		);
 
 		wp_enqueue_script(
