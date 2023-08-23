@@ -337,17 +337,19 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	lazyPageEventObserver;
 
 	getCleanEventObject(eventName, isIgnoringBuiltInMparticleFields, isIncludingOnlyMediaSpecificFields) {
-		const dataPoints = mParticlePlan?.dataPointArray;
+		const dataPoints = mParticlePlan?.version_document?.data_points;
 		if (dataPoints) {
-			const dataPoint = dataPoints.find( dp => dp.eventName === eventName );
+			const dataPoint = dataPoints.find( dp =>
+				(dp?.match?.type === 'screen_view' && dp?.match?.criteria?.screen_name === eventName) ||
+				(dp?.match?.criteria?.event_name === eventName) );
 			if (dataPoint) {
-				const dataPointProperties = dataPoint.properties;
+				const dataPointProperties = dataPoint.validator?.definition?.properties?.data?.properties?.custom_attributes?.properties;
 				if (dataPointProperties) {
-					const filteredProps = dataPointProperties.filter(prop =>
-						((!isIgnoringBuiltInMparticleFields) || prop.propertyDescription !== 'MPARTICLE-FIELD-DO-NOT-POPULATE') &&
-						((!isIncludingOnlyMediaSpecificFields) || prop.propertyDescription === 'MEDIA-SPECIFIC' || prop.propertyDescription === 'MPARTICLE-FIELD-DO-NOT-POPULATE'));
-					if ( filteredProps && filteredProps.length > 0) {
-						const kvArray = filteredProps.map(filteredProp => ({[filteredProp.propertyName]: null}));
+					const filteredKeys = Object.keys(dataPointProperties).filter(key =>
+						((!isIgnoringBuiltInMparticleFields) || dataPointProperties[key].description !== 'MPARTICLE-FIELD-DO-NOT-POPULATE') &&
+						((!isIncludingOnlyMediaSpecificFields) || dataPointProperties[key].description === 'MEDIA-SPECIFIC' || dataPointProperties[key].description === 'MPARTICLE-FIELD-DO-NOT-POPULATE'));
+					if ( filteredKeys && filteredKeys.length > 0) {
+						const kvArray = filteredKeys.map(filteredKey => ({[filteredKey]: null}));
 						return Object.assign(...kvArray); // Return an object with each field assigned to ''
 					} else {
 						if (!isIncludingOnlyMediaSpecificFields) {
@@ -367,8 +369,18 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		return null;
 	};
 
+	getAllEventFieldsObjects(isMediaSpecific) {
+		let retval = {};
+		Object.keys(BeasleyAnalyticsMParticleProvider.mparticleEventNames).forEach(eventNameKey => {
+			const newEventFieldsObject = this.getCleanEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey], false, isMediaSpecific);
+			retval = {...retval, ...newEventFieldsObject};
+		});
+
+		return retval;
+	}
+
 	getCustomEventTypeValueForEventName(eventName) {
-		const dataPoints = mParticlePlan?.dataPointArray;
+		const dataPoints = mParticlePlan?.version_document?.data_points;
 		if (dataPoints) {
 			/* We need to filter because event names are not unique.
 				For instance, there are 2 play events: one of type media and one of type other.
@@ -377,9 +389,10 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				We return first matched event type which means Media events must be above non-media events
 				in the plan.
 			 */
-			const matchingDataPoints = dataPoints.filter( dp => dp.eventName === eventName);
+			const matchingDataPoints = dataPoints.filter( dp =>
+				(dp?.match?.type === 'custom_event' && dp?.match?.criteria?.event_name === eventName));
 			for (const dataPoint of matchingDataPoints) {
-				const dataPointType = dataPoint.eventType;
+				const dataPointType = dataPoint.match?.criteria?.custom_event_type;
 				if (dataPointType) {
 					const mParticleEventType = Object.entries(window.mParticle.EventType).find( kvpair => kvpair[0].toLowerCase() === dataPointType.toLowerCase());
 					if (mParticleEventType) {
@@ -497,7 +510,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	}
 
 	createKeyValuePairs() {
-		this.keyValuePairsTemplate = mParticlePlan?.allFields;
+		this.keyValuePairsTemplate = this.getAllEventFieldsObjects(false);
 		this.clearKeyValuePairs();
 	}
 
@@ -506,7 +519,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	}
 
 	createMediaKeyValuePairs() {
-		this.mediaSpecificKeyValuePairsTemplate = mParticlePlan?.mediaFields;
+		this.mediaSpecificKeyValuePairsTemplate = this.getAllEventFieldsObjects(true);
 		this.clearMediaKeyValuePairs();
 	}
 
