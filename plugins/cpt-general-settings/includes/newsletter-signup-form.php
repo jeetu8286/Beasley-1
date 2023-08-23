@@ -105,9 +105,9 @@ class NewsletterSignupForm {
                             $html .= '<button class="nsf-form-submit" type="submit">Subscribe</button>';
                         $html .= '</div>';
                     $html .= '</form>';
-                    $html .= '<p class="nsf-checkbox-container"><input type="checkbox" class="nsf-checkbox-content" id="nsf-checkbox-content" name="nsf_checkbox_content"> '.$nsf_checkbox_content.'</p>';
+                    $html .= '<div class="nsf-checkbox-container"><input type="checkbox" class="nsf-checkbox-content" id="nsf-checkbox-content" name="nsf_checkbox_content"> '.$nsf_checkbox_content.'</div>';
                     $html .= '<div class="nsf-spinner"><div class="spinner"></div></div>';
-                    $html .= '<p class="response-error-container" style="font-size:14px;"></p>';
+                    $html .= '<div class="response-error-container" style="font-size:14px;"></div>';
                 $html .= '</div>';
             $html .= '</div>';
             $nsf_output_hide = true;
@@ -169,7 +169,7 @@ class NewsletterSignupForm {
         add_settings_field('nsf_mailing_list_name', 'Mailing list name', 'bbgi_input_field', $page, $section_id, 'name=nsf_mailing_list_name');
         add_settings_field('nsf_mailing_list_description', 'Mailing list description', 'bbgi_textarea_field', $page, $section_id, 'name=nsf_mailing_list_description');
         add_settings_field('nsf_template_token', 'Template token', 'bbgi_input_field', $page, $section_id, 'name=nsf_template_token');
-        add_settings_field('nsf_checkbox_content', 'Terms of Service and Privacy Policy Content', 'bbgi_textarea_field', $page, $section_id, 'name=nsf_checkbox_content&default= By clicking "Subscribe" I agree to the website\'s terms of Service and Privacy Policy. I understand I can unsubscribe at any time.');
+        add_settings_field('nsf_checkbox_content', 'Terms and Privacy Policy Content', 'bbgi_textarea_field', $page, $section_id, 'name=nsf_checkbox_content&default= By clicking "Subscribe" I agree to the website\'s terms of Service and Privacy Policy. I understand I can unsubscribe at any time.');
 
         register_setting( $group, 'ee_newsletter_logo', 'intval' );
         register_setting( $group, 'nsf_label', 'sanitize_text_field' );
