@@ -80,7 +80,7 @@ class BeasleyAnalytics {
 			retval.identifyRequest = {
 				userIdentities: {
 					customerid: window.firebase.auth().currentUser.uid,
-					email: window.firebase.auth().currentUser.email,
+					email: window.firebase.auth().currentUser.email.toLowerCase(),
 				}
 			};
 		}
