@@ -50,7 +50,7 @@ class Close extends PureComponent {
 	removeContestGating() {
 		if (document.getElementById('contestframe')) {
 			window.removeGate('contestframe');
-			isUserLoggedIn().then(isLoggedIn => {
+			this.isUserLoggedIn().then(isLoggedIn => {
 				if (!isLoggedIn) {
 					window.createGate('contestframe', 'frame-gate');
 				} else {
