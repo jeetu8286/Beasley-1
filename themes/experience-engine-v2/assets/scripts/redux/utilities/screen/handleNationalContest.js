@@ -15,7 +15,7 @@ export default function handleNationalContest() {
 		isUserLoggedIn().then(isLoggedIn => {
 			if (!isLoggedIn) {
 				//debug code
-				console.log('handleNationalContest() - isLoggedIn = false'
+				console.log('handleNationalContest() - isLoggedIn = false');
 
 				window.createGate('contestframe', 'frame-gate');
 			} else {
