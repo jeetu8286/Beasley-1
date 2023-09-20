@@ -42,7 +42,7 @@ function* yieldHideSplashScreen(action) {
 
 		renderSendToNews();
 		handleInjectos();
-		handleNationalContest();
+		// handleNationalContest();
 		initializeVimeo();
 
 		// debug code
