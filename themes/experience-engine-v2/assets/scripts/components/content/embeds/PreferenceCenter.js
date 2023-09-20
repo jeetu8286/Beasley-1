@@ -17,13 +17,14 @@ class PreferenceCenter extends Component {
 	componentDidMount() {
 		const {
 			firebase: config,
-			site_braze_preference_id: preferenceId,
+			// site_braze_preference_id: preferenceId,
 		} = window.bbgiconfig;
 		const { setUser } = this.props;
 
-		if (!preferenceId) {
-			return;
-		}
+		// if (!preferenceId) {
+		//	return;
+		// }
+
 		if (config.projectId) {
 			firebaseAuth.onAuthStateChanged(
 				function(user) {
