@@ -138,7 +138,12 @@ function* yieldLoadedPage(action) {
 
 	yield call(handleInjectos);
 
+	// yield call(handleNationalContest);
+
 	yield call(manageInlineScripts, parsedHtml.inlineScripts);
+
+	// debug code
+	console.log('yieldLoadedPage() - history updated');
 }
 
 /**
