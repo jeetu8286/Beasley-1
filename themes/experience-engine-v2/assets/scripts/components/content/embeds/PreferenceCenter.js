@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getPreferenceLink } from '../../../library/experience-engine';
+import { getToken, getChannel } from '../../../library/experience-engine';
 import { firebaseAuth } from '../../../library';
 import * as authActions from '../../../redux/actions/auth';
 
@@ -42,20 +42,12 @@ class PreferenceCenter extends Component {
 		}
 	}
 
-	getPreferenceLink = () => {
-		const { site_braze_preference_id: preferenceId } = window.bbgiconfig;
-
-		getPreferenceLink(preferenceId)
-			.then(response => response.json())
-			.then(result => {
-				if (result.Success) {
-					window.open(result.URL, '_blank');
-				} else if (result?.Error) {
-					this.setState({ api_error: result.Error });
-				} else {
-					this.setState({ api_error: 'Somethings wents wronge!' });
-				}
-			});
+	openPreferenceLink = () => {
+		getToken().then(token => {
+			const emailParam = encodeURIComponent(firebaseAuth?.currentUser?.email);
+			const preferenceUrl = `http://localhost:63342/preference-center/index.html?callletters=${window.getCallLetters()}&email=${emailParam}&authorization=${token}`;
+			window.open(preferenceUrl, '_blank');
+		});
 	};
 
 	render() {
@@ -67,7 +59,7 @@ class PreferenceCenter extends Component {
 						<button
 							type="button"
 							className="preference-link-btn"
-							onClick={this.getPreferenceLink}
+							onClick={this.openPreferenceLink}
 						>
 							preferences
 						</button>
