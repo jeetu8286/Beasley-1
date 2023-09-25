@@ -2,11 +2,11 @@
 window.isWhiz = () => {
 	const searchParams = new URLSearchParams(window.location?.search?.toLowerCase());
 	return searchParams && searchParams.has('whiz');
-};
+}
 
 window.getCallLetters = () => {
-	return window.bbgiconfig?.publisher?.call_letters || window.bbgiconfig?.publisher?.id);
-};
+	return window.bbgiconfig?.publisher?.call_letters || window.bbgiconfig?.publisher?.id;
+}
 
 window.getDayPart = (hourOfDay) => {
 	const morning = 'Morning Drive'; // 6am to 10am
