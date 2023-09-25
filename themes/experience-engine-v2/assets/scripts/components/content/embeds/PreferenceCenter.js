@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getToken, getChannel } from '../../../library/experience-engine';
+import { getToken } from '../../../library/experience-engine';
 import { firebaseAuth } from '../../../library';
 import * as authActions from '../../../redux/actions/auth';
 
