@@ -45,7 +45,9 @@ class PreferenceCenter extends Component {
 	openPreferenceLink = () => {
 		getToken().then(token => {
 			const emailParam = encodeURIComponent(firebaseAuth?.currentUser?.email);
-			const preferenceUrl = `http://localhost:63342/preference-center/index.html?callletters=${window.getCallLetters()}&email=${emailParam}&authorization=${token}`;
+			const preferenceUrl = `https://preferencecenter${
+				window.isDevEnvironment() ? '-staging' : ''
+			}.bbgi.com/index.html?callletters=${window.getCallLetters()}&email=${emailParam}&authorization=${token}`;
 			window.open(preferenceUrl, '_blank');
 		});
 	};

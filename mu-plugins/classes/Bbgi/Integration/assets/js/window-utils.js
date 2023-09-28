@@ -1,3 +1,9 @@
+window.isDevEnvironment = () => {
+	return (
+		window.location.hostname.toLowerCase().indexOf('.beasley.test') > -1 ||
+		window.location.hostname.toLowerCase().indexOf('.bbgistage.com') > -1
+	);
+}
 
 window.isWhiz = () => {
 	const searchParams = new URLSearchParams(window.location?.search?.toLowerCase());
