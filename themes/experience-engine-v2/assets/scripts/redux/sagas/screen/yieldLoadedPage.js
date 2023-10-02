@@ -7,7 +7,6 @@ import {
 	updateTargeting,
 	renderSendToNews,
 	handleInjectos,
-	handleNationalContest,
 } from '../../utilities';
 import {
 	ACTION_LOADED_PAGE,
