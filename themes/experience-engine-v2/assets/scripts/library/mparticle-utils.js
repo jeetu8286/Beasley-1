@@ -136,7 +136,7 @@ export const logFirebaseUserOutOfMParticle = () => {
 	) {
 		console.log(
 			`Logging Out MParticle User '${
-				window.mParticle.Identity.getCurrentUser().email
+				window.mParticle.Identity.getCurrentUser().getUserIdentities().email
 			}' From Enabled MParticle Session`,
 		);
 
