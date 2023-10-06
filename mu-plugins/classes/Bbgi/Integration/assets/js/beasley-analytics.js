@@ -520,6 +520,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				super.debugLog('Beasley Analytics mParticle Was Initialized. Now Processing...');
 				this.isInitialized = true;
 
+				this.setAnalytics('is_station_site', true);
 				this.setAnalytics('ad_block_enabled', isBlockingAds);
 				this.setAnalytics('domain', window.location.hostname);
 				this.setAnalytics('platform', 'Web');
