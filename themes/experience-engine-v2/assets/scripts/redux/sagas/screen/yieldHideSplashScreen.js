@@ -43,9 +43,6 @@ function* yieldHideSplashScreen(action) {
 		handleInjectos();
 		// handleNationalContest();
 		initializeVimeo();
-
-		// debug code
-		console.log('yieldHideSplashScreen() - splashScreen removed');
 	});
 }
 
