@@ -5,7 +5,8 @@ import {
 	updateInterstitialAdDiv,
 	handleInjectos,
 	initializeVimeo,
-	setPlayerVisibility, handleNationalContest,
+	setPlayerVisibility,
+	handleNationalContest,
 } from '../../utilities';
 import refreshAllAds from '../../utilities/screen/refreshAllAds';
 // import resetScrollToTop from '../../utilities/player/resetScrollToTop';
