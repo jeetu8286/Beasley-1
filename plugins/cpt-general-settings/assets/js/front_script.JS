@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		  image.parentNode.replaceChild(containerDiv, image);
 		}
 	  } catch (error) {
-		console.error('Error:', error);
+		console.error('Error Attribution: ', error);
 	  }
 	}
 
