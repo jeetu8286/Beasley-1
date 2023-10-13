@@ -99,7 +99,7 @@ export const fetchPage = (url, options = {}) => async dispatch => {
 	}\page?url=${encodeURIComponent(url)}`; // eslint-disable-line no-useless-escape
 
 	try {
-		const station_play_link_matched = url.match(/str-station-([A-Za-z0-9]+)/);
+		const station_play_link_matched = url.match(/str-station-([A-Za-z0-9_]+)/);
 
 		if (station_play_link_matched) {
 			console.log(`${station_play_link_matched[1].toUpperCase()}`);
