@@ -82,6 +82,15 @@ export function gamAdPlaybackStart(nowTime) {
 }
 
 /**
+ * gamAdPlaybackComplete action creator
+ */
+export function gamAdPlaybackComplete() {
+	return {
+		type: ACTION_GAM_AD_PLAYBACK_COMPLETE,
+	};
+}
+
+/**
  * adBreakSynced action creator
  */
 export function adBreakSynced() {
@@ -563,6 +572,18 @@ export const playStation = station => dispatch => {
 		play('tdplayer', station)(dispatch);
 	}
 };
+
+/**
+ * playStationFromUrl action creator for when calling from URL.
+ * We cannot play preroll so mark preroll as just played.
+ * @param {String} station
+ */
+export const playStationFromUrl = station => dispatch => {
+	console.log(`playStationFromUrl() - ${station}`);
+	dispatch(gamAdPlaybackComplete());
+	playStation(station)(dispatch);
+};
+
 /**
  * Action Creator for playing an audio file using the omnyplayer.
  *
