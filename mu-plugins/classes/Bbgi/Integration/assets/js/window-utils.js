@@ -5,6 +5,10 @@ window.isDevEnvironment = () => {
 	);
 }
 
+window.isEEStagingEnvironment = () => {
+	return !(window.bbgiconfig?.eeapi?.toLowerCase().indexOf('experience-staging.bbgi.com') === -1);
+}
+
 window.isWhiz = () => {
 	const searchParams = new URLSearchParams(window.location?.search?.toLowerCase());
 	return searchParams && searchParams.has('whiz');
