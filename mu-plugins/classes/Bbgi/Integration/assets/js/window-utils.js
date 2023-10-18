@@ -18,6 +18,10 @@ window.getCallLetters = () => {
 	return window.bbgiconfig?.publisher?.call_letters || window.bbgiconfig?.publisher?.id;
 }
 
+window.getCallLettersCurrent = () => {
+	return window.bbgiconfig?.publisher?.callletters || window.bbgiconfig?.publisher?.id;
+}
+
 window.getDayPart = (hourOfDay) => {
 	const morning = 'Morning Drive'; // 6am to 10am
 	const midday = 'Midday'; // 10am to 3pm

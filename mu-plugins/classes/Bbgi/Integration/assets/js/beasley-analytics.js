@@ -532,6 +532,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 				this.setAnalytics('station_formats', window.bbgiconfig?.publisher?.genre?.join(', '));
 				this.setAnalytics('station_location', window.bbgiconfig?.publisher?.location);
 				this.setAnalytics('call_letters', window.getCallLetters());
+				this.setAnalytics('call_letters_current', window.getCallLettersCurrent());
 				this.setAnalytics('station_id', window.bbgiconfig?.publisher?.AppId);
 				this.setAnalytics('prebid_enabled', window.bbgiconfig?.prebid_enabled);
 
