@@ -516,7 +516,11 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		// Set Global Fields In Callback After Ad Blocker Detection Completes And Empty Process Queue
 
 		const handleAdBlockFunc = () => {
-			adblockDetect((isBlockingAds) => {
+			adblockDetect(async (isBlockingAds) => {
+				if (!isBlockingAds) {
+					isBlockingAds = await window.secondOpinionOnAdBlocking();
+				}
+
 				super.debugLog('Beasley Analytics mParticle Was Initialized. Now Processing...');
 				this.isInitialized = true;
 
