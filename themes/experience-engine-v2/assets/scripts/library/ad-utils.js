@@ -168,7 +168,10 @@ export const requestHeaderBids = slotList => {
 		window.pbjs.requestBids({
 			timeout: HEADER_BID_TIMEOUT,
 			adUnitCodes: slotList.map(s => s.getAdUnitPath()),
-			bidsBackHandler: bidsBackHandler(slotList),
+			bidsBackHandler: () => {
+				headerBidFlags.prebidAccountedFor = true;
+				bidsBackHandler(slotList);
+			},
 		});
 	});
 
