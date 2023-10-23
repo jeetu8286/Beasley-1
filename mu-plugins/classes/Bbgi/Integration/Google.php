@@ -49,6 +49,7 @@ class Google extends \Bbgi\Module {
 			$jsonData,
 		);
 
+		global $wp;
 		$homeUrl = home_url($wp->request);
 		$fileNameAddition = str_contains($homeUrl, '.beasley.test') || str_contains($homeUrl, '.bbgistage.com') ? '-dev' : '';
 		wp_enqueue_script(
