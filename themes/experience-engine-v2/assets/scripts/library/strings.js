@@ -51,7 +51,7 @@ export function isAudioAdOnly({ player, playerType }) {
 		currentAdModule = player.MediaPlayer.adManager.currentAdModule;
 	}
 
-	// Look for ad, return whether an MP4.
+	// Look for ad, return whether NOT an MP4.
 	// eslint-disable-next-line no-prototype-builtins
 	if (currentAdModule && currentAdModule.hasOwnProperty('html5Node')) {
 		const regEx = new RegExp(/\.mp4$/);
