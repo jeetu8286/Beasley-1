@@ -1,5 +1,6 @@
-import amplitudeKit from '@mparticle/web-amplitude-kit';
 import mParticle from '@mparticle/web-sdk';
+import amplitudeKit from '@mparticle/web-amplitude-kit';
+import braze from '@mparticle/web-braze-kit';
 
 export const setMParticleUserAtributes = (
 	firstname,
@@ -13,20 +14,23 @@ export const setMParticleUserAtributes = (
 	);
 
 	if (window.firebase?.auth().currentUser) {
-		logFirebaseUserIntoMParticle(window.firebase.auth().currentUser);
+		const loginCallbackFunc = () => {
+			const currentUser = mParticle.Identity.getCurrentUser();
+			window.beasleyanalytics.setMParticleAppBoyForwarderForDOB();
+			currentUser.setUserAttribute('$firstname', firstname);
+			currentUser.setUserAttribute('$lastname', lastname);
+			currentUser.setUserAttribute('$zip', zip);
+			const formattedGender =
+				gender && gender.length > 0 ? gender.toUpperCase()[0] : 'P';
+			currentUser.setUserAttribute('$gender', formattedGender);
+			const formattedDob = bday.replace(/(\d\d)\/(\d\d)\/(\d{4})/, '$3-$1-$2');
+			currentUser.setUserAttribute('dob', formattedDob);
+		};
 
-		const currentUser = mParticle.Identity.getCurrentUser();
-		currentUser.setUserAttribute('$firstname', firstname);
-		currentUser.setUserAttribute('$lastname', lastname);
-		currentUser.setUserAttribute('$zip', zip);
-		const formattedGender =
-			gender && gender.length > 0 ? gender.toUpperCase()[0] : 'P';
-		currentUser.setUserAttribute('$gender', formattedGender);
-		const formattedDob = bday
-			.replace(/(\d\d)\/(\d\d)\/(\d{4})/, '$3-$1-$2')
-			.split('/')
-			.join('-');
-		currentUser.setUserAttribute('dob', formattedDob);
+		logFirebaseUserIntoMParticle(
+			window.firebase.auth().currentUser,
+			loginCallbackFunc,
+		);
 	}
 };
 
@@ -35,12 +39,14 @@ export const setMParticleUserAtributes = (
  */
 export const createMparticleSession = () => {
 	if (
+		window.beasleyanalytics &&
 		window.bbgiAnalyticsConfig?.mparticle_key &&
 		(!window.mParticle || !window.mParticle.isInitialized())
 	) {
 		console.log('Configuring mparticle in bundle');
 
 		amplitudeKit.register(window.bbgiAnalyticsConfig.mParticleConfig);
+		braze.register(window.bbgiAnalyticsConfig.mParticleConfig);
 
 		// Configures the SDK. Note the settings below for isDevelopmentMode
 		// and logLevel.
@@ -53,13 +59,35 @@ export const createMparticleSession = () => {
 			'Done configuring mparticle in bundle, now initializing Beasley Analytics',
 		);
 		window.beasleyanalytics.initializeMParticle();
+	} else if (
+		window.beasleyanalytics &&
+		window.bbgiAnalyticsConfig?.mparticle_key
+	) {
+		console.log('Determined no need to re-create mParticle session.');
+	} else {
+		console.log(
+			'Clearing mParticle because Beasley Analytics is not configured.',
+		);
+		window.mParticle = null;
+	}
+};
+
+const refreshPageAfterLoginOrLogout = () => {
+	const contentElement = document.getElementById('content');
+	if (contentElement) {
+		window.beasleyanalytics.setNewsletterControlForMParticleAccount(
+			contentElement,
+		);
 	}
 };
 
 /**
  * Log Firebase User Into MParticle If Not Done So
  */
-export const logFirebaseUserIntoMParticle = firebaseUser => {
+export const logFirebaseUserIntoMParticle = (
+	firebaseUser,
+	loginCallbackFunc,
+) => {
 	if (!firebaseUser) {
 		return;
 	}
@@ -75,13 +103,17 @@ export const logFirebaseUserIntoMParticle = firebaseUser => {
 			const identifyRequest = {
 				userIdentities: {
 					customerid: firebaseUser.uid,
-					email: firebaseUser.email,
+					email: firebaseUser.email.toLowerCase(),
 				},
 			};
 			const identityCallback = result => {
 				if (result.getUser()) {
 					// proceed with login
 					console.log('MPARTICLE LOGIN CALLBACK: ', result);
+					refreshPageAfterLoginOrLogout();
+					if (loginCallbackFunc) {
+						loginCallbackFunc();
+					}
 				}
 			};
 			window.mParticle.Identity.login(identifyRequest, identityCallback);
@@ -104,7 +136,8 @@ export const logFirebaseUserOutOfMParticle = () => {
 	) {
 		console.log(
 			`Logging Out MParticle User '${
-				window.mParticle.Identity.getCurrentUser().email
+				window.mParticle.Identity.getCurrentUser().getUserIdentities()
+					.userIdentities?.email
 			}' From Enabled MParticle Session`,
 		);
 
@@ -112,6 +145,7 @@ export const logFirebaseUserOutOfMParticle = () => {
 			if (result.getUser()) {
 				// proceed with login
 				console.log('MPARTICLE LOGOUT CALLBACK: ', result);
+				refreshPageAfterLoginOrLogout();
 			}
 		};
 		window.mParticle.Identity.logout({}, identityCallback);

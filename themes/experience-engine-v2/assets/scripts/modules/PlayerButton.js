@@ -96,7 +96,8 @@ class PlayerButton extends Component {
 			adPlaybackStop,
 		} = this.props;
 
-		const renderStatus = forceSpinner ? STATUSES.LIVE_CONNECTING : status;
+		const renderStatus =
+			forceSpinner || adPlayback ? STATUSES.LIVE_CONNECTING : status;
 
 		const notification = online ? <></> : <Offline />;
 

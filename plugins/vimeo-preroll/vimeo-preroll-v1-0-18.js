@@ -212,6 +212,26 @@
 		return retval;
 	}
 
+	const sendMParticlePlayEvent = async (vimeoplayer) => {
+		const [videoId, videoTitle, videoDuration] = await Promise.all([
+			vimeoplayer.getVideoId(),
+			vimeoplayer.getVideoTitle(),
+			vimeoplayer.getDuration(),
+		]);
+
+		window.beasleyanalytics.setAnalyticsForMParticle('content_title', videoTitle);
+		window.beasleyanalytics.setAnalyticsForMParticle('content_type', 'Video');
+		window.beasleyanalytics.setAnalyticsForMParticle('stream_type', 'OnDemand');
+		window.beasleyanalytics.setAnalyticsForMParticle('is_primary_stream', true);
+		window.beasleyanalytics.setAnalyticsForMParticle('content_id', videoId);
+		window.beasleyanalytics.setAnalyticsForMParticle('show_name', 'Vimeo');
+		window.beasleyanalytics.setAnalyticsForMParticle('content_duration', videoDuration);
+
+		window.beasleyanalytics.sendMParticleEvent(
+			BeasleyAnalyticsMParticleProvider.mparticleEventNames.play,
+		);
+	}
+
 	const loadVimeoPlayer = (iFrameElement) => {
 		if (iFrameElement.parentElement.classList.contains('beasley-vimeo')) {
 			return;
@@ -249,6 +269,7 @@
 			// Play preroll if we are currently not playing preroll and have not already finished playing preroll.
 			if (!vimeoplayer.isPlayingPreroll && !vimeoplayer.finishedPlayingPreroll) {
 				vimeoplayer.isPlayingPreroll = true;
+				await sendMParticlePlayEvent(vimeoplayer);
 				console.log('Played And Instantly Pausing All Players for Preroll');
 				await vimeoplayer.pause();
 				await pauseAllVimeoPlayers();
