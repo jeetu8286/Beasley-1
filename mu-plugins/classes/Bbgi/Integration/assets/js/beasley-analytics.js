@@ -24,12 +24,12 @@ class BeasleyAnalytics {
 		console.log('Beasley Analytics Loaded');
 	}
 
-	static getMParticleDevConfig() {
+	static getMParticleDevConfig(versionNo) {
 		// WITHOUT CNAMES $jsonMParticleConfig = '{"isDevelopmentMode": true, "logLevel": "verbose", "dataPlan": {"planId": "beasley_web_beta_3", "planVersion": 1}}'
 		return {
 			isDevelopmentMode: true,
 			logLevel: "verbose",
-			dataPlan: {planId: "beasley_web", "planVersion": 3},
+			dataPlan: {planId: "beasley_web", "planVersion": versionNo},
 			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
 			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
 			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
@@ -44,11 +44,11 @@ class BeasleyAnalytics {
 		};
 	}
 
-	static getMParticleProdConfig() {
+	static getMParticleProdConfig(versionNo) {
 		return {
 			isDevelopmentMode: false,
 			logLevel: "verbose",
-			dataPlan: {planId: "beasley_web", "planVersion": 3},
+			dataPlan: {planId: "beasley_web", "planVersion": versionNo},
 			v1SecureServiceUrl: "mparticle.bbgi.com/webevents/v1/JS/",
 			v2SecureServiceUrl: "mparticle.bbgi.com/webevents/v2/JS/",
 			v3SecureServiceUrl: "mparticle.bbgi.com/webevents/v3/JS/",
@@ -64,13 +64,13 @@ class BeasleyAnalytics {
 	}
 
 	static getMParticleConfig() {
-		const isDevEnvironment =
-			window.location.hostname.toLowerCase().indexOf('.beasley.test') > -1 ||
-			window.location.hostname.toLowerCase().indexOf('.bbgistage.com') > -1;
+		const isDevEnvironment = window.isDevEnvironment();
 
 		console.log(`Returning mParticle config for ${isDevEnvironment ? 'Dev' : 'Prod'} Environment`);
 
-		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig() : BeasleyAnalytics.getMParticleProdConfig();
+		const versionNo = beasley_mParticlePlan?.version;
+		console.log(`Using plan version ${versionNo} based on cached plan`);
+		const retval = isDevEnvironment ? BeasleyAnalytics.getMParticleDevConfig(versionNo) : BeasleyAnalytics.getMParticleProdConfig(versionNo);
 
 		// If window.firebase User Exists, Add mParticle identifyRequest
 		if (window.firebase?.auth().currentUser) {
@@ -78,7 +78,7 @@ class BeasleyAnalytics {
 			retval.identifyRequest = {
 				userIdentities: {
 					customerid: window.firebase.auth().currentUser.uid,
-					email: window.firebase.auth().currentUser.email,
+					email: window.firebase.auth().currentUser.email.toLowerCase(),
 				}
 			};
 		}
@@ -146,6 +146,27 @@ class BeasleyAnalytics {
 		// NO LONGER FORWARD EVENT TO MPARTICLE - MParticle Events Are Now Called Independently
 		this.analyticsProviderArray.filter(provider => provider.analyticType !== BeasleyAnalyticsMParticleProvider.typeString)
 			.map(provider => provider.sendEvent.apply(provider, arguments));
+	}
+
+	setNewsletterControlForMParticleAccount(contentElement) {
+		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
+		if (provider) {
+			provider.setNewsletterControlForMParticleAccount.apply(provider, arguments);
+		}
+	}
+
+	setMParticleAppBoyForwarderForDOB() {
+		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
+		if (provider) {
+			provider.setAppBoyForwarderForDOB.apply(provider, arguments);
+		}
+	}
+
+	setMParticleUserAttributeArray(userEmailAddress, emailIsMaskedMParticleVal, userAttributeArray) {
+		const provider = this.analyticsProviderArray.find(provider => provider.analyticType === BeasleyAnalyticsMParticleProvider.typeString);
+		if (provider) {
+			provider.setMParticleUserAttributeArray.apply(provider, arguments);
+		}
 	}
 
 	sendMParticleEvent(eventName) {
@@ -314,19 +335,17 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	lazyPageEventObserver;
 
 	getCleanEventObject(eventName, isIgnoringBuiltInMparticleFields, isIncludingOnlyMediaSpecificFields) {
-		const dataPoints = window.mParticleSchema?.version_document?.data_points;
+		const dataPoints = beasley_mParticlePlan?.dataPointArray;
 		if (dataPoints) {
-			const dataPoint = dataPoints.find( dp =>
-				(dp?.match?.type === 'screen_view' && dp?.match?.criteria?.screen_name === eventName) ||
-				(dp?.match?.criteria?.event_name === eventName) );
+			const dataPoint = dataPoints.find( dp => dp.eventName === eventName );
 			if (dataPoint) {
-				const dataPointProperties = dataPoint.validator?.definition?.properties?.data?.properties?.custom_attributes?.properties;
+				const dataPointProperties = dataPoint.properties;
 				if (dataPointProperties) {
-					const filteredKeys = Object.keys(dataPointProperties).filter(key =>
-						((!isIgnoringBuiltInMparticleFields) || dataPointProperties[key].description !== 'MPARTICLE-FIELD-DO-NOT-POPULATE') &&
-						((!isIncludingOnlyMediaSpecificFields) || dataPointProperties[key].description === 'MEDIA-SPECIFIC' || dataPointProperties[key].description === 'MPARTICLE-FIELD-DO-NOT-POPULATE'));
-					if ( filteredKeys && filteredKeys.length > 0) {
-						const kvArray = filteredKeys.map(filteredKey => ({[filteredKey]: null}));
+					const filteredProps = dataPointProperties.filter(prop =>
+						((!isIgnoringBuiltInMparticleFields) || prop.propertyDescription !== 'MPARTICLE-FIELD-DO-NOT-POPULATE') &&
+						((!isIncludingOnlyMediaSpecificFields) || prop.propertyDescription === 'MEDIA-SPECIFIC' || prop.propertyDescription === 'MPARTICLE-FIELD-DO-NOT-POPULATE'));
+					if ( filteredProps && filteredProps.length > 0) {
+						const kvArray = filteredProps.map(filteredProp => ({[filteredProp.propertyName]: null}));
 						return Object.assign(...kvArray); // Return an object with each field assigned to ''
 					} else {
 						if (!isIncludingOnlyMediaSpecificFields) {
@@ -346,33 +365,29 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		return null;
 	};
 
-	getAllEventFieldsObjects(isMediaSpecific) {
-		let retval = {};
-		Object.keys(BeasleyAnalyticsMParticleProvider.mparticleEventNames).forEach(eventNameKey => {
-			const newEventFieldsObject = this.getCleanEventObject(BeasleyAnalyticsMParticleProvider.mparticleEventNames[eventNameKey], false, isMediaSpecific);
-			retval = {...retval, ...newEventFieldsObject};
-		});
-
-		return retval;
-	}
-
 	getCustomEventTypeValueForEventName(eventName) {
-		const dataPoints = window.mParticleSchema?.version_document?.data_points;
+		const dataPoints = beasley_mParticlePlan?.dataPointArray;
 		if (dataPoints) {
-			const dataPoint = dataPoints.find( dp =>
-				(dp?.match?.type === 'custom_event' && dp?.match?.criteria?.event_name === eventName));
-			if (dataPoint) {
-				const dataPointType = dataPoint.match?.criteria?.custom_event_type;
+			/* We need to filter because event names are not unique.
+				For instance, there are 2 play events: one of type media and one of type other.
+				This was done in order to share the play event between React pages, which have access to the
+				media library, and Whiz pages which do not.
+				We return first matched event type which means Media events must be above non-media events
+				in the plan.
+			 */
+			const matchingDataPoints = dataPoints.filter( dp => dp.eventName === eventName);
+			for (const dataPoint of matchingDataPoints) {
+				const dataPointType = dataPoint.eventType;
 				if (dataPointType) {
 					const mParticleEventType = Object.entries(window.mParticle.EventType).find( kvpair => kvpair[0].toLowerCase() === dataPointType.toLowerCase());
 					if (mParticleEventType) {
 						return mParticleEventType[1];
 					} else {
 						console.log(`ERROR - could not find an MParticle Custom Event Type matching text - '${dataPointType}'`);
-						return window.mParticle.EventType.Unknown;
 					}
 				}
 			}
+			return window.mParticle.EventType.Unknown;
 		}
 
 		console.log(`Could not find Custom Event Type For MParticle Event - '${eventName}'`);
@@ -476,11 +491,11 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		this.createMediaKeyValuePairs();
 		this.customEventTypeLookupByName = this.getAllCustomEventTypeLookupObject();
 
-		this.CompleteInitializationAndSetPerSessionKeys();
+		this.completeInitializationAndSetPerSessionKeys();
 	}
 
 	createKeyValuePairs() {
-		this.keyValuePairsTemplate = this.getAllEventFieldsObjects(false);
+		this.keyValuePairsTemplate = beasley_mParticlePlan?.allFields;
 		this.clearKeyValuePairs();
 	}
 
@@ -489,7 +504,7 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 	}
 
 	createMediaKeyValuePairs() {
-		this.mediaSpecificKeyValuePairsTemplate = this.getAllEventFieldsObjects(true);
+		this.mediaSpecificKeyValuePairsTemplate = beasley_mParticlePlan?.mediaFields;
 		this.clearMediaKeyValuePairs();
 	}
 
@@ -497,21 +512,27 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		this.mediaSpecificKeyValuePairs = {...this.mediaSpecificKeyValuePairsTemplate};
 	}
 
-	CompleteInitializationAndSetPerSessionKeys = () => {
+	completeInitializationAndSetPerSessionKeys = () => {
 		// Set Global Fields In Callback After Ad Blocker Detection Completes And Empty Process Queue
 
 		const handleAdBlockFunc = () => {
-			adblockDetect((isBlockingAds) => {
+			adblockDetect(async (isBlockingAds) => {
+				if (!isBlockingAds) {
+					isBlockingAds = await window.secondOpinionOnAdBlocking();
+				}
+
 				super.debugLog('Beasley Analytics mParticle Was Initialized. Now Processing...');
 				this.isInitialized = true;
 
+				this.setAnalytics('is_station_site', true);
 				this.setAnalytics('ad_block_enabled', isBlockingAds);
 				this.setAnalytics('domain', window.location.hostname);
 				this.setAnalytics('platform', 'Web');
 				this.setAnalytics('is_app', window.isWhiz());
 				this.setAnalytics('station_formats', window.bbgiconfig?.publisher?.genre?.join(', '));
 				this.setAnalytics('station_location', window.bbgiconfig?.publisher?.location);
-				this.setAnalytics('call_letters', window.bbgiconfig?.publisher?.call_letters || window.bbgiconfig?.publisher?.id);
+				this.setAnalytics('call_letters', window.getCallLetters());
+				this.setAnalytics('call_letters_current', window.getCallLettersCurrent());
 				this.setAnalytics('station_id', window.bbgiconfig?.publisher?.AppId);
 				this.setAnalytics('prebid_enabled', window.bbgiconfig?.prebid_enabled);
 
@@ -864,6 +885,194 @@ class BeasleyAnalyticsMParticleProvider extends BeasleyAnalyticsBaseProvider {
 		if (elementList) {
 			Array.from(elementList).forEach(el => this.lazyPageEventObserver.observe(el));
 		}
+	}
+
+	maskEmail(email) {
+		// Split the email address into username and domain parts
+		const [username, domain] = email.split("@");
+
+		// Determine the number of asterisks to show in the masked username
+		const numAsterisks = Math.min(5, Math.max(0, username.length - 5));
+
+		// Mask the username with asterisks, leaving only the first and last character visible
+		const maskedUsername =
+			username.length <= 1
+				? username
+				: `${username.charAt(0)}${"*".repeat(numAsterisks)}${username.charAt(username.length - 1)}`;
+
+		// Combine the masked username and the domain to form the masked email address
+		const maskedEmail = `${maskedUsername}@${domain}`;
+
+		return maskedEmail;
+	}
+
+	getFirstNameFromDisplayName(displayName) {
+		let retval = '';
+		if (displayName) {
+			displayName = displayName.trim();
+			const nameParts = displayName.split(' ');
+			if (nameParts && nameParts.length > 0) {
+				retval = nameParts[0];
+			}
+		}
+		return retval;
+	}
+
+	getLastNameFromDisplayName(displayName) {
+		let retval = '';
+		if (displayName) {
+			displayName = displayName.trim();
+			const idxOfFirstSpace = displayName.indexOf(' ');
+			if (idxOfFirstSpace > 0) {
+				retval = displayName.toString().substring(idxOfFirstSpace + 1);
+			}
+		}
+		return retval;
+	}
+
+	setNewsletterControlForMParticleAccount(contentElement) {
+		const nsfContainerElementCollection = contentElement.getElementsByClassName('nsf-container');
+		if (!nsfContainerElementCollection || nsfContainerElementCollection.length < 1) {
+			return;
+		}
+
+		// ASSUME ONLY 1 Newsletter Control
+		const nsfContainerElement = nsfContainerElementCollection[0];
+		const newsletterFieldName = nsfContainerElement?.querySelector('#nsf_subscription_attributes')?.value;
+
+		const newsletterFNameElement = nsfContainerElement?.querySelector('input[name="nsf_first_name"]');
+		const newsletterLNameElement = nsfContainerElement?.querySelector('input[name="nsf_last_name"]');
+		const newsletterEmailElement = nsfContainerElement?.querySelector('input[name="nsf_email"]');
+
+		if (newsletterFNameElement) {
+			newsletterFNameElement.disabled = false;
+		}
+		if (newsletterFNameElement) {
+			newsletterLNameElement.disabled = false;
+		}
+		if (newsletterFNameElement) {
+			newsletterEmailElement.disabled = false;
+		}
+
+		if (
+			window.mParticle.Identity &&
+			window.mParticle.Identity.getCurrentUser && // Not a function in Whiz
+			window.mParticle.Identity.getCurrentUser() &&
+			window.mParticle.Identity.getCurrentUser().isLoggedIn()
+		) {
+			const mParticleUser = window.mParticle.Identity.getCurrentUser();
+			const mParticleUserIdentities = mParticleUser?.getUserIdentities().userIdentities || {};
+			const mParticleUserAttributes = mParticleUser?.getAllUserAttributes();
+
+			// Hide Newsletter Control And Exit If The mParticle User Already Has A Truthy Value For Newsletter
+			if (mParticleUserAttributes && mParticleUserAttributes[newsletterFieldName]) {
+				nsfContainerElement.style.display = "none";
+				return;
+			}
+
+			if (newsletterFNameElement) {
+				const firstName = mParticleUserAttributes['$firstname'] ||
+					this.getFirstNameFromDisplayName(window.firebase?.auth()?.currentUser?.displayName);
+				if (firstName) {
+					newsletterFNameElement.value = firstName;
+					newsletterFNameElement.disabled = true;
+				}
+			}
+			if (newsletterLNameElement) {
+				const lastName = mParticleUserAttributes['$lastname'] ||
+					this.getLastNameFromDisplayName(window.firebase?.auth()?.currentUser?.displayName);
+				if (lastName) {
+					newsletterLNameElement.value = lastName;
+					newsletterLNameElement.disabled = true;
+				}
+			}
+			if (newsletterEmailElement) {
+				newsletterEmailElement.value = this.maskEmail(mParticleUserIdentities['email']);
+				newsletterEmailElement.disabled = true;
+			}
+		}
+	}
+
+	initializeUserAttribute(mParticleUser, attributeName, attributeValue) {
+		const mParticleUserAttributes = mParticleUser?.getAllUserAttributes();
+		if (mParticleUser && attributeName && !mParticleUserAttributes[attributeName]) {
+			mParticleUser.setUserAttribute(attributeName, attributeValue);
+			console.log(`Set ${attributeName} to ${attributeValue} for mParticle user`);
+		} else {
+			console.log(`Not Setting ${attributeName} to ${attributeValue} for mParticle user because it is already set to ${mParticleUserAttributes[attributeName]}`);
+		}
+	}
+
+	initializeUserAttributes(mParticleUser, userAttributeArray) {
+		userAttributeArray.forEach(attr =>  this.initializeUserAttribute(mParticleUser, attr.attributeName, attr.attributeValue));
+	}
+
+	appboyWasSetForDOB = false;
+
+	setAppBoyForwarderForDOB() {
+		const appBoyForwarder = mParticle?.Store?.activeForwarders?.find(forwarderItem => forwarderItem.name === 'Appboy');
+		if (appBoyForwarder && !this.appboyWasSetForDOB) {
+			this.appboyWasSetForDOB = true;
+			const funcCopy = appBoyForwarder.setUserAttribute
+
+			const newFunc = (key, value) => {
+				if (key === 'dob' && !(value instanceof Date)) {
+					// ASSUME value is a string in YYYY-MM-DD format
+					value = new Date(`${value}T00:00:00`);
+				}
+				return funcCopy(key, value);
+			}
+			appBoyForwarder.setUserAttribute = newFunc;
+		}
+	}
+
+	/*
+	Set an array of {attributeName: 'name', attributeValue: 'val'} objects.
+	Complexity arose when we mask emails in UI. For this case we set the emailIsMaskedMParticleVal flag.
+	 */
+	setMParticleUserAttributeArray(userEmailAddress, emailIsMaskedMParticleVal, userAttributeArray) {
+		this.setAppBoyForwarderForDOB();
+
+		// Get Logged In mParticle User If Exists
+		let mParticleUser;
+		let mParticleUserIdentities;
+
+		if (
+			window.mParticle.Identity &&
+			window.mParticle.Identity.getCurrentUser && // Not a function in Whiz
+			window.mParticle.Identity.getCurrentUser() &&
+			window.mParticle.Identity.getCurrentUser().isLoggedIn()
+		) {
+			mParticleUser = window.mParticle.Identity.getCurrentUser();
+			mParticleUserIdentities = mParticleUser?.getUserIdentities()?.userIdentities;
+		}
+
+		// if mParticle email already matches desired email for attribute
+		if (mParticleUserIdentities?.email &&
+			(mParticleUserIdentities.email === userEmailAddress ||
+				(emailIsMaskedMParticleVal && userEmailAddress === this.maskEmail(mParticleUserIdentities.email))
+			)
+		) {
+			// Set mParticle Attribute and EXIT
+			this.initializeUserAttributes(mParticleUser, userAttributeArray);
+			return;
+		}
+
+		// Logged In User Did Not Match Email. Call mParticle Identify For ONLY Email
+		const identifyRequest =
+			{
+				userIdentities: {
+					email: userEmailAddress.toLowerCase(),
+				},
+			};
+		const identityCallback = result => {
+			const mParticleUser = result.getUser();
+			if (mParticleUser) {
+				this.initializeUserAttributes(mParticleUser, userAttributeArray);
+				window.mParticle.Identity.logout({});
+			}
+		};
+		window.mParticle.Identity.identify(identifyRequest, identityCallback);
 	}
 }
 

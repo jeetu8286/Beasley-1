@@ -1,13 +1,22 @@
 				<?php
 					$mparticle_register_embeds_in_observer = sprintf(
 					'<script class="mparticle_implementation">
-						setTimeout(() => {
-							const contentElement = document.getElementById(\'content\');
-							if (contentElement) {
-								console.log(\'Calling mparticle_implementation of Embeds \');
-								window.beasleyanalytics.fireLazyMParticlePageViewsForElementsWithMeta(contentElement.getElementsByTagName(\'mparticle-meta\'));
+						if (window.beasleyanalytics) {
+							const handleOnLoadForMParticle = () => {
+								const contentElement = document.getElementById(\'content\');
+								if (contentElement) {
+									window.beasleyanalytics.setNewsletterControlForMParticleAccount(contentElement);
+									window.beasleyanalytics.fireLazyMParticlePageViewsForElementsWithMeta(contentElement.getElementsByTagName(\'mparticle-meta\'));
+								}
+								removeEventListener("DOMContentLoaded", handleOnLoadForMParticle);
 							}
-						}, 2500);
+
+							if (document.readyState !== \'complete\') {
+								addEventListener(\'DOMContentLoaded\', handleOnLoadForMParticle);
+							} else {
+								handleOnLoadForMParticle();
+							}
+                        }
 					</script>'
 					);
 					echo $mparticle_register_embeds_in_observer;
@@ -17,10 +26,12 @@
 					get_template_part( 'partials/ads/footer' );
 
 				$mparticle_implementation = '<script>
-						document.body.addEventListener(\'click\', (e) => {
-							const ev = window.event||e;
-                        	window.beasleyanalytics.sendMParticleLinkClickEvent(ev.target);
-						});
+						if (window.beasleyanalytics) {
+							document.body.addEventListener(\'click\', (e) => {
+								const ev = window.event||e;
+								window.beasleyanalytics.sendMParticleLinkClickEvent(ev.target);
+							});
+                        }
 					</script>';
 				echo $mparticle_implementation;
 				?>
