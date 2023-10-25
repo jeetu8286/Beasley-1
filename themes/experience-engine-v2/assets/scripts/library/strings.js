@@ -51,18 +51,21 @@ export function isAudioAdOnly({ player, playerType }) {
 		currentAdModule = player.MediaPlayer.adManager.currentAdModule;
 	}
 
-	// Look for ad, if MP3, don't display it.
+	// Look for ad, return whether NOT an MP4.
 	// eslint-disable-next-line no-prototype-builtins
 	if (currentAdModule && currentAdModule.hasOwnProperty('html5Node')) {
-		const regEx = new RegExp(/\.mp3$/);
+		const regEx = new RegExp(/\.mp4$/);
 		const adUrl = currentAdModule.html5Node
 			? currentAdModule.html5Node.currentSrc || false
 			: false;
 
-		return adUrl ? regEx.test(adUrl) : false;
+		console.log(`TRITON PREROLL URL: ${adUrl}`);
+		const retval = adUrl ? !regEx.test(adUrl) : true; // ONLY RETURN FALSE WHEN WE KNOW IT IS VIDEO
+		console.log(`DID ${retval ? '' : 'NOT '}DETECT AUDIO ONLY PREROLL`);
+		return retval;
 	}
 
-	return false;
+	return true;
 }
 
 export default {
