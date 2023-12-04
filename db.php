@@ -1,7 +1,7 @@
 <?php
 
 /*
-Plugin Name: HyperDB  my-test file is not good.
+Plugin Name: HyperDB  
 Plugin URI: https://wordpress.org/plugins/hyperdb/
 Description: An advanced database class that supports replication, failover, load balancing, and partitioning.
 Author: Automattic
