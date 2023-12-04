@@ -1,5 +1,5 @@
 <?php
-this is my private file content .
+
 /*
 Plugin Name: HyperDB  
 Plugin URI: https://wordpress.org/plugins/hyperdb/
